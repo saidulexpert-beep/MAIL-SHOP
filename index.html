@@ -345,7 +345,7 @@
                     <button id="add-mails-btn" class="w-full p-3 rounded-lg btn-gradient">Add Mails to Stock</button>
                 </div>
             </div>
-
+            
             <div id="recharge-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center text-gray-800">Mobile Recharge</h2>
                 <div class="card-bg p-5 rounded-xl space-y-5">
@@ -360,6 +360,7 @@
                             <div>
                                 <label for="recharge-amount" class="block text-sm font-medium text-gray-600 mb-2">টাকার পরিমাণ (BDT)</label>
                                 <input id="recharge-amount" type="number" placeholder="Minimum ৳20" class="w-full p-3 rounded-lg input-field">
+                                <p id="recharge-fee-display" class="text-sm text-green-600 mt-1 h-5"></p>
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
@@ -389,6 +390,28 @@
                     <h3 class="text-lg font-semibold mb-3">Recharge History</h3>
                     <div id="recharge-history-list" class="space-y-3">
                         <p class="text-gray-600 text-center">No recharge history found.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="send-page" class="p-4 space-y-6 sub-page">
+                <h2 class="text-xl font-bold text-center text-gray-800">Send Balance</h2>
+                <div class="card-bg p-5 rounded-xl space-y-5">
+                    <div>
+                        <h3 class="font-semibold text-lg flex items-center gap-2 mb-4"><i data-lucide="send" class="w-6 h-6 text-[#007bff]"></i><span>ব্যালেন্স পাঠান</span></h3>
+                        <p class="text-sm text-center text-red-600 bg-red-100 p-2 rounded-lg mb-4">প্রতিটি সেন্ডে 5% ফি প্রযোজ্য।</p>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="send-recipient-id" class="block text-sm font-medium text-gray-600 mb-2">প্রাপকের আইডি (Recipient ID)</label>
+                                <input id="send-recipient-id" type="text" placeholder="Recipient's Telegram ID" class="w-full p-3 rounded-lg input-field">
+                            </div>
+                            <div>
+                                <label for="send-amount" class="block text-sm font-medium text-gray-600 mb-2">টাকার পরিমাণ (BDT)</label>
+                                <input id="send-amount" type="number" placeholder="Minimum ৳20" class="w-full p-3 rounded-lg input-field">
+                                <p id="send-fee-display" class="text-sm text-green-600 mt-1 h-5"></p>
+                            </div>
+                            <button id="submit-send-btn" class="w-full p-3 rounded-lg btn-gradient">Submit Send</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -607,7 +630,13 @@
                 'profile-page': loadProfilePage,
                 'features-page': loadFeaturesPage,
                 'tutorial-page': loadTutorials,
-                'recharge-page': loadRechargeHistory // NEW
+                'recharge-page': () => { 
+                    loadRechargeHistory(); 
+                    setupDynamicAmountHandlers('recharge');
+                },
+                'send-page': () => {
+                    setupDynamicAmountHandlers('send');
+                }
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
@@ -627,10 +656,11 @@
             // More Features and PIN Logic
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
-            document.getElementById('features-recharge-btn').addEventListener('click', () => navigateTo('recharge-page')); // MODIFIED
+            document.getElementById('features-recharge-btn').addEventListener('click', () => navigateTo('recharge-page'));
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
-            document.getElementById('features-send-btn').addEventListener('click', handleSend);
-            document.getElementById('submit-recharge-btn').addEventListener('click', handleRechargeRequest); // NEW
+            document.getElementById('features-send-btn').addEventListener('click', () => navigateTo('send-page')); // MODIFIED
+            document.getElementById('submit-recharge-btn').addEventListener('click', handleRechargeRequest);
+            document.getElementById('submit-send-btn').addEventListener('click', handleSendRequest); // NEW
             
             // PIN Modal Buttons
             document.getElementById('set-pin-btn').addEventListener('click', handleSetPin);
@@ -1031,40 +1061,66 @@
             copyToClipboard(userData.tgChatId, null);
             showAlert(message);
         }
+        
+        // --- NEW/MODIFIED Functions for Recharge, Send, Tutorial, Reviews, and PIN ---
 
-        // UPDATED handleSend function
-        async function handleSend() {
-            const recipientId = prompt("🚀 ব্যালেন্স ট্রান্সফার করুন (Recipient ID):");
-            if (!recipientId || recipientId.trim() === '') return;
-            if (recipientId.trim() === userData.tgChatId) {
-                showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
-                return;
+        function setupDynamicAmountHandlers(pageType) {
+            const amountInput = document.getElementById(`${pageType}-amount`);
+            const feeDisplay = document.getElementById(`${pageType}-fee-display`);
+
+            if (!amountInput || !feeDisplay) return;
+
+            amountInput.addEventListener('input', () => {
+                const maxAmount = Math.floor(userData.balance / 1.05);
+                let currentAmount = parseInt(amountInput.value);
+
+                if (isNaN(currentAmount) || currentAmount < 0) {
+                    currentAmount = 0;
+                }
+                
+                if (currentAmount > maxAmount) {
+                    amountInput.value = maxAmount;
+                    currentAmount = maxAmount;
+                }
+
+                if (currentAmount > 0) {
+                    const fee = currentAmount * 0.05;
+                    feeDisplay.textContent = `Fee (5%): ৳${fee.toFixed(2)}`;
+                } else {
+                    feeDisplay.textContent = '';
+                }
+            });
+        }
+        
+        async function handleSendRequest() {
+            const recipientId = document.getElementById('send-recipient-id').value.trim();
+            const amountStr = document.getElementById('send-amount').value;
+
+            if (!recipientId || !amountStr) {
+                return showAlert("অনুগ্রহ করে প্রাপকের আইডি এবং টাকার পরিমাণ লিখুন।");
+            }
+            if (recipientId === userData.tgChatId) {
+                return showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
             }
 
-            const amountStr = prompt("কত টাকা পাঠাতে চান? (Minimum ৳20)");
-            if (!amountStr || isNaN(parseFloat(amountStr))) {
-                showAlert("অনুগ্রহ করে সঠিক পরিমাণ লিখুন।");
-                return;
-            }
             const amount = parseFloat(amountStr);
-            if (amount < 20) {
-                showAlert("সর্বনিম্ন পাঠানোর পরিমাণ ৳20।");
-                return;
+
+            if (isNaN(amount) || amount < 20) {
+                return showAlert("সর্বনিম্ন পাঠানোর পরিমাণ ৳20।");
             }
 
             const fee = amount * 0.05;
             const totalCost = amount + fee;
 
             if (totalCost > userData.balance) {
-                showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
-                return;
+                return showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
             }
             
-            if (!confirm(`আপনি কি ${recipientId.trim()} আইডিতে ৳${amount.toFixed(2)} পাঠাতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) return;
+            if (!confirm(`আপনি কি ${recipientId} আইডিতে ৳${amount.toFixed(2)} পাঠাতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) return;
 
             loader.style.display = 'flex';
             const senderRef = doc(db, "users", userData.tgChatId);
-            const recipientRef = doc(db, "users", recipientId.trim());
+            const recipientRef = doc(db, "users", recipientId);
 
             try {
                 await runTransaction(db, async (transaction) => {
@@ -1084,7 +1140,7 @@
                     transaction.set(transferLogRef, {
                         fromId: userData.tgChatId,
                         fromName: userData.name,
-                        toId: recipientId.trim(),
+                        toId: recipientId,
                         toName: recipientDoc.data().name,
                         amount: amount,
                         fee: fee,
@@ -1096,7 +1152,11 @@
                 userData.balance -= totalCost;
                 updateUI();
                 showAlert(`সফলভাবে ৳${amount.toFixed(2)} পাঠানো হয়েছে।`);
-                loadFeaturesPage();
+                
+                document.getElementById('send-recipient-id').value = '';
+                document.getElementById('send-amount').value = '';
+                document.getElementById('send-fee-display').textContent = '';
+                navigateTo('features-page');
 
             } catch (error) {
                 console.error("Transfer failed: ", error);
@@ -1106,9 +1166,6 @@
             }
         }
         
-        // --- NEW Functions for Recharge, Tutorial, Reviews, and PIN ---
-
-        // NEW: Handle Recharge Request
         async function handleRechargeRequest() {
             const number = document.getElementById('recharge-number').value.trim();
             const amountStr = document.getElementById('recharge-amount').value;
@@ -1175,6 +1232,7 @@
                 document.getElementById('recharge-number').value = '';
                 document.getElementById('recharge-amount').value = '';
                 document.getElementById('recharge-operator').value = '';
+                document.getElementById('recharge-fee-display').textContent = '';
 
                 loadRechargeHistory();
 
@@ -1185,8 +1243,7 @@
                 loader.style.display = 'none';
             }
         }
-
-        // NEW: Load Recharge History
+        
         async function loadRechargeHistory() {
             const historyList = document.getElementById('recharge-history-list');
             historyList.innerHTML = '<p class="text-gray-600 text-center">হিস্ট্রি লোড হচ্ছে...</p>';
