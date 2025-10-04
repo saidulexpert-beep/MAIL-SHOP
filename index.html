@@ -15,20 +15,16 @@
             font-family: 'Inter', sans-serif; 
             background-color: #f8f8f8;
             color: #333333;
-            background-image: none;
         }
-        .light-bg { background-color: #f8f8f8; }
         .card-bg { 
             background-color: #ffffff;
             border: 1px solid #e0e0e0;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .card-bg:hover {
             border-color: rgba(0, 123, 255, 0.4);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), 0 0 8px rgba(0, 123, 255, 0.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
         }
         .text-accent-gradient {
             background: linear-gradient(to right, #007bff, #0056b3);
@@ -51,23 +47,6 @@
             box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
             background-image: linear-gradient(to right, #0056b3, #007bff);
         }
-        .btn-outline-accent { 
-            background-color: transparent;
-            border: 1px solid #007bff;
-            color: #007bff; 
-        }
-        .btn-outline-accent:hover { 
-            background-color: #007bff; 
-            color: #ffffff; 
-            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
-        }
-        .btn-gradient:disabled, .btn-disabled { 
-            background-image: none;
-            background-color: #cccccc;
-            color: #888888; 
-            cursor: not-allowed; 
-            box-shadow: none;
-        }
         .input-field { 
             background-color: #f0f0f0;
             border: 1px solid #cccccc;
@@ -89,33 +68,29 @@
              background-color: rgba(255, 255, 255, 0.9);
              backdrop-filter: blur(10px);
              -webkit-backdrop-filter: blur(10px);
+             position: fixed;
+             bottom: 0;
+             left: 0;
+             right: 0;
+             max-width: 672px;
+             margin: 0 auto;
+             display: flex;
+             justify-content: space-around;
+             align-items: center;
+             padding: 12px 16px;
+             z-index: 50;
         }
-        
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            max-width: 672px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 12px 16px;
-            background-color: rgba(255, 255, 255, 0.9);
-            z-index: 50;
-        }
-        .nav-link-premium { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #6b7280; font-size: 0.75rem; font-weight: 500; padding: 8px; border-radius: 12px; transition: all 0.2s ease; position: relative; }
+        .nav-link-premium { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #6b7280; font-size: 0.75rem; font-weight: 500; padding: 8px; border-radius: 12px; transition: all 0.2s ease; position: relative; cursor: pointer; background: none; border: none; }
         .nav-link-premium:hover { color: #333333; }
         .nav-link-premium.active { color: #007bff; }
-        .nav-link-premium:active { transform: scale(0.95); }
         .nav-link-premium .icon { width: 24px; height: 24px; }
         .center-home-link { position: relative; transform: translateY(-20px) scale(1.1); background: rgba(0, 123, 255, 0.2); border: 1px solid rgba(0, 123, 255, 0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0, 123, 255, 0.4); transition: all 0.3s ease; color: #ffffff; }
-        .center-home-link:hover { transform: translateY(-20px) scale(1.15); box-shadow: 0 6px 30px rgba(0, 123, 255, 0.6); }
+        .center-home-link:hover { transform: translateY(-20px) scale(1.15); }
         .center-home-link .icon { width: 32px; height: 32px; color: #fff; }
         .header { border-bottom: 1px solid #e0e0e0; background-color: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Banner & Marquee */
         .banner-wrapper { position: relative; width: 100%; padding-top: 56.25%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
         .banner-inner { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1); }
         .slide { min-width: 100%; position: relative; }
@@ -123,85 +98,45 @@
         .dots { position: absolute; bottom: 12px; width: 100%; text-align: center; z-index: 10; }
         .dot { display: inline-block; height: 8px; width: 8px; margin: 0 4px; background: #bbb; border-radius: 50%; cursor: pointer; transition: background 0.3s; }
         .dot.active { background: #007bff; }
-        
-        /* Premium Loader Styles */
-        #loader {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 1.5rem;
-        }
-        #loader .logo-container {
-            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-        }
-        #loader .loader-text {
-            animation: fadeInText 1s ease-in-out 0.5s forwards;
-            opacity: 0;
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-        #loader-reviews {
-            position: absolute;
-            bottom: 30px;
-            font-size: 0.9rem;
-            color: #6b7280;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes fadeInText {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .purchase-history-card { background-color: #ffffff; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); border-radius: 12px; padding: 1rem; transition: all 0.2s ease; }
-        .purchase-mail-details { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 0.75rem; border-radius: 8px; font-size: 0.9rem; color: #333333; word-break: break-all; margin-bottom: 0.75rem; }
-        
-        .details-btn { background-color: transparent; border: 1px solid #007bff; color: #007bff; font-size: 0.8rem; padding: 2px 10px; border-radius: 6px; transition: all 0.2s ease; }
-        .details-btn:hover { background-color: #007bff; color: #ffffff; }
-        .validity-tag { background-color: #22c55e; color: #ffffff; font-size: 0.8rem; font-weight: 500; padding: 2px 10px; border-radius: 6px; }
-        .stat-label { color: #6b7280; font-size: 0.9rem; margin-bottom: 2px; }
-        .stat-value { font-weight: 600; font-size: 1.125rem; }
-        .price-color { color: #007bff; }
-        .stock-color { color: #22c55e; }
-        .api-btn { color: #6b7280; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: color 0.2s ease; }
-        .api-btn:hover { color: #007bff; }
-
-        .deposit-method-card { background-color: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e0e0e0; transition: all 0.2s ease; }
-        .deposit-method-card:hover { border-color: #007bff; box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1); }
-        
-        /* Tutorial Modal Styles */
-        #tutorial-modal {
-            transition: opacity 0.3s ease;
-        }
-        .video-container-16-9 {
-            position: relative;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
+        .marquee {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 0;
+            white-space: nowrap;
             overflow: hidden;
-            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .video-container-16-9 iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 20s linear infinite;
         }
-        .review-card {
-            background-color: #f9f9f9;
-            border-left: 4px solid #007bff;
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
         }
+
+        /* Premium Loader Styles */
+        #loader { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; transition: opacity 0.5s ease; }
+        #loader .logo-container { animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
+        #loader .loader-text { animation: fadeInText 1s ease-in-out 0.5s forwards; opacity: 0; font-weight: bold; font-size: 1.5rem; }
+        #loader-reviews { position: absolute; bottom: 30px; font-size: 0.9rem; color: #6b7280; opacity: 0; transition: opacity 0.5s ease-in-out; }
+        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes fadeInText { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Tutorial Modal Styles */
+        .video-container-16-9 { position: relative; padding-top: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background-color: #e0e0e0; }
+        .video-container-16-9 iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .video-menu-btn { background-color: #f0f0f0; border: 1px solid #ddd; transition: all 0.2s ease; }
+        .video-menu-btn:hover { background-color: #e0e0e0; border-color: #007bff; }
+        .video-menu-btn.active { background-color: #007bff; color: white; border-color: #007bff; }
+        .review-card-new { background-color: #f9f9f9; border: 1px solid #eee; }
+        .star-rating i { color: #facc15; }
     </style>
 </head>
 <body class="max-w-md mx-auto">
 
-    <div id="loader" class="fixed inset-0 light-bg flex items-center justify-center z-50">
+    <div id="loader" class="fixed inset-0 bg-f8f8f8 flex items-center justify-center z-[100]">
         <div class="text-center">
             <div class="logo-container">
                 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#007bff] mx-auto"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
@@ -221,30 +156,40 @@
         </header>
 
         <main class="flex-grow pb-20">
-            <div id="home-page" class="p-4 space-y-6 sub-page">
-                <div class="banner-wrapper">
-                    <div class="banner-inner" id="slides">
-                        <div class="slide active"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/zBp8rCX9/Yellow-Orange-Modern-Marketing-Courses-You-Tube-Thumbnail-20250910-185659-0000.png" alt="Slide 1"></a></div>
-                        <div class="slide"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/W1syFD8p/Grey-Blue-Illustration-Refer-a-Friend-Instagram-Post-1080-x-720-px-20250917-223749-0000.png" alt="Slide 2"></a></div>
-                        <div class="slide"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/52HsFwvV/Black-and-Orange-Money-You-Tube-Thumbnail-20250917-224706-0000.png" alt="Slide 3"></a></div>
-                    </div>
-                    <div class="dots" id="dots"></div>
-                </div>
-                <div class="card-bg p-5 rounded-xl">
-                    <p class="text-gray-600 text-sm mb-1">Your Balance</p>
-                    <div class="flex items-center justify-between">
-                        <p id="balance-display" class="text-4xl font-bold text-[#333333]">৳0.00</p>
-                        <button id="home-deposit-btn" class="btn-gradient px-6 py-2 rounded-lg">Deposit</button>
+            <div id="home-page" class="space-y-6 sub-page">
+                <div class="p-4">
+                    <div class="banner-wrapper">
+                        <div class="banner-inner" id="slides">
+                            <div class="slide active"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/zBp8rCX9/Yellow-Orange-Modern-Marketing-Courses-You-Tube-Thumbnail-20250910-185659-0000.png" alt="Slide 1"></a></div>
+                            <div class="slide"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/W1syFD8p/Grey-Blue-Illustration-Refer-a-Friend-Instagram-Post-1080-x-720-px-20250917-223749-0000.png" alt="Slide 2"></a></div>
+                            <div class="slide"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/52HsFwvV/Black-and-Orange-Money-You-Tube-Thumbnail-20250917-224706-0000.png" alt="Slide 3"></a></div>
+                        </div>
+                        <div class="dots" id="dots"></div>
                     </div>
                 </div>
-                <section>
-                    <h2 class="text-lg font-semibold px-2 mb-3">Menu</h2>
-                    <div class="space-y-3">
-                        <div id="tutorial-btn" class="card-bg p-4 rounded-lg flex items-center justify-between cursor-pointer"><div class="flex items-center space-x-4"><i data-lucide="play-circle" class="w-8 h-8 text-purple-500"></i><div><h3 class="font-semibold">Tutorial</h3><p class="text-xs text-gray-500">কিভাবে কাজ করবেন দেখুন</p></div></div><button class="bg-purple-600 text-white font-bold px-4 py-2 rounded-lg text-sm btn">Watch</button></div>
-                        <div class="card-bg p-4 rounded-lg flex items-center justify-between"><div class="flex items-center space-x-4"><i data-lucide="send" class="w-8 h-8 text-sky-500"></i><div><h3 class="font-semibold">Join Telegram</h3><p class="text-xs text-gray-500">Join and get updates</p></div></div><a href="https://t.me/Life_Work_BD/259" target="_blank" class="bg-blue-600 text-white font-bold px-4 py-2 rounded-lg text-sm btn">JOIN</a></div>
-                        <div class="card-bg p-4 rounded-lg flex items-center justify-between"><div class="flex items-center space-x-4"><i data-lucide="headset" class="w-8 h-8 text-green-400"></i><div><h3 class="font-semibold">Support Team</h3><p class="text-xs text-gray-500">Get help from our support</p></div></div><a href="http://t.me/GMAIL_SHOP_bot/CHAT" target="_blank" class="bg-green-600 text-white font-bold px-4 py-2 rounded-lg text-sm btn">CHAT</a></div>
+
+                <div class="marquee">
+                    <p class="marquee-content">
+                        GMAIL SHOP-এ আপনাকে স্বাগতম! আমাদের সকল সার্ভিস চালু আছে। যেকোনো প্রয়োজনে সাপোর্ট টিমের সাথে যোগাযোগ করুন।
+                    </p>
+                </div>
+
+                <div class="p-4 space-y-6">
+                    <div class="card-bg p-5 rounded-xl">
+                        <p class="text-gray-600 text-sm mb-1">Your Balance</p>
+                        <div class="flex items-center justify-between">
+                            <p id="balance-display" class="text-4xl font-bold text-[#333333]">৳0.00</p>
+                            <button id="home-deposit-btn" class="btn-gradient px-6 py-2 rounded-lg">Deposit</button>
+                        </div>
                     </div>
-                </section>
+                    <section>
+                        <h2 class="text-lg font-semibold px-2 mb-3">Menu</h2>
+                        <div class="space-y-3">
+                            <div class="card-bg p-4 rounded-lg flex items-center justify-between"><div class="flex items-center space-x-4"><i data-lucide="send" class="w-8 h-8 text-sky-500"></i><div><h3 class="font-semibold">Join Telegram</h3><p class="text-xs text-gray-500">Join and get updates</p></div></div><a href="https://t.me/Life_Work_BD/259" target="_blank" class="bg-blue-600 text-white font-bold px-4 py-2 rounded-lg text-sm btn">JOIN</a></div>
+                            <div class="card-bg p-4 rounded-lg flex items-center justify-between"><div class="flex items-center space-x-4"><i data-lucide="headset" class="w-8 h-8 text-green-400"></i><div><h3 class="font-semibold">Support Team</h3><p class="text-xs text-gray-500">Get help from our support</p></div></div><a href="http://t.me/GMAIL_SHOP_bot/CHAT" target="_blank" class="bg-green-600 text-white font-bold px-4 py-2 rounded-lg text-sm btn">CHAT</a></div>
+                        </div>
+                    </section>
+                </div>
             </div>
             
             <div id="pay-page" class="p-4 space-y-6 sub-page">
@@ -257,10 +202,10 @@
                         </div>
                         <p class="text-lg font-semibold text-gray-700 mb-4 text-center p-3 rounded-lg border border-dashed border-blue-500/50 bg-blue-500/10">নিচের নাম্বারে <span class="text-blue-600 animate-pulse">সেন্ডমানি</span> করুন</p>
                         <div class="grid grid-cols-2 gap-3 mb-5">
-                            <div class="deposit-method-card"><img src="https://i.postimg.cc/Jh9s6jWw/20250922-113350.png" alt="Nagad" class="w-10 h-10 rounded-full mx-auto mb-2"><p class="font-bold text-md">নগদ</p><p class="text-gray-600 font-mono tracking-wider text-sm my-1">01864260513</p><button onclick="copyToClipboard('01864260513', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy</span></button></div>
-                            <div class="deposit-method-card"><img src="https://i.postimg.cc/tCwGVkdH/20250922-113514.png" alt="bKash" class="w-10 h-10 rounded-full mx-auto mb-2"><p class="font-bold text-md">বিকাশ</p><p class="text-gray-600 font-mono tracking-wider text-sm my-1">01827750260</p><button onclick="copyToClipboard('01827750260', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy</span></button></div>
-                            <div class="deposit-method-card"><img src="https://i.postimg.cc/htsw10Tj/20250922-113924.png" alt="Rocket" class="w-10 h-10 rounded-full mx-auto mb-2"><p class="font-bold text-md">রকেট</p><p class="text-gray-600 font-mono tracking-wider text-sm my-1">018277502604</p><button onclick="copyToClipboard('018277502604', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy</span></button></div>
-                            <div class="deposit-method-card"><img src="https://i.postimg.cc/L6LFLfxY/20250922-113752.png" alt="Binance Pay" class="w-10 h-10 rounded-full mx-auto mb-2"><p class="font-bold text-md">Binance Pay</p><p class="text-gray-600 font-mono tracking-wider text-sm my-1">1085460262</p><button onclick="copyToClipboard('1085460262', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy ID</span></button></div>
+                            <div class="bg-gray-100 p-3 rounded-lg text-center"><img src="https://i.postimg.cc/Jh9s6jWw/20250922-113350.png" alt="Nagad" class="w-10 h-10 rounded-full mx-auto mb-2"><p class="font-bold text-md">নগদ</p><p class="text-gray-600 font-mono tracking-wider text-sm my-1">01864260513</p><button onclick="copyToClipboard('01864260513', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy</span></button></div>
+                            <div class="bg-gray-100 p-3 rounded-lg text-center"><img src="https://i.postimg.cc/tCwGVkdH/20250922-113514.png" alt="bKash" class="w-10 h-10 rounded-full mx-auto mb-2"><p class="font-bold text-md">বিকাশ</p><p class="text-gray-600 font-mono tracking-wider text-sm my-1">01827750260</p><button onclick="copyToClipboard('01827750260', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy</span></button></div>
+                            <div class="bg-gray-100 p-3 rounded-lg text-center"><img src="https://i.postimg.cc/htsw10Tj/20250922-113924.png" alt="Rocket" class="w-10 h-10 rounded-full mx-auto mb-2"><p class="font-bold text-md">রকেট</p><p class="text-gray-600 font-mono tracking-wider text-sm my-1">018277502604</p><button onclick="copyToClipboard('018277502604', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy</span></button></div>
+                            <div class="bg-gray-100 p-3 rounded-lg text-center"><img src="https://i.postimg.cc/L6LFLfxY/20250922-113752.png" alt="Binance Pay" class="w-10 h-10 rounded-full mx-auto mb-2"><p class="font-bold text-md">Binance Pay</p><p class="text-gray-600 font-mono tracking-wider text-sm my-1">1085460262</p><button onclick="copyToClipboard('1085460262', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy ID</span></button></div>
                         </div>
                         <p class="text-sm text-gray-600 mb-4 text-center border-t border-gray-300 pt-4">টাকা পাঠানোর পর নিচের ফর্মটি পূরণ করুন:</p>
                         <div class="space-y-4">
@@ -309,6 +254,10 @@
                 </div>
 
                 <div class="space-y-3">
+                    <button id="more-features-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
+                        <span>⚡ More Features</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </button>
                     <a href="https://t.me/earn_Supportbot" target="_blank" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
                         <span>CONTACT</span>
                         <i data-lucide="arrow-up-right" class="w-5 h-5 text-gray-600"></i>
@@ -316,18 +265,45 @@
                 </div>
                 
                 <div class="text-center pt-6">
-                     <div class="flex justify-center items-center space-x-5 mb-4">
-                        <a href="#" target="_blank" class="bg-gray-100 p-3 rounded-full hover:bg-gray-200 transition-all duration-200">
-                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600"><path d="M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path><path d="M12 2v10"></path><path d="M14.5 6.5a4 4 0 1 1-5 0"></path><path d="M12 12v10a6 6 0 0 0 6-6 6 6 0 0 0-6-6"></path></svg>
-                        </a>
-                        <a href="https://youtu.be/ajjEcCY4qOg?si=axyWRgZ7bt3Im_la" target="_blank" class="bg-gray-100 p-3 rounded-full hover:bg-gray-200 transition-all duration-200">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600"><path d="M2.5 17a24.12 24.12 0 0 1 0-10C2.5 6 7.5 4 12 4s9.5 2 9.5 3-2.5 4-2.5 4.5 2.5 2 2.5 2.5c0 .5-4.5 1.5-9.5 1.5S2.5 17.5 2.5 17z"></path><path d="m10 8 4 4-4 4"></path></svg>
-                        </a>
-                        <a href="https://t.me/Life_Work_BD/259" target="_blank" class="bg-gray-100 p-3 rounded-full hover:bg-gray-200 transition-all duration-200">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
-                        </a>
+                     <p class="text-center text-gray-600 text-sm">Developed by <a href="https://t.me/SAIDULEP" target="_blank" class="font-semibold text-[#007bff] hover:underline">SAIDUL</a></p>
+                </div>
+            </div>
+            
+            <div id="features-page" class="p-4 space-y-8 sub-page">
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="card-bg p-4 rounded-xl">
+                        <p class="text-sm text-gray-400 mb-1">TOTAL ইনকাম</p>
+                        <p id="total-income-display" class="text-2xl font-bold text-green-500">৳0.00</p>
                     </div>
-                    <p class="text-center text-gray-600 text-sm">Developed by <a href="https://t.me/SAIDULEP" target="_blank" class="font-semibold text-[#007bff] hover:underline">SAIDUL</a></p>
+                    <div class="card-bg p-4 rounded-xl">
+                        <p class="text-sm text-gray-400 mb-1">TOTAL প্রত্যাহার</p>
+                        <p id="total-withdraw-display" class="text-2xl font-bold text-red-500">৳0.00</p>
+                    </div>
+                    <div class="card-bg p-4 rounded-xl">
+                        <p class="text-sm text-gray-400 mb-1">TOTAL ডিপোজিট</p>
+                        <p id="total-deposit-display" class="text-2xl font-bold text-sky-500">৳0.00</p>
+                    </div>
+                     <div class="card-bg p-4 rounded-xl">
+                        <p class="text-sm text-gray-400 mb-1">TOTAL Receive</p>
+                        <p id="total-receive-display" class="text-2xl font-bold text-yellow-500">৳0.00</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <button id="features-deposit-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-green-500 to-emerald-500 shadow-lg btn">Deposit</button>
+                    <a id="features-withdraw-btn" href="https://mellow-naiad-21eb07.netlify.app" target="_blank" class="p-3 rounded-lg font-bold text-white text-center bg-gradient-to-r from-red-500 to-rose-500 shadow-lg btn">Withdraw</a>
+                    <button id="features-receive-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-blue-500 to-sky-500 shadow-lg btn flex items-center justify-center gap-1">
+                        <i data-lucide="arrow-down-to-line" class="w-4 h-4"></i>
+                        <span>Receive</span>
+                    </button>
+                    <button id="features-send-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 shadow-lg btn">SEND</button>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-3">Balance Transfer History</h3>
+                    <div id="transfer-history-list" class="space-y-3">
+                        <p class="text-gray-600 text-center">No transfer history found.</p>
+                    </div>
                 </div>
             </div>
 
@@ -345,27 +321,27 @@
 
         <nav class="bottom-nav">
             <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
-            <a href="#" class="nav-link-premium center-home-link" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
             <a href="#" class="nav-link-premium" data-page="mail-page"><i data-lucide="mail" class="icon"></i><span>Mail</span></a>
+            <a href="#" class="nav-link-premium center-home-link active" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
+            <button id="nav-tutorial-btn" class="nav-link-premium"><i data-lucide="video" class="icon"></i><span>Tutorial</span></button>
             <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
             <a href="#" id="admin-nav-link" class="nav-link-premium hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></a>
         </nav>
     </div>
     
-    <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+    <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-lg p-6 w-full max-w-sm text-center border border-gray-200 text-gray-800">
             <p id="alert-message" class="mb-5 whitespace-pre-wrap text-gray-700"></p>
             <button id="alert-ok-btn" class="btn-gradient px-8 py-2 rounded-lg">OK</button>
         </div>
     </div>
-    <div id="deposit-details-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+    <div id="deposit-details-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4">
             <h3 class="text-xl font-bold text-center text-accent-gradient mb-4">How to Deposit</h3>
             <div class="text-gray-700 space-y-3">
                 <p>السلام عليكم, আপনাকে স্বাগতম</p>
-                <p>আপনি কীভাবে ডিপোজিট করবেন:</p>
                 <ol class="list-decimal list-inside space-y-2 text-sm">
-                    <li>প্রথমে আপনি যে মাধ্যমে টাকা পাঠাতে চান (যেমন: নগদ, বিকাশ) সেটি নির্বাচন করুন।</li>
+                    <li>প্রথমে আপনি যে মাধ্যমে টাকা পাঠাতে চান সেটি নির্বাচন করুন।</li>
                     <li>এরপর প্রদর্শিত নম্বরে আপনার কাঙ্খিত পরিমাণ টাকা পাঠান।</li>
                     <li>টাকা পাঠানোর পর, নিচের ফর্মটি পূরণ করুন।</li>
                     <li>আপনার পাঠানো টাকার মাধ্যম, পরিমাণ, নম্বর এবং Transaction ID (TxID) সঠিকভাবে লিখুন।</li>
@@ -376,42 +352,54 @@
             <button id="deposit-details-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">Got It!</button>
         </div>
     </div>
+
     <div id="tutorial-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-2xl p-6 w-full max-w-md space-y-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center">
-                <h3 class="text-xl font-bold text-accent-gradient">কিভাবে কাজ করবেন</h3>
+                <h3 class="text-xl font-bold text-accent-gradient">Tutorials</h3>
                 <button id="close-tutorial-modal" class="text-gray-400 hover:text-gray-800"><i data-lucide="x" class="w-6 h-6"></i></button>
             </div>
             
             <div class="space-y-4">
-                <div>
-                    <h4 class="font-semibold mb-2 text-gray-700">১. কিভাবে ডিপোজিট করবেন?</h4>
-                    <div class="video-container-16-9">
-                        <iframe src="https://www.youtube.com/embed/ajjEcCY4qOg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
+                <p class="text-sm text-gray-600">নিচের তালিকা থেকে আপনার প্রয়োজনীয় ভিডিওটি দেখুন।</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="video-menu">
+                    <button class="video-menu-btn p-2 rounded-lg font-semibold text-sm" data-src="https://www.youtube.com/embed/ajjEcCY4qOg">কিভাবে ডিপোজিট করবেন?</button>
+                    <button class="video-menu-btn p-2 rounded-lg font-semibold text-sm" data-src="https://www.youtube.com/embed/dQw4w9WgXcQ">কিভাবে মেইল কিনবেন?</button>
                 </div>
-                <div>
-                    <h4 class="font-semibold mb-2 text-gray-700">২. কিভাবে মেইল কিনবেন?</h4>
-                    <div class="video-container-16-9">
-                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
+                <div class="video-container-16-9 mt-4">
+                    <iframe id="video-player" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
 
             <div class="border-t border-gray-200 pt-4">
                 <h3 class="text-lg font-bold text-center text-gray-800 mb-4">আমাদের গ্রাহকদের মতামত</h3>
-                <div class="space-y-3">
-                    <div class="review-card p-4 rounded-lg">
-                        <p class="text-gray-600 italic">"খুব সহজে এবং দ্রুত মেইল কিনতে পারলাম। সার্ভিস খুবই ভালো।"</p>
-                        <p class="text-right font-semibold text-sm text-gray-800 mt-2">- মোঃ আব্দুল্লাহ</p>
+                <div class="space-y-4">
+                    <div class="review-card-new p-4 rounded-lg">
+                        <div class="flex items-start gap-4">
+                            <img src="https://i.postimg.cc/8cm3hCq2/user1.png" class="w-12 h-12 rounded-full object-cover" alt="User">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center">
+                                    <h5 class="font-bold">মোঃ আব্দুল্লাহ</h5>
+                                    <div class="star-rating flex text-sm"><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i></div>
+                                </div>
+                                <p class="text-gray-600 text-sm mt-1">"খুব সহজে এবং দ্রুত মেইল কিনতে পারলাম। সার্ভিস খুবই ভালো।"</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="review-card p-4 rounded-lg">
-                        <p class="text-gray-600 italic">"আমার দেখা সেরা একটি সাইট। কোনো সমস্যা হলে সাপোর্ট টিম দ্রুত সমাধান করে দেয়।"</p>
-                        <p class="text-right font-semibold text-sm text-gray-800 mt-2">- সাদিয়া আফরিন</p>
+                    <div class="review-card-new p-4 rounded-lg">
+                        <div class="flex items-start gap-4">
+                            <img src="https://i.postimg.cc/yN1g1B9c/user2.png" class="w-12 h-12 rounded-full object-cover" alt="User">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center">
+                                    <h5 class="font-bold">সাদিয়া আফরিন</h5>
+                                    <div class="star-rating flex text-sm"><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4"></i></div>
+                                </div>
+                                <p class="text-gray-600 text-sm mt-1">"আমার দেখা সেরা একটি সাইট। কোনো সমস্যা হলে সাপোর্ট টিম দ্রুত সমাধান করে দেয়।"</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -440,7 +428,7 @@
         const loader = document.getElementById('loader');
         
         window.onload = async () => {
-            cycleReviewsOnLoader(); // Start review cycle animation
+            cycleReviewsOnLoader();
             try {
                 window.Telegram.WebApp.ready();
                 window.Telegram.WebApp.expand();
@@ -462,11 +450,10 @@
             
             await initUserSession();
             
-            // Fade out loader
             loader.style.opacity = '0';
             setTimeout(() => {
                 loader.style.display = 'none';
-            }, 500); // match transition duration
+            }, 500);
         };
 
         function cycleReviewsOnLoader() {
@@ -484,8 +471,8 @@
                     reviewIndex = (reviewIndex + 1) % reviews.length;
                     reviewEl.textContent = reviews[reviewIndex];
                     reviewEl.style.opacity = '1';
-                }, 500); // fade out duration
-            }, 4000); // Time each review is shown + transition time
+                }, 500);
+            }, 4000);
         }
 
         async function initUserSession() {
@@ -548,7 +535,7 @@
         function navigateTo(pageId) {
             document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.nav-link-premium').forEach(link => {
+            document.querySelectorAll('.nav-link-premium[data-page]').forEach(link => {
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
             const pageLoadFunctions = {
@@ -556,7 +543,8 @@
                 'mail-page': loadMailStore,
                 'updates-page': loadUpdates,
                 'admin-page': populateAdminMailTypes,
-                'profile-page': loadProfilePage
+                'profile-page': loadProfilePage,
+                'features-page': loadFeaturesPage
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
@@ -564,7 +552,7 @@
         window.navigateTo = navigateTo;
 
         function setupEventListeners() {
-            document.querySelectorAll('.nav-link-premium').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
+            document.querySelectorAll('.nav-link-premium[data-page]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
             document.getElementById('header-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
@@ -573,13 +561,38 @@
             document.getElementById('deposit-details-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.remove('hidden'));
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
 
-            // Tutorial Modal Listeners
+            document.getElementById('more-features-btn').addEventListener('click', () => navigateTo('features-page'));
+            document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
+            document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
+            document.getElementById('features-send-btn').addEventListener('click', handleSend);
+
             const tutorialModal = document.getElementById('tutorial-modal');
-            document.getElementById('tutorial-btn').addEventListener('click', () => tutorialModal.classList.remove('hidden'));
-            document.getElementById('close-tutorial-modal').addEventListener('click', () => tutorialModal.classList.add('hidden'));
+            const videoPlayer = document.getElementById('video-player');
+            const videoMenu = document.getElementById('video-menu');
+
+            document.getElementById('nav-tutorial-btn').addEventListener('click', () => {
+                tutorialModal.classList.remove('hidden');
+                lucide.createIcons();
+            });
+            
+            document.getElementById('close-tutorial-modal').addEventListener('click', () => {
+                tutorialModal.classList.add('hidden');
+                videoPlayer.src = "";
+            });
+            
             tutorialModal.addEventListener('click', (e) => {
                 if (e.target === tutorialModal) {
                     tutorialModal.classList.add('hidden');
+                    videoPlayer.src = "";
+                }
+            });
+
+            videoMenu.addEventListener('click', (e) => {
+                const button = e.target.closest('.video-menu-btn');
+                if (button) {
+                    videoMenu.querySelectorAll('.video-menu-btn').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    videoPlayer.src = button.dataset.src;
                 }
             });
         }
@@ -611,8 +624,10 @@
             const senderNumber = document.getElementById('sender-number').value.trim();
             const transactionId = document.getElementById('deposit-txid').value.trim();
             if (!method || !amount || amount <= 0 || !senderNumber || !transactionId) return showAlert("অনুগ্রহ করে সমস্ত তথ্য সঠিকভাবে পূরণ করুন।");
+            
             loader.style.opacity = '1';
             loader.style.display = 'flex';
+            
             try {
                 const depositQuery = query(collection(db, "deposits"), where("transactionId", "==", transactionId), where("status", "in", ["pending", "approved"]));
                 const querySnapshot = await getDocs(depositQuery);
@@ -700,13 +715,13 @@
                     const insufficientBalance = userData.balance < costInBdt;
                     const buyButtonDisabled = isOutOfStock || insufficientBalance ? 'disabled' : '';
                     const buyButtonClasses = isOutOfStock || insufficientBalance ? 'btn-disabled' : 'btn-gradient';
-                    const validityTagHtml = (mail.expirationDays !== undefined && mail.expirationDays !== null) ? `<span class="validity-tag">${mail.expirationDays} h</span>` : '';
-                    const apiButtonHtml = mail.apiLink ? `<a href="${mail.apiLink}" target="_blank" class="api-btn">API</a>` : '<span class="api-btn text-gray-400">API</span>';
+                    const validityTagHtml = (mail.expirationDays !== undefined && mail.expirationDays !== null) ? `<span class="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">${mail.expirationDays} h</span>` : '';
+                    const apiButtonHtml = mail.apiLink ? `<a href="${mail.apiLink}" target="_blank" class="text-blue-600 font-semibold">API</a>` : '<span class="text-gray-400 font-semibold">API</span>';
 
                     mailListEl.innerHTML += `
                         <div class="card-bg p-4 rounded-xl space-y-3">
-                            <div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo"><h3 class="font-bold text-lg text-gray-800">${mail.type}</h3></div><div class="flex items-center gap-2">${validityTagHtml}<button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="details-btn">Details</button></div></div>
-                            <div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-300"><div class="py-2">${apiButtonHtml}</div><div class="py-2"><p class="stat-label">Price</p><p class="stat-value price-color">৳${costInBdt.toFixed(2)}</p></div><div class="py-2"><p class="stat-label">Stock</p><p class="stat-value stock-color">${stock}</p></div></div>
+                            <div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo"><h3 class="font-bold text-lg text-gray-800">${mail.type}</h3></div><div class="flex items-center gap-2">${validityTagHtml}<button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="text-blue-600 text-sm font-semibold">Details</button></div></div>
+                            <div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200"><div class="py-2">${apiButtonHtml}</div><div class="py-2"><p class="text-gray-500 text-sm">Price</p><p class="font-bold text-lg text-blue-600">৳${costInBdt.toFixed(2)}</p></div><div class="py-2"><p class="text-gray-500 text-sm">Stock</p><p class="font-bold text-lg text-green-600">${stock}</p></div></div>
                             <button class="${buyButtonClasses} w-full py-2 rounded-lg text-md" ${buyButtonDisabled} onclick="buyMail('${mail.type}', ${costInBdt}, '${mail.stockKey}')">Buy Now</button>
                         </div>`;
                 });
@@ -721,9 +736,9 @@
                 querySnapshot.forEach(doc => {
                     const purchase = doc.data();
                     const date = purchase.purchasedAt.toDate().toLocaleString();
-                    let mailDetailsContent = `<p class="text-gray-700">${purchase.mail}</p>`;
-                    if (purchase.password) mailDetailsContent += `<p class="text-gray-700">${purchase.password}</p>`;
-                    historyListEl.innerHTML += `<div class="purchase-history-card"><div class="flex justify-between items-center mb-3"><p class="font-bold text-lg text-gray-800">${purchase.mailType}</p><button onclick="copyToClipboard('${purchase.mail} ${purchase.password || ''}', this)" class="p-1 rounded-full hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div><div class="purchase-mail-details">${mailDetailsContent}</div><p class="text-xs text-gray-500 text-right">${date}</p></div>`;
+                    let mailDetailsContent = `<p class="text-gray-700 font-mono text-sm">${purchase.mail}</p>`;
+                    if (purchase.password) mailDetailsContent += `<p class="text-gray-700 font-mono text-sm">${purchase.password}</p>`;
+                    historyListEl.innerHTML += `<div class="card-bg p-4 rounded-lg"><div class="flex justify-between items-center mb-3"><p class="font-bold text-lg text-gray-800">${purchase.mailType}</p><button onclick="copyToClipboard('${purchase.mail} ${purchase.password || ''}', this)" class="p-1 rounded-full hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div><div class="bg-gray-100 p-3 rounded-md">${mailDetailsContent}</div><p class="text-xs text-gray-500 text-right mt-2">${date}</p></div>`;
                 });
                 lucide.createIcons();
             } catch(e) {
@@ -817,9 +832,10 @@
             try {
                 await runTransaction(db, async (transaction) => {
                     if ((await transaction.get(userInteractionRef)).exists()) throw new Error("You have already cast your vote.");
-                    if (!(await transaction.get(updateRef)).exists()) throw new Error("Update not found.");
+                    const updateDoc = await transaction.get(updateRef);
+                    if (!updateDoc.exists()) throw new Error("Update not found.");
                     const fieldToUpdate = voteType === 'like' ? 'likes' : 'dislikes';
-                    transaction.update(updateRef, { [fieldToUpdate]: ((await transaction.get(updateRef)).data()[fieldToUpdate] || 0) + 1 });
+                    transaction.update(updateRef, { [fieldToUpdate]: (updateDoc.data()[fieldToUpdate] || 0) + 1 });
                     transaction.set(userInteractionRef, { vote: voteType, votedAt: serverTimestamp() });
                 });
                 showAlert("Your vote has been submitted successfully!");
@@ -896,6 +912,149 @@
             }
             dotsContainer.addEventListener('click', e => { if(e.target.matches('.dot')) showSlide(parseInt(e.target.dataset.index)); });
             setInterval(() => showSlide((index + 1) % slides.length), 5000);
+        }
+        
+        async function loadFeaturesPage() {
+            loader.style.display = 'flex';
+            try {
+                const depositQuery = query(collection(db, "deposits"), where("userId", "==", userData.tgChatId), where("status", "==", "approved"));
+                const depositSnapshot = await getDocs(depositQuery);
+                const totalDeposit = depositSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
+                document.getElementById('total-deposit-display').textContent = `৳${totalDeposit.toFixed(2)}`;
+
+                const incomeQuery = query(collection(db, "sell_requests"), where("userId", "==", userData.tgChatId), where("status", "==", "approved"));
+                const incomeSnapshot = await getDocs(incomeQuery);
+                const totalIncome = incomeSnapshot.docs.reduce((sum, doc) => sum + doc.data().askingPrice, 0);
+                document.getElementById('total-income-display').textContent = `৳${totalIncome.toFixed(2)}`;
+
+                const receivedQuery = query(collection(db, "transfers"), where("toId", "==", userData.tgChatId));
+                const receivedSnapshot = await getDocs(receivedQuery);
+                const totalReceive = receivedSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
+                document.getElementById('total-receive-display').textContent = `৳${totalReceive.toFixed(2)}`;
+
+                const withdrawQuery = query(collection(db, "withdrawals"), where("userId", "==", userData.tgChatId), where("status", "==", "approved"));
+                const withdrawSnapshot = await getDocs(withdrawQuery);
+                const totalWithdraw = withdrawSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
+                document.getElementById('total-withdraw-display').textContent = `৳${totalWithdraw.toFixed(2)}`;
+
+                await loadTransferHistory();
+            } catch (error) {
+                console.error("Error loading features page data:", error);
+                showAlert("Could not load page data.");
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        async function loadTransferHistory() {
+            const historyList = document.getElementById('transfer-history-list');
+            historyList.innerHTML = '<p class="text-gray-600 text-center">Loading history...</p>';
+            
+            const sentQuery = query(collection(db, "transfers"), where("fromId", "==", userData.tgChatId), orderBy("timestamp", "desc"));
+            const receivedQuery = query(collection(db, "transfers"), where("toId", "==", userData.tgChatId), orderBy("timestamp", "desc"));
+
+            const [sentSnapshot, receivedSnapshot] = await Promise.all([getDocs(sentQuery), getDocs(receivedQuery)]);
+            
+            const transactions = [];
+            sentSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
+            receivedSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
+
+            transactions.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
+
+            if (transactions.length === 0) {
+                historyList.innerHTML = '<p class="text-gray-600 text-center">No transfer history found.</p>';
+                return;
+            }
+
+            historyList.innerHTML = transactions.map(item => {
+                const isSent = item.fromId === userData.tgChatId;
+                const date = item.timestamp.toDate().toLocaleString('en-GB');
+                const sign = isSent ? '-' : '+';
+                const color = isSent ? 'text-red-600' : 'text-green-600';
+                const actionText = isSent ? `Sent to ${item.toName}` : `Received from ${item.fromName}`;
+
+                return `<div class="card-bg p-3 rounded-lg flex items-center justify-between">
+                            <div>
+                                <p class="font-semibold text-gray-800">${actionText}</p>
+                                <p class="text-xs text-gray-500">${date}</p>
+                            </div>
+                            <p class="font-bold text-lg ${color}">${sign}৳${item.amount.toFixed(2)}</p>
+                        </div>`;
+            }).join('');
+        }
+
+        function handleReceive() {
+            const message = `আপনার রিসিভ আইডি:\n\n${userData.tgChatId}\n\nএই আইডি ব্যবহার করে অন্য ব্যবহারকারীর থেকে ব্যালেন্স রিসিভ করতে পারবেন।`;
+            copyToClipboard(userData.tgChatId, null);
+            showAlert(message);
+        }
+
+        async function handleSend() {
+            const recipientId = prompt("🚀 ব্যালেন্স ট্রান্সফার করুন (Recipient ID):");
+            if (!recipientId || recipientId.trim() === '') return;
+            if (recipientId.trim() === userData.tgChatId) {
+                showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
+                return;
+            }
+
+            const amountStr = prompt("কত টাকা পাঠাতে চান?");
+            if (!amountStr || isNaN(parseFloat(amountStr))) {
+                showAlert("অনুগ্রহ করে সঠিক পরিমাণ লিখুন।");
+                return;
+            }
+            const amount = parseFloat(amountStr);
+            if (amount <= 0) {
+                showAlert("পাঠানোর পরিমাণ অবশ্যই শূন্যের বেশি হতে হবে।");
+                return;
+            }
+
+            if (amount > userData.balance) {
+                showAlert("আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই।");
+                return;
+            }
+            
+            if (!confirm(`আপনি কি ${recipientId.trim()} আইডিতে ৳${amount.toFixed(2)} পাঠাতে চান?`)) return;
+
+            loader.style.display = 'flex';
+            const senderRef = doc(db, "users", userData.tgChatId);
+            const recipientRef = doc(db, "users", recipientId.trim());
+
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const senderDoc = await transaction.get(senderRef);
+                    const recipientDoc = await transaction.get(recipientRef);
+
+                    if (!senderDoc.exists() || senderDoc.data().balance < amount) throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
+                    if (!recipientDoc.exists()) throw "প্রাপক আইডি (Recipient ID) খুঁজে পাওয়া যায়নি।";
+
+                    const newSenderBalance = senderDoc.data().balance - amount;
+                    const newRecipientBalance = recipientDoc.data().balance + amount;
+
+                    transaction.update(senderRef, { balance: newSenderBalance });
+                    transaction.update(recipientRef, { balance: newRecipientBalance });
+                    
+                    const transferLogRef = doc(collection(db, "transfers"));
+                    transaction.set(transferLogRef, {
+                        fromId: userData.tgChatId,
+                        fromName: userData.name,
+                        toId: recipientId.trim(),
+                        toName: recipientDoc.data().name,
+                        amount: amount,
+                        timestamp: serverTimestamp()
+                    });
+                });
+                
+                userData.balance -= amount;
+                updateUI();
+                showAlert(`সফলভাবে ৳${amount.toFixed(2)} পাঠানো হয়েছে।`);
+                loadFeaturesPage();
+
+            } catch (error) {
+                console.error("Transfer failed: ", error);
+                showAlert(typeof error === 'string' ? error : "ব্যালেন্স পাঠাতে সমস্যা হয়েছে।");
+            } finally {
+                loader.style.display = 'none';
+            }
         }
     </script>
 </body>
