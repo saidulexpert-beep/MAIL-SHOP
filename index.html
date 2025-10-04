@@ -118,7 +118,7 @@
 
         /* Star Rating Styles */
         .star-rating .lucide-star { color: #d1d5db; transition: color 0.2s; }
-        .star-rating .lucide-star.filled { color: #facc15; } /* Yellow star color */
+        .star-rating .lucide-star.filled { color: #facc15; fill: #facc15; } /* Yellow star color */
         
         /* Review Modal Star Input */
         .rating-input .lucide-star { cursor: pointer; color: #d1d5db; transition: transform 0.1s, color 0.2s; }
@@ -176,11 +176,15 @@
             </div>
             
             <div id="pay-page" class="p-4 space-y-6 sub-page">
-                <h2 class="text-xl font-bold text-center text-gray-800">Pay Center</h2>
+                 <h2 class="text-xl font-bold text-center text-gray-800">Pay Center</h2>
                  </div>
 
             <div id="mail-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center text-gray-800">GMAIL SHOP</h2>
+                </div>
+            
+            <div id="updates-page" class="p-4 space-y-6 sub-page">
+                <h2 class="text-xl font-bold text-center text-gray-800">Updates</h2>
                 </div>
 
             <div id="tutorial-page" class="p-4 space-y-8 sub-page">
@@ -265,8 +269,6 @@
 
 
     <script type="module">
-        // Firebase and other initializations...
-        // Ensure you have your firebaseConfig here
         const firebaseConfig = {
             apiKey: "AIzaSyBVVPZnmrPhlYTVqWGB3reMM352UclMo4E",
             authDomain: "mail-shop-f861c.firebaseapp.com",
@@ -306,8 +308,6 @@
         };
 
         async function initUserSession() {
-            // ... (keep your existing initUserSession function)
-            // This function fetches or creates the user in Firestore
             const tgChatId = String(currentUserTg.id);
             const userRef = doc(db, "users", tgChatId);
             const userSnap = await getDoc(userRef);
@@ -322,7 +322,7 @@
                     username: currentUserTg.username || null,
                     balance: 0, 
                     createdAt: serverTimestamp(),
-                    lastReviewTimestamp: null // Add this field
+                    lastReviewTimestamp: null
                 };
                 await setDoc(userRef, userData);
             }
@@ -346,12 +346,15 @@
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
 
-            // Show/Hide the "Add Review" button only on the tutorial page
+            // This is the logic to show/hide the '+' button
             document.getElementById('add-review-btn').classList.toggle('hidden', pageId !== 'tutorial-page');
 
             const pageLoadFunctions = {
                 'tutorial-page': loadTutorialPage,
-                // ... other page load functions
+                // Add your other page loading functions here
+                // 'mail-page': loadMailStore,
+                // 'updates-page': loadUpdates,
+                // 'profile-page': loadProfilePage,
             };
             if (pageLoadFunctions[pageId]) {
                 pageLoadFunctions[pageId]();
@@ -373,8 +376,6 @@
             setupStarRatingInput();
         }
 
-        // --- NEW FUNCTIONS FOR TUTORIAL & REVIEW PAGE ---
-
         async function loadTutorialPage() {
             const reviewsList = document.getElementById('customer-reviews-list');
             reviewsList.innerHTML = '<p class="text-center text-gray-500">রিভিউ লোড হচ্ছে...</p>';
@@ -393,13 +394,12 @@
                         `<i data-lucide="star" class="w-4 h-4 ${i < review.rating ? 'filled' : ''}"></i>`
                     ).join('');
                     
-                    // Fallback for profile picture
-                    const profilePicUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(review.userName)}&background=ff8c00&color=fff`;
+                    const profilePicUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(review.userName)}&background=ff8c00&color=fff&rounded=true`;
 
                     return `
                         <div class="card-bg p-4 rounded-lg">
                             <div class="flex items-start space-x-3">
-                                <img src="${profilePicUrl}" class="w-10 h-10 rounded-full bg-gray-200">
+                                <img src="${profilePicUrl}" class="w-10 h-10">
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between">
                                         <h4 class="font-bold text-gray-800">${review.userName}</h4>
@@ -430,7 +430,6 @@
                     return;
                 }
             }
-            // If allowed, reset and show the modal
             selectedRating = 0;
             document.getElementById('review-comment').value = '';
             updateStarInputVisuals(0);
@@ -441,22 +440,21 @@
         function setupStarRatingInput() {
             const stars = document.querySelectorAll('#rating-input-stars .rating-star');
             stars.forEach(star => {
-                star.addEventListener('mouseover', () => updateStarInputVisuals(star.dataset.value, 'hover'));
-                star.addEventListener('mouseout', () => updateStarInputVisuals(selectedRating, 'final'));
+                star.addEventListener('mouseover', () => updateStarInputVisuals(star.dataset.value));
+                star.addEventListener('mouseout', () => updateStarInputVisuals(selectedRating));
                 star.addEventListener('click', () => {
                     selectedRating = parseInt(star.dataset.value);
-                    updateStarInputVisuals(selectedRating, 'final');
+                    updateStarInputVisuals(selectedRating);
                 });
             });
         }
         
-        function updateStarInputVisuals(rating, state = 'final') {
+        function updateStarInputVisuals(rating) {
              const stars = document.querySelectorAll('#rating-input-stars .rating-star');
              stars.forEach(star => {
                 star.classList.toggle('selected', star.dataset.value <= rating);
-                // Simple fill for lucide icons on hover/selection
                 if (star.dataset.value <= rating) {
-                    star.style.fill = 'currentColor';
+                    star.style.fill = '#facc15';
                 } else {
                     star.style.fill = 'none';
                 }
@@ -472,11 +470,7 @@
                 return showAlert('অনুগ্রহ করে আপনার মন্তব্য লিখুন।');
             }
             
-            // Show loader if you have one
-            // loader.style.display = 'flex';
-
             try {
-                // Add the review
                 await addDoc(collection(db, "reviews"), {
                     userId: userData.tgChatId,
                     userName: userData.name,
@@ -485,22 +479,19 @@
                     createdAt: serverTimestamp()
                 });
 
-                // Update the user's last review timestamp
                 const userRef = doc(db, "users", userData.tgChatId);
                 await updateDoc(userRef, {
                     lastReviewTimestamp: serverTimestamp()
                 });
-                userData.lastReviewTimestamp = { toDate: () => new Date() }; // Update local data immediately
+                userData.lastReviewTimestamp = { toDate: () => new Date() };
 
                 document.getElementById('review-modal').classList.add('hidden');
                 showAlert('আপনার রিভিউ সফলভাবে জমা হয়েছে। ধন্যবাদ!');
-                loadTutorialPage(); // Refresh the reviews list
+                loadTutorialPage();
 
             } catch (error) {
                 console.error("Error submitting review:", error);
                 showAlert('একটি সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।');
-            } finally {
-                // loader.style.display = 'none';
             }
         }
         
@@ -513,4 +504,3 @@
     </script>
 </body>
 </html>
-
