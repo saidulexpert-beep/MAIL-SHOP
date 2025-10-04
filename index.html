@@ -123,15 +123,27 @@
         #loader-reviews { position: absolute; bottom: 30px; font-size: 0.9rem; color: #6b7280; opacity: 0; transition: opacity 0.5s ease-in-out; }
         @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes fadeInText { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Tutorial Modal Styles */
+        
+        /* Tutorial Page */
         .video-container-16-9 { position: relative; padding-top: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background-color: #e0e0e0; }
         .video-container-16-9 iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-        .video-menu-btn { background-color: #f0f0f0; border: 1px solid #ddd; transition: all 0.2s ease; }
-        .video-menu-btn:hover { background-color: #e0e0e0; border-color: #007bff; }
-        .video-menu-btn.active { background-color: #007bff; color: white; border-color: #007bff; }
+
+        /* Review Card */
         .review-card-new { background-color: #f9f9f9; border: 1px solid #eee; }
         .star-rating i { color: #facc15; }
+        
+        /* PIN Modal */
+        .pin-input {
+            width: 40px; height: 50px; text-align: center; font-size: 1.5rem;
+            border: 2px solid #ddd; border-radius: 8px; margin: 0 5px;
+            background-color: #f7f7f7; caret-color: #007bff;
+            transition: all 0.2s ease;
+        }
+        .pin-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+            outline: none;
+        }
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -233,12 +245,28 @@
             <div id="updates-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center text-gray-800">Latest Updates</h2>
                 <div id="updates-content" class="space-y-4"><p class="text-center text-gray-600">Loading updates...</p></div>
+                
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold text-center mb-4 text-gray-800">Customer Reviews</h3>
+                    <div id="reviews-list" class="space-y-4">
+                         <p class="text-center text-gray-600">Loading reviews...</p>
+                    </div>
+                </div>
+
                 <div class="mt-8">
                     <h3 class="text-xl font-bold text-center mb-4 text-gray-800">More Apps</h3>
                     <div class="grid grid-cols-2 gap-4">
                         <a href="https://shorturl.at/FxO7m" target="_blank" class="card-bg rounded-xl p-4 flex flex-col items-center text-center space-y-3 hover:border-blue-500/50"><img src="https://i.postimg.cc/RFQwLZHn/IMG-20250926-201441-985.jpg?text=APP+1" class="w-20 h-20 rounded-full object-cover"><h4 class="font-bold text-lg text-accent-gradient">𝐄𝐗𝐏𝐄𝐑𝐓𝐞𝐚𝐫𝐧</h4><p class="text-xs text-gray-600">একদম ফ্রীতে ইনকাম করতে পারবেন </p></a>
                         <a href="#" class="card-bg rounded-xl p-4 flex flex-col items-center text-center space-y-3 hover:border-blue-500/50"><img src="https://i.postimg.cc/7hTd1GyZ/air-drop-logo-96485-1865.jpg?text=APP+2" class="w-20 h-20 rounded-full object-cover"><h4 class="font-bold text-lg text-accent-gradient">Airdrop</h4><p class="text-xs text-gray-600">Coming soon.</p></a>
                     </div>
+                </div>
+            </div>
+            
+            <div id="tutorial-page" class="p-4 space-y-6 sub-page">
+                <h2 class="text-xl font-bold text-center text-gray-800">Tutorials</h2>
+                <p class="text-sm text-gray-600 text-center">নিচের তালিকা থেকে আপনার প্রয়োজনীয় ভিডিওটি দেখুন।</p>
+                <div id="tutorial-list" class="space-y-5">
+                    <p class="text-center text-gray-600">Loading tutorials...</p>
                 </div>
             </div>
 
@@ -321,9 +349,9 @@
 
         <nav class="bottom-nav">
             <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
-            <a href="#" class="nav-link-premium" data-page="mail-page"><i data-lucide="mail" class="icon"></i><span>Mail</span></a>
+            <a href="#" class="nav-link-premium" data-page="tutorial-page"><i data-lucide="video" class="icon"></i><span>Tutorial</span></a>            
             <a href="#" class="nav-link-premium center-home-link active" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
-            <button id="nav-tutorial-btn" class="nav-link-premium"><i data-lucide="video" class="icon"></i><span>Tutorial</span></button>
+            <a href="#" class="nav-link-premium" data-page="mail-page"><i data-lucide="mail" class="icon"></i><span>Mail</span></a>            
             <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
             <a href="#" id="admin-nav-link" class="nav-link-premium hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></a>
         </nav>
@@ -353,55 +381,39 @@
         </div>
     </div>
 
-    <div id="tutorial-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl p-6 w-full max-w-md space-y-6 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center">
-                <h3 class="text-xl font-bold text-accent-gradient">Tutorials</h3>
-                <button id="close-tutorial-modal" class="text-gray-400 hover:text-gray-800"><i data-lucide="x" class="w-6 h-6"></i></button>
+    <div id="pin-set-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-sm text-center space-y-4">
+            <h3 class="text-xl font-bold text-accent-gradient">নিরাপত্তার জন্য পিন সেট করুন</h3>
+            <p class="text-sm text-gray-600">একটি ৪-ডিজিটের পিন সেট করুন যা আপনি মনে রাখতে পারবেন।</p>
+            <div>
+                <label for="set-pin" class="block text-sm font-medium text-gray-600 mb-2">নতুন পিন</label>
+                <input id="set-pin" type="password" maxlength="4" placeholder="••••" class="w-full p-3 rounded-lg input-field text-center text-2xl tracking-[.5em]">
             </div>
-            
-            <div class="space-y-4">
-                <p class="text-sm text-gray-600">নিচের তালিকা থেকে আপনার প্রয়োজনীয় ভিডিওটি দেখুন।</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="video-menu">
-                    <button class="video-menu-btn p-2 rounded-lg font-semibold text-sm" data-src="https://www.youtube.com/embed/ajjEcCY4qOg">কিভাবে ডিপোজিট করবেন?</button>
-                    <button class="video-menu-btn p-2 rounded-lg font-semibold text-sm" data-src="https://www.youtube.com/embed/dQw4w9WgXcQ">কিভাবে মেইল কিনবেন?</button>
-                </div>
-                <div class="video-container-16-9 mt-4">
-                    <iframe id="video-player" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
+            <div>
+                <label for="confirm-pin" class="block text-sm font-medium text-gray-600 mb-2">পিনটি আবার দিন</label>
+                <input id="confirm-pin" type="password" maxlength="4" placeholder="••••" class="w-full p-3 rounded-lg input-field text-center text-2xl tracking-[.5em]">
             </div>
-
-            <div class="border-t border-gray-200 pt-4">
-                <h3 class="text-lg font-bold text-center text-gray-800 mb-4">আমাদের গ্রাহকদের মতামত</h3>
-                <div class="space-y-4">
-                    <div class="review-card-new p-4 rounded-lg">
-                        <div class="flex items-start gap-4">
-                            <img src="https://i.postimg.cc/8cm3hCq2/user1.png" class="w-12 h-12 rounded-full object-cover" alt="User">
-                            <div class="flex-1">
-                                <div class="flex justify-between items-center">
-                                    <h5 class="font-bold">মোঃ আব্দুল্লাহ</h5>
-                                    <div class="star-rating flex text-sm"><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i></div>
-                                </div>
-                                <p class="text-gray-600 text-sm mt-1">"খুব সহজে এবং দ্রুত মেইল কিনতে পারলাম। সার্ভিস খুবই ভালো।"</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="review-card-new p-4 rounded-lg">
-                        <div class="flex items-start gap-4">
-                            <img src="https://i.postimg.cc/yN1g1B9c/user2.png" class="w-12 h-12 rounded-full object-cover" alt="User">
-                            <div class="flex-1">
-                                <div class="flex justify-between items-center">
-                                    <h5 class="font-bold">সাদিয়া আফরিন</h5>
-                                    <div class="star-rating flex text-sm"><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4"></i></div>
-                                </div>
-                                <p class="text-gray-600 text-sm mt-1">"আমার দেখা সেরা একটি সাইট। কোনো সমস্যা হলে সাপোর্ট টিম দ্রুত সমাধান করে দেয়।"</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="flex gap-4">
+                <button id="cancel-pin-set-btn" class="w-full p-3 rounded-lg bg-gray-200 text-gray-800 font-bold">Cancel</button>
+                <button id="set-pin-btn" class="w-full p-3 rounded-lg btn-gradient">Set PIN</button>
             </div>
         </div>
     </div>
+
+    <div id="pin-enter-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-sm text-center space-y-4">
+            <h3 class="text-xl font-bold text-accent-gradient">আপনার পিন দিন</h3>
+            <p class="text-sm text-gray-600">প্রবেশ করার জন্য আপনার ৪-ডিজিটের পিনটি দিন।</p>
+            <div>
+                <input id="enter-pin" type="password" maxlength="4" placeholder="••••" class="w-full p-3 rounded-lg input-field text-center text-2xl tracking-[.5em]">
+            </div>
+            <div class="flex gap-4">
+                 <button id="cancel-pin-enter-btn" class="w-full p-3 rounded-lg bg-gray-200 text-gray-800 font-bold">Cancel</button>
+                <button id="enter-pin-btn" class="w-full p-3 rounded-lg btn-gradient">Enter</button>
+            </div>
+        </div>
+    </div>
+
 
     <script type="module">
         const ADMIN_UID = "7358825471";
@@ -494,7 +506,8 @@
                     username: currentUserTg.username || null,
                     balance: 0, 
                     createdAt: serverTimestamp(), 
-                    isBlocked: false 
+                    isBlocked: false,
+                    pin: null
                 };
                 await setDoc(userRef, userData);
             }
@@ -541,10 +554,11 @@
             const pageLoadFunctions = {
                 'pay-page': loadPaymentHistory,
                 'mail-page': loadMailStore,
-                'updates-page': loadUpdates,
+                'updates-page': () => { loadUpdates(); loadReviews(); },
                 'admin-page': populateAdminMailTypes,
                 'profile-page': loadProfilePage,
-                'features-page': loadFeaturesPage
+                'features-page': loadFeaturesPage,
+                'tutorial-page': loadTutorials
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
@@ -561,40 +575,17 @@
             document.getElementById('deposit-details-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.remove('hidden'));
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
 
-            document.getElementById('more-features-btn').addEventListener('click', () => navigateTo('features-page'));
+            // More Features and PIN Logic
+            document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
             document.getElementById('features-send-btn').addEventListener('click', handleSend);
-
-            const tutorialModal = document.getElementById('tutorial-modal');
-            const videoPlayer = document.getElementById('video-player');
-            const videoMenu = document.getElementById('video-menu');
-
-            document.getElementById('nav-tutorial-btn').addEventListener('click', () => {
-                tutorialModal.classList.remove('hidden');
-                lucide.createIcons();
-            });
             
-            document.getElementById('close-tutorial-modal').addEventListener('click', () => {
-                tutorialModal.classList.add('hidden');
-                videoPlayer.src = "";
-            });
-            
-            tutorialModal.addEventListener('click', (e) => {
-                if (e.target === tutorialModal) {
-                    tutorialModal.classList.add('hidden');
-                    videoPlayer.src = "";
-                }
-            });
-
-            videoMenu.addEventListener('click', (e) => {
-                const button = e.target.closest('.video-menu-btn');
-                if (button) {
-                    videoMenu.querySelectorAll('.video-menu-btn').forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    videoPlayer.src = button.dataset.src;
-                }
-            });
+            // PIN Modal Buttons
+            document.getElementById('set-pin-btn').addEventListener('click', handleSetPin);
+            document.getElementById('enter-pin-btn').addEventListener('click', handleEnterPin);
+            document.getElementById('cancel-pin-set-btn').addEventListener('click', () => document.getElementById('pin-set-modal').classList.add('hidden'));
+            document.getElementById('cancel-pin-enter-btn').addEventListener('click', () => document.getElementById('pin-enter-modal').classList.add('hidden'));
         }
         
         function loadProfilePage() {
@@ -714,7 +705,7 @@
                     const isOutOfStock = stock === 0;
                     const insufficientBalance = userData.balance < costInBdt;
                     const buyButtonDisabled = isOutOfStock || insufficientBalance ? 'disabled' : '';
-                    const buyButtonClasses = isOutOfStock || insufficientBalance ? 'btn-disabled' : 'btn-gradient';
+                    const buyButtonClasses = isOutOfStock || insufficientBalance ? 'bg-gray-400 cursor-not-allowed' : 'btn-gradient';
                     const validityTagHtml = (mail.expirationDays !== undefined && mail.expirationDays !== null) ? `<span class="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">${mail.expirationDays} h</span>` : '';
                     const apiButtonHtml = mail.apiLink ? `<a href="${mail.apiLink}" target="_blank" class="text-blue-600 font-semibold">API</a>` : '<span class="text-gray-400 font-semibold">API</span>';
 
@@ -1054,6 +1045,121 @@
                 showAlert(typeof error === 'string' ? error : "ব্যালেন্স পাঠাতে সমস্যা হয়েছে।");
             } finally {
                 loader.style.display = 'none';
+            }
+        }
+        
+        // --- New Functions for Tutorial, Reviews, and PIN ---
+
+        async function loadTutorials() {
+            const tutorialListEl = document.getElementById('tutorial-list');
+            tutorialListEl.innerHTML = '<p class="text-center text-gray-600">টিউটোরিয়াল লোড হচ্ছে...</p>';
+            try {
+                const q = query(collection(db, "tutorials"), orderBy("order"));
+                const snapshot = await getDocs(q);
+                if (snapshot.empty) {
+                    tutorialListEl.innerHTML = '<p class="text-center text-gray-600">কোনো টিউটোরিয়াল পাওয়া যায়নি।</p>';
+                    return;
+                }
+                tutorialListEl.innerHTML = snapshot.docs.map(doc => {
+                    const tutorial = doc.data();
+                    return `
+                        <div class="card-bg p-4 rounded-xl">
+                            <h3 class="font-bold text-lg text-gray-800 mb-3">${tutorial.title}</h3>
+                            <div class="video-container-16-9">
+                                <iframe src="${tutorial.youtubeEmbedUrl}" title="${tutorial.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                tutorialListEl.innerHTML = '<p class="text-center text-red-600">টিউটোরিয়াল লোড করা যায়নি।</p>';
+                console.error("Error loading tutorials: ", e);
+            }
+        }
+
+        async function loadReviews() {
+            const reviewListEl = document.getElementById('reviews-list');
+            reviewListEl.innerHTML = '<p class="text-center text-gray-600">রিভিউ লোড হচ্ছে...</p>';
+            try {
+                const q = query(collection(db, "reviews"), orderBy("createdAt", "desc"), limit(5));
+                const snapshot = await getDocs(q);
+                if (snapshot.empty) {
+                    reviewListEl.innerHTML = '<p class="text-center text-gray-600">কোনো রিভিউ পাওয়া যায়নি।</p>';
+                    return;
+                }
+                reviewListEl.innerHTML = snapshot.docs.map(doc => {
+                    const review = doc.data();
+                    let stars = '';
+                    for (let i = 0; i < 5; i++) {
+                        stars += `<i data-lucide="star" class="w-4 h-4 ${i < review.rating ? 'fill-current' : ''}"></i>`;
+                    }
+                    return `
+                        <div class="review-card-new p-4 rounded-lg">
+                            <div class="flex items-start gap-4">
+                                <img src="${review.imageUrl}" class="w-12 h-12 rounded-full object-cover" alt="User">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-center">
+                                        <h5 class="font-bold">${review.name}</h5>
+                                        <div class="star-rating flex text-sm">${stars}</div>
+                                    </div>
+                                    <p class="text-gray-600 text-sm mt-1">"${review.reviewText}"</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                lucide.createIcons();
+            } catch (e) {
+                reviewListEl.innerHTML = '<p class="text-center text-red-600">রিভিউ লোড করা যায়নি।</p>';
+                console.error("Error loading reviews: ", e);
+            }
+        }
+        
+        function handleFeaturesClick() {
+            if (userData && userData.pin) {
+                document.getElementById('enter-pin').value = '';
+                document.getElementById('pin-enter-modal').classList.remove('hidden');
+            } else {
+                document.getElementById('set-pin').value = '';
+                document.getElementById('confirm-pin').value = '';
+                document.getElementById('pin-set-modal').classList.remove('hidden');
+            }
+        }
+
+        async function handleSetPin() {
+            const pin = document.getElementById('set-pin').value;
+            const confirmPin = document.getElementById('confirm-pin').value;
+
+            if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
+                return showAlert("পিন অবশ্যই ৪ সংখ্যার হতে হবে।");
+            }
+            if (pin !== confirmPin) {
+                return showAlert("দুটি পিন মিলছে না। আবার চেষ্টা করুন।");
+            }
+
+            loader.style.display = 'flex';
+            try {
+                const userRef = doc(db, "users", userData.tgChatId);
+                await updateDoc(userRef, { pin: pin });
+                userData.pin = pin; // Update local user data
+                document.getElementById('pin-set-modal').classList.add('hidden');
+                showAlert("আপনার পিন সফলভাবে সেট করা হয়েছে!");
+                navigateTo('features-page');
+            } catch (e) {
+                showAlert("পিন সেট করতে সমস্যা হয়েছে।");
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        function handleEnterPin() {
+            const enteredPin = document.getElementById('enter-pin').value;
+            if (enteredPin === userData.pin) {
+                document.getElementById('pin-enter-modal').classList.add('hidden');
+                navigateTo('features-page');
+            } else {
+                showAlert("ভুল পিন। আবার চেষ্টা করুন।");
+                document.getElementById('enter-pin').value = '';
             }
         }
     </script>
