@@ -20,7 +20,7 @@
         }
         .dark-bg { background-color: #121212; }
         .card-bg { 
-            background-color: #1e2129; /* Updated Card BG Color */
+            background-color: #1e2129;
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -152,12 +152,24 @@
         .stock-color { color: #22c55e; }
         .api-btn { color: #a0a0a0; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: color 0.2s ease; }
         .api-btn:hover { color: #ffc94a; }
-
-        /* NEW SELL CARD DESIGN (Based on image) */
-        .details-btn-gray { background-color: transparent; border: 1px solid #5a6375; color: #a0a0a0; font-size: 0.8rem; padding: 4px 12px; border-radius: 6px; transition: all 0.2s ease; }
-        .details-btn-gray:hover { background-color: #5a6375; color: #ffffff; }
-        .report-tag { background-color: #22c55e; color: #ffffff; font-size: 0.8rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
-        .availability-color { color: #58a6ff; font-weight: 600; font-size: 1.125rem; }
+        
+        /* Tutorial Video Style */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -243,17 +255,6 @@
                 </div>
             </div>
 
-            <div id="sell-page" class="p-4 space-y-6 sub-page">
-                <h2 class="text-xl font-bold text-center">Sell Your Account</h2>
-                <p class="text-gray-400 text-center mb-4">আপনার একাউন্ট বিক্রি করে আয় করুন</p>
-                <button id="sell-page-more-features-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
-                    <span>⚡ More Features</span>
-                    <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
-                </button>
-                <div id="sell-item-list" class="space-y-4"></div>
-                <div><h3 class="text-lg font-semibold mb-3 mt-8">Your Sell History</h3><div id="sell-history-list" class="space-y-3"></div></div>
-            </div>
-
             <div id="updates-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center">Latest Updates</h2>
                 <div id="updates-content" class="space-y-4"><p class="text-center text-gray-400">Loading updates...</p></div>
@@ -265,53 +266,67 @@
                     </div>
                 </div>
             </div>
-
-            <div id="profile-page" class="p-4 space-y-6 sub-page">
-                <div class="card-bg p-6 rounded-2xl flex flex-col items-center text-center">
-                    <div class="relative mb-4">
-                        <img id="profile-pic" class="w-24 h-24 rounded-full border-2 border-[#ff8c00] object-cover hidden" src="" alt="Profile Picture">
-                        <div id="profile-initials-avatar" class="w-24 h-24 rounded-full bg-gray-700 flex items-center justify-center border-2 border-[#ff8c00]"><span id="profile-initials" class="text-3xl font-bold text-gray-300"></span></div>
-                    </div>
-                    <h3 id="profile-name" class="text-2xl font-bold">Loading...</h3>
-                    <p id="profile-username" class="text-gray-400">@username</p>
-                    <p id="profile-id" class="text-sm text-gray-500 mt-2">ID: 123456</p>
-                </div>
-
-                <div class="space-y-3">
-                    <button id="more-features-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
-                        <span>⚡ More Features</span>
-                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
-                    </button>
-                    <button id="toggle-account-details-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
-                        <span>ACCOUNT DETAILS</span>
-                        <i id="account-details-chevron" data-lucide="chevron-down" class="w-6 h-6 text-gray-400 transition-transform duration-300"></i>
-                    </button>
-                    <div id="account-details-content" class="hidden card-bg p-6 rounded-xl space-y-4">
-                        <div class="flex items-center space-x-3"><i data-lucide="mail" class="w-5 h-5 text-gray-400"></i><div><p class="text-xs text-gray-400">Email Address</p><p id="profile-email" class="font-semibold text-gray-200">Not available</p></div></div>
-                        <div class="flex items-center space-x-3"><i data-lucide="key-round" class="w-5 h-5 text-gray-400"></i><div><p class="text-xs text-gray-400">Password</p><p class="font-semibold text-gray-200">Not applicable</p></div></div>
-                    </div>
-
-                    <a href="https://t.me/earn_Supportbot" target="_blank" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
-                        <span>CONTACT</span>
-                        <i data-lucide="arrow-up-right" class="w-5 h-5 text-gray-400"></i>
-                    </a>
-                </div>
-                
-                <div class="text-center pt-6">
-                     <div class="flex justify-center items-center space-x-5 mb-4">
-                        <a href="#" target="_blank" class="bg-gray-800 p-3 rounded-full hover:bg-gray-700 transition-all duration-200">
-                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path><path d="M12 2v10"></path><path d="M14.5 6.5a4 4 0 1 1-5 0"></path><path d="M12 12v10a6 6 0 0 0 6-6 6 6 0 0 0-6-6"></path></svg>
-                        </a>
-                        <a href="https://youtu.be/ajjEcCY4qOg?si=axyWRgZ7bt3Im_la" target="_blank" class="bg-gray-800 p-3 rounded-full hover:bg-gray-700 transition-all duration-200">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M2.5 17a24.12 24.12 0 0 1 0-10C2.5 6 7.5 4 12 4s9.5 2 9.5 3-2.5 4-2.5 4.5 2.5 2 2.5 2.5c0 .5-4.5 1.5-9.5 1.5S2.5 17.5 2.5 17z"></path><path d="m10 8 4 4-4 4"></path></svg>
-                        </a>
-                        <a href="https://t.me/Life_Work_BD/259" target="_blank" class="bg-gray-800 p-3 rounded-full hover:bg-gray-700 transition-all duration-200">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
-                        </a>
-                    </div>
-                    <p class="text-center text-gray-500 text-sm">Developed by <a href="https://t.me/SAIDULEP" target="_blank" class="font-semibold text-[#ff8c00] hover:underline">SAIDUL</a></p>
+            
+            <div id="tutorial-page" class="p-4 space-y-6 sub-page">
+                <h2 class="text-xl font-bold text-center">Tutorial</h2>
+                <p class="text-gray-400 text-center -mt-4 mb-4">কিভাবে অ্যাপটি ব্যবহার করবেন তা দেখুন</p>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/ajjEcCY4qOg" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
                 </div>
             </div>
+
+            <div id="profile-page" class="p-4 space-y-6 sub-page bg-gray-100" style="background-color: #f3f4f6;">
+                <div class="w-full bg-white rounded-2xl shadow-lg p-6 text-gray-800">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="relative mb-4">
+                            <img id="profile-pic" class="w-24 h-24 rounded-full border-4 border-orange-400 object-cover shadow-md" src="" alt="Profile Picture">
+                            <div id="profile-initials-avatar" class="w-24 h-24 rounded-full bg-gray-700 flex items-center justify-center border-4 border-orange-400 shadow-md"><span id="profile-initials" class="text-3xl font-bold text-gray-300"></span></div>
+                        </div>
+                        <h3 id="profile-name" class="text-2xl font-bold">Loading...</h3>
+                        <p id="profile-username" class="text-gray-500">@username</p>
+                        <p id="profile-id" class="text-sm text-gray-400 mt-2 bg-gray-100 px-3 py-1 rounded-full">ID: 123456</p>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wider text-center mb-4">Account Summary</h4>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div>
+                                <p id="profile-total-deposit" class="text-xl font-bold text-green-500">৳0</p>
+                                <p class="text-xs text-gray-500">Total Deposit</p>
+                            </div>
+                            <div>
+                                <p id="profile-total-spent" class="text-xl font-bold text-red-500">৳0</p>
+                                <p class="text-xs text-gray-500">Total Spent</p>
+                            </div>
+                            <div>
+                                <p id="profile-mails-purchased" class="text-xl font-bold text-blue-500">0</p>
+                                <p class="text-xs text-gray-500">Mails Bought</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center pt-6">
+                     <div class="flex justify-center items-center space-x-5 mb-4">
+                        <a href="#" target="_blank" class="bg-gray-200 p-3 rounded-full hover:bg-gray-300 transition-all duration-200">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600"><path d="M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path><path d="M12 2v10"></path><path d="M14.5 6.5a4 4 0 1 1-5 0"></path><path d="M12 12v10a6 6 0 0 0 6-6 6 6 0 0 0-6-6"></path></svg>
+                        </a>
+                        <a href="https://youtu.be/ajjEcCY4qOg?si=axyWRgZ7bt3Im_la" target="_blank" class="bg-gray-200 p-3 rounded-full hover:bg-gray-300 transition-all duration-200">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600"><path d="M2.5 17a24.12 24.12 0 0 1 0-10C2.5 6 7.5 4 12 4s9.5 2 9.5 3-2.5 4-2.5 4.5 2.5 2 2.5 2.5c0 .5-4.5 1.5-9.5 1.5S2.5 17.5 2.5 17z"></path><path d="m10 8 4 4-4 4"></path></svg>
+                        </a>
+                        <a href="https://t.me/Life_Work_BD/259" target="_blank" class="bg-gray-200 p-3 rounded-full hover:bg-gray-300 transition-all duration-200">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+                        </a>
+                    </div>
+                    <p class="text-center text-gray-500 text-sm">Developed by <a href="https://t.me/SAIDULEP" target="_blank" class="font-semibold text-orange-500 hover:underline">SAIDUL</a></p>
+                </div>
+            </div>
+
 
             <div id="features-page" class="p-4 space-y-8 sub-page">
                 <div class="grid grid-cols-2 gap-4 text-center">
@@ -365,9 +380,9 @@
 
         <nav class="bottom-nav">
             <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
-            <a href="#" class="nav-link-premium" data-page="sell-page"><i data-lucide="tag" class="icon"></i><span>Sell</span></a>
-            <a href="#" class="nav-link-premium center-home-link" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
             <a href="#" class="nav-link-premium" data-page="mail-page"><i data-lucide="mail" class="icon"></i><span>Mail</span></a>
+            <a href="#" class="nav-link-premium center-home-link" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
+            <a href="#" class="nav-link-premium" data-page="tutorial-page"><i data-lucide="play-circle" class="icon"></i><span>Tutorial</span></a>
             <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
             <a href="#" id="admin-nav-link" class="nav-link-premium hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></a>
         </nav>
@@ -381,17 +396,7 @@
             <button id="alert-ok-btn" class="btn-gradient px-8 py-2 rounded-lg">OK</button>
         </div>
     </div>
-    <div id="sell-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-        <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4">
-            <h3 id="sell-modal-title" class="text-xl font-bold text-center text-accent-gradient">Sell Your Account</h3>
-            <p class="text-sm text-gray-400 text-center">অনুগ্রহ করে আপনার একাউন্টের সকল তথ্য দিন।</p>
-            <div id="sell-modal-fields-container" class="space-y-3 max-h-60 overflow-y-auto pr-2"></div>
-            <div class="flex gap-3 pt-2">
-                <button id="sell-modal-cancel" class="w-full p-3 rounded-lg btn-outline-accent">Cancel</button>
-                <button id="sell-modal-submit" class="w-full p-3 rounded-lg btn-gradient">Submit</button>
-            </div>
-        </div>
-    </div>
+    
     <div id="deposit-details-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
         <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4">
             <h3 class="text-xl font-bold text-center text-accent-gradient mb-4">How to Deposit</h3>
@@ -413,7 +418,7 @@
 
     <script type="module">
         // =================================================================================
-        const ADMIN_UID = "zwTF8NjKiQSaJPiARDdxTE63L933"; // <-- আপনার অ্যাডমিন User ID (এখন Telegram chat ID হবে)
+        const ADMIN_UID = "7358825471"; // <-- আপনার অ্যাডমিন Telegram Chat ID এখানে দিন
         // =================================================================================
 
 const firebaseConfig = {
@@ -432,8 +437,8 @@ const firebaseConfig = {
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let currentUserTg = null; // Stores Telegram user object
-        let userData = null; // Stores user data from Firestore
+        let currentUserTg = null; 
+        let userData = null; 
         let appConfig = {};
         
         const loader = document.getElementById('loader');
@@ -476,7 +481,6 @@ const firebaseConfig = {
             if (userSnap.exists()) {
                 userData = userSnap.data();
             } else {
-                // Create new user document
                 const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
                 userData = { 
                     tgChatId: tgChatId,
@@ -491,7 +495,7 @@ const firebaseConfig = {
 
             if (userData.isBlocked) {
                 showAlert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
-                return; // Do not show app-container if blocked
+                return; 
             }
 
             await fetchAppConfig();
@@ -525,6 +529,14 @@ const firebaseConfig = {
         function navigateTo(pageId) {
             document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
+            
+            // Special handling for profile page background
+            if (pageId === 'profile-page') {
+                document.getElementById('profile-page').closest('main').style.backgroundColor = '#f3f4f6';
+            } else {
+                 document.getElementById('profile-page').closest('main').style.backgroundColor = 'transparent';
+            }
+
             document.querySelectorAll('.nav-link-premium').forEach(link => {
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
@@ -532,11 +544,11 @@ const firebaseConfig = {
             const pageLoadFunctions = {
                 'pay-page': loadPaymentHistory,
                 'mail-page': loadMailStore,
-                'sell-page': () => { loadSellItems(); loadSellHistory(); },
                 'updates-page': loadUpdates,
                 'admin-page': populateAdminMailTypes,
                 'profile-page': loadProfilePage,
-                'features-page': loadFeaturesPage
+                'features-page': loadFeaturesPage,
+                'tutorial-page': () => lucide.createIcons() // Just ensure icons render
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
@@ -549,77 +561,17 @@ const firebaseConfig = {
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('add-mails-btn').addEventListener('click', handleAddMails);
-            document.getElementById('toggle-account-details-btn').addEventListener('click', () => { document.getElementById('account-details-content').classList.toggle('hidden'); document.getElementById('account-details-chevron').classList.toggle('rotate-180'); });
-            document.getElementById('sell-modal-cancel').addEventListener('click', () => document.getElementById('sell-modal').classList.add('hidden'));
             document.getElementById('download-history-btn').addEventListener('click', handleDownloadHistory);
             document.getElementById('deposit-details-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.remove('hidden'));
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
             
-            // Event Listener for new "⚡ More Features" button on sell page
-            document.getElementById('sell-page-more-features-btn').addEventListener('click', () => navigateTo('features-page'));
-            
-            // Event Listeners for Features Page
-            document.getElementById('more-features-btn').addEventListener('click', () => navigateTo('features-page'));
             document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
-            // The event listener for the withdraw button has been removed as it is now a link.
-            // document.getElementById('features-withdraw-btn').addEventListener('click', handleWithdraw); 
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
             document.getElementById('features-send-btn').addEventListener('click', handleSend);
         }
-        
-        // This function is kept in case you want to revert to a JS-based withdrawal in the future.
-        // It's not called by the new withdraw link button.
-        async function handleWithdraw() {
-            const amountStr = prompt("কত টাকা Withdraw করতে চান?", userData.balance.toFixed(2));
-            if (amountStr === null || amountStr.trim() === "") return;
-            
-            const withdrawAmount = parseFloat(amountStr);
-            if (isNaN(withdrawAmount) || withdrawAmount <= 0) {
-                showAlert("অনুগ্রহ করে সঠিক পরিমাণ লিখুন।");
-                return;
-            }
-            if (withdrawAmount > userData.balance) {
-                showAlert("আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই।");
-                return;
-            }
 
-            const method = prompt("উত্তোলনের মাধ্যম লিখুন (e.g., বিকাশ, নগদ):");
-            if (!method || method.trim() === "") {
-                showAlert("উত্তোলনের মাধ্যম আবশ্যক।");
-                return;
-            }
-
-            const recipientNumber = prompt(`আপনার ${method} নম্বরটি লিখুন:`);
-            if (!recipientNumber || recipientNumber.trim() === "") {
-                 showAlert("প্রাপকের নম্বর আবশ্যক।");
-                return;
-            }
-
-            if (!confirm(`আপনি কি ${recipientNumber} নম্বরে (${method}) ৳${withdrawAmount.toFixed(2)} উত্তোলন করতে নিশ্চিত?`)) return;
-
-            loader.style.display = 'flex';
-            try {
-                await addDoc(collection(db, "withdrawals"), {
-                    userId: userData.tgChatId, // Use Telegram Chat ID
-                    userName: userData.name, // Use Telegram Name
-                    amount: withdrawAmount,
-                    method: method,
-                    recipientNumber: recipientNumber,
-                    status: "pending", 
-                    requestedAt: serverTimestamp()
-                });
-                
-                showAlert(`আপনার ৳${withdrawAmount.toFixed(2)} উত্তোলনের অনুরোধ সফলভাবে জমা হয়েছে।`);
-                loadFeaturesPage();
-            } catch (error) {
-                console.error("Error submitting withdrawal request:", error);
-                showAlert("উত্তোলনের অনুরোধ জমা দিতে একটি সমস্যা হয়েছে।");
-            } finally {
-                loader.style.display = 'none';
-            }
-        }
-
-        function loadProfilePage() {
+        async function loadProfilePage() {
+            // Display basic profile info
             const profilePic = document.getElementById('profile-pic');
             const avatarDiv = document.getElementById('profile-initials-avatar');
             
@@ -637,20 +589,29 @@ const firebaseConfig = {
                 document.getElementById('profile-name').textContent = `${currentUserTg.first_name} ${currentUserTg.last_name || ''}`.trim();
                 document.getElementById('profile-username').textContent = currentUserTg.username ? `@${currentUserTg.username}` : 'No Telegram Username';
                 document.getElementById('profile-id').textContent = `Telegram ID: ${currentUserTg.id}`;
-            } else {
-                // Fallback if Telegram user data somehow isn't available (shouldn't happen with current initUserSession)
-                const initials = userData.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                document.getElementById('profile-initials').textContent = initials;
-                profilePic.classList.add('hidden');
-                avatarDiv.classList.remove('hidden');
-                document.getElementById('profile-name').textContent = userData.name;
-                document.getElementById('profile-username').textContent = "Telegram data not available";
-                document.getElementById('profile-id').textContent = `User ID: ${userData.tgChatId}`;
             }
-            // Removed profile-email as email/password auth is removed
-            // document.getElementById('profile-email').textContent = userData.email; 
-        }
 
+            // Fetch and display stats
+            try {
+                // Total Deposits
+                const depositQuery = query(collection(db, "deposits"), where("userId", "==", userData.tgChatId), where("status", "==", "approved"));
+                const depositSnapshot = await getDocs(depositQuery);
+                const totalDeposit = depositSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
+                document.getElementById('profile-total-deposit').textContent = `৳${totalDeposit.toFixed(0)}`;
+
+                // Total Spent & Mails Purchased
+                const purchaseQuery = query(collection(db, "mail_purchases"), where("userId", "==", userData.tgChatId));
+                const purchaseSnapshot = await getDocs(purchaseQuery);
+                const totalSpent = purchaseSnapshot.docs.reduce((sum, doc) => sum + doc.data().cost, 0);
+                const mailsPurchased = purchaseSnapshot.size;
+                document.getElementById('profile-total-spent').textContent = `৳${totalSpent.toFixed(0)}`;
+                document.getElementById('profile-mails-purchased').textContent = mailsPurchased;
+
+            } catch (error) {
+                console.error("Error loading profile stats:", error);
+            }
+        }
+        
         async function handleDepositRequest() {
             const method = document.getElementById('deposit-method').value;
             const amount = parseInt(document.getElementById('deposit-amount').value);
@@ -666,8 +627,8 @@ const firebaseConfig = {
                     return showAlert("এই Transaction ID দিয়ে ইতিমধ্যে একটি ডিপোজিট অনুরোধ জমা দেওয়া হয়েছে।");
                 }
                 await addDoc(collection(db, "deposits"), {
-                    userId: userData.tgChatId, // Use Telegram Chat ID
-                    userName: userData.name, // Use Telegram Name
+                    userId: userData.tgChatId,
+                    userName: userData.name, 
                     method: method,
                     amount: amount,
                     senderNumber: senderNumber,
@@ -700,17 +661,9 @@ const firebaseConfig = {
                     const item = doc.data();
                     let statusColor, statusIcon;
                     switch (item.status) {
-                        case 'approved':
-                            statusColor = 'text-green-400';
-                            statusIcon = 'check-circle-2';
-                            break;
-                        case 'rejected':
-                            statusColor = 'text-red-400';
-                            statusIcon = 'x-circle';
-                            break;
-                        default:
-                            statusColor = 'text-yellow-400';
-                            statusIcon = 'hourglass';
+                        case 'approved': statusColor = 'text-green-400'; statusIcon = 'check-circle-2'; break;
+                        case 'rejected': statusColor = 'text-red-400'; statusIcon = 'x-circle'; break;
+                        default: statusColor = 'text-yellow-400'; statusIcon = 'hourglass';
                     }
                     const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString('en-GB') : 'N/A';
                     return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div class="flex items-center gap-3"><i data-lucide="${statusIcon}" class="w-6 h-6 ${statusColor}"></i><div><p class="font-semibold">${item.type || 'Deposit'} - ${item.method}</p><p class="text-xs text-gray-400">${date}</p></div></div><div class="text-right"><p class="font-bold text-lg">৳${item.amount}</p><p class="font-semibold ${statusColor} capitalize text-xs">${item.status}</p></div></div>`;
@@ -719,105 +672,6 @@ const firebaseConfig = {
             } catch (error) {
                 historyList.innerHTML = '<p class="text-red-400 text-center">হিস্টি লোড করা যায়নি।</p>';
             }
-        }
-
-        function loadSellItems() {
-            const sellList = document.getElementById('sell-item-list');
-            sellList.innerHTML = '';
-            const sellableItems = (appConfig.sellableItems || []).filter(item => item.isEnabled === true);
-            
-            if (sellableItems.length === 0) {
-                sellList.innerHTML = '<p class="text-gray-400 text-center">বিক্রি করার জন্য কোনো আইটেম এখন উপলব্ধ নেই।</p>';
-                return;
-            }
-            
-            sellableItems.forEach(item => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'card-bg p-4 rounded-xl space-y-3';
-                itemDiv.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-3">
-                             <img src="${item.logoUrl || ''}" class="w-8 h-8 rounded-full object-cover" alt="${item.type} logo">
-                            <h3 class="font-bold text-lg text-white">${item.type}</h3>
-                        </div>
-                        <button class="details-btn-gray">Details</button>
-                    </div>
-                    <div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-600/50">
-                        <div class="py-2"><span class="report-tag">${item.reportText || ''}</span></div>
-                        <div class="py-2"><p class="stat-value price-color">৳${item.price}</p></div>
-                        <div class="py-2"><p class="availability-color">${item.availabilityText || 'N/A'}</p></div>
-                    </div>
-                    <button class="btn-gradient w-full py-2 rounded-lg text-md font-bold">SELL NOW</button>
-                `;
-                itemDiv.querySelector('.details-btn-gray').onclick = () => showSellDetails(item.details);
-                itemDiv.querySelector('.btn-gradient').onclick = () => openSellModal(item.type, item.details);
-                sellList.appendChild(itemDiv);
-            });
-            lucide.createIcons();
-        }
-
-        window.showSellDetails = function(details) {
-            showAlert(`Details\n\n${details}`);
-        }
-
-        window.openSellModal = function(type, itemDetails) {
-             const modal = document.getElementById('sell-modal');
-            const itemConfig = (appConfig.sellableItems || []).find(item => item.type === type && item.details === itemDetails);
-            if (!itemConfig) return showAlert("Error: Item configuration not found.");
-            document.getElementById('sell-modal-title').textContent = `Sell ${itemConfig.type}`;
-            const fieldsContainer = document.getElementById('sell-modal-fields-container');
-            fieldsContainer.innerHTML = '';
-            itemConfig.fields.forEach(field => {
-                fieldsContainer.insertAdjacentHTML('beforeend', `<div><label class="block text-xs font-medium text-gray-300 mb-1">${field.name}</label><input type="${field.type || 'text'}" data-field-name="${field.name}" placeholder="${field.placeholder}" class="w-full p-3 rounded-lg input-field font-mono text-sm"></div>`);
-            });
-            document.getElementById('sell-modal-submit').onclick = () => handleSellRequest(itemConfig);
-            modal.classList.remove('hidden');
-        }
-        
-        async function handleSellRequest(itemConfig) {
-            const accountDetails = {};
-            let isValid = true;
-            document.querySelectorAll('#sell-modal-fields-container input').forEach(input => {
-                const fieldName = input.dataset.fieldName;
-                const value = input.value.trim();
-                if (!value) isValid = false;
-                accountDetails[fieldName] = value;
-            });
-            if (!isValid) return showAlert("Please fill in all fields.");
-            document.getElementById('sell-modal').classList.add('hidden');
-            loader.style.display = 'flex';
-            try {
-                await addDoc(collection(db, "sell_requests"), { 
-                    userId: userData.tgChatId, // Use Telegram Chat ID
-                    userName: userData.name, // Use Telegram Name
-                    accountType: itemConfig.type, 
-                    accountDetails, 
-                    askingPrice: itemConfig.price, 
-                    status: "pending", 
-                    requestedAt: serverTimestamp() 
-                });
-                showAlert("Your sell request has been submitted successfully.");
-                loadSellHistory();
-            } catch (error) { showAlert("There was a problem submitting your request."); } 
-            finally { loader.style.display = 'none'; }
-        }
-
-        async function loadSellHistory() {
-            const historyList = document.getElementById('sell-history-list');
-            historyList.innerHTML = '<p class="text-gray-400 text-center">Loading history...</p>';
-            try {
-                const q = query(collection(db, "sell_requests"), where("userId", "==", userData.tgChatId), orderBy("requestedAt", "desc"));
-                const snapshot = await getDocs(q);
-                if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-400 text-center">You have not submitted any accounts for sale.</p>';
-                historyList.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const item = doc.data();
-                    const statusColor = item.status === 'approved' ? 'text-green-400' : item.status === 'rejected' ? 'text-red-400' : 'text-yellow-400';
-                    const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString() : 'N/A';
-                    let detailsHtml = typeof item.accountDetails === 'object' ? Object.entries(item.accountDetails).map(([key, value]) => value ? `<div class="grid grid-cols-3 gap-2"><strong class="col-span-1 text-gray-400 text-right">${key}:</strong><span class="col-span-2 text-gray-200 font-mono break-all">${value}</span></div>` : '').join('') : `<p class="text-xs text-gray-400 whitespace-pre-wrap font-mono">${item.accountDetails}</p>`;
-                    historyList.innerHTML += `<div class="card-bg p-3 rounded-lg"><div class="flex items-center justify-between"><div><p class="font-semibold">${item.accountType}</p><p class="text-xs text-gray-400">${date} - <span class="font-bold">৳${item.askingPrice.toFixed(2)}</span></p></div><p class="font-bold ${statusColor} capitalize">${item.status}</p></div><div class="mt-2 pt-2 border-t border-gray-700/50 space-y-1 text-sm">${detailsHtml}</div></div>`;
-                });
-            } catch (error) { historyList.innerHTML = '<p class="text-red-400 text-center">Could not load sell history.</p>'; }
         }
 
         async function getStockCount(collectionName) {
@@ -841,19 +695,12 @@ const firebaseConfig = {
                 const stockPromises = (appConfig.mails || []).map(mail => getStockCount(mail.stockKey));
                 const stockCounts = await Promise.all(stockPromises);
                 
-                let mailsWithStock = (appConfig.mails || []).map((mail, index) => ({
-                    ...mail,
-                    stock: stockCounts[index]
-                }));
-
-                mailsWithStock.sort((a, b) => b.stock - a.stock);
+                let mailsWithStock = (appConfig.mails || []).map((mail, index) => ({ ...mail, stock: stockCounts[index] })).sort((a, b) => b.stock - a.stock);
 
                 mailListEl.innerHTML = '';
                 mailsWithStock.forEach(mail => {
-                    const stock = mail.stock;
-                    const costInBdt = mail.priceBdt;
-                    const isOutOfStock = stock === 0;
-                    const insufficientBalance = userData.balance < costInBdt;
+                    const isOutOfStock = mail.stock === 0;
+                    const insufficientBalance = userData.balance < mail.priceBdt;
                     const buyButtonDisabled = isOutOfStock || insufficientBalance ? 'disabled' : '';
                     const buyButtonClasses = isOutOfStock || insufficientBalance ? 'btn-disabled' : 'btn-gradient';
                     const validityTagHtml = (mail.expirationDays !== undefined && mail.expirationDays !== null) ? `<span class="validity-tag">${mail.expirationDays} h</span>` : '';
@@ -862,27 +709,15 @@ const firebaseConfig = {
                     mailListEl.innerHTML += `
                         <div class="card-bg p-4 rounded-xl space-y-3">
                             <div class="flex justify-between items-center">
-                                <div class="flex items-center gap-3">
-                                    <img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo">
-                                    <h3 class="font-bold text-lg text-white">${mail.type}</h3>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    ${validityTagHtml}
-                                    <button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="details-btn">Details</button>
-                                </div>
+                                <div class="flex items-center gap-3"><img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo"><h3 class="font-bold text-lg text-white">${mail.type}</h3></div>
+                                <div class="flex items-center gap-2">${validityTagHtml}<button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="details-btn">Details</button></div>
                             </div>
                             <div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-700/50">
                                 <div class="py-2">${apiButtonHtml}</div>
-                                <div class="py-2">
-                                    <p class="stat-label">Price</p>
-                                    <p class="stat-value price-color">৳${costInBdt.toFixed(2)}</p>
-                                </div>
-                                <div class="py-2">
-                                    <p class="stat-label">Stock</p>
-                                    <p class="stat-value stock-color">${stock}</p>
-                                </div>
+                                <div class="py-2"><p class="stat-label">Price</p><p class="stat-value price-color">৳${mail.priceBdt.toFixed(2)}</p></div>
+                                <div class="py-2"><p class="stat-label">Stock</p><p class="stat-value stock-color">${mail.stock}</p></div>
                             </div>
-                            <button class="${buyButtonClasses} w-full py-2 rounded-lg text-md" ${buyButtonDisabled} onclick="buyMail('${mail.type}', ${costInBdt}, '${mail.stockKey}')">Buy Now</button>
+                            <button class="${buyButtonClasses} w-full py-2 rounded-lg text-md" ${buyButtonDisabled} onclick="buyMail('${mail.type}', ${mail.priceBdt}, '${mail.stockKey}')">Buy Now</button>
                         </div>`;
                 });
 
@@ -917,13 +752,7 @@ const firebaseConfig = {
                 
                 const dataForExcel = querySnapshot.docs.map(doc => {
                     const purchase = doc.data();
-                    return {
-                        'Purchase Date': purchase.purchasedAt.toDate().toLocaleString(),
-                        'Mail Type': purchase.mailType,
-                        'Email': purchase.mail,
-                        'Password': purchase.password || 'N/A',
-                        'Cost (BDT)': purchase.cost
-                    };
+                    return { 'Purchase Date': purchase.purchasedAt.toDate().toLocaleString(), 'Mail Type': purchase.mailType, 'Email': purchase.mail, 'Password': purchase.password || 'N/A', 'Cost (BDT)': purchase.cost };
                 });
                 
                 const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
@@ -948,14 +777,14 @@ const firebaseConfig = {
                     if (mailQuerySnapshot.empty) throw "দুঃখিত, এই ধরনের মেইল বর্তমানে স্টক শেষ।";
                     
                     const mailDoc = mailQuerySnapshot.docs[0];
-                    const userRef = doc(db, "users", userData.tgChatId); // Use Telegram Chat ID
+                    const userRef = doc(db, "users", userData.tgChatId);
                     const userSnap = await transaction.get(userRef);
                     if (!userSnap.exists() || userSnap.data().balance < cost) throw `অপর্যাপ্ত ব্যালেন্স।`;
 
                     transaction.update(userRef, { balance: userSnap.data().balance - cost });
-                    transaction.update(mailDoc.ref, { isSold: true, soldTo: userData.tgChatId, soldAt: serverTimestamp() }); // Use Telegram Chat ID
+                    transaction.update(mailDoc.ref, { isSold: true, soldTo: userData.tgChatId, soldAt: serverTimestamp() });
                     const purchaseLogRef = doc(collection(db, "mail_purchases"));
-                    transaction.set(purchaseLogRef, { userId: userData.tgChatId, mailType: mailType, mail: mailDoc.data().email, password: mailDoc.data().password || null, cost: cost, purchasedAt: serverTimestamp() }); // Use Telegram Chat ID
+                    transaction.set(purchaseLogRef, { userId: userData.tgChatId, mailType: mailType, mail: mailDoc.data().email, password: mailDoc.data().password || null, cost: cost, purchasedAt: serverTimestamp() });
                     return mailDoc.data();
                 });
 
@@ -982,7 +811,7 @@ const firebaseConfig = {
                 const updateDoc = snapshot.docs[0];
                 const updateData = updateDoc.data();
                 const updateId = updateDoc.id;
-                const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", userData.tgChatId)); // Use Telegram Chat ID
+                const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", userData.tgChatId));
                 const userVote = userInteractionDoc.exists() ? userInteractionDoc.data().vote : null;
                 
                 const isLiked = userVote === 'liked';
@@ -1001,7 +830,7 @@ const firebaseConfig = {
         async function handleVote(voteType, updateId) {
             loader.style.display = 'flex';
             const updateRef = doc(db, "updates", updateId);
-            const userInteractionRef = doc(db, "updates", updateId, "userInteractions", userData.tgChatId); // Use Telegram Chat ID
+            const userInteractionRef = doc(db, "updates", updateId, "userInteractions", userData.tgChatId);
             try {
                 await runTransaction(db, async (transaction) => {
                     const userInteractionDoc = await transaction.get(userInteractionRef);
@@ -1048,14 +877,7 @@ const firebaseConfig = {
                     const parts = line.trim().split('|');
                     if (parts.length === 4) {
                         const mailDocRef = doc(collection(db, stockKey));
-                        batch.set(mailDocRef, { 
-                            email: parts[0], 
-                            password: parts[1], 
-                            refresh_token: parts[2], 
-                            client_id: parts[3], 
-                            isSold: false, 
-                            createdAt: serverTimestamp() 
-                        });
+                        batch.set(mailDocRef, { email: parts[0], password: parts[1], refresh_token: parts[2], client_id: parts[3], isSold: false, createdAt: serverTimestamp() });
                         addedCount++;
                     }
                 });
@@ -1104,9 +926,7 @@ const firebaseConfig = {
                 dots[i].classList.add('active');
             }
             
-            dotsContainer.addEventListener('click', e => {
-                if(e.target.matches('.dot')) showSlide(parseInt(e.target.dataset.index));
-            });
+            dotsContainer.addEventListener('click', e => { if(e.target.matches('.dot')) showSlide(parseInt(e.target.dataset.index)); });
             
             setInterval(() => showSlide((index + 1) % slides.length), 5000);
         }
@@ -1114,26 +934,22 @@ const firebaseConfig = {
         async function loadFeaturesPage() {
             loader.style.display = 'flex';
             try {
-                // Fetch Total Approved Deposits
-                const depositQuery = query(collection(db, "deposits"), where("userId", "==", userData.tgChatId), where("status", "==", "approved")); // Use Telegram Chat ID
+                const depositQuery = query(collection(db, "deposits"), where("userId", "==", userData.tgChatId), where("status", "==", "approved"));
                 const depositSnapshot = await getDocs(depositQuery);
                 const totalDeposit = depositSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
                 document.getElementById('total-deposit-display').textContent = `৳${totalDeposit.toFixed(2)}`;
 
-                // Fetch Total Approved Income (from selling)
-                const incomeQuery = query(collection(db, "sell_requests"), where("userId", "==", userData.tgChatId), where("status", "==", "approved")); // Use Telegram Chat ID
+                const incomeQuery = query(collection(db, "sell_requests"), where("userId", "==", userData.tgChatId), where("status", "==", "approved"));
                 const incomeSnapshot = await getDocs(incomeQuery);
                 const totalIncome = incomeSnapshot.docs.reduce((sum, doc) => sum + doc.data().askingPrice, 0);
                 document.getElementById('total-income-display').textContent = `৳${totalIncome.toFixed(2)}`;
 
-                // Fetch Total Received Transfers
-                const receivedQuery = query(collection(db, "transfers"), where("toId", "==", userData.tgChatId)); // Use Telegram Chat ID
+                const receivedQuery = query(collection(db, "transfers"), where("toId", "==", userData.tgChatId));
                 const receivedSnapshot = await getDocs(receivedQuery);
                 const totalReceive = receivedSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
                 document.getElementById('total-receive-display').textContent = `৳${totalReceive.toFixed(2)}`;
 
-                // Fetch Total Approved Withdrawals
-                const withdrawQuery = query(collection(db, "withdrawals"), where("userId", "==", userData.tgChatId), where("status", "==", "approved")); // Use Telegram Chat ID
+                const withdrawQuery = query(collection(db, "withdrawals"), where("userId", "==", userData.tgChatId), where("status", "==", "approved"));
                 const withdrawSnapshot = await getDocs(withdrawQuery);
                 const totalWithdraw = withdrawSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
                 document.getElementById('total-withdraw-display').textContent = `৳${totalWithdraw.toFixed(2)}`;
@@ -1152,8 +968,8 @@ const firebaseConfig = {
             const historyList = document.getElementById('transfer-history-list');
             historyList.innerHTML = '<p class="text-gray-400 text-center">Loading history...</p>';
             
-            const sentQuery = query(collection(db, "transfers"), where("fromId", "==", userData.tgChatId), orderBy("timestamp", "desc")); // Use Telegram Chat ID
-            const receivedQuery = query(collection(db, "transfers"), where("toId", "==", userData.tgChatId), orderBy("timestamp", "desc")); // Use Telegram Chat ID
+            const sentQuery = query(collection(db, "transfers"), where("fromId", "==", userData.tgChatId), orderBy("timestamp", "desc"));
+            const receivedQuery = query(collection(db, "transfers"), where("toId", "==", userData.tgChatId), orderBy("timestamp", "desc"));
 
             const [sentSnapshot, receivedSnapshot] = await Promise.all([getDocs(sentQuery), getDocs(receivedQuery)]);
             
@@ -1169,19 +985,13 @@ const firebaseConfig = {
             }
 
             historyList.innerHTML = transactions.map(item => {
-                const isSent = item.fromId === userData.tgChatId; // Use Telegram Chat ID
+                const isSent = item.fromId === userData.tgChatId;
                 const date = item.timestamp.toDate().toLocaleString('en-GB');
                 const sign = isSent ? '-' : '+';
                 const color = isSent ? 'text-red-400' : 'text-green-400';
                 const actionText = isSent ? `Sent to ${item.toName}` : `Received from ${item.fromName}`;
 
-                return `<div class="card-bg p-3 rounded-lg flex items-center justify-between">
-                            <div>
-                                <p class="font-semibold">${actionText}</p>
-                                <p class="text-xs text-gray-400">${date}</p>
-                            </div>
-                            <p class="font-bold text-lg ${color}">${sign}৳${item.amount.toFixed(2)}</p>
-                        </div>`;
+                return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div><p class="font-semibold">${actionText}</p><p class="text-xs text-gray-400">${date}</p></div><p class="font-bold text-lg ${color}">${sign}৳${item.amount.toFixed(2)}</p></div>`;
             }).join('');
         }
 
@@ -1194,7 +1004,7 @@ const firebaseConfig = {
         async function handleSend() {
             const recipientId = prompt("🚀 ব্যালেন্স ট্রান্সফার করুন");
             if (!recipientId || recipientId.trim() === '') return;
-            if (recipientId.trim() === userData.tgChatId) { // Use Telegram Chat ID
+            if (recipientId.trim() === userData.tgChatId) {
                 showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
                 return;
             }
@@ -1218,7 +1028,7 @@ const firebaseConfig = {
             if (!confirm(`আপনি কি এই আইডিতে ৳${amount.toFixed(2)} পাঠাতে চান?`)) return;
 
             loader.style.display = 'flex';
-            const senderRef = doc(db, "users", userData.tgChatId); // Use Telegram Chat ID
+            const senderRef = doc(db, "users", userData.tgChatId);
             const recipientRef = doc(db, "users", recipientId.trim());
 
             try {
@@ -1226,12 +1036,8 @@ const firebaseConfig = {
                     const senderDoc = await transaction.get(senderRef);
                     const recipientDoc = await transaction.get(recipientRef);
 
-                    if (!senderDoc.exists() || senderDoc.data().balance < amount) {
-                        throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
-                    }
-                    if (!recipientDoc.exists()) {
-                        throw "প্রাপক আইডি (Recipient ID) খুঁজে পাওয়া যায়নি।";
-                    }
+                    if (!senderDoc.exists() || senderDoc.data().balance < amount) throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
+                    if (!recipientDoc.exists()) throw "প্রাপক আইডি (Recipient ID) খুঁজে পাওয়া যায়নি।";
 
                     const newSenderBalance = senderDoc.data().balance - amount;
                     const newRecipientBalance = recipientDoc.data().balance + amount;
@@ -1241,8 +1047,8 @@ const firebaseConfig = {
                     
                     const transferLogRef = doc(collection(db, "transfers"));
                     transaction.set(transferLogRef, {
-                        fromId: userData.tgChatId, // Use Telegram Chat ID
-                        fromName: userData.name, // Use Telegram Name
+                        fromId: userData.tgChatId,
+                        fromName: userData.name,
                         toId: recipientId.trim(),
                         toName: recipientDoc.data().name,
                         amount: amount,
