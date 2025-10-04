@@ -20,7 +20,7 @@
         }
         .dark-bg { background-color: #121212; }
         .card-bg { 
-            background-color: #1e2129;
+            background-color: #1e2129; /* Updated Card BG Color */
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -116,30 +116,33 @@
         .header { border-bottom: 1px solid rgba(255, 255, 255, 0.1); background-color: rgba(18, 18, 18, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        #loader {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1.5rem;
-        }
-        .spinner {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            border: 6px solid #444;
-            border-top-color: #ff8c00;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        /* Banner Styles */
+        .banner-wrapper { position: relative; width: 100%; padding-top: 56.25%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
+        .banner-inner { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1); }
+        .slide { min-width: 100%; position: relative; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .dots { position: absolute; bottom: 12px; width: 100%; text-align: center; z-index: 10; }
+        .dot { display: inline-block; height: 8px; width: 8px; margin: 0 4px; background: #bbb; border-radius: 50%; cursor: pointer; transition: background 0.3s; }
+        .dot.active { background: #FF8C00; }
+        #pay-center-telegram-banner { position: fixed; right: 0; top: 50%; transform: translateY(-50%) translateX(100%); z-index: 40; background: linear-gradient(to left, #2a73cc, #1a56a6); color: white; padding: 8px 12px; border-top-left-radius: 12px; border-bottom-left-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); display: flex; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.3s ease-in-out; border: 1px solid rgba(255, 255, 255, 0.2); font-weight: 600; }
+        #pay-center-telegram-banner.active { transform: translateY(-50%) translateX(0); }
+
+        /* Loader Styles */
+        #loader .container { --uib-size: 45px; --uib-color: #ff8c00; --uib-speed: 1.75s; --uib-bg-opacity: .2; height: 31.25px; width: 50px; }
+        #loader .car { stroke: var(--uib-color); stroke-dasharray: 100; stroke-dashoffset: 0; stroke-linecap: round; stroke-linejoin: round; animation: travel var(--uib-speed) ease-in-out infinite, fade var(--uib-speed) ease-out infinite; }
+        #loader .track { stroke-linecap: round; stroke-linejoin: round; stroke: var(--uib-color); opacity: var(--uib-bg-opacity); }
+        @keyframes travel { 0% { stroke-dashoffset: 100; } 75% { stroke-dashoffset: 0; } }
+        @keyframes fade { 0% { opacity: 0; } 20%, 55% { opacity: 1; } 100% { opacity: 0; } }
+        
+        /* Purchase History Card Styles */
         .purchase-history-card { background-color: rgba(30, 30, 30, 0.85); border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 1rem; transition: all 0.2s ease; }
         .purchase-info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
         .purchase-mail-details { background-color: #1e1e1e; border: 1px solid #333; padding: 0.75rem; border-radius: 8px; font-size: 0.9rem; color: #e0e0e0; word-break: break-all; margin-bottom: 0.75rem; }
         .purchase-date { font-size: 0.75rem; color: #a0a0a0; text-align: right; }
         .purchase-history-card .copy-btn { color: #9ca3af; transition: color 0.2s ease; }
         .purchase-history-card .copy-btn:hover { color: #ff8c00; }
+        
+        /* NEW MAIL CARD DESIGN (Based on image) */
         .details-btn { background-color: transparent; border: 1px solid #ff8c00; color: #ff8c00; font-size: 0.8rem; padding: 2px 10px; border-radius: 6px; transition: all 0.2s ease; }
         .details-btn:hover { background-color: #ff8c00; color: #121212; }
         .validity-tag { background-color: #22c55e; color: #ffffff; font-size: 0.8rem; font-weight: 500; padding: 2px 10px; border-radius: 6px; }
@@ -149,28 +152,21 @@
         .stock-color { color: #22c55e; }
         .api-btn { color: #a0a0a0; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: color 0.2s ease; }
         .api-btn:hover { color: #ffc94a; }
+
+        /* NEW SELL CARD DESIGN (Based on image) */
         .details-btn-gray { background-color: transparent; border: 1px solid #5a6375; color: #a0a0a0; font-size: 0.8rem; padding: 4px 12px; border-radius: 6px; transition: all 0.2s ease; }
         .details-btn-gray:hover { background-color: #5a6375; color: #ffffff; }
         .report-tag { background-color: #22c55e; color: #ffffff; font-size: 0.8rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
         .availability-color { color: #58a6ff; font-weight: 600; font-size: 1.125rem; }
-
     </style>
 </head>
 <body class="max-w-md mx-auto">
 
-    <div id="loader" class="fixed inset-0 dark-bg bg-opacity-90 flex items-center justify-center z-50">
-        <div class="flex flex-col items-center gap-4">
-            <div class="spinner"></div>
-            <h1 class="text-2xl font-bold text-accent-gradient">GMAIL SHOP</h1>
-        </div>
-    </div>
-
-    <div id="error-section" class="min-h-screen p-4 flex-col justify-center items-center main-page hidden">
-        <div class="w-full max-w-sm card-bg p-8 rounded-2xl text-center">
-            <i data-lucide="alert-triangle" class="w-16 h-16 text-red-500 mx-auto"></i>
-            <h1 class="text-2xl font-bold text-red-400 mt-4">একটি সমস্যা হয়েছে</h1>
-            <p id="error-message" class="text-gray-400 mt-2">অ্যাপটি চালু করা সম্ভব হচ্ছে না। অনুগ্রহ করে নিশ্চিত করুন আপনি টেলিগ্রাম থেকে অ্যাপটি ব্যবহার করছেন এবং আপনার ইন্টারনেট সংযোগ ঠিক আছে।</p>
-        </div>
+    <div id="loader" class="hidden fixed inset-0 dark-bg bg-opacity-75 flex items-center justify-center z-50">
+        <svg class="container" x="0px" y="0px" viewBox="0 0 50 31.25" height="31.25" width="50" preserveAspectRatio='xMidYMid meet'>
+          <path class="track" stroke-width="4" fill="none" pathlength="100" d="M0.625 21.5 h10.25 l3.75 -5.875 l7.375 15 l9.75 -30 l7.375 20.875 v0 h10.25"/>
+          <path class="car" stroke-width="4" fill="none" pathlength="100" d="M0.625 21.5 h10.25 l3.75 -5.875 l7.375 15 l9.75 -30 l7.375 20.875 v0 h10.25"/>
+        </svg>
     </div>
 
     <div id="app-container" class="min-h-screen flex-col main-page">
@@ -184,7 +180,7 @@
 
         <main class="flex-grow pb-20">
             <div id="home-page" class="p-4 space-y-6 sub-page">
-                 <div class="banner-wrapper">
+                <div class="banner-wrapper">
                     <div class="banner-inner" id="slides">
                         <div class="slide active"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/zBp8rCX9/Yellow-Orange-Modern-Marketing-Courses-You-Tube-Thumbnail-20250910-185659-0000.png" alt="Slide 1"></a><div class="caption">কম দামে MAIL কিনুন</div></div>
                         <div class="slide"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/W1syFD8p/Grey-Blue-Illustration-Refer-a-Friend-Instagram-Post-1080-x-720-px-20250917-223749-0000.png" alt="Slide 2"></a><div class="caption">বেশি বেশি রেফার করুন</div></div>
@@ -210,7 +206,7 @@
             </div>
             
             <div id="pay-page" class="p-4 space-y-6 sub-page">
-                 <h2 class="text-xl font-bold text-center">Pay Center</h2>
+                <h2 class="text-xl font-bold text-center">Pay Center</h2>
                 <div class="card-bg p-5 rounded-xl space-y-5">
                     <div>
                         <div class="flex items-center justify-between mb-4">
@@ -286,6 +282,15 @@
                         <span>⚡ More Features</span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
+                    <button id="toggle-account-details-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
+                        <span>ACCOUNT DETAILS</span>
+                        <i id="account-details-chevron" data-lucide="chevron-down" class="w-6 h-6 text-gray-400 transition-transform duration-300"></i>
+                    </button>
+                    <div id="account-details-content" class="hidden card-bg p-6 rounded-xl space-y-4">
+                        <div class="flex items-center space-x-3"><i data-lucide="mail" class="w-5 h-5 text-gray-400"></i><div><p class="text-xs text-gray-400">Email Address</p><p id="profile-email" class="font-semibold text-gray-200">Not available</p></div></div>
+                        <div class="flex items-center space-x-3"><i data-lucide="key-round" class="w-5 h-5 text-gray-400"></i><div><p class="text-xs text-gray-400">Password</p><p class="font-semibold text-gray-200">Not applicable</p></div></div>
+                    </div>
+
                     <a href="https://t.me/earn_Supportbot" target="_blank" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
                         <span>CONTACT</span>
                         <i data-lucide="arrow-up-right" class="w-5 h-5 text-gray-400"></i>
@@ -359,7 +364,7 @@
         </main>
 
         <nav class="bottom-nav">
-             <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
+            <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
             <a href="#" class="nav-link-premium" data-page="sell-page"><i data-lucide="tag" class="icon"></i><span>Sell</span></a>
             <a href="#" class="nav-link-premium center-home-link" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
             <a href="#" class="nav-link-premium" data-page="mail-page"><i data-lucide="mail" class="icon"></i><span>Mail</span></a>
@@ -407,96 +412,98 @@
     </div>
 
     <script type="module">
-        const ADMIN_UID = "6614489397";
+        // =================================================================================
+        const ADMIN_UID = "zwTF8NjKiQSaJPiARDdxTE63L933"; // <-- আপনার অ্যাডমিন User ID (এখন Telegram chat ID হবে)
+        // =================================================================================
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBP3OLSykSzQFEEQLDkDO7_rVg-PkY81C0",
-            authDomain: "mail-shop-e2256.firebaseapp.com",
-            projectId: "mail-shop-e2256",
-            storageBucket: "mail-shop-e2256.firebasestorage.app",
-            messagingSenderId: "985793375010",
-            appId: "1:985793375010:web:2a9afc1aeec74168d2137b"
-        };
+const firebaseConfig = {
+  apiKey: "AIzaSyA6JPDxbD5k1S-7bNikp6U_vFALPFl_fto",
+  authDomain: "daily-paybot.firebaseapp.com",
+  databaseURL: "https://daily-paybot-default-rtdb.firebaseio.com",
+  projectId: "daily-paybot",
+  storageBucket: "daily-paybot.firebasestorage.app",
+  messagingSenderId: "962422978466",
+  appId: "1:962422978466:web:43a3db97932bf82766e4fb"
+};
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let currentUserId = null;
-        let userData = null;
+        let currentUserTg = null; // Stores Telegram user object
+        let userData = null; // Stores user data from Firestore
         let appConfig = {};
         
         const loader = document.getElementById('loader');
-        const tg = window.Telegram.WebApp;
-
-        async function main() {
-            tg.ready();
-            tg.expand();
-            
-            lucide.createIcons();
-            setupEventListeners();
-            await initializeApp();
-            setupBanner();
-        }
-
-        async function initializeApp() {
+        
+        window.onload = async () => {
             try {
-                const tgUser = tg.initDataUnsafe?.user;
-
-                if (!tgUser) {
-                    throw new Error("টেলিগ্রাম ব্যবহারকারীর তথ্য পাওয়া যায়নি। দয়া করে টেলিগ্রাম অ্যাপ থেকে আবার চেষ্টা করুন।");
-                }
-
-                currentUserId = tgUser.id.toString();
-                
-                await fetchAppConfig();
-                await fetchOrCreateUserData(tgUser);
-                
-                if (userData.isBlocked) {
-                    showAlert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
+                window.Telegram.WebApp.ready();
+                window.Telegram.WebApp.expand();
+                currentUserTg = window.Telegram.WebApp.initDataUnsafe.user;
+                if (!currentUserTg) {
+                    showAlert("Telegram user data not found. Please open this app from Telegram.");
+                    loader.style.display = 'none';
                     return;
                 }
-                
-                if (currentUserId === ADMIN_UID) {
-                    document.getElementById('admin-nav-link').classList.remove('hidden');
-                }
-
-                updateUI();
-                showMainPage('app-container');
-                navigateTo('home-page');
-
-            } catch (error) {
-                console.error("Initialization Error:", error);
-                document.getElementById('error-message').textContent = `একটি গুরুতর সমস্যা হয়েছে: ${error.message}. Firestore Rules ঠিক আছে কিনা তা পরীক্ষা করুন।`;
-                showMainPage('error-section');
-            } finally {
+            } catch (e) { 
+                console.error("Telegram WebApp script failed to initialize or user data not available.", e); 
+                showAlert("Error initializing Telegram Mini App. Please try again from Telegram.");
                 loader.style.display = 'none';
+                return;
             }
-        }
+            lucide.createIcons();
+            setupEventListeners();
+            setupBanner(); 
+            
+            loader.style.display = 'flex';
+            await initUserSession();
+            loader.style.display = 'none';
+        };
 
-        async function fetchOrCreateUserData(tgUser) {
-            if (!currentUserId) throw new Error("User ID not found.");
-            const userRef = doc(db, "users", currentUserId);
+        async function initUserSession() {
+            if (!currentUserTg) {
+                showAlert("Telegram user data is missing. Cannot proceed.");
+                return;
+            }
+
+            const tgChatId = String(currentUserTg.id);
+            const userRef = doc(db, "users", tgChatId);
             const userSnap = await getDoc(userRef);
 
             if (userSnap.exists()) {
                 userData = userSnap.data();
             } else {
-                const newUser = {
-                    uid: currentUserId,
-                    name: `${tgUser.first_name} ${tgUser.last_name || ''}`.trim(),
-                    username: tgUser.username || null,
-                    balance: 0,
-                    createdAt: serverTimestamp(),
-                    isBlocked: false
+                // Create new user document
+                const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
+                userData = { 
+                    tgChatId: tgChatId,
+                    name: userName,
+                    username: currentUserTg.username || null,
+                    balance: 0, 
+                    createdAt: serverTimestamp(), 
+                    isBlocked: false 
                 };
-                await setDoc(userRef, newUser);
-                userData = newUser;
+                await setDoc(userRef, userData);
             }
+
+            if (userData.isBlocked) {
+                showAlert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
+                return; // Do not show app-container if blocked
+            }
+
+            await fetchAppConfig();
+            
+            if (tgChatId === ADMIN_UID) {
+                document.getElementById('admin-nav-link').classList.remove('hidden');
+            }
+            updateUI();
+            showMainPage('app-container');
+            navigateTo('home-page');
         }
-        
+
         async function fetchAppConfig() {
             const configRef = doc(db, "config", "main");
             const configSnap = await getDoc(configRef);
@@ -542,36 +549,106 @@
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('add-mails-btn').addEventListener('click', handleAddMails);
+            document.getElementById('toggle-account-details-btn').addEventListener('click', () => { document.getElementById('account-details-content').classList.toggle('hidden'); document.getElementById('account-details-chevron').classList.toggle('rotate-180'); });
             document.getElementById('sell-modal-cancel').addEventListener('click', () => document.getElementById('sell-modal').classList.add('hidden'));
             document.getElementById('download-history-btn').addEventListener('click', handleDownloadHistory);
             document.getElementById('deposit-details-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.remove('hidden'));
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
+            
+            // Event Listener for new "⚡ More Features" button on sell page
             document.getElementById('sell-page-more-features-btn').addEventListener('click', () => navigateTo('features-page'));
+            
+            // Event Listeners for Features Page
             document.getElementById('more-features-btn').addEventListener('click', () => navigateTo('features-page'));
             document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
+            // The event listener for the withdraw button has been removed as it is now a link.
+            // document.getElementById('features-withdraw-btn').addEventListener('click', handleWithdraw); 
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
             document.getElementById('features-send-btn').addEventListener('click', handleSend);
         }
         
+        // This function is kept in case you want to revert to a JS-based withdrawal in the future.
+        // It's not called by the new withdraw link button.
+        async function handleWithdraw() {
+            const amountStr = prompt("কত টাকা Withdraw করতে চান?", userData.balance.toFixed(2));
+            if (amountStr === null || amountStr.trim() === "") return;
+            
+            const withdrawAmount = parseFloat(amountStr);
+            if (isNaN(withdrawAmount) || withdrawAmount <= 0) {
+                showAlert("অনুগ্রহ করে সঠিক পরিমাণ লিখুন।");
+                return;
+            }
+            if (withdrawAmount > userData.balance) {
+                showAlert("আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই।");
+                return;
+            }
+
+            const method = prompt("উত্তোলনের মাধ্যম লিখুন (e.g., বিকাশ, নগদ):");
+            if (!method || method.trim() === "") {
+                showAlert("উত্তোলনের মাধ্যম আবশ্যক।");
+                return;
+            }
+
+            const recipientNumber = prompt(`আপনার ${method} নম্বরটি লিখুন:`);
+            if (!recipientNumber || recipientNumber.trim() === "") {
+                 showAlert("প্রাপকের নম্বর আবশ্যক।");
+                return;
+            }
+
+            if (!confirm(`আপনি কি ${recipientNumber} নম্বরে (${method}) ৳${withdrawAmount.toFixed(2)} উত্তোলন করতে নিশ্চিত?`)) return;
+
+            loader.style.display = 'flex';
+            try {
+                await addDoc(collection(db, "withdrawals"), {
+                    userId: userData.tgChatId, // Use Telegram Chat ID
+                    userName: userData.name, // Use Telegram Name
+                    amount: withdrawAmount,
+                    method: method,
+                    recipientNumber: recipientNumber,
+                    status: "pending", 
+                    requestedAt: serverTimestamp()
+                });
+                
+                showAlert(`আপনার ৳${withdrawAmount.toFixed(2)} উত্তোলনের অনুরোধ সফলভাবে জমা হয়েছে।`);
+                loadFeaturesPage();
+            } catch (error) {
+                console.error("Error submitting withdrawal request:", error);
+                showAlert("উত্তোলনের অনুরোধ জমা দিতে একটি সমস্যা হয়েছে।");
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
         function loadProfilePage() {
-            const tgUser = tg.initDataUnsafe?.user;
             const profilePic = document.getElementById('profile-pic');
             const avatarDiv = document.getElementById('profile-initials-avatar');
-            if (tgUser) {
-                if (tgUser.photo_url) {
-                    profilePic.src = tgUser.photo_url;
+            
+            if (currentUserTg) {
+                if (currentUserTg.photo_url) {
+                    profilePic.src = currentUserTg.photo_url;
                     profilePic.classList.remove('hidden');
                     avatarDiv.classList.add('hidden');
                 } else {
-                    const initials = (tgUser.first_name?.[0] || '') + (tgUser.last_name?.[0] || '');
+                    const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
                     document.getElementById('profile-initials').textContent = initials.toUpperCase();
                     profilePic.classList.add('hidden');
                     avatarDiv.classList.remove('hidden');
                 }
-                document.getElementById('profile-name').textContent = `${tgUser.first_name} ${tgUser.last_name || ''}`.trim();
-                document.getElementById('profile-username').textContent = tgUser.username ? `@${tgUser.username}` : 'No Telegram Username';
-                document.getElementById('profile-id').textContent = `Telegram ID: ${tgUser.id}`;
+                document.getElementById('profile-name').textContent = `${currentUserTg.first_name} ${currentUserTg.last_name || ''}`.trim();
+                document.getElementById('profile-username').textContent = currentUserTg.username ? `@${currentUserTg.username}` : 'No Telegram Username';
+                document.getElementById('profile-id').textContent = `Telegram ID: ${currentUserTg.id}`;
+            } else {
+                // Fallback if Telegram user data somehow isn't available (shouldn't happen with current initUserSession)
+                const initials = userData.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                document.getElementById('profile-initials').textContent = initials;
+                profilePic.classList.add('hidden');
+                avatarDiv.classList.remove('hidden');
+                document.getElementById('profile-name').textContent = userData.name;
+                document.getElementById('profile-username').textContent = "Telegram data not available";
+                document.getElementById('profile-id').textContent = `User ID: ${userData.tgChatId}`;
             }
+            // Removed profile-email as email/password auth is removed
+            // document.getElementById('profile-email').textContent = userData.email; 
         }
 
         async function handleDepositRequest() {
@@ -584,35 +661,64 @@
             try {
                 const depositQuery = query(collection(db, "deposits"), where("transactionId", "==", transactionId), where("status", "in", ["pending", "approved"]));
                 const querySnapshot = await getDocs(depositQuery);
-                if (!querySnapshot.empty) { return showAlert("এই Transaction ID দিয়ে ইতিমধ্যে একটি ডিপোজিট অনুরোধ জমা দেওয়া হয়েছে।"); }
-                await addDoc(collection(db, "deposits"), { userId: currentUserId, userName: userData.name, method: method, amount: amount, senderNumber: senderNumber, transactionId: transactionId, status: "pending", requestedAt: serverTimestamp() });
+                if (!querySnapshot.empty) {
+                    loader.style.display = 'none';
+                    return showAlert("এই Transaction ID দিয়ে ইতিমধ্যে একটি ডিপোজিট অনুরোধ জমা দেওয়া হয়েছে।");
+                }
+                await addDoc(collection(db, "deposits"), {
+                    userId: userData.tgChatId, // Use Telegram Chat ID
+                    userName: userData.name, // Use Telegram Name
+                    method: method,
+                    amount: amount,
+                    senderNumber: senderNumber,
+                    transactionId: transactionId,
+                    status: "pending",
+                    requestedAt: serverTimestamp()
+                });
                 showAlert("আপনার ডিপোজিট অনুরোধ সফলভাবে জমা হয়েছে।");
-                document.getElementById('deposit-method').value = ''; document.getElementById('deposit-amount').value = ''; document.getElementById('sender-number').value = ''; document.getElementById('deposit-txid').value = '';
+                document.getElementById('deposit-method').value = '';
+                document.getElementById('deposit-amount').value = '';
+                document.getElementById('sender-number').value = '';
+                document.getElementById('deposit-txid').value = '';
                 loadPaymentHistory();
-            } catch (error) { showAlert("ডিপোজিট অনুরোধ জমা দিতে একটি সমস্যা হয়েছে।"); } 
-            finally { loader.style.display = 'none'; }
+            } catch (error) {
+                showAlert("ডিপোজিট অনুরোধ জমা দিতে একটি সমস্যা হয়েছে।");
+            } finally {
+                loader.style.display = 'none';
+            }
         }
 
         async function loadPaymentHistory() {
             const historyList = document.getElementById('payment-history-list');
             historyList.innerHTML = '<p class="text-gray-400">হিস্টি লোড হচ্ছে...</p>';
             try {
-                const q = query(collection(db, "deposits"), where("userId", "==", currentUserId), orderBy("requestedAt", "desc"));
+                const q = query(collection(db, "deposits"), where("userId", "==", userData.tgChatId), orderBy("requestedAt", "desc"));
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-400 text-center">কোনো রেকর্ড পাওয়া যায়নি।</p>';
+
                 historyList.innerHTML = snapshot.docs.map(doc => {
                     const item = doc.data();
                     let statusColor, statusIcon;
                     switch (item.status) {
-                        case 'approved': statusColor = 'text-green-400'; statusIcon = 'check-circle-2'; break;
-                        case 'rejected': statusColor = 'text-red-400'; statusIcon = 'x-circle'; break;
-                        default: statusColor = 'text-yellow-400'; statusIcon = 'hourglass';
+                        case 'approved':
+                            statusColor = 'text-green-400';
+                            statusIcon = 'check-circle-2';
+                            break;
+                        case 'rejected':
+                            statusColor = 'text-red-400';
+                            statusIcon = 'x-circle';
+                            break;
+                        default:
+                            statusColor = 'text-yellow-400';
+                            statusIcon = 'hourglass';
                     }
                     const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString('en-GB') : 'N/A';
                     return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div class="flex items-center gap-3"><i data-lucide="${statusIcon}" class="w-6 h-6 ${statusColor}"></i><div><p class="font-semibold">${item.type || 'Deposit'} - ${item.method}</p><p class="text-xs text-gray-400">${date}</p></div></div><div class="text-right"><p class="font-bold text-lg">৳${item.amount}</p><p class="font-semibold ${statusColor} capitalize text-xs">${item.status}</p></div></div>`;
                 }).join('');
                 lucide.createIcons();
-            } catch (error) { historyList.innerHTML = '<p class="text-red-400 text-center">হিস্টি লোড করা যায়নি।</p>'; }
+            } catch (error) {
+                historyList.innerHTML = '<p class="text-red-400 text-center">হিস্টি লোড করা যায়নি।</p>';
+            }
         }
 
         function loadSellItems() {
@@ -655,7 +761,7 @@
         }
 
         window.openSellModal = function(type, itemDetails) {
-            const modal = document.getElementById('sell-modal');
+             const modal = document.getElementById('sell-modal');
             const itemConfig = (appConfig.sellableItems || []).find(item => item.type === type && item.details === itemDetails);
             if (!itemConfig) return showAlert("Error: Item configuration not found.");
             document.getElementById('sell-modal-title').textContent = `Sell ${itemConfig.type}`;
@@ -681,7 +787,15 @@
             document.getElementById('sell-modal').classList.add('hidden');
             loader.style.display = 'flex';
             try {
-                await addDoc(collection(db, "sell_requests"), { userId: currentUserId, userName: userData.name, accountType: itemConfig.type, accountDetails, askingPrice: itemConfig.price, status: "pending", requestedAt: serverTimestamp() });
+                await addDoc(collection(db, "sell_requests"), { 
+                    userId: userData.tgChatId, // Use Telegram Chat ID
+                    userName: userData.name, // Use Telegram Name
+                    accountType: itemConfig.type, 
+                    accountDetails, 
+                    askingPrice: itemConfig.price, 
+                    status: "pending", 
+                    requestedAt: serverTimestamp() 
+                });
                 showAlert("Your sell request has been submitted successfully.");
                 loadSellHistory();
             } catch (error) { showAlert("There was a problem submitting your request."); } 
@@ -692,7 +806,7 @@
             const historyList = document.getElementById('sell-history-list');
             historyList.innerHTML = '<p class="text-gray-400 text-center">Loading history...</p>';
             try {
-                const q = query(collection(db, "sell_requests"), where("userId", "==", currentUserId), orderBy("requestedAt", "desc"));
+                const q = query(collection(db, "sell_requests"), where("userId", "==", userData.tgChatId), orderBy("requestedAt", "desc"));
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-400 text-center">You have not submitted any accounts for sale.</p>';
                 historyList.innerHTML = '';
@@ -772,7 +886,7 @@
                         </div>`;
                 });
 
-                const q = query(collection(db, "mail_purchases"), where("userId", "==", currentUserId), orderBy("purchasedAt", "desc"));
+                const q = query(collection(db, "mail_purchases"), where("userId", "==", userData.tgChatId), orderBy("purchasedAt", "desc"));
                 const querySnapshot = await getDocs(q);
                 if(querySnapshot.empty) {
                     historyListEl.innerHTML = '<p class="text-center text-gray-400">আপনি এখনো কোনো মেইল কিনেননি।</p>';
@@ -797,7 +911,7 @@
         async function handleDownloadHistory() {
             loader.style.display = 'flex';
             try {
-                const q = query(collection(db, "mail_purchases"), where("userId", "==", currentUserId), orderBy("purchasedAt", "desc"));
+                const q = query(collection(db, "mail_purchases"), where("userId", "==", userData.tgChatId), orderBy("purchasedAt", "desc"));
                 const querySnapshot = await getDocs(q);
                 if (querySnapshot.empty) return showAlert("ডাউনলোড করার জন্য কোনো ಖರೀদী ইতিহাস পাওয়া যায়নি।");
                 
@@ -834,14 +948,14 @@
                     if (mailQuerySnapshot.empty) throw "দুঃখিত, এই ধরনের মেইল বর্তমানে স্টক শেষ।";
                     
                     const mailDoc = mailQuerySnapshot.docs[0];
-                    const userRef = doc(db, "users", currentUserId);
+                    const userRef = doc(db, "users", userData.tgChatId); // Use Telegram Chat ID
                     const userSnap = await transaction.get(userRef);
                     if (!userSnap.exists() || userSnap.data().balance < cost) throw `অপর্যাপ্ত ব্যালেন্স।`;
 
                     transaction.update(userRef, { balance: userSnap.data().balance - cost });
-                    transaction.update(mailDoc.ref, { isSold: true, soldTo: currentUserId, soldAt: serverTimestamp() });
+                    transaction.update(mailDoc.ref, { isSold: true, soldTo: userData.tgChatId, soldAt: serverTimestamp() }); // Use Telegram Chat ID
                     const purchaseLogRef = doc(collection(db, "mail_purchases"));
-                    transaction.set(purchaseLogRef, { userId: currentUserId, mailType: mailType, mail: mailDoc.data().email, password: mailDoc.data().password || null, cost: cost, purchasedAt: serverTimestamp() });
+                    transaction.set(purchaseLogRef, { userId: userData.tgChatId, mailType: mailType, mail: mailDoc.data().email, password: mailDoc.data().password || null, cost: cost, purchasedAt: serverTimestamp() }); // Use Telegram Chat ID
                     return mailDoc.data();
                 });
 
@@ -868,7 +982,7 @@
                 const updateDoc = snapshot.docs[0];
                 const updateData = updateDoc.data();
                 const updateId = updateDoc.id;
-                const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", currentUserId));
+                const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", userData.tgChatId)); // Use Telegram Chat ID
                 const userVote = userInteractionDoc.exists() ? userInteractionDoc.data().vote : null;
                 
                 const isLiked = userVote === 'liked';
@@ -887,7 +1001,7 @@
         async function handleVote(voteType, updateId) {
             loader.style.display = 'flex';
             const updateRef = doc(db, "updates", updateId);
-            const userInteractionRef = doc(db, "updates", updateId, "userInteractions", currentUserId);
+            const userInteractionRef = doc(db, "updates", updateId, "userInteractions", userData.tgChatId); // Use Telegram Chat ID
             try {
                 await runTransaction(db, async (transaction) => {
                     const userInteractionDoc = await transaction.get(userInteractionRef);
@@ -976,13 +1090,9 @@
 
         function setupBanner() {
             const slides = document.querySelectorAll('.slide');
-            if(!slides || slides.length === 0) return;
             const slideContainer = document.getElementById('slides');
             const dotsContainer = document.getElementById('dots');
-            if (slides.length <= 1) {
-                if(dotsContainer) dotsContainer.style.display = 'none';
-                return;
-            };
+            if (slides.length <= 1) return;
             let index = 0;
             dotsContainer.innerHTML = Array.from(slides).map((_, i) => `<span class="dot ${i === 0 ? 'active' : ''}" data-index="${i}"></span>`).join('');
             const dots = dotsContainer.querySelectorAll('.dot');
@@ -1004,22 +1114,26 @@
         async function loadFeaturesPage() {
             loader.style.display = 'flex';
             try {
-                const depositQuery = query(collection(db, "deposits"), where("userId", "==", currentUserId), where("status", "==", "approved"));
+                // Fetch Total Approved Deposits
+                const depositQuery = query(collection(db, "deposits"), where("userId", "==", userData.tgChatId), where("status", "==", "approved")); // Use Telegram Chat ID
                 const depositSnapshot = await getDocs(depositQuery);
                 const totalDeposit = depositSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
                 document.getElementById('total-deposit-display').textContent = `৳${totalDeposit.toFixed(2)}`;
 
-                const incomeQuery = query(collection(db, "sell_requests"), where("userId", "==", currentUserId), where("status", "==", "approved"));
+                // Fetch Total Approved Income (from selling)
+                const incomeQuery = query(collection(db, "sell_requests"), where("userId", "==", userData.tgChatId), where("status", "==", "approved")); // Use Telegram Chat ID
                 const incomeSnapshot = await getDocs(incomeQuery);
                 const totalIncome = incomeSnapshot.docs.reduce((sum, doc) => sum + doc.data().askingPrice, 0);
                 document.getElementById('total-income-display').textContent = `৳${totalIncome.toFixed(2)}`;
 
-                const receivedQuery = query(collection(db, "transfers"), where("toId", "==", currentUserId));
+                // Fetch Total Received Transfers
+                const receivedQuery = query(collection(db, "transfers"), where("toId", "==", userData.tgChatId)); // Use Telegram Chat ID
                 const receivedSnapshot = await getDocs(receivedQuery);
                 const totalReceive = receivedSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
                 document.getElementById('total-receive-display').textContent = `৳${totalReceive.toFixed(2)}`;
 
-                const withdrawQuery = query(collection(db, "withdrawals"), where("userId", "==", currentUserId), where("status", "==", "approved"));
+                // Fetch Total Approved Withdrawals
+                const withdrawQuery = query(collection(db, "withdrawals"), where("userId", "==", userData.tgChatId), where("status", "==", "approved")); // Use Telegram Chat ID
                 const withdrawSnapshot = await getDocs(withdrawQuery);
                 const totalWithdraw = withdrawSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
                 document.getElementById('total-withdraw-display').textContent = `৳${totalWithdraw.toFixed(2)}`;
@@ -1038,8 +1152,8 @@
             const historyList = document.getElementById('transfer-history-list');
             historyList.innerHTML = '<p class="text-gray-400 text-center">Loading history...</p>';
             
-            const sentQuery = query(collection(db, "transfers"), where("fromId", "==", currentUserId), orderBy("timestamp", "desc"));
-            const receivedQuery = query(collection(db, "transfers"), where("toId", "==", currentUserId), orderBy("timestamp", "desc"));
+            const sentQuery = query(collection(db, "transfers"), where("fromId", "==", userData.tgChatId), orderBy("timestamp", "desc")); // Use Telegram Chat ID
+            const receivedQuery = query(collection(db, "transfers"), where("toId", "==", userData.tgChatId), orderBy("timestamp", "desc")); // Use Telegram Chat ID
 
             const [sentSnapshot, receivedSnapshot] = await Promise.all([getDocs(sentQuery), getDocs(receivedQuery)]);
             
@@ -1055,7 +1169,7 @@
             }
 
             historyList.innerHTML = transactions.map(item => {
-                const isSent = item.fromId === currentUserId;
+                const isSent = item.fromId === userData.tgChatId; // Use Telegram Chat ID
                 const date = item.timestamp.toDate().toLocaleString('en-GB');
                 const sign = isSent ? '-' : '+';
                 const color = isSent ? 'text-red-400' : 'text-green-400';
@@ -1072,15 +1186,15 @@
         }
 
         function handleReceive() {
-            const message = `আপনার রিসিভ আইডি:\n\n${currentUserId}\n\nএই আইডি ব্যবহার করে অন্য ব্যবহারকারীর থেকে ব্যালেন্স রিসিভ করতে পারবেন।`;
-            copyToClipboard(currentUserId, null);
+            const message = `আপনার রিসিভ আইডি:\n\n${userData.tgChatId}\n\nএই আইডি ব্যবহার করে অন্য ব্যবহারকারীর থেকে ব্যালেন্স রিসিভ করতে পারবেন।`;
+            copyToClipboard(userData.tgChatId, null);
             showAlert(message);
         }
 
         async function handleSend() {
             const recipientId = prompt("🚀 ব্যালেন্স ট্রান্সফার করুন");
             if (!recipientId || recipientId.trim() === '') return;
-            if (recipientId.trim() === currentUserId) {
+            if (recipientId.trim() === userData.tgChatId) { // Use Telegram Chat ID
                 showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
                 return;
             }
@@ -1104,7 +1218,7 @@
             if (!confirm(`আপনি কি এই আইডিতে ৳${amount.toFixed(2)} পাঠাতে চান?`)) return;
 
             loader.style.display = 'flex';
-            const senderRef = doc(db, "users", currentUserId);
+            const senderRef = doc(db, "users", userData.tgChatId); // Use Telegram Chat ID
             const recipientRef = doc(db, "users", recipientId.trim());
 
             try {
@@ -1127,8 +1241,8 @@
                     
                     const transferLogRef = doc(collection(db, "transfers"));
                     transaction.set(transferLogRef, {
-                        fromId: currentUserId,
-                        fromName: userData.name,
+                        fromId: userData.tgChatId, // Use Telegram Chat ID
+                        fromName: userData.name, // Use Telegram Name
                         toId: recipientId.trim(),
                         toName: recipientDoc.data().name,
                         amount: amount,
@@ -1148,8 +1262,6 @@
                 loader.style.display = 'none';
             }
         }
-
-        main();
     </script>
 </body>
 </html>
