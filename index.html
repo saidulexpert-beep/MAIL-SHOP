@@ -13,25 +13,25 @@
     <style>
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: #f8f8f8; /* Changed to light background */
-            color: #333333; /* Changed to dark text */
-            background-image: none; /* Removed radial gradient */
+            background-color: #f8f8f8;
+            color: #333333;
+            background-image: none;
         }
-        .light-bg { background-color: #f8f8f8; } /* New class for light background */
+        .light-bg { background-color: #f8f8f8; }
         .card-bg { 
-            background-color: #ffffff; /* Changed to white card background */
-            border: 1px solid #e0e0e0; /* Lighter border */
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Lighter shadow */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .card-bg:hover {
-            border-color: rgba(0, 123, 255, 0.4); /* New accent color */
+            border-color: rgba(0, 123, 255, 0.4);
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), 0 0 8px rgba(0, 123, 255, 0.1);
         }
         .text-accent-gradient {
-            background: linear-gradient(to right, #007bff, #0056b3); /* New accent color gradient */
+            background: linear-gradient(to right, #007bff, #0056b3);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -42,7 +42,7 @@
         }
         .btn:active, .btn-gradient:active, .btn-outline-accent:active { transform: scale(0.96); }
         .btn-gradient { 
-            background-image: linear-gradient(to right, #007bff, #0056b3); /* New accent color gradient */
+            background-image: linear-gradient(to right, #007bff, #0056b3);
             color: #ffffff; 
             font-weight: bold; 
             box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
@@ -53,7 +53,7 @@
         }
         .btn-outline-accent { 
             background-color: transparent;
-            border: 1px solid #007bff; /* New accent color */
+            border: 1px solid #007bff;
             color: #007bff; 
         }
         .btn-outline-accent:hover { 
@@ -63,19 +63,19 @@
         }
         .btn-gradient:disabled, .btn-disabled { 
             background-image: none;
-            background-color: #cccccc; /* Lighter disabled button */
+            background-color: #cccccc;
             color: #888888; 
             cursor: not-allowed; 
             box-shadow: none;
         }
         .input-field { 
-            background-color: #f0f0f0; /* Lighter input field */
-            border: 1px solid #cccccc; /* Lighter border */
-            color: #333333; /* Darker text for input */
+            background-color: #f0f0f0;
+            border: 1px solid #cccccc;
+            color: #333333;
             transition: all 0.2s ease;
         }
         .input-field:focus {
-            border-color: #007bff; /* New accent color */
+            border-color: #007bff;
             box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
             outline: none;
         }
@@ -85,8 +85,8 @@
         .sub-page.active { display: block; animation: fadeIn 0.3s ease-in-out; }
         
         .bottom-nav {
-             border-top: 1px solid #e0e0e0; /* Lighter border */
-             background-color: rgba(255, 255, 255, 0.9); /* Lighter background */
+             border-top: 1px solid #e0e0e0;
+             background-color: rgba(255, 255, 255, 0.9);
              backdrop-filter: blur(10px);
              -webkit-backdrop-filter: blur(10px);
         }
@@ -105,81 +105,110 @@
             background-color: rgba(255, 255, 255, 0.9);
             z-index: 50;
         }
-        .nav-link-premium { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #6b7280; /* Darker default text */ font-size: 0.75rem; font-weight: 500; padding: 8px; border-radius: 12px; transition: all 0.2s ease; position: relative; }
+        .nav-link-premium { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #6b7280; font-size: 0.75rem; font-weight: 500; padding: 8px; border-radius: 12px; transition: all 0.2s ease; position: relative; }
         .nav-link-premium:hover { color: #333333; }
-        .nav-link-premium.active { color: #007bff; /* New accent color */ }
+        .nav-link-premium.active { color: #007bff; }
         .nav-link-premium:active { transform: scale(0.95); }
         .nav-link-premium .icon { width: 24px; height: 24px; }
-        .center-home-link { position: relative; transform: translateY(-20px) scale(1.1); background: rgba(0, 123, 255, 0.2); /* New accent color */ border: 1px solid rgba(0, 123, 255, 0.5); /* New accent color */ backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0, 123, 255, 0.4); transition: all 0.3s ease; color: #ffffff; }
+        .center-home-link { position: relative; transform: translateY(-20px) scale(1.1); background: rgba(0, 123, 255, 0.2); border: 1px solid rgba(0, 123, 255, 0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0, 123, 255, 0.4); transition: all 0.3s ease; color: #ffffff; }
         .center-home-link:hover { transform: translateY(-20px) scale(1.15); box-shadow: 0 6px 30px rgba(0, 123, 255, 0.6); }
         .center-home-link .icon { width: 32px; height: 32px; color: #fff; }
-        .header { border-bottom: 1px solid #e0e0e0; /* Lighter border */ background-color: rgba(255, 255, 255, 0.9); /* Lighter background */ backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .header { border-bottom: 1px solid #e0e0e0; background-color: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Banner Styles */
         .banner-wrapper { position: relative; width: 100%; padding-top: 56.25%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
         .banner-inner { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1); }
         .slide { min-width: 100%; position: relative; }
         .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .dots { position: absolute; bottom: 12px; width: 100%; text-align: center; z-index: 10; }
         .dot { display: inline-block; height: 8px; width: 8px; margin: 0 4px; background: #bbb; border-radius: 50%; cursor: pointer; transition: background 0.3s; }
-        .dot.active { background: #007bff; /* New accent color */ }
-        #pay-center-telegram-banner { position: fixed; right: 0; top: 50%; transform: translateY(-50%) translateX(100%); z-index: 40; background: linear-gradient(to left, #2a73cc, #1a56a6); color: white; padding: 8px 12px; border-top-left-radius: 12px; border-bottom-left-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); display: flex; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.3s ease-in-out; border: 1px solid rgba(255, 255, 255, 0.2); font-weight: 600; }
-        #pay-center-telegram-banner.active { transform: translateY(-50%) translateX(0); }
+        .dot.active { background: #007bff; }
+        
+        /* Premium Loader Styles */
+        #loader {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        #loader .logo-container {
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+        #loader .loader-text {
+            animation: fadeInText 1s ease-in-out 0.5s forwards;
+            opacity: 0;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        #loader-reviews {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.9rem;
+            color: #6b7280;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        /* Loader Styles */
-        #loader .container { --uib-size: 45px; --uib-color: #007bff; /* New accent color */ --uib-speed: 1.75s; --uib-bg-opacity: .2; height: 31.25px; width: 50px; }
-        #loader .car { stroke: var(--uib-color); stroke-dasharray: 100; stroke-dashoffset: 0; stroke-linecap: round; stroke-linejoin: round; animation: travel var(--uib-speed) ease-in-out infinite, fade var(--uib-speed) ease-out infinite; }
-        #loader .track { stroke-linecap: round; stroke-linejoin: round; stroke: var(--uib-color); opacity: var(--uib-bg-opacity); }
-        @keyframes travel { 0% { stroke-dashoffset: 100; } 75% { stroke-dashoffset: 0; } }
-        @keyframes fade { 0% { opacity: 0; } 20%, 55% { opacity: 1; } 100% { opacity: 0; } }
-        
-        /* Purchase History Card Styles */
         .purchase-history-card { background-color: #ffffff; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); border-radius: 12px; padding: 1rem; transition: all 0.2s ease; }
-        .purchase-info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
         .purchase-mail-details { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 0.75rem; border-radius: 8px; font-size: 0.9rem; color: #333333; word-break: break-all; margin-bottom: 0.75rem; }
-        .purchase-date { font-size: 0.75rem; color: #6b7280; text-align: right; }
-        .purchase-history-card .copy-btn { color: #6b7280; transition: color 0.2s ease; }
-        .purchase-history-card .copy-btn:hover { color: #007bff; }
         
-        /* NEW MAIL CARD DESIGN (Based on image) */
         .details-btn { background-color: transparent; border: 1px solid #007bff; color: #007bff; font-size: 0.8rem; padding: 2px 10px; border-radius: 6px; transition: all 0.2s ease; }
         .details-btn:hover { background-color: #007bff; color: #ffffff; }
         .validity-tag { background-color: #22c55e; color: #ffffff; font-size: 0.8rem; font-weight: 500; padding: 2px 10px; border-radius: 6px; }
         .stat-label { color: #6b7280; font-size: 0.9rem; margin-bottom: 2px; }
         .stat-value { font-weight: 600; font-size: 1.125rem; }
-        .price-color { color: #007bff; /* New accent color */ }
+        .price-color { color: #007bff; }
         .stock-color { color: #22c55e; }
         .api-btn { color: #6b7280; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: color 0.2s ease; }
         .api-btn:hover { color: #007bff; }
 
-        /* Updated Pay Center Styles */
         .deposit-method-card { background-color: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e0e0e0; transition: all 0.2s ease; }
         .deposit-method-card:hover { border-color: #007bff; box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1); }
-        .deposit-method-card img { filter: grayscale(50%); transition: filter 0.2s ease; }
-        .deposit-method-card:hover img { filter: grayscale(0%); }
-        .deposit-method-card p { color: #333333; }
-        .deposit-method-card .font-mono { color: #555555; }
-        .deposit-method-card button { background-color: #e0e0e0; color: #333333; }
-        .deposit-method-card button:hover { background-color: #cccccc; }
-
-        /* Alert/Modal Styling */
-        #custom-alert > div, #deposit-details-modal > div {
-            background-color: #ffffff;
-            color: #333333;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        
+        /* Tutorial Modal Styles */
+        #tutorial-modal {
+            transition: opacity 0.3s ease;
         }
-        #custom-alert #alert-message { color: #555555; }
+        .video-container-16-9 {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .video-container-16-9 iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .review-card {
+            background-color: #f9f9f9;
+            border-left: 4px solid #007bff;
+        }
     </style>
 </head>
 <body class="max-w-md mx-auto">
 
-    <div id="loader" class="hidden fixed inset-0 light-bg bg-opacity-75 flex items-center justify-center z-50">
-        <svg class="container" x="0px" y="0px" viewBox="0 0 50 31.25" height="31.25" width="50" preserveAspectRatio='xMidYMid meet'>
-          <path class="track" stroke-width="4" fill="none" pathlength="100" d="M0.625 21.5 h10.25 l3.75 -5.875 l7.375 15 l9.75 -30 l7.375 20.875 v0 h10.25"/>
-          <path class="car" stroke-width="4" fill="none" pathlength="100" d="M0.625 21.5 h10.25 l3.75 -5.875 l7.375 15 l9.75 -30 l7.375 20.875 v0 h10.25"/>
-        </svg>
+    <div id="loader" class="fixed inset-0 light-bg flex items-center justify-center z-50">
+        <div class="text-center">
+            <div class="logo-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#007bff] mx-auto"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </div>
+            <h1 class="text-accent-gradient loader-text mt-4">GMAIL SHOP</h1>
+        </div>
+        <div id="loader-reviews">"খুবই বিশ্বস্ত একটি সাইট।" - মোঃ রায়হান</div>
     </div>
 
     <div id="app-container" class="min-h-screen flex-col main-page">
@@ -188,29 +217,32 @@
                 <h1 class="text-xl font-bold text-accent-gradient">GMAIL SHOP</h1>
                 <button id="header-deposit-btn" class="btn-gradient px-3 py-1 rounded-full text-sm font-bold">Deposit Now</button>
             </div>
-            <div id="header-balance-display" class="font-bold text-[#007bff]">৳0.00</div> </header>
+            <div id="header-balance-display" class="font-bold text-[#007bff]">৳0.00</div>
+        </header>
 
         <main class="flex-grow pb-20">
             <div id="home-page" class="p-4 space-y-6 sub-page">
                 <div class="banner-wrapper">
                     <div class="banner-inner" id="slides">
-                        <div class="slide active"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/zBp8rCX9/Yellow-Orange-Modern-Marketing-Courses-You-Tube-Thumbnail-20250910-185659-0000.png" alt="Slide 1"></a><div class="caption">কম দামে MAIL কিনুন</div></div>
-                        <div class="slide"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/W1syFD8p/Grey-Blue-Illustration-Refer-a-Friend-Instagram-Post-1080-x-720-px-20250917-223749-0000.png" alt="Slide 2"></a><div class="caption">বেশি বেশি রেফার করুন</div></div>
-                        <div class="slide"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/52HsFwvV/Black-and-Orange-Money-You-Tube-Thumbnail-20250917-224706-0000.png" alt="Slide 3"></a><div class="caption">TASKS থেকে ইনকাম করুন</div></div>
+                        <div class="slide active"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/zBp8rCX9/Yellow-Orange-Modern-Marketing-Courses-You-Tube-Thumbnail-20250910-185659-0000.png" alt="Slide 1"></a></div>
+                        <div class="slide"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/W1syFD8p/Grey-Blue-Illustration-Refer-a-Friend-Instagram-Post-1080-x-720-px-20250917-223749-0000.png" alt="Slide 2"></a></div>
+                        <div class="slide"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/52HsFwvV/Black-and-Orange-Money-You-Tube-Thumbnail-20250917-224706-0000.png" alt="Slide 3"></a></div>
                     </div>
                     <div class="dots" id="dots"></div>
                 </div>
                 <div class="card-bg p-5 rounded-xl">
-                    <p class="text-gray-600 text-sm mb-1">Your Balance</p> <div class="flex items-center justify-between">
-                        <p id="balance-display" class="text-4xl font-bold text-[#333333]">৳0.00</p> <button id="home-deposit-btn" class="btn-gradient px-6 py-2 rounded-lg">Deposit</button>
+                    <p class="text-gray-600 text-sm mb-1">Your Balance</p>
+                    <div class="flex items-center justify-between">
+                        <p id="balance-display" class="text-4xl font-bold text-[#333333]">৳0.00</p>
+                        <button id="home-deposit-btn" class="btn-gradient px-6 py-2 rounded-lg">Deposit</button>
                     </div>
                 </div>
                 <section>
                     <h2 class="text-lg font-semibold px-2 mb-3">Menu</h2>
                     <div class="space-y-3">
-                        <div class="card-bg p-4 rounded-lg flex items-center justify-between"><div class="flex items-center space-x-4"><i data-lucide="youtube" class="w-8 h-8 text-red-500"></i><div><h3 class="font-semibold">Tutorial</h3><p class="text-xs text-gray-500">কিভাবে কাজ করবেন দেখুন</p></div></div><a href="https://youtu.be/ajjEcCY4qOg?si=axyWRgZ7bt3Im_la" target="_blank" class="bg-red-600 text-white font-bold px-4 py-2 rounded-lg text-sm btn">Watch</a></div>
-                        <div class="card-bg p-4 rounded-lg flex items-center justify-between"><div class="flex items-center space-x-4"><i data-lucide="send" class="w-8 h-8 text-sky-500"></i><div><h3 class="font-semibold">Join Telegram</h3><p class="text-xs text-gray-500">Join and get updates</p></div></div><a href="https://t.me/Life_Work_BD/259" target="_blank" class="bg-blue-600 text-white font-bold px-4 py-2 rounded-lg text-sm btn">JOIN F</a></div>
-                        <div class="card-bg p-4 rounded-lg flex items-center justify-between"><div class="flex items-center space-x-4"><i data-lucide="headset" class="w-8 h-8 text-green-400"></i><div><h3 class="font-semibold">Support Team</h3><p class="text-xs text-gray-500">Get help from our support</p></div></div><a href="http://t.me/GMAIL_SHOP_bot/CHAT" target="_blank" class="bg-green-600 text-white font-bold px-4 py-2 rounded-lg text-sm btn">FCHAT</a></div>
+                        <div id="tutorial-btn" class="card-bg p-4 rounded-lg flex items-center justify-between cursor-pointer"><div class="flex items-center space-x-4"><i data-lucide="play-circle" class="w-8 h-8 text-purple-500"></i><div><h3 class="font-semibold">Tutorial</h3><p class="text-xs text-gray-500">কিভাবে কাজ করবেন দেখুন</p></div></div><button class="bg-purple-600 text-white font-bold px-4 py-2 rounded-lg text-sm btn">Watch</button></div>
+                        <div class="card-bg p-4 rounded-lg flex items-center justify-between"><div class="flex items-center space-x-4"><i data-lucide="send" class="w-8 h-8 text-sky-500"></i><div><h3 class="font-semibold">Join Telegram</h3><p class="text-xs text-gray-500">Join and get updates</p></div></div><a href="https://t.me/Life_Work_BD/259" target="_blank" class="bg-blue-600 text-white font-bold px-4 py-2 rounded-lg text-sm btn">JOIN</a></div>
+                        <div class="card-bg p-4 rounded-lg flex items-center justify-between"><div class="flex items-center space-x-4"><i data-lucide="headset" class="w-8 h-8 text-green-400"></i><div><h3 class="font-semibold">Support Team</h3><p class="text-xs text-gray-500">Get help from our support</p></div></div><a href="http://t.me/GMAIL_SHOP_bot/CHAT" target="_blank" class="bg-green-600 text-white font-bold px-4 py-2 rounded-lg text-sm btn">CHAT</a></div>
                     </div>
                 </section>
             </div>
@@ -220,9 +252,11 @@
                 <div class="card-bg p-5 rounded-xl space-y-5">
                     <div>
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-semibold text-lg flex items-center gap-2"><i data-lucide="wallet" class="w-6 h-6 text-[#007bff]"></i><span>Make a Deposit</span></h3> <button id="deposit-details-btn" class="btn-outline-accent px-3 py-1 rounded-lg text-sm">বিস্তারিত</button>
+                            <h3 class="font-semibold text-lg flex items-center gap-2"><i data-lucide="wallet" class="w-6 h-6 text-[#007bff]"></i><span>Make a Deposit</span></h3>
+                            <button id="deposit-details-btn" class="btn-outline-accent px-3 py-1 rounded-lg text-sm">বিস্তারিত</button>
                         </div>
-                        <p class="text-lg font-semibold text-gray-700 mb-4 text-center p-3 rounded-lg border border-dashed border-blue-500/50 bg-blue-500/10">নিচের নাম্বারে <span class="text-blue-600 animate-pulse">সেন্ডমানি</span> করুন</p> <div class="grid grid-cols-2 gap-3 mb-5">
+                        <p class="text-lg font-semibold text-gray-700 mb-4 text-center p-3 rounded-lg border border-dashed border-blue-500/50 bg-blue-500/10">নিচের নাম্বারে <span class="text-blue-600 animate-pulse">সেন্ডমানি</span> করুন</p>
+                        <div class="grid grid-cols-2 gap-3 mb-5">
                             <div class="deposit-method-card"><img src="https://i.postimg.cc/Jh9s6jWw/20250922-113350.png" alt="Nagad" class="w-10 h-10 rounded-full mx-auto mb-2"><p class="font-bold text-md">নগদ</p><p class="text-gray-600 font-mono tracking-wider text-sm my-1">01864260513</p><button onclick="copyToClipboard('01864260513', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy</span></button></div>
                             <div class="deposit-method-card"><img src="https://i.postimg.cc/tCwGVkdH/20250922-113514.png" alt="bKash" class="w-10 h-10 rounded-full mx-auto mb-2"><p class="font-bold text-md">বিকাশ</p><p class="text-gray-600 font-mono tracking-wider text-sm my-1">01827750260</p><button onclick="copyToClipboard('01827750260', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy</span></button></div>
                             <div class="deposit-method-card"><img src="https://i.postimg.cc/htsw10Tj/20250922-113924.png" alt="Rocket" class="w-10 h-10 rounded-full mx-auto mb-2"><p class="font-bold text-md">রকেট</p><p class="text-gray-600 font-mono tracking-wider text-sm my-1">018277502604</p><button onclick="copyToClipboard('018277502604', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy</span></button></div>
@@ -266,7 +300,9 @@
             <div id="profile-page" class="p-4 space-y-6 sub-page">
                 <div class="card-bg p-6 rounded-2xl flex flex-col items-center text-center">
                     <div class="relative mb-4">
-                        <img id="profile-pic" class="w-24 h-24 rounded-full border-2 border-[#007bff] object-cover hidden" src="" alt="Profile Picture"> <div id="profile-initials-avatar" class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center border-2 border-[#007bff]"><span id="profile-initials" class="text-3xl font-bold text-gray-500"></span></div> </div>
+                        <img id="profile-pic" class="w-24 h-24 rounded-full border-2 border-[#007bff] object-cover hidden" src="" alt="Profile Picture">
+                        <div id="profile-initials-avatar" class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center border-2 border-[#007bff]"><span id="profile-initials" class="text-3xl font-bold text-gray-500"></span></div>
+                    </div>
                     <h3 id="profile-name" class="text-2xl font-bold text-gray-800">Loading...</h3>
                     <p id="profile-username" class="text-gray-500">@username</p>
                     <p id="profile-id" class="text-sm text-gray-600 mt-2">ID: 123456</p>
@@ -291,35 +327,7 @@
                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
                         </a>
                     </div>
-                    <p class="text-center text-gray-600 text-sm">Developed by <a href="https://t.me/SAIDULEP" target="_blank" class="font-semibold text-[#007bff] hover:underline">SAIDUL</a></p> </div>
-            </div>
-
-            <div id="features-page" class="p-4 space-y-8 sub-page">
-                <div class="grid grid-cols-2 gap-4 text-center">
-                    <div class="card-bg p-4 rounded-xl">
-                        <p class="text-sm text-gray-600 mb-1">TOTAL ডিপোজিট</p>
-                        <p id="total-deposit-display" class="text-2xl font-bold text-blue-500">৳0.00</p>
-                    </div>
-                     <div class="card-bg p-4 rounded-xl">
-                        <p class="text-sm text-gray-600 mb-1">TOTAL Receive</p>
-                        <p id="total-receive-display" class="text-2xl font-bold text-indigo-500">৳0.00</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <button id="features-deposit-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-green-500 to-emerald-500 shadow-lg btn">Deposit</button>
-                    <button id="features-receive-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-blue-500 to-sky-500 shadow-lg btn flex items-center justify-center gap-1">
-                        <i data-lucide="arrow-down-to-line" class="w-4 h-4"></i>
-                        <span>Receive</span>
-                    </button>
-                    <button id="features-send-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 shadow-lg btn">SEND</button>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-semibold mb-3">Balance Transfer History</h3>
-                    <div id="transfer-history-list" class="space-y-3">
-                        <p class="text-gray-600 text-center">No transfer history found.</p>
-                    </div>
+                    <p class="text-center text-gray-600 text-sm">Developed by <a href="https://t.me/SAIDULEP" target="_blank" class="font-semibold text-[#007bff] hover:underline">SAIDUL</a></p>
                 </div>
             </div>
 
@@ -342,8 +350,6 @@
             <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
             <a href="#" id="admin-nav-link" class="nav-link-premium hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></a>
         </nav>
-
-        <a href="https://t.me/earn_Supportbot" target="_blank" id="pay-center-telegram-banner" class="hidden"><i data-lucide="send"></i><span>Support</span></a>
     </div>
     
     <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
@@ -370,21 +376,56 @@
             <button id="deposit-details-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">Got It!</button>
         </div>
     </div>
+    <div id="tutorial-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-md space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center">
+                <h3 class="text-xl font-bold text-accent-gradient">কিভাবে কাজ করবেন</h3>
+                <button id="close-tutorial-modal" class="text-gray-400 hover:text-gray-800"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <h4 class="font-semibold mb-2 text-gray-700">১. কিভাবে ডিপোজিট করবেন?</h4>
+                    <div class="video-container-16-9">
+                        <iframe src="https://www.youtube.com/embed/ajjEcCY4qOg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-2 text-gray-700">২. কিভাবে মেইল কিনবেন?</h4>
+                    <div class="video-container-16-9">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-200 pt-4">
+                <h3 class="text-lg font-bold text-center text-gray-800 mb-4">আমাদের গ্রাহকদের মতামত</h3>
+                <div class="space-y-3">
+                    <div class="review-card p-4 rounded-lg">
+                        <p class="text-gray-600 italic">"খুব সহজে এবং দ্রুত মেইল কিনতে পারলাম। সার্ভিস খুবই ভালো।"</p>
+                        <p class="text-right font-semibold text-sm text-gray-800 mt-2">- মোঃ আব্দুল্লাহ</p>
+                    </div>
+                    <div class="review-card p-4 rounded-lg">
+                        <p class="text-gray-600 italic">"আমার দেখা সেরা একটি সাইট। কোনো সমস্যা হলে সাপোর্ট টিম দ্রুত সমাধান করে দেয়।"</p>
+                        <p class="text-right font-semibold text-sm text-gray-800 mt-2">- সাদিয়া আফরিন</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <script type="module">
-        // =================================================================================
-        const ADMIN_UID = "7358825471"; // <-- আপনার অ্যাডমিন User ID (এখন Telegram chat ID হবে)
-        // =================================================================================
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBVVPZnmrPhlYTVqWGB3reMM352UclMo4E",
-  authDomain: "mail-shop-f861c.firebaseapp.com",
-  databaseURL: "https://mail-shop-f861c-default-rtdb.firebaseio.com",
-  projectId: "mail-shop-f861c",
-  storageBucket: "mail-shop-f861c.firebasestorage.app",
-  messagingSenderId: "535828972177",
-  appId: "1:535828972177:web:7e7e8c023669999dd9f530"
-};
+        const ADMIN_UID = "7358825471";
+        const firebaseConfig = {
+          apiKey: "AIzaSyBVVPZnmrPhlYTVqWGB3reMM352UclMo4E",
+          authDomain: "mail-shop-f861c.firebaseapp.com",
+          databaseURL: "https://mail-shop-f861c-default-rtdb.firebaseio.com",
+          projectId: "mail-shop-f861c",
+          storageBucket: "mail-shop-f861c.firebasestorage.app",
+          messagingSenderId: "535828972177",
+          appId: "1:535828972177:web:7e7e8c023669999dd9f530"
+        };
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
@@ -392,13 +433,14 @@ const firebaseConfig = {
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let currentUserTg = null; // Stores Telegram user object
-        let userData = null; // Stores user data from Firestore
+        let currentUserTg = null;
+        let userData = null;
         let appConfig = {};
         
         const loader = document.getElementById('loader');
         
         window.onload = async () => {
+            cycleReviewsOnLoader(); // Start review cycle animation
             try {
                 window.Telegram.WebApp.ready();
                 window.Telegram.WebApp.expand();
@@ -418,17 +460,39 @@ const firebaseConfig = {
             setupEventListeners();
             setupBanner(); 
             
-            loader.style.display = 'flex';
             await initUserSession();
-            loader.style.display = 'none';
+            
+            // Fade out loader
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500); // match transition duration
         };
+
+        function cycleReviewsOnLoader() {
+            const reviews = [
+                '"খুবই বিশ্বস্ত একটি সাইট।" - মোঃ রায়হান',
+                '"দ্রুত ডেলিভারি এবং চমৎকার সাপোর্ট।" - ফারিয়া',
+                '"ব্যবহার করা খুবই সহজ। Recommended!" - সুমন আহমেদ'
+            ];
+            let reviewIndex = 0;
+            const reviewEl = document.getElementById('loader-reviews');
+
+            setInterval(() => {
+                reviewEl.style.opacity = '0';
+                setTimeout(() => {
+                    reviewIndex = (reviewIndex + 1) % reviews.length;
+                    reviewEl.textContent = reviews[reviewIndex];
+                    reviewEl.style.opacity = '1';
+                }, 500); // fade out duration
+            }, 4000); // Time each review is shown + transition time
+        }
 
         async function initUserSession() {
             if (!currentUserTg) {
                 showAlert("Telegram user data is missing. Cannot proceed.");
                 return;
             }
-
             const tgChatId = String(currentUserTg.id);
             const userRef = doc(db, "users", tgChatId);
             const userSnap = await getDoc(userRef);
@@ -436,7 +500,6 @@ const firebaseConfig = {
             if (userSnap.exists()) {
                 userData = userSnap.data();
             } else {
-                // Create new user document
                 const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
                 userData = { 
                     tgChatId: tgChatId,
@@ -451,7 +514,7 @@ const firebaseConfig = {
 
             if (userData.isBlocked) {
                 showAlert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
-                return; // Do not show app-container if blocked
+                return;
             }
 
             await fetchAppConfig();
@@ -467,7 +530,7 @@ const firebaseConfig = {
         async function fetchAppConfig() {
             const configRef = doc(db, "config", "main");
             const configSnap = await getDoc(configRef);
-            appConfig = configSnap.exists() ? configSnap.data() : { mails: [] }; /* Removed sellableItems */
+            appConfig = configSnap.exists() ? configSnap.data() : { mails: [] };
         }
         
         function updateUI() {
@@ -488,14 +551,12 @@ const firebaseConfig = {
             document.querySelectorAll('.nav-link-premium').forEach(link => {
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
-            document.getElementById('pay-center-telegram-banner').classList.toggle('active', pageId === 'pay-page');
             const pageLoadFunctions = {
                 'pay-page': loadPaymentHistory,
                 'mail-page': loadMailStore,
                 'updates-page': loadUpdates,
                 'admin-page': populateAdminMailTypes,
-                'profile-page': loadProfilePage,
-                'features-page': loadFeaturesPage
+                'profile-page': loadProfilePage
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
@@ -508,23 +569,21 @@ const firebaseConfig = {
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('add-mails-btn').addEventListener('click', handleAddMails);
-            // Removed account details toggle listener
-            // Removed sell modal cancel listener
             document.getElementById('download-history-btn').addEventListener('click', handleDownloadHistory);
             document.getElementById('deposit-details-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.remove('hidden'));
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
-            
-            // Removed event listener for "⚡ More Features" button on sell page
-            
-            // Event Listeners for Features Page
-            // document.getElementById('more-features-btn').addEventListener('click', () => navigateTo('features-page')); // Removed profile features button
-            document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
-            document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
-            document.getElementById('features-send-btn').addEventListener('click', handleSend);
+
+            // Tutorial Modal Listeners
+            const tutorialModal = document.getElementById('tutorial-modal');
+            document.getElementById('tutorial-btn').addEventListener('click', () => tutorialModal.classList.remove('hidden'));
+            document.getElementById('close-tutorial-modal').addEventListener('click', () => tutorialModal.classList.add('hidden'));
+            tutorialModal.addEventListener('click', (e) => {
+                if (e.target === tutorialModal) {
+                    tutorialModal.classList.add('hidden');
+                }
+            });
         }
         
-        // Removed handleWithdraw function
-
         function loadProfilePage() {
             const profilePic = document.getElementById('profile-pic');
             const avatarDiv = document.getElementById('profile-initials-avatar');
@@ -543,15 +602,6 @@ const firebaseConfig = {
                 document.getElementById('profile-name').textContent = `${currentUserTg.first_name} ${currentUserTg.last_name || ''}`.trim();
                 document.getElementById('profile-username').textContent = currentUserTg.username ? `@${currentUserTg.username}` : 'No Telegram Username';
                 document.getElementById('profile-id').textContent = `Telegram ID: ${currentUserTg.id}`;
-            } else {
-                // Fallback if Telegram user data somehow isn't available (shouldn't happen with current initUserSession)
-                const initials = userData.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                document.getElementById('profile-initials').textContent = initials;
-                profilePic.classList.add('hidden');
-                avatarDiv.classList.remove('hidden');
-                document.getElementById('profile-name').textContent = userData.name;
-                document.getElementById('profile-username').textContent = "Telegram data not available";
-                document.getElementById('profile-id').textContent = `User ID: ${userData.tgChatId}`;
             }
         }
 
@@ -561,6 +611,7 @@ const firebaseConfig = {
             const senderNumber = document.getElementById('sender-number').value.trim();
             const transactionId = document.getElementById('deposit-txid').value.trim();
             if (!method || !amount || amount <= 0 || !senderNumber || !transactionId) return showAlert("অনুগ্রহ করে সমস্ত তথ্য সঠিকভাবে পূরণ করুন।");
+            loader.style.opacity = '1';
             loader.style.display = 'flex';
             try {
                 const depositQuery = query(collection(db, "deposits"), where("transactionId", "==", transactionId), where("status", "in", ["pending", "approved"]));
@@ -570,8 +621,8 @@ const firebaseConfig = {
                     return showAlert("এই Transaction ID দিয়ে ইতিমধ্যে একটি ডিপোজিট অনুরোধ জমা দেওয়া হয়েছে।");
                 }
                 await addDoc(collection(db, "deposits"), {
-                    userId: userData.tgChatId, // Use Telegram Chat ID
-                    userName: userData.name, // Use Telegram Name
+                    userId: userData.tgChatId,
+                    userName: userData.name,
                     method: method,
                     amount: amount,
                     senderNumber: senderNumber,
@@ -594,38 +645,28 @@ const firebaseConfig = {
 
         async function loadPaymentHistory() {
             const historyList = document.getElementById('payment-history-list');
-            historyList.innerHTML = '<p class="text-gray-600">হিস্টি লোড হচ্ছে...</p>'; // Changed color
+            historyList.innerHTML = '<p class="text-gray-600">হিস্টি লোড হচ্ছে...</p>';
             try {
                 const q = query(collection(db, "deposits"), where("userId", "==", userData.tgChatId), orderBy("requestedAt", "desc"));
                 const snapshot = await getDocs(q);
-                if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-600 text-center">কোনো রেকর্ড পাওয়া যায়নি।</p>'; // Changed color
+                if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-600 text-center">কোনো রেকর্ড পাওয়া যায়নি।</p>';
 
                 historyList.innerHTML = snapshot.docs.map(doc => {
                     const item = doc.data();
                     let statusColor, statusIcon;
                     switch (item.status) {
-                        case 'approved':
-                            statusColor = 'text-green-600'; // Darker green
-                            statusIcon = 'check-circle-2';
-                            break;
-                        case 'rejected':
-                            statusColor = 'text-red-600'; // Darker red
-                            statusIcon = 'x-circle';
-                            break;
-                        default:
-                            statusColor = 'text-yellow-600'; // Darker yellow
-                            statusIcon = 'hourglass';
+                        case 'approved': statusColor = 'text-green-600'; statusIcon = 'check-circle-2'; break;
+                        case 'rejected': statusColor = 'text-red-600'; statusIcon = 'x-circle'; break;
+                        default: statusColor = 'text-yellow-600'; statusIcon = 'hourglass';
                     }
                     const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString('en-GB') : 'N/A';
                     return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div class="flex items-center gap-3"><i data-lucide="${statusIcon}" class="w-6 h-6 ${statusColor}"></i><div><p class="font-semibold text-gray-800">${item.type || 'Deposit'} - ${item.method}</p><p class="text-xs text-gray-500">${date}</p></div></div><div class="text-right"><p class="font-bold text-lg text-gray-800">৳${item.amount}</p><p class="font-semibold ${statusColor} capitalize text-xs">${item.status}</p></div></div>`;
                 }).join('');
                 lucide.createIcons();
             } catch (error) {
-                historyList.innerHTML = '<p class="text-red-600 text-center">হিস্টি লোড করা যায়নি।</p>'; // Darker red
+                historyList.innerHTML = '<p class="text-red-600 text-center">হিস্টি লোড করা যায়নি।</p>';
             }
         }
-
-        // Removed loadSellItems, showSellDetails, openSellModal, handleSellRequest, loadSellHistory functions
 
         async function getStockCount(collectionName) {
             try {
@@ -641,18 +682,14 @@ const firebaseConfig = {
         async function loadMailStore() {
             const mailListEl = document.getElementById('mail-list');
             const historyListEl = document.getElementById('mail-purchase-history');
-            mailListEl.innerHTML = '<p class="text-center text-gray-600">মেইল লোড হচ্ছে...</p>'; // Changed color
-            historyListEl.innerHTML = '<p class="text-center text-gray-600">হিস্টি লোড হচ্ছে...</p>'; // Changed color
+            mailListEl.innerHTML = '<p class="text-center text-gray-600">মেইল লোড হচ্ছে...</p>';
+            historyListEl.innerHTML = '<p class="text-center text-gray-600">হিস্টি লোড হচ্ছে...</p>';
             
             try {
                 const stockPromises = (appConfig.mails || []).map(mail => getStockCount(mail.stockKey));
                 const stockCounts = await Promise.all(stockPromises);
                 
-                let mailsWithStock = (appConfig.mails || []).map((mail, index) => ({
-                    ...mail,
-                    stock: stockCounts[index]
-                }));
-
+                let mailsWithStock = (appConfig.mails || []).map((mail, index) => ({ ...mail, stock: stockCounts[index] }));
                 mailsWithStock.sort((a, b) => b.stock - a.stock);
 
                 mailListEl.innerHTML = '';
@@ -664,29 +701,12 @@ const firebaseConfig = {
                     const buyButtonDisabled = isOutOfStock || insufficientBalance ? 'disabled' : '';
                     const buyButtonClasses = isOutOfStock || insufficientBalance ? 'btn-disabled' : 'btn-gradient';
                     const validityTagHtml = (mail.expirationDays !== undefined && mail.expirationDays !== null) ? `<span class="validity-tag">${mail.expirationDays} h</span>` : '';
-                    const apiButtonHtml = mail.apiLink ? `<a href="${mail.apiLink}" target="_blank" class="api-btn">API</a>` : '<span class="api-btn text-gray-400">API</span>'; // Changed disabled API button color
+                    const apiButtonHtml = mail.apiLink ? `<a href="${mail.apiLink}" target="_blank" class="api-btn">API</a>` : '<span class="api-btn text-gray-400">API</span>';
 
                     mailListEl.innerHTML += `
                         <div class="card-bg p-4 rounded-xl space-y-3">
-                            <div class="flex justify-between items-center">
-                                <div class="flex items-center gap-3">
-                                    <img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo">
-                                    <h3 class="font-bold text-lg text-gray-800">${mail.type}</h3> </div>
-                                <div class="flex items-center gap-2">
-                                    ${validityTagHtml}
-                                    <button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="details-btn">Details</button>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-300"> <div class="py-2">${apiButtonHtml}</div>
-                                <div class="py-2">
-                                    <p class="stat-label">Price</p>
-                                    <p class="stat-value price-color">৳${costInBdt.toFixed(2)}</p>
-                                </div>
-                                <div class="py-2">
-                                    <p class="stat-label">Stock</p>
-                                    <p class="stat-value stock-color">${stock}</p>
-                                </div>
-                            </div>
+                            <div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo"><h3 class="font-bold text-lg text-gray-800">${mail.type}</h3></div><div class="flex items-center gap-2">${validityTagHtml}<button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="details-btn">Details</button></div></div>
+                            <div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-300"><div class="py-2">${apiButtonHtml}</div><div class="py-2"><p class="stat-label">Price</p><p class="stat-value price-color">৳${costInBdt.toFixed(2)}</p></div><div class="py-2"><p class="stat-label">Stock</p><p class="stat-value stock-color">${stock}</p></div></div>
                             <button class="${buyButtonClasses} w-full py-2 rounded-lg text-md" ${buyButtonDisabled} onclick="buyMail('${mail.type}', ${costInBdt}, '${mail.stockKey}')">Buy Now</button>
                         </div>`;
                 });
@@ -694,21 +714,21 @@ const firebaseConfig = {
                 const q = query(collection(db, "mail_purchases"), where("userId", "==", userData.tgChatId), orderBy("purchasedAt", "desc"));
                 const querySnapshot = await getDocs(q);
                 if(querySnapshot.empty) {
-                    historyListEl.innerHTML = '<p class="text-center text-gray-600">আপনি এখনো কোনো মেইল কিনেননি।</p>'; // Changed color
+                    historyListEl.innerHTML = '<p class="text-center text-gray-600">আপনি এখনো কোনো মেইল কিনেননি।</p>';
                     return;
                 }
                 historyListEl.innerHTML = '';
                 querySnapshot.forEach(doc => {
                     const purchase = doc.data();
                     const date = purchase.purchasedAt.toDate().toLocaleString();
-                    let mailDetailsContent = `<p class="text-gray-700">${purchase.mail}</p>`; // Darker text
-                    if (purchase.password) mailDetailsContent += `<p class="text-gray-700">${purchase.password}</p>`; // Darker text
-                    historyListEl.innerHTML += `<div class="purchase-history-card"><div class="purchase-info-header"><p class="font-bold text-lg text-gray-800">${purchase.mailType}</p><button onclick="copyToClipboard('${purchase.mail} ${purchase.password || ''}', this)" class="copy-btn p-1 rounded-full hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4"></i></button></div><div class="purchase-mail-details">${mailDetailsContent}</div><p class="purchase-date">${date}</p></div>`;
+                    let mailDetailsContent = `<p class="text-gray-700">${purchase.mail}</p>`;
+                    if (purchase.password) mailDetailsContent += `<p class="text-gray-700">${purchase.password}</p>`;
+                    historyListEl.innerHTML += `<div class="purchase-history-card"><div class="flex justify-between items-center mb-3"><p class="font-bold text-lg text-gray-800">${purchase.mailType}</p><button onclick="copyToClipboard('${purchase.mail} ${purchase.password || ''}', this)" class="p-1 rounded-full hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div><div class="purchase-mail-details">${mailDetailsContent}</div><p class="text-xs text-gray-500 text-right">${date}</p></div>`;
                 });
                 lucide.createIcons();
             } catch(e) {
-                 mailListEl.innerHTML = '<p class="text-center text-red-600">মেইল লোড করা যায়নি।</p>'; // Darker red
-                 historyListEl.innerHTML = '<p class="text-center text-red-600">হিস্টি লোড করা যায়নি।</p>'; // Darker red
+                 mailListEl.innerHTML = '<p class="text-center text-red-600">মেইল লোড করা যায়নি।</p>';
+                 historyListEl.innerHTML = '<p class="text-center text-red-600">হিস্টি লোড করা যায়নি।</p>';
                  console.error(e);
             }
         }
@@ -720,23 +740,12 @@ const firebaseConfig = {
                 const querySnapshot = await getDocs(q);
                 if (querySnapshot.empty) return showAlert("ডাউনলোড করার জন্য কোনো ಖರೀদী ইতিহাস পাওয়া যায়নি।");
                 
-                const dataForExcel = querySnapshot.docs.map(doc => {
-                    const purchase = doc.data();
-                    return {
-                        'Purchase Date': purchase.purchasedAt.toDate().toLocaleString(),
-                        'Mail Type': purchase.mailType,
-                        'Email': purchase.mail,
-                        'Password': purchase.password || 'N/A',
-                        'Cost (BDT)': purchase.cost
-                    };
-                });
-                
+                const dataForExcel = querySnapshot.docs.map(doc => { const p = doc.data(); return { 'Purchase Date': p.purchasedAt.toDate().toLocaleString(), 'Mail Type': p.mailType, 'Email': p.mail, 'Password': p.password || 'N/A', 'Cost (BDT)': p.cost }; });
                 const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
                 const workbook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(workbook, worksheet, "Purchase History");
                 worksheet['!cols'] = [ {wch: 22}, {wch: 20}, {wch: 30}, {wch: 30}, {wch: 15} ];
                 XLSX.writeFile(workbook, "My_Purchase_History.xlsx");
-
             } catch (error) { showAlert("ইতিহাস ডাউনলোড করার সময় একটি সমস্যা হয়েছে।"); } 
             finally { loader.style.display = 'none'; }
         }
@@ -753,14 +762,14 @@ const firebaseConfig = {
                     if (mailQuerySnapshot.empty) throw "দুঃখিত, এই ধরনের মেইল বর্তমানে স্টক শেষ।";
                     
                     const mailDoc = mailQuerySnapshot.docs[0];
-                    const userRef = doc(db, "users", userData.tgChatId); // Use Telegram Chat ID
+                    const userRef = doc(db, "users", userData.tgChatId);
                     const userSnap = await transaction.get(userRef);
                     if (!userSnap.exists() || userSnap.data().balance < cost) throw `অপর্যাপ্ত ব্যালেন্স।`;
 
                     transaction.update(userRef, { balance: userSnap.data().balance - cost });
-                    transaction.update(mailDoc.ref, { isSold: true, soldTo: userData.tgChatId, soldAt: serverTimestamp() }); // Use Telegram Chat ID
+                    transaction.update(mailDoc.ref, { isSold: true, soldTo: userData.tgChatId, soldAt: serverTimestamp() });
                     const purchaseLogRef = doc(collection(db, "mail_purchases"));
-                    transaction.set(purchaseLogRef, { userId: userData.tgChatId, mailType: mailType, mail: mailDoc.data().email, password: mailDoc.data().password || null, cost: cost, purchasedAt: serverTimestamp() }); // Use Telegram Chat ID
+                    transaction.set(purchaseLogRef, { userId: userData.tgChatId, mailType: mailType, mail: mailDoc.data().email, password: mailDoc.data().password || null, cost: cost, purchasedAt: serverTimestamp() });
                     return mailDoc.data();
                 });
 
@@ -772,29 +781,27 @@ const firebaseConfig = {
             finally { loader.style.display = 'none'; }
         }
 
-        window.showMailDetails = function(mailType, details) {
-            showAlert(`${mailType} Details\n\n${details}`);
-        }
+        window.showMailDetails = function(mailType, details) { showAlert(`${mailType} Details\n\n${details}`); }
         
         async function loadUpdates() {
             const updatesContainer = document.getElementById('updates-content');
-            updatesContainer.innerHTML = '<p class="text-center text-gray-600">Loading updates...</p>'; // Changed color
+            updatesContainer.innerHTML = '<p class="text-center text-gray-600">Loading updates...</p>';
             try {
                 const q = query(collection(db, "updates"), orderBy("createdAt", "desc"), limit(1));
                 const snapshot = await getDocs(q);
-                if (snapshot.empty) return updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl text-gray-800">No new updates right now!</h3><p class="text-gray-600 mt-2">Check back later.</p></div>`; // Changed color
+                if (snapshot.empty) return updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl text-gray-800">No new updates right now!</h3><p class="text-gray-600 mt-2">Check back later.</p></div>`;
                 
                 const updateDoc = snapshot.docs[0];
                 const updateData = updateDoc.data();
                 const updateId = updateDoc.id;
-                const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", userData.tgChatId)); // Use Telegram Chat ID
+                const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", userData.tgChatId));
                 const userVote = userInteractionDoc.exists() ? userInteractionDoc.data().vote : null;
                 
                 const isLiked = userVote === 'liked';
                 const isDisliked = userVote === 'disliked';
                 let linkButtonHtml = updateData.linkUrl ? `<a href="${updateData.linkUrl}" target="_blank" class="btn-gradient px-4 py-2 rounded-lg text-sm flex-1 text-center">Learn More</a>` : '';
                 
-                updatesContainer.innerHTML = `<div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col"><img src="${updateData.imageUrl}" class="w-full aspect-video object-cover" alt="Update Banner"><div class="p-5 space-y-3 flex flex-col flex-grow"><h3 class="text-xl font-bold text-gray-800">${updateData.title}</h3><p class="text-gray-700 text-sm whitespace-pre-wrap flex-grow">${updateData.content || ''}</p><div class="flex items-center justify-between gap-4 pt-3 mt-auto"><div class="flex items-center gap-4"><div class="flex items-center space-x-2"><button id="like-btn" class="like-dislike-btn p-2 rounded-full transition-colors ${isLiked ? 'text-blue-500' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-up" class="w-5 h-5"></i></button><span id="like-count" class="font-semibold text-sm text-gray-700">${updateData.likes || 0}</span></div><div class="flex items-center space-x-2"><button id="dislike-btn" class="like-dislike-btn p-2 rounded-full transition-colors ${isDisliked ? 'text-blue-500' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-down" class="w-5 h-5"></i></button><span id="dislike-count" class="font-semibold text-sm text-gray-700">${updateData.dislikes || 0}</span></div></div>${linkButtonHtml}</div></div></div>`;
+                updatesContainer.innerHTML = `<div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col"><img src="${updateData.imageUrl}" class="w-full aspect-video object-cover" alt="Update Banner"><div class="p-5 space-y-3 flex flex-col flex-grow"><h3 class="text-xl font-bold text-gray-800">${updateData.title}</h3><p class="text-gray-700 text-sm whitespace-pre-wrap flex-grow">${updateData.content || ''}</p><div class="flex items-center justify-between gap-4 pt-3 mt-auto"><div class="flex items-center gap-4"><div class="flex items-center space-x-2"><button id="like-btn" class="p-2 rounded-full transition-colors ${isLiked ? 'text-blue-500' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-up" class="w-5 h-5"></i></button><span class="font-semibold text-sm text-gray-700">${updateData.likes || 0}</span></div><div class="flex items-center space-x-2"><button id="dislike-btn" class="p-2 rounded-full transition-colors ${isDisliked ? 'text-blue-500' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-down" class="w-5 h-5"></i></button><span class="font-semibold text-sm text-gray-700">${updateData.dislikes || 0}</span></div></div>${linkButtonHtml}</div></div></div>`;
                 lucide.createIcons();
                 document.getElementById('like-btn').onclick = () => handleVote('like', updateId);
                 document.getElementById('dislike-btn').onclick = () => handleVote('dislike', updateId);
@@ -806,35 +813,25 @@ const firebaseConfig = {
         async function handleVote(voteType, updateId) {
             loader.style.display = 'flex';
             const updateRef = doc(db, "updates", updateId);
-            const userInteractionRef = doc(db, "updates", updateId, "userInteractions", userData.tgChatId); // Use Telegram Chat ID
+            const userInteractionRef = doc(db, "updates", updateId, "userInteractions", userData.tgChatId);
             try {
                 await runTransaction(db, async (transaction) => {
-                    const userInteractionDoc = await transaction.get(userInteractionRef);
-                    if (userInteractionDoc.exists()) throw new Error("You have already cast your vote.");
-                    
-                    const updateDoc = await transaction.get(updateRef);
-                    if (!updateDoc.exists()) throw new Error("Update not found.");
-                    
+                    if ((await transaction.get(userInteractionRef)).exists()) throw new Error("You have already cast your vote.");
+                    if (!(await transaction.get(updateRef)).exists()) throw new Error("Update not found.");
                     const fieldToUpdate = voteType === 'like' ? 'likes' : 'dislikes';
-                    transaction.update(updateRef, { [fieldToUpdate]: (updateDoc.data()[fieldToUpdate] || 0) + 1 });
+                    transaction.update(updateRef, { [fieldToUpdate]: ((await transaction.get(updateRef)).data()[fieldToUpdate] || 0) + 1 });
                     transaction.set(userInteractionRef, { vote: voteType, votedAt: serverTimestamp() });
                 });
                 showAlert("Your vote has been submitted successfully!");
                 loadUpdates();
-            } catch (e) {
-                showAlert(e.message || "Failed to submit your vote.");
-            } 
-            finally {
-                loader.style.display = 'none';
-            }
+            } catch (e) { showAlert(e.message || "Failed to submit your vote."); } 
+            finally { loader.style.display = 'none'; }
         }
 
         function populateAdminMailTypes() {
             const selectEl = document.getElementById('mail-type-select');
             selectEl.innerHTML = '<option value="">Select mail type...</option>';
-            (appConfig.mails || []).forEach(mail => {
-                selectEl.innerHTML += `<option value="${mail.stockKey}">${mail.type}</option>`;
-            });
+            (appConfig.mails || []).forEach(mail => { selectEl.innerHTML += `<option value="${mail.stockKey}">${mail.type}</option>`; });
         }
 
         async function handleAddMails() {
@@ -853,14 +850,7 @@ const firebaseConfig = {
                     const parts = line.trim().split('|');
                     if (parts.length === 4) {
                         const mailDocRef = doc(collection(db, stockKey));
-                        batch.set(mailDocRef, { 
-                            email: parts[0], 
-                            password: parts[1], 
-                            refresh_token: parts[2], 
-                            client_id: parts[3], 
-                            isSold: false, 
-                            createdAt: serverTimestamp() 
-                        });
+                        batch.set(mailDocRef, { email: parts[0], password: parts[1], refresh_token: parts[2], client_id: parts[3], isSold: false, createdAt: serverTimestamp() });
                         addedCount++;
                     }
                 });
@@ -869,11 +859,8 @@ const firebaseConfig = {
                     showAlert(`Successfully added ${addedCount} new mails to the stock.`);
                     document.getElementById('mail-data-textarea').value = '';
                 } else showAlert("No valid mails were found to add. Ensure the format is correct.");
-            } catch (error) { 
-                showAlert("An error occurred while adding mails."); 
-            } finally { 
-                loader.style.display = 'none'; 
-            }
+            } catch (error) { showAlert("An error occurred while adding mails."); } 
+            finally { loader.style.display = 'none'; }
         }
 
         function showAlert(message) {
@@ -886,7 +873,7 @@ const firebaseConfig = {
             navigator.clipboard.writeText(text.trim()).then(() => {
                 if(element) {
                     const originalContent = element.innerHTML;
-                    element.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-green-600"></i>`; // Darker green
+                    element.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-green-600"></i>`;
                     lucide.createIcons();
                     setTimeout(() => { element.innerHTML = originalContent; lucide.createIcons(); }, 1500);
                 } else showAlert('কপি করা হয়েছে!');
@@ -901,163 +888,14 @@ const firebaseConfig = {
             let index = 0;
             dotsContainer.innerHTML = Array.from(slides).map((_, i) => `<span class="dot ${i === 0 ? 'active' : ''}" data-index="${i}"></span>`).join('');
             const dots = dotsContainer.querySelectorAll('.dot');
-            
             function showSlide(i) {
                 index = i;
                 slideContainer.style.transform = `translateX(${-i * 100}%)`;
                 dots.forEach(d => d.classList.remove('active'));
                 dots[i].classList.add('active');
             }
-            
-            dotsContainer.addEventListener('click', e => {
-                if(e.target.matches('.dot')) showSlide(parseInt(e.target.dataset.index));
-            });
-            
+            dotsContainer.addEventListener('click', e => { if(e.target.matches('.dot')) showSlide(parseInt(e.target.dataset.index)); });
             setInterval(() => showSlide((index + 1) % slides.length), 5000);
-        }
-        
-        async function loadFeaturesPage() {
-            loader.style.display = 'flex';
-            try {
-                // Fetch Total Approved Deposits
-                const depositQuery = query(collection(db, "deposits"), where("userId", "==", userData.tgChatId), where("status", "==", "approved")); // Use Telegram Chat ID
-                const depositSnapshot = await getDocs(depositQuery);
-                const totalDeposit = depositSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
-                document.getElementById('total-deposit-display').textContent = `৳${totalDeposit.toFixed(2)}`;
-
-                // Removed Fetch Total Approved Income (from selling)
-
-                // Fetch Total Received Transfers
-                const receivedQuery = query(collection(db, "transfers"), where("toId", "==", userData.tgChatId)); // Use Telegram Chat ID
-                const receivedSnapshot = await getDocs(receivedQuery);
-                const totalReceive = receivedSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
-                document.getElementById('total-receive-display').textContent = `৳${totalReceive.toFixed(2)}`;
-
-                // Removed Fetch Total Approved Withdrawals
-
-                await loadTransferHistory();
-
-            } catch (error) {
-                console.error("Error loading features page data:", error);
-                showAlert("Could not load page data. Check browser console for details.");
-            } finally {
-                loader.style.display = 'none';
-            }
-        }
-
-        async function loadTransferHistory() {
-            const historyList = document.getElementById('transfer-history-list');
-            historyList.innerHTML = '<p class="text-gray-600 text-center">Loading history...</p>'; // Changed color
-            
-            const sentQuery = query(collection(db, "transfers"), where("fromId", "==", userData.tgChatId), orderBy("timestamp", "desc")); // Use Telegram Chat ID
-            const receivedQuery = query(collection(db, "transfers"), where("toId", "==", userData.tgChatId), orderBy("timestamp", "desc")); // Use Telegram Chat ID
-
-            const [sentSnapshot, receivedSnapshot] = await Promise.all([getDocs(sentQuery), getDocs(receivedQuery)]);
-            
-            const transactions = [];
-            sentSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
-            receivedSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
-
-            transactions.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
-
-            if (transactions.length === 0) {
-                historyList.innerHTML = '<p class="text-gray-600 text-center">No transfer history found.</p>'; // Changed color
-                return;
-            }
-
-            historyList.innerHTML = transactions.map(item => {
-                const isSent = item.fromId === userData.tgChatId; // Use Telegram Chat ID
-                const date = item.timestamp.toDate().toLocaleString('en-GB');
-                const sign = isSent ? '-' : '+';
-                const color = isSent ? 'text-red-600' : 'text-green-600'; // Darker colors
-                const actionText = isSent ? `Sent to ${item.toName}` : `Received from ${item.fromName}`;
-
-                return `<div class="card-bg p-3 rounded-lg flex items-center justify-between">
-                            <div>
-                                <p class="font-semibold text-gray-800">${actionText}</p>
-                                <p class="text-xs text-gray-500">${date}</p>
-                            </div>
-                            <p class="font-bold text-lg ${color}">${sign}৳${item.amount.toFixed(2)}</p>
-                        </div>`;
-            }).join('');
-        }
-
-        function handleReceive() {
-            const message = `আপনার রিসিভ আইডি:\n\n${userData.tgChatId}\n\nএই আইডি ব্যবহার করে অন্য ব্যবহারকারীর থেকে ব্যালেন্স রিসিভ করতে পারবেন।`;
-            copyToClipboard(userData.tgChatId, null);
-            showAlert(message);
-        }
-
-        async function handleSend() {
-            const recipientId = prompt("🚀 ব্যালেন্স ট্রান্সফার করুন");
-            if (!recipientId || recipientId.trim() === '') return;
-            if (recipientId.trim() === userData.tgChatId) { // Use Telegram Chat ID
-                showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
-                return;
-            }
-
-            const amountStr = prompt("কত টাকা পাঠাতে চান?");
-            if (!amountStr || isNaN(parseFloat(amountStr))) {
-                showAlert("অনুগ্রহ করে সঠিক পরিমাণ লিখুন।");
-                return;
-            }
-            const amount = parseFloat(amountStr);
-            if (amount <= 0) {
-                showAlert("পাঠানোর পরিমাণ অবশ্যই শূন্যের বেশি হতে হবে।");
-                return;
-            }
-
-            if (amount > userData.balance) {
-                showAlert("আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই।");
-                return;
-            }
-            
-            if (!confirm(`আপনি কি এই আইডিতে ৳${amount.toFixed(2)} পাঠাতে চান?`)) return;
-
-            loader.style.display = 'flex';
-            const senderRef = doc(db, "users", userData.tgChatId); // Use Telegram Chat ID
-            const recipientRef = doc(db, "users", recipientId.trim());
-
-            try {
-                await runTransaction(db, async (transaction) => {
-                    const senderDoc = await transaction.get(senderRef);
-                    const recipientDoc = await transaction.get(recipientRef);
-
-                    if (!senderDoc.exists() || senderDoc.data().balance < amount) {
-                        throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
-                    }
-                    if (!recipientDoc.exists()) {
-                        throw "প্রাপক আইডি (Recipient ID) খুঁজে পাওয়া যায়নি।";
-                    }
-
-                    const newSenderBalance = senderDoc.data().balance - amount;
-                    const newRecipientBalance = recipientDoc.data().balance + amount;
-
-                    transaction.update(senderRef, { balance: newSenderBalance });
-                    transaction.update(recipientRef, { balance: newRecipientBalance });
-                    
-                    const transferLogRef = doc(collection(db, "transfers"));
-                    transaction.set(transferLogRef, {
-                        fromId: userData.tgChatId, // Use Telegram Chat ID
-                        fromName: userData.name, // Use Telegram Name
-                        toId: recipientId.trim(),
-                        toName: recipientDoc.data().name,
-                        amount: amount,
-                        timestamp: serverTimestamp()
-                    });
-                });
-                
-                userData.balance -= amount;
-                updateUI();
-                showAlert(`সফলভাবে ৳${amount.toFixed(2)} পাঠানো হয়েছে।`);
-                loadFeaturesPage();
-
-            } catch (error) {
-                console.error("Transfer failed: ", error);
-                showAlert(typeof error === 'string' ? error : "ব্যালেন্স পাঠাতে সমস্যা হয়েছে।");
-            } finally {
-                loader.style.display = 'none';
-            }
         }
     </script>
 </body>
