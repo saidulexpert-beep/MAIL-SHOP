@@ -104,7 +104,7 @@
             opacity: 0;
         }
         
-        /* --- New Bottom Navigation --- */
+        /* --- Bottom Navigation --- */
         .bottom-nav {
             position: fixed;
             bottom: 1rem;
@@ -140,13 +140,11 @@
         .nav-link-premium .icon { width: 22px; height: 22px; }
         .nav-link-premium .nav-text { display: none; } /* Hide text by default */
 
-        /* Active Nav Link Style */
         .nav-link-premium.active { 
             color: white;
             background-image: linear-gradient(45deg, var(--primary-light), var(--primary-color));
             box-shadow: 0 4px 15px rgba(255, 140, 0, 0.25);
         }
-        /* Show text for active link */
         .nav-link-premium.active .nav-text { display: inline; }
 
         .center-home-link { 
@@ -163,7 +161,7 @@
         .center-home-link:hover { transform: translateY(-25px) scale(1.08); }
         .center-home-link .icon { width: 32px; height: 32px; }
         
-        /* --- New Loader --- */
+        /* --- Loader --- */
         #loader {
             display: flex;
             align-items: center;
@@ -195,14 +193,14 @@
         /* --- Review Section --- */
         .reviews-container {
             display: flex;
-            gap: 1rem; /* 16px */
+            gap: 1rem;
             overflow-x: auto;
             padding: 0.25rem 1rem 1rem 1rem;
             margin: 0 -1rem;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
-        .reviews-container::-webkit-scrollbar { display: none; /* Safari and Chrome */ }
+        .reviews-container::-webkit-scrollbar { display: none; }
         .review-card {
             flex: 0 0 280px;
             background-color: var(--card-bg);
@@ -210,15 +208,77 @@
             padding: 1.25rem;
             box-shadow: 0 4px 20px -5px rgba(31, 41, 55, 0.06);
         }
-        .star-rating i { color: #facc15; } /* yellow-400 */
+        .star-rating i { color: #facc15; }
         
-        /* General Header */
+        /* --- Header --- */
         .header {
             background-color: rgba(248, 249, 250, 0.8);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid #e5e7eb;
         }
+
+        /* --- New Tutorial Section --- */
+        .tutorial-card {
+            background-color: var(--card-bg);
+            border-radius: 1.25rem;
+            padding: 1rem;
+            box-shadow: 0 4px 20px -5px rgba(31, 41, 55, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .tutorial-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 30px -10px rgba(31, 41, 55, 0.1);
+        }
+        .tutorial-card .thumbnail-container {
+            flex-shrink: 0;
+            width: 120px;
+            height: 75px;
+            position: relative;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background-color: #e5e7eb;
+        }
+        .tutorial-card .thumbnail-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .tutorial-card .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+        .tutorial-card:hover .play-icon {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        .tutorial-card .tutorial-info h3 {
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+        .tutorial-card .tutorial-info p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
     </style>
 </head>
 <body>
@@ -333,16 +393,10 @@
             </div>
             
             <div id="tutorial-page" class="p-4 space-y-6 sub-page">
-                <h2 class="text-2xl font-bold text-center text-gray-800">Tutorial</h2>
+                <h2 class="text-2xl font-bold text-center text-gray-800">Tutorials</h2>
                 <p class="text-gray-500 text-center -mt-4 mb-4">কিভাবে অ্যাপটি ব্যবহার করবেন তা দেখুন</p>
-                <div class="relative pt-[56.25%] w-full rounded-2xl overflow-hidden shadow-lg">
-                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/ajjEcCY4qOg" 
-                            title="YouTube video player" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
+                <div id="tutorial-list" class="space-y-4">
+                    </div>
             </div>
 
             <div id="profile-page" class="p-4 space-y-6 sub-page">
@@ -402,13 +456,13 @@
         </nav>
     </div>
     
-    <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+    <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-2xl p-6 w-full max-w-sm text-center shadow-xl">
             <p id="alert-message" class="mb-6 whitespace-pre-wrap text-gray-700"></p>
             <button id="alert-ok-btn" class="btn-gradient w-full">OK</button>
         </div>
     </div>
-    <div id="deposit-details-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+    <div id="deposit-details-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-2xl p-6 w-full max-w-sm space-y-4 text-gray-800">
             <h3 class="text-xl font-bold text-center text-accent-gradient mb-4">How to Deposit</h3>
             <div class="text-gray-600 space-y-3">
@@ -425,21 +479,31 @@
             <button id="deposit-details-ok-btn" class="w-full btn-gradient mt-4">Got It!</button>
         </div>
     </div>
+    
+    <div id="video-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[60] p-4 backdrop-blur-sm">
+        <div class="bg-black rounded-2xl w-full max-w-md shadow-xl relative aspect-video">
+            <button id="video-modal-close" class="absolute -top-3 -right-3 z-10 bg-white rounded-full p-1 shadow-lg text-gray-700 hover:scale-110 transition-transform">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <iframe id="video-iframe" class="w-full h-full rounded-2xl" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </div>
+
 
     <script type="module">
         // =================================================================================
         const ADMIN_UID = "YOUR_TELEGRAM_ADMIN_ID"; // <-- আপনার অ্যাডমিন Telegram Chat ID এখানে দিন
         // =================================================================================
 
-const firebaseConfig = {
-  apiKey: "AIzaSyA6JPDxbD5k1S-7bNikp6U_vFALPFl_fto",
-  authDomain: "daily-paybot.firebaseapp.com",
-  databaseURL: "https://daily-paybot-default-rtdb.firebaseio.com",
-  projectId: "daily-paybot",
-  storageBucket: "daily-paybot.firebasestorage.app",
-  messagingSenderId: "962422978466",
-  appId: "1:962422978466:web:43a3db97932bf82766e4fb"
-};
+        const firebaseConfig = {
+          apiKey: "AIzaSyA6JPDxbD5k1S-7bNikp6U_vFALPFl_fto",
+          authDomain: "daily-paybot.firebaseapp.com",
+          databaseURL: "https://daily-paybot-default-rtdb.firebaseio.com",
+          projectId: "daily-paybot",
+          storageBucket: "daily-paybot.firebasestorage.app",
+          messagingSenderId: "962422978466",
+          appId: "1:962422978466:web:43a3db97932bf82766e4fb"
+        };
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
@@ -452,6 +516,27 @@ const firebaseConfig = {
         let appConfig = {};
         
         const loader = document.getElementById('loader');
+        
+        const tutorials = [
+            { 
+                title: 'কীভাবে ডিপোজিট করবেন?', 
+                description: 'সহজেই টাকা ডিপোজিট করার প্রক্রিয়া দেখুন।',
+                videoId: 'ajjEcCY4qOg', 
+                thumbnailUrl: 'https://i.postimg.cc/Qd99h9x3/Green-White-Modern-How-To-Make-Money-Online-You-Tube-Thumbnail-1.png' 
+            },
+            { 
+                title: 'কীভাবে মেইল কিনবেন?', 
+                description: 'মাত্র কয়েক ক্লিকে আপনার পছন্দের মেইল কিনুন।',
+                videoId: 'VIDEO_ID_PLACEHOLDER_2', 
+                thumbnailUrl: 'https://i.postimg.cc/T3Y9c3M2/Green-White-Modern-How-To-Make-Money-Online-You-Tube-Thumbnail-2.png' 
+            },
+            { 
+                title: 'কীভাবে মেইল রিসেল করবেন?', 
+                description: 'আমাদের থেকে মেইল কিনে রিসেল করার উপায় জানুন।',
+                videoId: 'VIDEO_ID_PLACEHOLDER_3',
+                thumbnailUrl: 'https://i.postimg.cc/pr0v6t6g/Green-White-Modern-How-To-Make-Money-Online-You-Tube-Thumbnail.png' 
+            }
+        ];
         
         window.onload = async () => {
             try {
@@ -523,13 +608,6 @@ const firebaseConfig = {
             document.getElementById('balance-display').textContent = `৳${balance}`;
             document.getElementById('header-balance-display').textContent = `৳${balance}`;
         }
-        
-        function animateElements(containerSelector) {
-            const elements = document.querySelectorAll(`${containerSelector} .animate-on-load`);
-            elements.forEach((el, index) => {
-                el.style.animationDelay = `${index * 70}ms`;
-            });
-        }
 
         function navigateTo(pageId) {
             document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
@@ -545,13 +623,13 @@ const firebaseConfig = {
                 'updates-page': loadUpdates,
                 'admin-page': populateAdminMailTypes,
                 'profile-page': loadProfilePage,
-                'tutorial-page': () => lucide.createIcons(),
+                'tutorial-page': loadTutorials,
                 'home-page': () => lucide.createIcons()
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
         }
         window.navigateTo = navigateTo;
-
+        
         function setupEventListeners() {
             document.querySelectorAll('.nav-link-premium').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
@@ -560,6 +638,22 @@ const firebaseConfig = {
             document.getElementById('deposit-details-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.remove('hidden'));
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
             document.getElementById('add-mails-btn').addEventListener('click', handleAddMails);
+            
+            const videoModal = document.getElementById('video-modal');
+            const videoModalClose = document.getElementById('video-modal-close');
+            const videoIframe = document.getElementById('video-iframe');
+
+            function closeVideoModal() {
+                videoModal.classList.add('hidden');
+                videoIframe.src = ''; 
+            }
+
+            videoModalClose.addEventListener('click', closeVideoModal);
+            videoModal.addEventListener('click', (e) => {
+                if (e.target === videoModal) {
+                    closeVideoModal();
+                }
+            });
         }
 
         async function loadProfilePage() {
@@ -753,6 +847,40 @@ const firebaseConfig = {
             } catch (e) { showAlert(e.message || "কিনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"); } 
             finally { loader.style.display = 'none'; }
         }
+        
+        function loadTutorials() {
+            const listEl = document.getElementById('tutorial-list');
+            if (!listEl) return;
+            
+            listEl.innerHTML = tutorials.map((tutorial, index) => `
+                <div class="tutorial-card animate-on-load" data-video-id="${tutorial.videoId}" style="animation-delay: ${index * 70}ms">
+                    <div class="thumbnail-container">
+                        <img src="${tutorial.thumbnailUrl}" alt="${tutorial.title}">
+                        <div class="play-icon">
+                            <i data-lucide="play" class="w-6 h-6 ml-1"></i>
+                        </div>
+                    </div>
+                    <div class="tutorial-info">
+                        <h3 class="text-lg">${tutorial.title}</h3>
+                        <p>${tutorial.description}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.querySelectorAll('.tutorial-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const videoId = card.dataset.videoId;
+                    if (videoId && !videoId.includes('PLACEHOLDER')) {
+                        const iframe = document.getElementById('video-iframe');
+                        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                        document.getElementById('video-modal').classList.remove('hidden');
+                    } else {
+                        showAlert('এই ভিডিওটি এখনও যুক্ত করা হয়নি।');
+                    }
+                });
+            });
+            lucide.createIcons();
+        }
 
         async function handleDownloadHistory() {
             loader.style.display = 'flex';
@@ -851,7 +979,7 @@ const firebaseConfig = {
                     const originalIcon = element.innerHTML;
                     element.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-green-500"></i>`;
                     lucide.createIcons();
-                    setTimeout(() => { element.innerHTML = originalIcon; }, 1500);
+                    setTimeout(() => { element.innerHTML = originalIcon; lucide.createIcons(); }, 1500);
                 } else showAlert('কপি করা হয়েছে!');
             });
         }
