@@ -319,7 +319,7 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <button id="features-deposit-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-green-500 to-emerald-500 shadow-lg btn">Deposit</button>
-                    <a id="features-withdraw-btn" href="https://mellow-naiad-21eb07.netlify.app" target="_blank" class="p-3 rounded-lg font-bold text-white text-center bg-gradient-to-r from-red-500 to-rose-500 shadow-lg btn">Withdraw</a>
+                    <button id="features-recharge-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg btn">Mobile Recharge</button>
                     <button id="features-receive-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-blue-500 to-sky-500 shadow-lg btn flex items-center justify-center gap-1">
                         <i data-lucide="arrow-down-to-line" class="w-4 h-4"></i>
                         <span>Receive</span>
@@ -345,6 +345,54 @@
                     <button id="add-mails-btn" class="w-full p-3 rounded-lg btn-gradient">Add Mails to Stock</button>
                 </div>
             </div>
+
+            <div id="recharge-page" class="p-4 space-y-6 sub-page">
+                <h2 class="text-xl font-bold text-center text-gray-800">Mobile Recharge</h2>
+                <div class="card-bg p-5 rounded-xl space-y-5">
+                    <div>
+                        <h3 class="font-semibold text-lg flex items-center gap-2 mb-4"><i data-lucide="smartphone" class="w-6 h-6 text-[#007bff]"></i><span>রিচার্জ করুন</span></h3>
+                        <p class="text-sm text-center text-red-600 bg-red-100 p-2 rounded-lg mb-4">প্রতিটি রিচার্জে 5% ফি প্রযোজ্য।</p>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="recharge-number" class="block text-sm font-medium text-gray-600 mb-2">মোবাইল নম্বর</label>
+                                <input id="recharge-number" type="tel" placeholder="e.g., 018********" class="w-full p-3 rounded-lg input-field">
+                            </div>
+                            <div>
+                                <label for="recharge-amount" class="block text-sm font-medium text-gray-600 mb-2">টাকার পরিমাণ (BDT)</label>
+                                <input id="recharge-amount" type="number" placeholder="Minimum ৳20" class="w-full p-3 rounded-lg input-field">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="recharge-operator" class="block text-sm font-medium text-gray-600 mb-2">অপারেটর</label>
+                                    <select id="recharge-operator" class="w-full p-3 rounded-lg input-field">
+                                        <option value="">Select Operator</option>
+                                        <option value="Grameenphone">Grameenphone</option>
+                                        <option value="Robi">Robi</option>
+                                        <option value="Airtel">Airtel</option>
+                                        <option value="Banglalink">Banglalink</option>
+                                        <option value="Teletalk">Teletalk</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="recharge-type" class="block text-sm font-medium text-gray-600 mb-2">সিমের ধরন</label>
+                                    <select id="recharge-type" class="w-full p-3 rounded-lg input-field">
+                                        <option value="Prepaid">Prepaid</option>
+                                        <option value="Postpaid">Postpaid</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button id="submit-recharge-btn" class="w-full p-3 rounded-lg btn-gradient">Submit Recharge</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold mb-3">Recharge History</h3>
+                    <div id="recharge-history-list" class="space-y-3">
+                        <p class="text-gray-600 text-center">No recharge history found.</p>
+                    </div>
+                </div>
+            </div>
+
         </main>
 
         <nav class="bottom-nav">
@@ -558,7 +606,8 @@
                 'admin-page': populateAdminMailTypes,
                 'profile-page': loadProfilePage,
                 'features-page': loadFeaturesPage,
-                'tutorial-page': loadTutorials
+                'tutorial-page': loadTutorials,
+                'recharge-page': loadRechargeHistory // NEW
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
@@ -578,8 +627,10 @@
             // More Features and PIN Logic
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
+            document.getElementById('features-recharge-btn').addEventListener('click', () => navigateTo('recharge-page')); // MODIFIED
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
             document.getElementById('features-send-btn').addEventListener('click', handleSend);
+            document.getElementById('submit-recharge-btn').addEventListener('click', handleRechargeRequest); // NEW
             
             // PIN Modal Buttons
             document.getElementById('set-pin-btn').addEventListener('click', handleSetPin);
@@ -963,13 +1014,14 @@
                 const sign = isSent ? '-' : '+';
                 const color = isSent ? 'text-red-600' : 'text-green-600';
                 const actionText = isSent ? `Sent to ${item.toName}` : `Received from ${item.fromName}`;
+                const amountToShow = isSent ? item.totalDeducted : item.amount;
 
                 return `<div class="card-bg p-3 rounded-lg flex items-center justify-between">
                             <div>
                                 <p class="font-semibold text-gray-800">${actionText}</p>
                                 <p class="text-xs text-gray-500">${date}</p>
                             </div>
-                            <p class="font-bold text-lg ${color}">${sign}৳${item.amount.toFixed(2)}</p>
+                            <p class="font-bold text-lg ${color}">${sign}৳${amountToShow.toFixed(2)}</p>
                         </div>`;
             }).join('');
         }
@@ -980,6 +1032,7 @@
             showAlert(message);
         }
 
+        // UPDATED handleSend function
         async function handleSend() {
             const recipientId = prompt("🚀 ব্যালেন্স ট্রান্সফার করুন (Recipient ID):");
             if (!recipientId || recipientId.trim() === '') return;
@@ -988,23 +1041,26 @@
                 return;
             }
 
-            const amountStr = prompt("কত টাকা পাঠাতে চান?");
+            const amountStr = prompt("কত টাকা পাঠাতে চান? (Minimum ৳20)");
             if (!amountStr || isNaN(parseFloat(amountStr))) {
                 showAlert("অনুগ্রহ করে সঠিক পরিমাণ লিখুন।");
                 return;
             }
             const amount = parseFloat(amountStr);
-            if (amount <= 0) {
-                showAlert("পাঠানোর পরিমাণ অবশ্যই শূন্যের বেশি হতে হবে।");
+            if (amount < 20) {
+                showAlert("সর্বনিম্ন পাঠানোর পরিমাণ ৳20।");
                 return;
             }
 
-            if (amount > userData.balance) {
-                showAlert("আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই।");
+            const fee = amount * 0.05;
+            const totalCost = amount + fee;
+
+            if (totalCost > userData.balance) {
+                showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
                 return;
             }
             
-            if (!confirm(`আপনি কি ${recipientId.trim()} আইডিতে ৳${amount.toFixed(2)} পাঠাতে চান?`)) return;
+            if (!confirm(`আপনি কি ${recipientId.trim()} আইডিতে ৳${amount.toFixed(2)} পাঠাতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) return;
 
             loader.style.display = 'flex';
             const senderRef = doc(db, "users", userData.tgChatId);
@@ -1015,10 +1071,10 @@
                     const senderDoc = await transaction.get(senderRef);
                     const recipientDoc = await transaction.get(recipientRef);
 
-                    if (!senderDoc.exists() || senderDoc.data().balance < amount) throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
+                    if (!senderDoc.exists() || senderDoc.data().balance < totalCost) throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
                     if (!recipientDoc.exists()) throw "প্রাপক আইডি (Recipient ID) খুঁজে পাওয়া যায়নি।";
 
-                    const newSenderBalance = senderDoc.data().balance - amount;
+                    const newSenderBalance = senderDoc.data().balance - totalCost;
                     const newRecipientBalance = recipientDoc.data().balance + amount;
 
                     transaction.update(senderRef, { balance: newSenderBalance });
@@ -1031,11 +1087,13 @@
                         toId: recipientId.trim(),
                         toName: recipientDoc.data().name,
                         amount: amount,
+                        fee: fee,
+                        totalDeducted: totalCost,
                         timestamp: serverTimestamp()
                     });
                 });
                 
-                userData.balance -= amount;
+                userData.balance -= totalCost;
                 updateUI();
                 showAlert(`সফলভাবে ৳${amount.toFixed(2)} পাঠানো হয়েছে।`);
                 loadFeaturesPage();
@@ -1048,7 +1106,126 @@
             }
         }
         
-        // --- New Functions for Tutorial, Reviews, and PIN ---
+        // --- NEW Functions for Recharge, Tutorial, Reviews, and PIN ---
+
+        // NEW: Handle Recharge Request
+        async function handleRechargeRequest() {
+            const number = document.getElementById('recharge-number').value.trim();
+            const amountStr = document.getElementById('recharge-amount').value;
+            const operator = document.getElementById('recharge-operator').value;
+            const type = document.getElementById('recharge-type').value;
+
+            if (!number || !amountStr || !operator) {
+                return showAlert("অনুগ্রহ করে সমস্ত তথ্য সঠিকভাবে পূরণ করুন।");
+            }
+            
+            if (!/^(01[3-9])\d{8}$/.test(number)) {
+                return showAlert("অনুগ্রহ করে একটি সঠিক বাংলাদেশী মোবাইল নম্বর দিন।");
+            }
+
+            const amount = parseFloat(amountStr);
+
+            if (isNaN(amount) || amount < 20) {
+                return showAlert("সর্বনিম্ন রিচার্জের পরিমাণ ৳20।");
+            }
+
+            const fee = amount * 0.05;
+            const totalCost = amount + fee;
+
+            if (totalCost > userData.balance) {
+                return showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
+            }
+
+            if (!confirm(`আপনি কি ${number} নম্বরে ৳${amount.toFixed(2)} রিচার্জ করতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) {
+                return;
+            }
+
+            loader.style.display = 'flex';
+
+            try {
+                const userRef = doc(db, "users", userData.tgChatId);
+                await runTransaction(db, async (transaction) => {
+                    const userDoc = await transaction.get(userRef);
+                    if (!userDoc.exists() || userDoc.data().balance < totalCost) {
+                        throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
+                    }
+                    
+                    const newBalance = userDoc.data().balance - totalCost;
+                    transaction.update(userRef, { balance: newBalance });
+
+                    const rechargeRequestRef = doc(collection(db, "recharge_requests"));
+                    transaction.set(rechargeRequestRef, {
+                        userId: userData.tgChatId,
+                        userName: userData.name,
+                        mobileNumber: number,
+                        amount: amount,
+                        operator: operator,
+                        rechargeType: type,
+                        fee: fee,
+                        totalDeducted: totalCost,
+                        status: "pending",
+                        requestedAt: serverTimestamp()
+                    });
+                });
+
+                userData.balance -= totalCost;
+                updateUI();
+                showAlert("আপনার রিচার্জ অনুরোধ সফলভাবে জমা হয়েছে।");
+                
+                document.getElementById('recharge-number').value = '';
+                document.getElementById('recharge-amount').value = '';
+                document.getElementById('recharge-operator').value = '';
+
+                loadRechargeHistory();
+
+            } catch (error) {
+                console.error("Recharge failed: ", error);
+                showAlert(typeof error === 'string' ? error : "রিচার্জ অনুরোধে সমস্যা হয়েছে।");
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // NEW: Load Recharge History
+        async function loadRechargeHistory() {
+            const historyList = document.getElementById('recharge-history-list');
+            historyList.innerHTML = '<p class="text-gray-600 text-center">হিস্ট্রি লোড হচ্ছে...</p>';
+            try {
+                const q = query(collection(db, "recharge_requests"), where("userId", "==", userData.tgChatId), orderBy("requestedAt", "desc"));
+                const snapshot = await getDocs(q);
+                if (snapshot.empty) {
+                    return historyList.innerHTML = '<p class="text-gray-600 text-center">কোনো রিচার্জ হিস্ট্রি পাওয়া যায়নি।</p>';
+                }
+
+                historyList.innerHTML = snapshot.docs.map(doc => {
+                    const item = doc.data();
+                    let statusColor, statusIcon;
+                    switch (item.status) {
+                        case 'approved': statusColor = 'text-green-600'; statusIcon = 'check-circle-2'; break;
+                        case 'rejected': statusColor = 'text-red-600'; statusIcon = 'x-circle'; break;
+                        default: statusColor = 'text-yellow-600'; statusIcon = 'hourglass';
+                    }
+                    const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString('en-GB') : 'N/A';
+                    return `<div class="card-bg p-3 rounded-lg flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <i data-lucide="${statusIcon}" class="w-6 h-6 ${statusColor}"></i>
+                                    <div>
+                                        <p class="font-semibold text-gray-800">${item.mobileNumber}</p>
+                                        <p class="text-xs text-gray-500">${item.operator} - ${date}</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-lg text-gray-800">৳${item.amount.toFixed(2)}</p>
+                                    <p class="font-semibold ${statusColor} capitalize text-xs">${item.status}</p>
+                                </div>
+                            </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch (error) {
+                console.error("Error loading recharge history: ", error);
+                historyList.innerHTML = '<p class="text-red-600 text-center">হিস্ট্রি লোড করা যায়নি।</p>';
+            }
+        }
 
         async function loadTutorials() {
             const tutorialListEl = document.getElementById('tutorial-list');
@@ -1141,7 +1318,7 @@
             try {
                 const userRef = doc(db, "users", userData.tgChatId);
                 await updateDoc(userRef, { pin: pin });
-                userData.pin = pin; // Update local user data
+                userData.pin = pin;
                 document.getElementById('pin-set-modal').classList.add('hidden');
                 showAlert("আপনার পিন সফলভাবে সেট করা হয়েছে!");
                 navigateTo('features-page');
