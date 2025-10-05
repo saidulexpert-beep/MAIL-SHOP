@@ -120,14 +120,15 @@
         #ads-container { height: 120px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
         .ad-slide { min-width: 100%; background-size: cover; background-position: center; }
         #ads-dots .dot { height: 6px; width: 6px; }
-
-        /* Premium Loader Styles */
+        
+        /* UPDATED Premium Loader Styles */
         #loader { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; transition: opacity 0.5s ease; }
-        #loader .logo-container { animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
+        #loader .logo-container { animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards, breath 2.5s ease-in-out infinite 1s; }
         #loader .loader-text { animation: fadeInText 1s ease-in-out 0.5s forwards; opacity: 0; font-weight: bold; font-size: 1.5rem; }
         #loader-reviews { position: absolute; bottom: 30px; font-size: 0.9rem; color: #6b7280; opacity: 0; transition: opacity 0.5s ease-in-out; }
         @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes fadeInText { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes breath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         
         /* Tutorial Page */
         .video-container-16-9 { position: relative; padding-top: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background-color: #e0e0e0; }
@@ -150,26 +151,25 @@
             outline: none;
         }
 
-        /* Simple Spinner for Loading */
-        .loader-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #007bff;
+        /* UPDATED Spinner for Loading */
+        .premium-loader-spinner {
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 2rem auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            background: conic-gradient(#0000 10%, #007bff);
+            -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 9px), #000 0);
+            animation: spin 1s infinite linear;
         }
         .loading-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: 2.5rem;
         }
+        @keyframes spin {
+            to { transform: rotate(1turn); }
+        }
+
         /* New Modal Close Button Style */
         .modal-close-btn {
             position: absolute;
@@ -185,6 +185,42 @@
         .modal-close-btn:hover {
             background-color: #d1d5db;
         }
+        
+        /* NEW: Floating Action Button (FAB) Styles */
+        .fab-button {
+            position: fixed;
+            bottom: 90px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            z-index: 40;
+            transition: all 0.3s ease;
+            transform: scale(0); /* Hidden by default */
+        }
+        .fab-button.visible {
+             transform: scale(1);
+        }
+        .fab-button:active {
+            transform: scale(0.95) !important;
+        }
+        .fab-updates {
+            left: 20px;
+            background-color: #25D366;
+        }
+        .fab-telegram {
+            right: 20px;
+            background-color: #0088cc;
+        }
+        .fab-whatsapp {
+            right: 20px;
+            background: linear-gradient(to bottom right, #25d366, #128c7e);
+        }
+
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -497,6 +533,16 @@
         </nav>
     </div>
     
+    <a id="fab-updates-plus" href="https://t.me/SAIDULEP" target="_blank" class="fab-button fab-updates">
+        <i data-lucide="plus" class="w-8 h-8"></i>
+    </a>
+    <a id="fab-common-telegram" href="https://t.me/EXPERTearn_team" target="_blank" class="fab-button fab-telegram">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.65 12c-.88-.25-.89-1.02.2-1.3l15.67-6.11c.8-.32 1.45.19 1.18 1.1l-2.53 11.64c-.23.95-1.17 1.17-1.87.73l-4.5-3.33-2.15 2.07c-.24.24-.45.46-.8.46-.42 0-.59-.16-.69-.53z"/></svg>
+    </a>
+    <a id="fab-features-whatsapp" href="https://wa.me/YOUR_WHATSAPP_NUMBER" target="_blank" class="fab-button fab-whatsapp">
+         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zM12.04 20.12c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31c-.82-1.31-1.26-2.83-1.26-4.38 0-4.54 3.7-8.24 8.24-8.24 4.54 0 8.24 3.7 8.24 8.24s-3.7 8.24-8.24 8.24zm4.52-6.14c-.25-.12-1.47-.72-1.7-.82s-.39-.12-.56.12c-.17.25-.64.82-.79.98-.15.17-.29.19-.54.06-.25-.12-1.06-.39-2.02-1.24-.75-.66-1.25-1.48-1.4-1.73-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.41.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.42h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07s.88 2.4 1 2.56c.12.17 1.75 2.67 4.24 3.73.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18s-.25-.11-.5-.24z"/></svg>
+    </a>
+
     <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-lg p-6 w-full max-w-sm text-center border border-gray-200 text-gray-800">
             <p id="alert-message" class="mb-5 whitespace-pre-wrap text-gray-700"></p>
@@ -593,7 +639,7 @@
         };
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, Timestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -601,11 +647,12 @@
         let currentUserTg = null;
         let userData = null;
         let appConfig = {};
-        let insufficientBalanceInterval = null; // NEW: Timer for insufficient balance popup
+        let insufficientBalanceInterval = null; 
         
         const loader = document.getElementById('loader');
         
-        const getLoadingHTML = () => `<div class="loading-container"><div class="loader-spinner"></div></div>`;
+        // UPDATED Loading HTML function
+        const getLoadingHTML = () => `<div class="loading-container"><div class="premium-loader-spinner"></div></div>`;
 
         window.onload = async () => {
             cycleReviewsOnLoader();
@@ -675,7 +722,9 @@
                     balance: 0, 
                     createdAt: serverTimestamp(), 
                     isBlocked: false,
-                    pin: null
+                    pin: null,
+                    pinFailAttempts: [], // NEW for lockout
+                    featuresLockedUntil: null // NEW for lockout
                 };
                 await setDoc(userRef, userData);
             }
@@ -713,8 +762,8 @@
             document.getElementById(pageId).classList.add('active');
         }
 
+        // MODIFIED: To handle FAB visibility
         function navigateTo(pageId) {
-            // NEW: Clear the interval when navigating away from the mail page
             if (pageId !== 'mail-page' && insufficientBalanceInterval) {
                 clearInterval(insufficientBalanceInterval);
                 insufficientBalanceInterval = null;
@@ -725,6 +774,12 @@
             document.querySelectorAll('.nav-link-premium[data-page]').forEach(link => {
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
+
+            // NEW: FAB Visibility Logic
+            document.getElementById('fab-updates-plus').classList.toggle('visible', pageId === 'updates-page');
+            document.getElementById('fab-common-telegram').classList.toggle('visible', pageId === 'home-page' || pageId === 'mail-page');
+            document.getElementById('fab-features-whatsapp').classList.toggle('visible', pageId === 'features-page');
+            
             const pageLoadFunctions = {
                 'home-page': loadHomePageAds,
                 'pay-page': loadPaymentHistory,
@@ -771,7 +826,6 @@
             document.getElementById('cancel-pin-set-btn').addEventListener('click', () => document.getElementById('pin-set-modal').classList.add('hidden'));
             document.getElementById('cancel-pin-enter-btn').addEventListener('click', () => document.getElementById('pin-enter-modal').classList.add('hidden'));
 
-            // NEW: Event listeners for new modals
             document.getElementById('mail-details-ok-btn').addEventListener('click', () => {
                 document.getElementById('mail-details-modal').classList.add('hidden');
             });
@@ -891,7 +945,6 @@
             historyListEl.innerHTML = getLoadingHTML();
             
             try {
-                // Load Mail List
                 const stockPromises = (appConfig.mails || []).map(mail => getStockCount(mail.stockKey));
                 const stockCounts = await Promise.all(stockPromises);
                 let mailsWithStock = (appConfig.mails || []).map((mail, index) => ({ ...mail, stock: stockCounts[index] }));
@@ -911,7 +964,6 @@
                     mailListEl.innerHTML += `<div class="card-bg p-4 rounded-xl space-y-3"><div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo"><h3 class="font-bold text-lg text-gray-800">${mail.type}</h3></div><div class="flex items-center gap-2">${validityTagHtml}<button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="text-blue-600 text-sm font-semibold">Details</button></div></div><div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200"><div class="py-2">${apiButtonHtml}</div><div class="py-2"><p class="text-gray-500 text-sm">Price</p><p class="font-bold text-lg text-blue-600">৳${costInBdt.toFixed(2)}</p></div><div class="py-2"><p class="text-gray-500 text-sm">Stock</p><p class="font-bold text-lg text-green-600">${stock}</p></div></div><button class="${buyButtonClasses} w-full py-2 rounded-lg text-md" ${buyButtonDisabled} onclick="buyMail('${mail.type}', ${costInBdt}, '${mail.stockKey}')">Buy Now</button></div>`;
                 });
 
-                // Load Purchase History
                 const q = query(collection(db, "mail_purchases"), where("userId", "==", userData.tgChatId), orderBy("purchasedAt", "desc"));
                 const querySnapshot = await getDocs(q);
                 if(querySnapshot.empty) {
@@ -950,24 +1002,20 @@
                 
                 lucide.createIcons();
 
-                // NEW: Logic to handle recurring insufficient balance popup
                 if (insufficientBalanceInterval) {
                     clearInterval(insufficientBalanceInterval);
                     insufficientBalanceInterval = null;
                 }
-
                 const hasSufficientBalanceForAny = mailsWithStock.some(mail => userData.balance >= mail.priceBdt && mail.stock > 0);
                 const hasAnyStock = mailsWithStock.some(mail => mail.stock > 0);
-
                 if (!hasSufficientBalanceForAny && hasAnyStock) {
                     insufficientBalanceInterval = setInterval(() => {
-                        // Check if any other modal is already open to avoid overlap
                         const isAnyModalOpen = document.querySelector('#custom-alert:not(.hidden), #pin-set-modal:not(.hidden), #pin-enter-modal:not(.hidden), #mail-details-modal:not(.hidden)');
                         if (!isAnyModalOpen) {
                             document.getElementById('insufficient-balance-modal').classList.remove('hidden');
                             lucide.createIcons();
                         }
-                    }, 30000); // 30 seconds
+                    }, 30000);
                 }
 
             } catch(e) {
@@ -984,9 +1032,8 @@
             const innerContainer = document.getElementById('ads-inner');
             const dotsContainer = document.getElementById('ads-dots');
 
-            // Use Firebase data if available and enabled
             if (adsConfig && adsConfig.enabled && adsConfig.items && adsConfig.items.length > 0) {
-                innerContainer.innerHTML = ''; // Clear placeholders
+                innerContainer.innerHTML = ''; 
                 adsConfig.items.forEach(ad => {
                     const slide = document.createElement('a');
                     slide.href = ad.linkUrl;
@@ -997,7 +1044,6 @@
                 });
             }
             
-            // Setup carousel for whichever items are present (default or firebase)
             const slides = innerContainer.querySelectorAll('.ad-slide');
             if(slides.length === 0) {
                 adsSection.classList.add('hidden');
@@ -1095,7 +1141,6 @@
         }
 
         window.buyMail = async function(mailType, cost, stockKey) {
-            // UPDATED: Show custom modal instead of alert
             if (userData.balance < cost) {
                 document.getElementById('insufficient-balance-modal').classList.remove('hidden');
                 lucide.createIcons();
@@ -1141,7 +1186,6 @@
             finally { loader.style.display = 'none'; }
         }
 
-        // UPDATED: Show details in the new premium modal
         window.showMailDetails = function(mailType, details) {
             document.getElementById('mail-details-title').textContent = `${mailType} Details`;
             document.getElementById('mail-details-content').textContent = details;
@@ -1534,7 +1578,15 @@
             }
         }
         
+        // MODIFIED: Added lockout check
         function handleFeaturesClick() {
+            // Check for lockout
+            if (userData.featuresLockedUntil && userData.featuresLockedUntil.toDate() > new Date()) {
+                const unlockTime = userData.featuresLockedUntil.toDate().toLocaleTimeString('en-US');
+                showAlert(`অতিরিক্ত ভুল পিন দেওয়ার কারণে আপনার একাউন্ট সাময়িকভাবে লক করা হয়েছে।\nএটি ${unlockTime} টায় আবার খুলবে।\n\nজরুরী প্রয়োজনে কাস্টমার সাপোর্টে যোগাযোগ করুন।`);
+                return;
+            }
+
             if (userData && userData.pin) {
                 document.getElementById('enter-pin').value = '';
                 document.getElementById('pin-enter-modal').classList.remove('hidden');
@@ -1566,14 +1618,49 @@
             }
         }
 
-        function handleEnterPin() {
+        // MODIFIED: Added failure tracking and lockout logic
+        async function handleEnterPin() {
             const enteredPin = document.getElementById('enter-pin').value;
+            const userRef = doc(db, "users", userData.tgChatId);
+
             if (enteredPin === userData.pin) {
+                // Correct PIN
+                if (userData.pinFailAttempts && userData.pinFailAttempts.length > 0) {
+                    userData.pinFailAttempts = [];
+                    await updateDoc(userRef, { pinFailAttempts: [] });
+                }
                 document.getElementById('pin-enter-modal').classList.add('hidden');
                 navigateTo('features-page');
             } else {
-                showAlert("ভুল পিন। আবার চেষ্টা করুন।");
-                document.getElementById('enter-pin').value = '';
+                // Incorrect PIN
+                const now = Timestamp.now();
+                const fiveMinutesAgo = new Date(now.toDate().getTime() - 5 * 60 * 1000);
+
+                let recentFails = (userData.pinFailAttempts || []).map(t => t.toDate());
+                recentFails = recentFails.filter(t => t > fiveMinutesAgo);
+                recentFails.push(now.toDate());
+                
+                userData.pinFailAttempts = recentFails.map(d => Timestamp.fromDate(d));
+
+                if (recentFails.length >= 3) {
+                    const tenHoursLater = new Date(now.toDate().getTime() + 10 * 60 * 60 * 1000);
+                    const lockTimestamp = Timestamp.fromDate(tenHoursLater);
+                    
+                    userData.featuresLockedUntil = lockTimestamp;
+                    userData.pinFailAttempts = [];
+
+                    await updateDoc(userRef, {
+                        pinFailAttempts: [],
+                        featuresLockedUntil: lockTimestamp
+                    });
+                    
+                    document.getElementById('pin-enter-modal').classList.add('hidden');
+                    showAlert("আপনি ৫ মিনিটের মধ্যে ৩ বার ভুল পিন দিয়েছেন। আপনার একাউন্ট নিরাপত্তার জন্য ১০ ঘণ্টার জন্য লক করা হয়েছে।");
+                } else {
+                    await updateDoc(userRef, { pinFailAttempts: userData.pinFailAttempts });
+                    showAlert(`ভুল পিন। আপনার কাছে আর ${3 - recentFails.length} টি সুযোগ আছে।`);
+                    document.getElementById('enter-pin').value = '';
+                }
             }
         }
     </script>
