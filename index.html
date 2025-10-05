@@ -149,6 +149,27 @@
             box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
             outline: none;
         }
+
+        /* Simple Spinner for Loading */
+        .loader-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -204,9 +225,11 @@
                         <h2 class="text-lg font-semibold px-2 mb-3">Promotions</h2>
                         <div id="ads-container" class="relative w-full overflow-hidden rounded-xl">
                             <div id="ads-inner" class="flex transition-transform duration-500 ease-in-out">
-                                </div>
+                                <a href="#" target="_blank" class="ad-slide block" style="background-image: url('https://i.postimg.cc/52HsFwvV/Black-and-Orange-Money-You-Tube-Thumbnail-20250917-224706-0000.png')"></a>
+                                <a href="#" target="_blank" class="ad-slide block" style="background-image: url('https://i.postimg.cc/W1syFD8p/Grey-Blue-Illustration-Refer-a-Friend-Instagram-Post-1080-x-720-px-20250917-223749-0000.png')"></a>
+                            </div>
                             <div id="ads-dots" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-2">
-                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -245,29 +268,31 @@
                 <p class="text-gray-600 text-center mb-4">কম দামে এবং সহজে মেইল কিনুন</p>
                 <div id="mail-list" class="space-y-4"></div>
                  <div>
-                    <div class="flex justify-between items-center mb-3 mt-6"><h3 class="text-lg font-semibold">Purchase History</h3><button id="download-history-btn" class="btn-outline-accent px-3 py-1 rounded-lg text-sm flex items-center gap-2"><i data-lucide="download" class="w-4 h-4"></i><span>Download</span></button></div>
+                    <div class="flex justify-between items-center mb-3 mt-6">
+                        <h3 class="text-lg font-semibold">Purchase History</h3>
+                        <div class="flex items-center gap-2">
+                           <button id="copy-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="copy" class="w-4 h-4"></i><span>Copy for Excel</span></button>
+                           <button id="download-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i><span>Download</span></button>
+                        </div>
+                    </div>
                     <div id="mail-purchase-history" class="space-y-3"></div>
                 </div>
             </div>
 
             <div id="updates-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center text-gray-800">Latest Updates</h2>
-                <div id="updates-content" class="space-y-4"><p class="text-center text-gray-600">Loading updates...</p></div>
+                <div id="updates-content" class="space-y-4"></div>
                 
                 <div class="mt-8">
                     <h3 class="text-lg font-semibold text-center mb-4 text-gray-800">Customer Reviews</h3>
-                    <div id="reviews-list" class="space-y-4">
-                         <p class="text-center text-gray-600">Loading reviews...</p>
-                    </div>
+                    <div id="reviews-list" class="space-y-4"></div>
                 </div>
             </div>
             
             <div id="tutorial-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center text-gray-800">Tutorials</h2>
                 <p class="text-sm text-gray-600 text-center">নিচের তালিকা থেকে আপনার প্রয়োজনীয় ভিডিওটি দেখুন।</p>
-                <div id="tutorial-list" class="space-y-5">
-                    <p class="text-center text-gray-600">Loading tutorials...</p>
-                </div>
+                <div id="tutorial-list" class="space-y-5"></div>
             </div>
 
             <div id="profile-page" class="p-4 space-y-6 sub-page">
@@ -294,14 +319,14 @@
 
                 <div class="card-bg p-4 rounded-2xl">
                     <h3 class="text-md font-semibold text-gray-700 mb-4 text-center">Follow Us On</h3>
-                    <div id="social-links-container" class="flex justify-center items-center space-x-6">
-                       <a id="social-youtube" href="#" target="_blank" class="text-gray-600 hover:text-red-600 transition-colors hidden">
+                    <div class="flex justify-center items-center space-x-6">
+                       <a href="https://www.youtube.com/" target="_blank" class="text-gray-600 hover:text-red-600 transition-colors">
                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                        </a>
-                       <a id="social-telegram" href="#" target="_blank" class="text-gray-600 hover:text-sky-500 transition-colors hidden">
+                       <a href="https://t.me/EXPERTearn_team" target="_blank" class="text-gray-600 hover:text-sky-500 transition-colors">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.65 12c-.88-.25-.89-1.02.2-1.3l15.67-6.11c.8-.32 1.45.19 1.18 1.1l-2.53 11.64c-.23.95-1.17 1.17-1.87.73l-4.5-3.33-2.15 2.07c-.24.24-.45.46-.8.46-.42 0-.59-.16-.69-.53z"/></svg>
                        </a>
-                       <a id="social-tiktok" href="#" target="_blank" class="text-gray-600 hover:text-black transition-colors hidden">
+                       <a href="https://www.tiktok.com/" target="_blank" class="text-gray-600 hover:text-black transition-colors">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-2.43.05-4.85-.38-6.75-1.77-2.06-1.49-3.07-3.75-3.07-6.03-.01-2.23.99-4.39 2.64-5.87 1.55-1.36 3.6-2.04 5.63-1.99.19 1.39.73 2.77 1.62 3.87 1.84 2.16 5.06 2.61 7.24 1.03.74-.55 1.17-1.42 1.17-2.25 0-.84-.43-1.71-1.17-2.25-1.19-.88-2.83-.98-4.17-.65-.66.16-1.32.34-1.98.57V.02z"/></svg>
                        </a>
                     </div>
@@ -352,9 +377,7 @@
 
                 <div>
                     <h3 class="text-lg font-semibold mb-3">Balance Transfer History</h3>
-                    <div id="transfer-history-list" class="space-y-3">
-                        <p class="text-gray-600 text-center">No transfer history found.</p>
-                    </div>
+                    <div id="transfer-history-list" class="space-y-3"></div>
                 </div>
             </div>
 
@@ -362,9 +385,9 @@
                 <h2 class="text-xl font-bold text-center text-gray-800">Admin Panel</h2>
                 <div class="card-bg p-5 rounded-xl space-y-4">
                     <h3 class="font-semibold text-lg text-gray-800">Add New Mails</h3>
-                    <p class="text-sm text-gray-600">ফরম্যাট: <code class="bg-gray-100 p-1 rounded text-gray-700">email|password|refresh_token|client_id</code></p>
+                    <p class="text-sm text-gray-600">ফরম্যাট: <code class="bg-gray-100 p-1 rounded text-gray-700">email/password/refresh_token/client_id</code></p>
                     <div><label for="mail-type-select" class="block text-sm font-medium text-gray-600 mb-1">Mail Type</label><select id="mail-type-select" class="w-full p-3 rounded-lg input-field"></select></div>
-                    <div><label for="mail-data-textarea" class="block text-sm font-medium text-gray-600 mb-1">Mail Data (one per line)</label><textarea id="mail-data-textarea" rows="10" placeholder="mail@example.com|password|refresh_token|client_id" class="w-full p-3 rounded-lg input-field font-mono text-xs"></textarea></div>
+                    <div><label for="mail-data-textarea" class="block text-sm font-medium text-gray-600 mb-1">Mail Data (one per line)</label><textarea id="mail-data-textarea" rows="10" placeholder="mail@example.com/password/refresh_token/client_id" class="w-full p-3 rounded-lg input-field font-mono text-xs"></textarea></div>
                     <button id="add-mails-btn" class="w-full p-3 rounded-lg btn-gradient">Add Mails to Stock</button>
                 </div>
             </div>
@@ -416,9 +439,7 @@
                 </div>
                 <div class="mt-6">
                     <h3 class="text-lg font-semibold mb-3">Recharge History</h3>
-                    <div id="recharge-history-list" class="space-y-3">
-                        <p class="text-gray-600 text-center">No recharge history found.</p>
-                    </div>
+                    <div id="recharge-history-list" class="space-y-3"></div>
                 </div>
             </div>
             
@@ -543,6 +564,8 @@
         
         const loader = document.getElementById('loader');
         
+        const getLoadingHTML = () => `<div class="loading-container"><div class="loader-spinner"></div></div>`;
+
         window.onload = async () => {
             cycleReviewsOnLoader();
             try {
@@ -684,19 +707,18 @@
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('add-mails-btn').addEventListener('click', handleAddMails);
             document.getElementById('download-history-btn').addEventListener('click', handleDownloadHistory);
+            document.getElementById('copy-history-btn').addEventListener('click', handleCopyHistory);
             document.getElementById('deposit-details-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.remove('hidden'));
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
 
-            // More Features and PIN Logic
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('features-recharge-btn').addEventListener('click', () => navigateTo('recharge-page'));
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
-            document.getElementById('features-send-btn').addEventListener('click', () => navigateTo('send-page')); // MODIFIED
+            document.getElementById('features-send-btn').addEventListener('click', () => navigateTo('send-page'));
             document.getElementById('submit-recharge-btn').addEventListener('click', handleRechargeRequest);
-            document.getElementById('submit-send-btn').addEventListener('click', handleSendRequest); // NEW
+            document.getElementById('submit-send-btn').addEventListener('click', handleSendRequest);
             
-            // PIN Modal Buttons
             document.getElementById('set-pin-btn').addEventListener('click', handleSetPin);
             document.getElementById('enter-pin-btn').addEventListener('click', handleEnterPin);
             document.getElementById('cancel-pin-set-btn').addEventListener('click', () => document.getElementById('pin-set-modal').classList.add('hidden'));
@@ -721,34 +743,6 @@
                 document.getElementById('profile-name').textContent = `${currentUserTg.first_name} ${currentUserTg.last_name || ''}`.trim();
                 document.getElementById('profile-username').textContent = currentUserTg.username ? `@${currentUserTg.username}` : 'No Telegram Username';
                 document.getElementById('profile-id').textContent = `Telegram ID: ${currentUserTg.id}`;
-            }
-
-            const socialLinks = appConfig.socialLinks;
-            const youtubeLink = document.getElementById('social-youtube');
-            const telegramLink = document.getElementById('social-telegram');
-            const tiktokLink = document.getElementById('social-tiktok');
-            
-            if (socialLinks) {
-                if (socialLinks.youtube) {
-                    youtubeLink.href = socialLinks.youtube;
-                    youtubeLink.classList.remove('hidden');
-                } else {
-                    youtubeLink.classList.add('hidden');
-                }
-
-                if (socialLinks.telegram) {
-                    telegramLink.href = socialLinks.telegram;
-                    telegramLink.classList.remove('hidden');
-                } else {
-                    telegramLink.classList.add('hidden');
-                }
-
-                if (socialLinks.tiktok) {
-                    tiktokLink.href = socialLinks.tiktok;
-                    tiktokLink.classList.remove('hidden');
-                } else {
-                    tiktokLink.classList.add('hidden');
-                }
             }
         }
 
@@ -794,7 +788,7 @@
 
         async function loadPaymentHistory() {
             const historyList = document.getElementById('payment-history-list');
-            historyList.innerHTML = '<p class="text-gray-600">হিস্টি লোড হচ্ছে...</p>';
+            historyList.innerHTML = getLoadingHTML();
             try {
                 const q = query(collection(db, "deposits"), where("userId", "==", userData.tgChatId), orderBy("requestedAt", "desc"));
                 const snapshot = await getDocs(q);
@@ -831,13 +825,13 @@
         async function loadMailStore() {
             const mailListEl = document.getElementById('mail-list');
             const historyListEl = document.getElementById('mail-purchase-history');
-            mailListEl.innerHTML = '<p class="text-center text-gray-600">মেইল লোড হচ্ছে...</p>';
-            historyListEl.innerHTML = '<p class="text-center text-gray-600">হিস্টি লোড হচ্ছে...</p>';
+            mailListEl.innerHTML = getLoadingHTML();
+            historyListEl.innerHTML = getLoadingHTML();
             
             try {
+                // Load Mail List
                 const stockPromises = (appConfig.mails || []).map(mail => getStockCount(mail.stockKey));
                 const stockCounts = await Promise.all(stockPromises);
-                
                 let mailsWithStock = (appConfig.mails || []).map((mail, index) => ({ ...mail, stock: stockCounts[index] }));
                 mailsWithStock.sort((a, b) => b.stock - a.stock);
 
@@ -852,28 +846,46 @@
                     const validityTagHtml = (mail.expirationDays !== undefined && mail.expirationDays !== null) ? `<span class="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">${mail.expirationDays} h</span>` : '';
                     const apiButtonHtml = mail.apiLink ? `<a href="${mail.apiLink}" target="_blank" class="text-blue-600 font-semibold">API</a>` : '<span class="text-gray-400 font-semibold">API</span>';
 
-                    mailListEl.innerHTML += `
-                        <div class="card-bg p-4 rounded-xl space-y-3">
-                            <div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo"><h3 class="font-bold text-lg text-gray-800">${mail.type}</h3></div><div class="flex items-center gap-2">${validityTagHtml}<button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="text-blue-600 text-sm font-semibold">Details</button></div></div>
-                            <div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200"><div class="py-2">${apiButtonHtml}</div><div class="py-2"><p class="text-gray-500 text-sm">Price</p><p class="font-bold text-lg text-blue-600">৳${costInBdt.toFixed(2)}</p></div><div class="py-2"><p class="text-gray-500 text-sm">Stock</p><p class="font-bold text-lg text-green-600">${stock}</p></div></div>
-                            <button class="${buyButtonClasses} w-full py-2 rounded-lg text-md" ${buyButtonDisabled} onclick="buyMail('${mail.type}', ${costInBdt}, '${mail.stockKey}')">Buy Now</button>
-                        </div>`;
+                    mailListEl.innerHTML += `<div class="card-bg p-4 rounded-xl space-y-3"><div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo"><h3 class="font-bold text-lg text-gray-800">${mail.type}</h3></div><div class="flex items-center gap-2">${validityTagHtml}<button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="text-blue-600 text-sm font-semibold">Details</button></div></div><div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200"><div class="py-2">${apiButtonHtml}</div><div class="py-2"><p class="text-gray-500 text-sm">Price</p><p class="font-bold text-lg text-blue-600">৳${costInBdt.toFixed(2)}</p></div><div class="py-2"><p class="text-gray-500 text-sm">Stock</p><p class="font-bold text-lg text-green-600">${stock}</p></div></div><button class="${buyButtonClasses} w-full py-2 rounded-lg text-md" ${buyButtonDisabled} onclick="buyMail('${mail.type}', ${costInBdt}, '${mail.stockKey}')">Buy Now</button></div>`;
                 });
 
+                // Load Purchase History
                 const q = query(collection(db, "mail_purchases"), where("userId", "==", userData.tgChatId), orderBy("purchasedAt", "desc"));
                 const querySnapshot = await getDocs(q);
                 if(querySnapshot.empty) {
                     historyListEl.innerHTML = '<p class="text-center text-gray-600">আপনি এখনো কোনো মেইল কিনেননি।</p>';
                     return;
                 }
-                historyListEl.innerHTML = '';
-                querySnapshot.forEach(doc => {
+                historyListEl.innerHTML = querySnapshot.docs.map(doc => {
                     const purchase = doc.data();
                     const date = purchase.purchasedAt.toDate().toLocaleString();
-                    let mailDetailsContent = `<p class="text-gray-700 font-mono text-sm">${purchase.mail}</p>`;
-                    if (purchase.password) mailDetailsContent += `<p class="text-gray-700 font-mono text-sm">${purchase.password}</p>`;
-                    historyListEl.innerHTML += `<div class="card-bg p-4 rounded-lg"><div class="flex justify-between items-center mb-3"><p class="font-bold text-lg text-gray-800">${purchase.mailType}</p><button onclick="copyToClipboard('${purchase.mail} ${purchase.password || ''}', this)" class="p-1 rounded-full hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div><div class="bg-gray-100 p-3 rounded-md">${mailDetailsContent}</div><p class="text-xs text-gray-500 text-right mt-2">${date}</p></div>`;
-                });
+                    const fullData = [purchase.mail, purchase.password, purchase.refreshToken, purchase.clientId].filter(Boolean).join('|');
+
+                    return `<div class="card-bg p-4 rounded-xl space-y-3">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-bold text-lg text-gray-800">${purchase.mailType}</h4>
+                                <p class="text-xs text-gray-500">${date}</p>
+                            </div>
+                            <button onclick="copyToClipboard('${fullData}', this)" class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-md font-semibold hover:bg-gray-200 flex items-center gap-1">
+                                <i data-lucide="copy-plus" class="w-3 h-3"></i> FULL COPY
+                            </button>
+                        </div>
+                        <div class="space-y-2 pt-2 border-t">
+                            <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md">
+                                <span class="text-sm font-medium text-gray-500 mr-2">EMAIL:</span>
+                                <span class="font-mono text-sm text-gray-800 truncate">${purchase.mail}</span>
+                                <button onclick="copyToClipboard('${purchase.mail}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button>
+                            </div>
+                            <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md">
+                                <span class="text-sm font-medium text-gray-500 mr-2">PASS:</span>
+                                <span class="font-mono text-sm text-gray-800">${purchase.password || 'N/A'}</span>
+                                <button onclick="copyToClipboard('${purchase.password || ''}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+
                 lucide.createIcons();
             } catch(e) {
                  mailListEl.innerHTML = '<p class="text-center text-red-600">মেইল লোড করা যায়নি।</p>';
@@ -886,25 +898,31 @@
         function loadHomePageAds() {
             const adsConfig = appConfig.ads;
             const adsSection = document.getElementById('ads-section');
-            if (!adsConfig || !adsConfig.enabled || !adsConfig.items || adsConfig.items.length === 0) {
+            const innerContainer = document.getElementById('ads-inner');
+            const dotsContainer = document.getElementById('ads-dots');
+
+            // Use Firebase data if available and enabled
+            if (adsConfig && adsConfig.enabled && adsConfig.items && adsConfig.items.length > 0) {
+                innerContainer.innerHTML = ''; // Clear placeholders
+                adsConfig.items.forEach(ad => {
+                    const slide = document.createElement('a');
+                    slide.href = ad.linkUrl;
+                    slide.target = '_blank';
+                    slide.className = 'ad-slide block';
+                    slide.style.backgroundImage = `url('${ad.imageUrl}')`;
+                    innerContainer.appendChild(slide);
+                });
+            }
+            
+            // Setup carousel for whichever items are present (default or firebase)
+            const slides = innerContainer.querySelectorAll('.ad-slide');
+            if(slides.length === 0) {
                 adsSection.classList.add('hidden');
                 return;
             }
-
             adsSection.classList.remove('hidden');
-            const innerContainer = document.getElementById('ads-inner');
-            const dotsContainer = document.getElementById('ads-dots');
-            innerContainer.innerHTML = '';
             dotsContainer.innerHTML = '';
-
-            adsConfig.items.forEach((ad, index) => {
-                const slide = document.createElement('a');
-                slide.href = ad.linkUrl;
-                slide.target = '_blank';
-                slide.className = 'ad-slide block';
-                slide.style.backgroundImage = `url('${ad.imageUrl}')`;
-                innerContainer.appendChild(slide);
-
+            slides.forEach((_, index) => {
                 const dot = document.createElement('span');
                 dot.className = 'dot bg-white/50 rounded-full cursor-pointer transition-all';
                 if (index === 0) dot.classList.add('active', 'bg-white');
@@ -913,9 +931,8 @@
             });
             
             let currentIndex = 0;
-            const slides = innerContainer.querySelectorAll('.ad-slide');
             const dots = dotsContainer.querySelectorAll('.dot');
-            const intervalTime = (adsConfig.intervalSeconds || 5) * 1000;
+            const intervalTime = (adsConfig?.intervalSeconds || 5) * 1000;
 
             function showAd(index) {
                 currentIndex = index;
@@ -935,9 +952,11 @@
             });
             
             if (adInterval) clearInterval(adInterval);
-            adInterval = setInterval(() => {
-                showAd((currentIndex + 1) % slides.length);
-            }, intervalTime);
+            if (slides.length > 1) {
+                adInterval = setInterval(() => {
+                    showAd((currentIndex + 1) % slides.length);
+                }, intervalTime);
+            }
         }
 
         async function handleDownloadHistory() {
@@ -947,13 +966,42 @@
                 const querySnapshot = await getDocs(q);
                 if (querySnapshot.empty) return showAlert("ডাউনলোড করার জন্য কোনো ಖರೀদী ইতিহাস পাওয়া যায়নি।");
                 
-                const dataForExcel = querySnapshot.docs.map(doc => { const p = doc.data(); return { 'Purchase Date': p.purchasedAt.toDate().toLocaleString(), 'Mail Type': p.mailType, 'Email': p.mail, 'Password': p.password || 'N/A', 'Cost (BDT)': p.cost }; });
+                const dataForExcel = querySnapshot.docs.map(doc => { const p = doc.data(); return { 'Purchase Date': p.purchasedAt.toDate().toLocaleString(), 'Mail Type': p.mailType, 'Email': p.mail, 'Password': p.password || 'N/A', 'Cost (BDT)': p.cost, 'Full Data': [p.mail,p.password,p.refreshToken,p.clientId].filter(Boolean).join('|') }; });
                 const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
                 const workbook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(workbook, worksheet, "Purchase History");
-                worksheet['!cols'] = [ {wch: 22}, {wch: 20}, {wch: 30}, {wch: 30}, {wch: 15} ];
+                worksheet['!cols'] = [ {wch: 22}, {wch: 20}, {wch: 30}, {wch: 30}, {wch: 15}, {wch: 70} ];
                 XLSX.writeFile(workbook, "My_Purchase_History.xlsx");
             } catch (error) { showAlert("ইতিহাস ডাউনলোড করার সময় একটি সমস্যা হয়েছে।"); } 
+            finally { loader.style.display = 'none'; }
+        }
+        
+        async function handleCopyHistory() {
+             loader.style.display = 'flex';
+            try {
+                const q = query(collection(db, "mail_purchases"), where("userId", "==", userData.tgChatId), orderBy("purchasedAt", "desc"));
+                const querySnapshot = await getDocs(q);
+                if (querySnapshot.empty) return showAlert("কপি করার জন্য কোনো ಖರೀদী ইতিহাস পাওয়া যায়নি।");
+                
+                const header = "Purchase Date\tMail Type\tEmail\tPassword\tCost (BDT)\tFull Data";
+                const rows = querySnapshot.docs.map(doc => {
+                    const p = doc.data();
+                    const fullData = [p.mail, p.password, p.refreshToken, p.clientId].filter(Boolean).join('|');
+                    return [
+                        p.purchasedAt.toDate().toLocaleString(),
+                        p.mailType,
+                        p.mail,
+                        p.password || 'N/A',
+                        p.cost,
+                        fullData
+                    ].join('\t');
+                });
+                
+                const tsvContent = [header, ...rows].join('\n');
+                await navigator.clipboard.writeText(tsvContent);
+                showAlert("ইতিহাস ক্লিপবোর্ডে কপি করা হয়েছে। আপনি এখন এটি এক্সেলে পেস্ট করতে পারেন।");
+
+            } catch (error) { showAlert("ইতিহাস কপি করার সময় একটি সমস্যা হয়েছে।"); console.error(error); } 
             finally { loader.style.display = 'none'; }
         }
 
@@ -969,6 +1017,7 @@
                     if (mailQuerySnapshot.empty) throw "দুঃখিত, এই ধরনের মেইল বর্তমানে স্টক শেষ।";
                     
                     const mailDoc = mailQuerySnapshot.docs[0];
+                    const mailData = mailDoc.data();
                     const userRef = doc(db, "users", userData.tgChatId);
                     const userSnap = await transaction.get(userRef);
                     if (!userSnap.exists() || userSnap.data().balance < cost) throw `অপর্যাপ্ত ব্যালেন্স।`;
@@ -976,8 +1025,17 @@
                     transaction.update(userRef, { balance: userSnap.data().balance - cost });
                     transaction.update(mailDoc.ref, { isSold: true, soldTo: userData.tgChatId, soldAt: serverTimestamp() });
                     const purchaseLogRef = doc(collection(db, "mail_purchases"));
-                    transaction.set(purchaseLogRef, { userId: userData.tgChatId, mailType: mailType, mail: mailDoc.data().email, password: mailDoc.data().password || null, cost: cost, purchasedAt: serverTimestamp() });
-                    return mailDoc.data();
+                    transaction.set(purchaseLogRef, { 
+                        userId: userData.tgChatId, 
+                        mailType: mailType, 
+                        mail: mailData.email, 
+                        password: mailData.password || null, 
+                        refreshToken: mailData.refresh_token || null,
+                        clientId: mailData.client_id || null,
+                        cost: cost, 
+                        purchasedAt: serverTimestamp() 
+                    });
+                    return mailData;
                 });
 
                 userData.balance -= cost; 
@@ -992,7 +1050,7 @@
         
         async function loadUpdates() {
             const updatesContainer = document.getElementById('updates-content');
-            updatesContainer.innerHTML = '<p class="text-center text-gray-600">Loading updates...</p>';
+            updatesContainer.innerHTML = getLoadingHTML();
             try {
                 const q = query(collection(db, "updates"), orderBy("createdAt", "desc"), limit(1));
                 const snapshot = await getDocs(q);
@@ -1009,35 +1067,7 @@
                 let linkButtonHtml = updateData.linkUrl ? `<a href="${updateData.linkUrl}" target="_blank" class="btn-gradient px-4 py-2 rounded-lg text-sm flex-1 text-center">Learn More</a>` : '';
                 const createdAtDate = updateData.createdAt ? updateData.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
                 
-                updatesContainer.innerHTML = `
-                <div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">
-                    ${updateData.imageUrl ? `<img src="${updateData.imageUrl}" class="w-full aspect-[16/9] object-cover" alt="Update Banner">` : ''}
-                    <div class="p-6 space-y-4 flex flex-col flex-grow">
-                        <div>
-                            <h3 class="text-2xl font-bold text-gray-800">${updateData.title}</h3>
-                            ${createdAtDate ? `<p class="text-xs text-gray-500 mt-1">${createdAtDate}</p>` : ''}
-                        </div>
-                        <p class="text-gray-600 text-base whitespace-pre-wrap flex-grow leading-relaxed">${updateData.content || ''}</p>
-                        <div class="flex items-center justify-between gap-4 pt-4 mt-auto border-t border-gray-200">
-                            <div class="flex items-center gap-4">
-                                <div class="flex items-center space-x-2">
-                                    <button id="like-btn" class="p-2 rounded-full transition-colors ${isLiked ? 'text-blue-500 bg-blue-100' : 'text-gray-500 hover:bg-gray-100'}" ${isLiked || isDisliked ? 'disabled' : ''}>
-                                        <i data-lucide="thumbs-up" class="w-5 h-5"></i>
-                                    </button>
-                                    <span class="font-semibold text-sm text-gray-700">${updateData.likes || 0}</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <button id="dislike-btn" class="p-2 rounded-full transition-colors ${isDisliked ? 'text-red-500 bg-red-100' : 'text-gray-500 hover:bg-gray-100'}" ${isLiked || isDisliked ? 'disabled' : ''}>
-                                        <i data-lucide="thumbs-down" class="w-5 h-5"></i>
-                                    </button>
-                                    <span class="font-semibold text-sm text-gray-700">${updateData.dislikes || 0}</span>
-                                </div>
-                            </div>
-                            ${linkButtonHtml}
-                        </div>
-                    </div>
-                </div>`;
-
+                updatesContainer.innerHTML = `<div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">${updateData.imageUrl ? `<img src="${updateData.imageUrl}" class="w-full aspect-[16/9] object-cover" alt="Update Banner">` : ''}<div class="p-6 space-y-4 flex flex-col flex-grow"><div><h3 class="text-2xl font-bold text-gray-800">${updateData.title}</h3>${createdAtDate ? `<p class="text-xs text-gray-500 mt-1">${createdAtDate}</p>` : ''}</div><p class="text-gray-600 text-base whitespace-pre-wrap flex-grow leading-relaxed">${updateData.content || ''}</p><div class="flex items-center justify-between gap-4 pt-4 mt-auto border-t border-gray-200"><div class="flex items-center gap-4"><div class="flex items-center space-x-2"><button id="like-btn" class="p-2 rounded-full transition-colors ${isLiked ? 'text-blue-500 bg-blue-100' : 'text-gray-500 hover:bg-gray-100'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-up" class="w-5 h-5"></i></button><span class="font-semibold text-sm text-gray-700">${updateData.likes || 0}</span></div><div class="flex items-center space-x-2"><button id="dislike-btn" class="p-2 rounded-full transition-colors ${isDisliked ? 'text-red-500 bg-red-100' : 'text-gray-500 hover:bg-gray-100'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-down" class="w-5 h-5"></i></button><span class="font-semibold text-sm text-gray-700">${updateData.dislikes || 0}</span></div></div>${linkButtonHtml}</div></div></div>`;
                 lucide.createIcons();
                 document.getElementById('like-btn').onclick = () => handleVote('like', updateId);
                 document.getElementById('dislike-btn').onclick = () => handleVote('dislike', updateId);
@@ -1085,7 +1115,7 @@
                 const batch = writeBatch(db);
                 let addedCount = 0;
                 lines.forEach(line => {
-                    const parts = line.trim().split('|');
+                    const parts = line.trim().split('/');
                     if (parts.length === 4) {
                         const mailDocRef = doc(collection(db, stockKey));
                         batch.set(mailDocRef, { email: parts[0], password: parts[1], refresh_token: parts[2], client_id: parts[3], isSold: false, createdAt: serverTimestamp() });
@@ -1108,6 +1138,7 @@
         }
         
         window.copyToClipboard = function(text, element) {
+            if (!text) return;
             navigator.clipboard.writeText(text.trim()).then(() => {
                 if(element) {
                     const originalContent = element.innerHTML;
@@ -1137,7 +1168,9 @@
         }
         
         async function loadFeaturesPage() {
-            loader.style.display = 'flex';
+            const container = document.getElementById('features-page');
+            container.querySelectorAll('[id$="-display"]').forEach(el => el.textContent = '...');
+            
             try {
                 const depositQuery = query(collection(db, "deposits"), where("userId", "==", userData.tgChatId), where("status", "==", "approved"));
                 const depositSnapshot = await getDocs(depositQuery);
@@ -1163,47 +1196,42 @@
             } catch (error) {
                 console.error("Error loading features page data:", error);
                 showAlert("Could not load page data.");
-            } finally {
-                loader.style.display = 'none';
             }
         }
 
         async function loadTransferHistory() {
             const historyList = document.getElementById('transfer-history-list');
-            historyList.innerHTML = '<p class="text-gray-600 text-center">Loading history...</p>';
+            historyList.innerHTML = getLoadingHTML();
             
             const sentQuery = query(collection(db, "transfers"), where("fromId", "==", userData.tgChatId), orderBy("timestamp", "desc"));
             const receivedQuery = query(collection(db, "transfers"), where("toId", "==", userData.tgChatId), orderBy("timestamp", "desc"));
-
-            const [sentSnapshot, receivedSnapshot] = await Promise.all([getDocs(sentQuery), getDocs(receivedQuery)]);
             
-            const transactions = [];
-            sentSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
-            receivedSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
+            try {
+                const [sentSnapshot, receivedSnapshot] = await Promise.all([getDocs(sentQuery), getDocs(receivedQuery)]);
+                const transactions = [];
+                sentSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
+                receivedSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
 
-            transactions.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
+                transactions.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
 
-            if (transactions.length === 0) {
-                historyList.innerHTML = '<p class="text-gray-600 text-center">No transfer history found.</p>';
-                return;
+                if (transactions.length === 0) {
+                    historyList.innerHTML = '<p class="text-gray-600 text-center">No transfer history found.</p>';
+                    return;
+                }
+
+                historyList.innerHTML = transactions.map(item => {
+                    const isSent = item.fromId === userData.tgChatId;
+                    const date = item.timestamp.toDate().toLocaleString('en-GB');
+                    const sign = isSent ? '-' : '+';
+                    const color = isSent ? 'text-red-600' : 'text-green-600';
+                    const actionText = isSent ? `Sent to ${item.toName}` : `Received from ${item.fromName}`;
+                    const amountToShow = isSent ? item.totalDeducted : item.amount;
+
+                    return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div><p class="font-semibold text-gray-800">${actionText}</p><p class="text-xs text-gray-500">${date}</p></div><p class="font-bold text-lg ${color}">${sign}৳${amountToShow.toFixed(2)}</p></div>`;
+                }).join('');
+            } catch (e) {
+                historyList.innerHTML = '<p class="text-red-600 text-center">হিস্টি লোড করা যায়নি।</p>';
             }
-
-            historyList.innerHTML = transactions.map(item => {
-                const isSent = item.fromId === userData.tgChatId;
-                const date = item.timestamp.toDate().toLocaleString('en-GB');
-                const sign = isSent ? '-' : '+';
-                const color = isSent ? 'text-red-600' : 'text-green-600';
-                const actionText = isSent ? `Sent to ${item.toName}` : `Received from ${item.fromName}`;
-                const amountToShow = isSent ? item.totalDeducted : item.amount;
-
-                return `<div class="card-bg p-3 rounded-lg flex items-center justify-between">
-                            <div>
-                                <p class="font-semibold text-gray-800">${actionText}</p>
-                                <p class="text-xs text-gray-500">${date}</p>
-                            </div>
-                            <p class="font-bold text-lg ${color}">${sign}৳${amountToShow.toFixed(2)}</p>
-                        </div>`;
-            }).join('');
         }
 
         function handleReceive() {
@@ -1212,8 +1240,6 @@
             showAlert(message);
         }
         
-        // --- NEW/MODIFIED Functions for Recharge, Send, Tutorial, Reviews, and PIN ---
-
         function setupDynamicAmountHandlers(pageType) {
             const amountInput = document.getElementById(`${pageType}-amount`);
             const feeDisplay = document.getElementById(`${pageType}-fee-display`);
@@ -1246,26 +1272,16 @@
             const recipientId = document.getElementById('send-recipient-id').value.trim();
             const amountStr = document.getElementById('send-amount').value;
 
-            if (!recipientId || !amountStr) {
-                return showAlert("অনুগ্রহ করে প্রাপকের আইডি এবং টাকার পরিমাণ লিখুন।");
-            }
-            if (recipientId === userData.tgChatId) {
-                return showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
-            }
+            if (!recipientId || !amountStr) return showAlert("অনুগ্রহ করে প্রাপকের আইডি এবং টাকার পরিমাণ লিখুন।");
+            if (recipientId === userData.tgChatId) return showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
 
             const amount = parseFloat(amountStr);
-
-            if (isNaN(amount) || amount < 20) {
-                return showAlert("সর্বনিম্ন পাঠানোর পরিমাণ ৳20।");
-            }
+            if (isNaN(amount) || amount < 20) return showAlert("সর্বনিম্ন পাঠানোর পরিমাণ ৳20।");
 
             const fee = amount * 0.05;
             const totalCost = amount + fee;
 
-            if (totalCost > userData.balance) {
-                return showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
-            }
-            
+            if (totalCost > userData.balance) return showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
             if (!confirm(`আপনি কি ${recipientId} আইডিতে ৳${amount.toFixed(2)} পাঠাতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) return;
 
             loader.style.display = 'flex';
@@ -1287,16 +1303,7 @@
                     transaction.update(recipientRef, { balance: newRecipientBalance });
                     
                     const transferLogRef = doc(collection(db, "transfers"));
-                    transaction.set(transferLogRef, {
-                        fromId: userData.tgChatId,
-                        fromName: userData.name,
-                        toId: recipientId,
-                        toName: recipientDoc.data().name,
-                        amount: amount,
-                        fee: fee,
-                        totalDeducted: totalCost,
-                        timestamp: serverTimestamp()
-                    });
+                    transaction.set(transferLogRef, { fromId: userData.tgChatId, fromName: userData.name, toId: recipientId, toName: recipientDoc.data().name, amount: amount, fee: fee, totalDeducted: totalCost, timestamp: serverTimestamp() });
                 });
                 
                 userData.balance -= totalCost;
@@ -1322,30 +1329,16 @@
             const operator = document.getElementById('recharge-operator').value;
             const type = document.getElementById('recharge-type').value;
 
-            if (!number || !amountStr || !operator) {
-                return showAlert("অনুগ্রহ করে সমস্ত তথ্য সঠিকভাবে পূরণ করুন।");
-            }
-            
-            if (!/^(01[3-9])\d{8}$/.test(number)) {
-                return showAlert("অনুগ্রহ করে একটি সঠিক বাংলাদেশী মোবাইল নম্বর দিন।");
-            }
-
+            if (!number || !amountStr || !operator) return showAlert("অনুগ্রহ করে সমস্ত তথ্য সঠিকভাবে পূরণ করুন।");
+            if (!/^(01[3-9])\d{8}$/.test(number)) return showAlert("অনুগ্রহ করে একটি সঠিক বাংলাদেশী মোবাইল নম্বর দিন।");
             const amount = parseFloat(amountStr);
-
-            if (isNaN(amount) || amount < 20) {
-                return showAlert("সর্বনিম্ন রিচার্জের পরিমাণ ৳20।");
-            }
+            if (isNaN(amount) || amount < 20) return showAlert("সর্বনিম্ন রিচার্জের পরিমাণ ৳20।");
 
             const fee = amount * 0.05;
             const totalCost = amount + fee;
 
-            if (totalCost > userData.balance) {
-                return showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
-            }
-
-            if (!confirm(`আপনি কি ${number} নম্বরে ৳${amount.toFixed(2)} রিচার্জ করতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) {
-                return;
-            }
+            if (totalCost > userData.balance) return showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
+            if (!confirm(`আপনি কি ${number} নম্বরে ৳${amount.toFixed(2)} রিচার্জ করতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) return;
 
             loader.style.display = 'flex';
 
@@ -1353,26 +1346,11 @@
                 const userRef = doc(db, "users", userData.tgChatId);
                 await runTransaction(db, async (transaction) => {
                     const userDoc = await transaction.get(userRef);
-                    if (!userDoc.exists() || userDoc.data().balance < totalCost) {
-                        throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
-                    }
-                    
+                    if (!userDoc.exists() || userDoc.data().balance < totalCost) throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
                     const newBalance = userDoc.data().balance - totalCost;
                     transaction.update(userRef, { balance: newBalance });
-
                     const rechargeRequestRef = doc(collection(db, "recharge_requests"));
-                    transaction.set(rechargeRequestRef, {
-                        userId: userData.tgChatId,
-                        userName: userData.name,
-                        mobileNumber: number,
-                        amount: amount,
-                        operator: operator,
-                        rechargeType: type,
-                        fee: fee,
-                        totalDeducted: totalCost,
-                        status: "pending",
-                        requestedAt: serverTimestamp()
-                    });
+                    transaction.set(rechargeRequestRef, { userId: userData.tgChatId, userName: userData.name, mobileNumber: number, amount: amount, operator: operator, rechargeType: type, fee: fee, totalDeducted: totalCost, status: "pending", requestedAt: serverTimestamp() });
                 });
 
                 userData.balance -= totalCost;
@@ -1383,9 +1361,7 @@
                 document.getElementById('recharge-amount').value = '';
                 document.getElementById('recharge-operator').value = '';
                 document.getElementById('recharge-fee-display').textContent = '';
-
                 loadRechargeHistory();
-
             } catch (error) {
                 console.error("Recharge failed: ", error);
                 showAlert(typeof error === 'string' ? error : "রিচার্জ অনুরোধে সমস্যা হয়েছে।");
@@ -1396,13 +1372,11 @@
         
         async function loadRechargeHistory() {
             const historyList = document.getElementById('recharge-history-list');
-            historyList.innerHTML = '<p class="text-gray-600 text-center">হিস্ট্রি লোড হচ্ছে...</p>';
+            historyList.innerHTML = getLoadingHTML();
             try {
                 const q = query(collection(db, "recharge_requests"), where("userId", "==", userData.tgChatId), orderBy("requestedAt", "desc"));
                 const snapshot = await getDocs(q);
-                if (snapshot.empty) {
-                    return historyList.innerHTML = '<p class="text-gray-600 text-center">কোনো রিচার্জ হিস্ট্রি পাওয়া যায়নি।</p>';
-                }
+                if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-600 text-center">কোনো রিচার্জ হিস্ট্রি পাওয়া যায়নি।</p>';
 
                 historyList.innerHTML = snapshot.docs.map(doc => {
                     const item = doc.data();
@@ -1413,19 +1387,7 @@
                         default: statusColor = 'text-yellow-600'; statusIcon = 'hourglass';
                     }
                     const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString('en-GB') : 'N/A';
-                    return `<div class="card-bg p-3 rounded-lg flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <i data-lucide="${statusIcon}" class="w-6 h-6 ${statusColor}"></i>
-                                    <div>
-                                        <p class="font-semibold text-gray-800">${item.mobileNumber}</p>
-                                        <p class="text-xs text-gray-500">${item.operator} - ${date}</p>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-bold text-lg text-gray-800">৳${item.amount.toFixed(2)}</p>
-                                    <p class="font-semibold ${statusColor} capitalize text-xs">${item.status}</p>
-                                </div>
-                            </div>`;
+                    return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div class="flex items-center gap-3"><i data-lucide="${statusIcon}" class="w-6 h-6 ${statusColor}"></i><div><p class="font-semibold text-gray-800">${item.mobileNumber}</p><p class="text-xs text-gray-500">${item.operator} - ${date}</p></div></div><div class="text-right"><p class="font-bold text-lg text-gray-800">৳${item.amount.toFixed(2)}</p><p class="font-semibold ${statusColor} capitalize text-xs">${item.status}</p></div></div>`;
                 }).join('');
                 lucide.createIcons();
             } catch (error) {
@@ -1436,24 +1398,15 @@
 
         async function loadTutorials() {
             const tutorialListEl = document.getElementById('tutorial-list');
-            tutorialListEl.innerHTML = '<p class="text-center text-gray-600">টিউটোরিয়াল লোড হচ্ছে...</p>';
+            tutorialListEl.innerHTML = getLoadingHTML();
             try {
                 const q = query(collection(db, "tutorials"), orderBy("order"));
                 const snapshot = await getDocs(q);
-                if (snapshot.empty) {
-                    tutorialListEl.innerHTML = '<p class="text-center text-gray-600">কোনো টিউটোরিয়াল পাওয়া যায়নি।</p>';
-                    return;
-                }
+                if (snapshot.empty) return tutorialListEl.innerHTML = '<p class="text-center text-gray-600">কোনো টিউটোরিয়াল পাওয়া যায়নি।</p>';
+
                 tutorialListEl.innerHTML = snapshot.docs.map(doc => {
                     const tutorial = doc.data();
-                    return `
-                        <div class="card-bg p-4 rounded-xl">
-                            <h3 class="font-bold text-lg text-gray-800 mb-3">${tutorial.title}</h3>
-                            <div class="video-container-16-9">
-                                <iframe src="${tutorial.youtubeEmbedUrl}" title="${tutorial.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                    `;
+                    return `<div class="card-bg p-4 rounded-xl"><h3 class="font-bold text-lg text-gray-800 mb-3">${tutorial.title}</h3><div class="video-container-16-9"><iframe src="${tutorial.youtubeEmbedUrl}" title="${tutorial.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>`;
                 }).join('');
             } catch (e) {
                 tutorialListEl.innerHTML = '<p class="text-center text-red-600">টিউটোরিয়াল লোড করা যায়নি।</p>';
@@ -1463,34 +1416,17 @@
 
         async function loadReviews() {
             const reviewListEl = document.getElementById('reviews-list');
-            reviewListEl.innerHTML = '<p class="text-center text-gray-600">রিভিউ লোড হচ্ছে...</p>';
+            reviewListEl.innerHTML = getLoadingHTML();
             try {
                 const q = query(collection(db, "reviews"), orderBy("createdAt", "desc"), limit(5));
                 const snapshot = await getDocs(q);
-                if (snapshot.empty) {
-                    reviewListEl.innerHTML = '<p class="text-center text-gray-600">কোনো রিভিউ পাওয়া যায়নি।</p>';
-                    return;
-                }
+                if (snapshot.empty) return reviewListEl.innerHTML = '<p class="text-center text-gray-600">কোনো রিভিউ পাওয়া যায়নি।</p>';
+                
                 reviewListEl.innerHTML = snapshot.docs.map(doc => {
                     const review = doc.data();
                     let stars = '';
-                    for (let i = 0; i < 5; i++) {
-                        stars += `<i data-lucide="star" class="w-4 h-4 ${i < review.rating ? 'fill-current' : ''}"></i>`;
-                    }
-                    return `
-                        <div class="review-card-new p-4 rounded-lg">
-                            <div class="flex items-start gap-4">
-                                <img src="${review.imageUrl}" class="w-12 h-12 rounded-full object-cover" alt="User">
-                                <div class="flex-1">
-                                    <div class="flex justify-between items-center">
-                                        <h5 class="font-bold">${review.name}</h5>
-                                        <div class="star-rating flex text-sm">${stars}</div>
-                                    </div>
-                                    <p class="text-gray-600 text-sm mt-1">"${review.reviewText}"</p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                    for (let i = 0; i < 5; i++) stars += `<i data-lucide="star" class="w-4 h-4 ${i < review.rating ? 'fill-current' : ''}"></i>`;
+                    return `<div class="review-card-new p-4 rounded-lg"><div class="flex items-start gap-4"><img src="${review.imageUrl}" class="w-12 h-12 rounded-full object-cover" alt="User"><div class="flex-1"><div class="flex justify-between items-center"><h5 class="font-bold">${review.name}</h5><div class="star-rating flex text-sm">${stars}</div></div><p class="text-gray-600 text-sm mt-1">"${review.reviewText}"</p></div></div></div>`;
                 }).join('');
                 lucide.createIcons();
             } catch (e) {
@@ -1513,14 +1449,9 @@
         async function handleSetPin() {
             const pin = document.getElementById('set-pin').value;
             const confirmPin = document.getElementById('confirm-pin').value;
-
-            if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
-                return showAlert("পিন অবশ্যই ৪ সংখ্যার হতে হবে।");
-            }
-            if (pin !== confirmPin) {
-                return showAlert("দুটি পিন মিলছে না। আবার চেষ্টা করুন।");
-            }
-
+            if (pin.length !== 4 || !/^\d{4}$/.test(pin)) return showAlert("পিন অবশ্যই ৪ সংখ্যার হতে হবে।");
+            if (pin !== confirmPin) return showAlert("দুটি পিন মিলছে না। আবার চেষ্টা করুন।");
+            
             loader.style.display = 'flex';
             try {
                 const userRef = doc(db, "users", userData.tgChatId);
