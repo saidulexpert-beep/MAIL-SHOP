@@ -1140,7 +1140,7 @@
                 
                 const tsvContent = [header, ...rows].join('\n');
                 await navigator.clipboard.writeText(tsvContent);
-                showAlert("");
+                showAlert("📋 এখন সহজেই Google Sheet-এ পেস্ট করুন।");
 
             } catch (error) { showAlert("ইতিহাস কপি করার সময় একটি সমস্যা হয়েছে।"); console.error(error); } 
             finally { loader.style.display = 'none'; }
