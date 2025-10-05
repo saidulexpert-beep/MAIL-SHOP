@@ -1589,7 +1589,7 @@
             // Check for lockout
             if (userData.featuresLockedUntil && userData.featuresLockedUntil.toDate() > new Date()) {
                 const unlockTime = userData.featuresLockedUntil.toDate().toLocaleTimeString('en-US');
-                showAlert(`অতিরিক্ত ভুল পিন দেওয়ার কারণে আপনার একাউন্ট সাময়িকভাবে লক করা হয়েছে।\nএটি ${unlockTime} টায় আবার খুলবে।\n\nজরুরী প্রয়োজনে কাস্টমার সাপোর্টে যোগাযোগ করুন।`);
+                showAlert(`⚠️ আপনি একাধিকবার ভুল পিন দেওয়ার কারণে আপনার একাউন্ট সাময়িকভাবে স্থগিত করা হয়েছে।\n🔒 ${unlockTime} পর আবার চেষ্টা করুন।\n\n💌 কোনো সমস্যা হলে Support Team 💌 এর সাথে যোগাযোগ করুন।`);
                 return;
             }
 
@@ -1606,8 +1606,8 @@
         async function handleSetPin() {
             const pin = document.getElementById('set-pin').value;
             const confirmPin = document.getElementById('confirm-pin').value;
-            if (pin.length !== 4 || !/^\d{4}$/.test(pin)) return showAlert("পিন অবশ্যই ৪ সংখ্যার হতে হবে।");
-            if (pin !== confirmPin) return showAlert("দুটি পিন মিলছে না। আবার চেষ্টা করুন।");
+            if (pin.length !== 4 || !/^\d{4}$/.test(pin)) return showAlert("⚠️ পিন অবশ্যই ৪ সংখ্যার হতে হবে।");
+            if (pin !== confirmPin) return showAlert("⚠️ PIN does not match.");
             
             loader.style.display = 'flex';
             try {
