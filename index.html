@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GMAIL SHOP 🩳</title>
+    <title>MAIL SHOP</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -230,7 +230,7 @@
             <div class="logo-container">
                 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#007bff] mx-auto"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
             </div>
-            <h1 class="text-accent-gradient loader-text mt-4">GMAIL SHOP</h1>
+            <h1 class="text-accent-gradient loader-text mt-4">MAIL SHOP</h1>
         </div>
         <div id="loader-reviews">"খুবই বিশ্বস্ত একটি সাইট।" - মোঃ রায়হান</div>
     </div>
@@ -238,7 +238,7 @@
     <div id="app-container" class="min-h-screen flex-col main-page">
         <header class="header flex items-center justify-between p-4 sticky top-0 z-10">
             <div class="flex items-center space-x-2">
-                <h1 class="text-xl font-bold text-accent-gradient">GMAIL SHOP</h1>
+                <h1 class="text-xl font-bold text-accent-gradient">MAIL SHOP</h1>
                 <button id="header-deposit-btn" class="btn-gradient px-3 py-1 rounded-full text-sm font-bold">Deposit Now</button>
             </div>
             <div id="header-balance-display" class="font-bold text-[#007bff]">৳0.00</div>
@@ -259,7 +259,13 @@
 
                 <div class="marquee">
                     <p class="marquee-content">
-                        GMAIL SHOP-এ আপনাকে স্বাগতম! আমাদের সকল সার্ভিস চালু আছে। যেকোনো প্রয়োজনে সাপোর্ট টিমের সাথে যোগাযোগ করুন।
+💌 MAIL SHOP-এ আপনাকে স্বাগতম!
+✨ আমাদের সব সার্ভিস এখন চালু!
+📩 এখানে পাবেন ১০০% ভালো কোয়ালিটির মেইল।
+⚡ কোনো সমস্যা হলে আমরা সঙ্গে সঙ্গে সমাধান করি।
+🕐 আমরা ২৪ ঘণ্টা সার্ভিস দিয়ে থাকি।
+💬 যেকোনো প্রয়োজনে যোগাযোগ করুন আমাদের সাপোর্ট টিমের সাথে।
+💎 MAIL SHOP — বিশ্বাস, গুণমান ও সাপোর্টের প্রতীক!                        
                     </p>
                 </div>
 
@@ -315,14 +321,14 @@
             </div>
 
             <div id="mail-page" class="p-4 space-y-6 sub-page">
-                <h2 class="text-xl font-bold text-center text-gray-800">GMAIL SHOP</h2>
+                <h2 class="text-xl font-bold text-center text-gray-800">MAIL SHOP</h2>
                 <p class="text-gray-600 text-center mb-4">কম দামে এবং সহজে মেইল কিনুন</p>
                 <div id="mail-list" class="space-y-4"></div>
                  <div>
                     <div class="flex justify-between items-center mb-3 mt-6">
                         <h3 class="text-lg font-semibold">Purchase History</h3>
                         <div class="flex items-center gap-2">
-                           <button id="copy-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="copy" class="w-4 h-4"></i><span>Copy for Excel</span></button>
+                           <button id="copy-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="copy" class="w-4 h-4"></i><span>Copy Now</span></button>
                            <button id="download-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i><span>Download</span></button>
                         </div>
                     </div>
@@ -1134,7 +1140,7 @@
                 
                 const tsvContent = [header, ...rows].join('\n');
                 await navigator.clipboard.writeText(tsvContent);
-                showAlert("ইতিহাস ক্লিপবোর্ডে কপি করা হয়েছে। আপনি এখন এটি এক্সেলে পেস্ট করতে পারেন।");
+                showAlert("");
 
             } catch (error) { showAlert("ইতিহাস কপি করার সময় একটি সমস্যা হয়েছে।"); console.error(error); } 
             finally { loader.style.display = 'none'; }
