@@ -1101,7 +1101,7 @@
                 const querySnapshot = await getDocs(q);
                 if (querySnapshot.empty) { 
                     loader.style.display = 'none';
-                    return showAlert("💌 আপনার কোনো History নেই"); 
+                    return showAlert("আপনার কোনো History নেই"); 
                 }
                 
                 const dataForExcel = querySnapshot.docs.map(doc => { const p = doc.data(); return { 'Purchase Date': p.purchasedAt.toDate().toLocaleString(), 'Mail Type': p.mailType, 'Email': p.mail, 'Password': p.password || 'N/A', 'Cost (BDT)': p.cost, 'Full Data': [p.mail,p.password,p.refreshToken,p.clientId].filter(Boolean).join('|') }; });
@@ -1110,7 +1110,7 @@
                 XLSX.utils.book_append_sheet(workbook, worksheet, "Purchase History");
                 worksheet['!cols'] = [ {wch: 22}, {wch: 20}, {wch: 30}, {wch: 30}, {wch: 15}, {wch: 70} ];
                 XLSX.writeFile(workbook, "My_Purchase_History.xlsx");
-            } catch (error) { showAlert("COMING SOON..."); } 
+            } catch (error) { showAlert("ইতিহাস ডাউনলোড করার সময় একটি সমস্যা হয়েছে।"); } 
             finally { loader.style.display = 'none'; }
         }
         
@@ -1121,7 +1121,7 @@
                 const querySnapshot = await getDocs(q);
                 if (querySnapshot.empty) {
                     loader.style.display = 'none';
-                    return showAlert("💌 আপনার কোনো History নেই");
+                    return showAlert("আপনার কোনো History নেই");
                 }
                 
                 const header = "Purchase Date\tMail Type\tEmail\tPassword\tCost (BDT)\tFull Data";
