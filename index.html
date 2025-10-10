@@ -1041,43 +1041,47 @@
         }
         
         let adInterval = null;
+    
+        // আগের loadHomePageAds ফাংশনটি ডিলিট করে নিচের নতুন ফাংশনটি পেস্ট করুন
+
         function loadHomePageAds() {
-            const adsConfig = appConfig.ads;
             const adsSection = document.getElementById('ads-section');
+            const adsContainer = document.getElementById('ads-container');
             const innerContainer = document.getElementById('ads-inner');
             const dotsContainer = document.getElementById('ads-dots');
 
-            if (adsConfig && adsConfig.enabled && adsConfig.items && adsConfig.items.length > 0) {
-                innerContainer.innerHTML = ''; 
-                adsConfig.items.forEach(ad => {
-                    const slide = document.createElement('a');
-                    slide.href = ad.linkUrl;
-                    slide.target = '_blank';
-                    slide.className = 'ad-slide block';
-                    slide.style.backgroundImage = `url('${ad.imageUrl}')`;
-                    innerContainer.appendChild(slide);
-                });
-            }
-            
-            const slides = innerContainer.querySelectorAll('.ad-slide');
-            if(slides.length === 0) {
-                adsSection.classList.add('hidden');
-                return;
-            }
-            adsSection.classList.remove('hidden');
+            // --- পুরানো ইমেজ স্লাইডার এবং ডটসের লজিক পরিষ্কার করা হলো ---
+            if (adInterval) clearInterval(adInterval);
+            innerContainer.innerHTML = '';
             dotsContainer.innerHTML = '';
-            slides.forEach((_, index) => {
-                const dot = document.createElement('span');
-                dot.className = 'dot bg-white/50 rounded-full cursor-pointer transition-all';
-                if (index === 0) dot.classList.add('active', 'bg-white');
-                dot.dataset.index = index;
-                dotsContainer.appendChild(dot);
-            });
-            
-            let currentIndex = 0;
-            const dots = dotsContainer.querySelectorAll('.dot');
-            const intervalTime = (adsConfig?.intervalSeconds || 5) * 1000;
+            adsContainer.style.height = 'auto'; // বিজ্ঞাপনের আকারের সাথে উচ্চতা অ্যাডজাস্ট হবে
+            adsSection.classList.remove('hidden');
 
+            // --- নতুন বিজ্ঞাপন স্ক্রিপ্ট যোগ করার লজিক ---
+            try {
+                // একটি নতুন script এলিমেন্ট তৈরি করা হচ্ছে
+                const adScript = document.createElement('script');
+                adScript.type = 'text/javascript';
+                
+                // আপনার দেওয়া সোর্স (src) এখানে সেট করা হচ্ছে
+                adScript.src = '//pl27689724.effectivegatecpm.com/e6/19/b1/e619b1fce717924d20d25d4e5dbab679.js';
+                
+                // স্ক্রিপ্টটি অ্যাসিঙ্ক্রোনাসভাবে লোড হবে
+                adScript.async = true;
+
+                // তৈরি করা script এলিমেন্টটি innerContainer এর ভেতরে যোগ করা হচ্ছে
+                innerContainer.appendChild(adScript);
+                
+                // কিছু বিজ্ঞাপন নেটওয়ার্কের একটি placeholder div এর প্রয়োজন হতে পারে
+                // যদি বিজ্ঞাপন না আসে, তাহলে নিচের লাইনটি আনকমেন্ট করতে পারেন
+                // innerContainer.innerHTML += '<div id="ad-placeholder"></div>';
+
+            } catch (e) {
+                console.error("Ad script could not be loaded:", e);
+                adsSection.classList.add('hidden'); // যদি কোনো সমস্যা হয়, সেকশনটি লুকিয়ে ফেলবে
+            }
+        }    
+    
             function showAd(index) {
                 currentIndex = index;
                 innerContainer.style.transform = `translateX(-${index * 100}%)`;
