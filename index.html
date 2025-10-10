@@ -1081,31 +1081,6 @@
                 adsSection.classList.add('hidden'); // যদি কোনো সমস্যা হয়, সেকশনটি লুকিয়ে ফেলবে
             }
         }    
-    
-            function showAd(index) {
-                currentIndex = index;
-                innerContainer.style.transform = `translateX(-${index * 100}%)`;
-                dots.forEach(d => {
-                    d.classList.remove('active', 'bg-white');
-                    d.classList.add('bg-white/50');
-                });
-                dots[index].classList.add('active', 'bg-white');
-                dots[index].classList.remove('bg-white/50');
-            }
-
-            dotsContainer.addEventListener('click', e => {
-                if (e.target.matches('.dot')) {
-                    showAd(parseInt(e.target.dataset.index));
-                }
-            });
-            
-            if (adInterval) clearInterval(adInterval);
-            if (slides.length > 1) {
-                adInterval = setInterval(() => {
-                    showAd((currentIndex + 1) % slides.length);
-                }, intervalTime);
-            }
-        }
 
         async function handleDownloadHistory() {
             loader.style.display = 'flex';
