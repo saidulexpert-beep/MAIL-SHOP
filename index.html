@@ -985,8 +985,14 @@ const firebaseConfig = {
                 } else {
                     historyListEl.innerHTML = querySnapshot.docs.map(doc => {
                         const purchase = doc.data();
-                        const date = purchase.purchasedAt.toDate().toLocaleString();
+                        const date = purchase.purchasedAt ? purchase.purchasedAt.toDate().toLocaleString() : 'N/A';
                         const fullData = [purchase.mail, purchase.password, purchase.refreshToken, purchase.clientId].filter(Boolean).join('|');
+                        const mail = purchase.mail || '';
+                        const password = purchase.password || '';
+
+                        const escapedFullData = fullData.replace(/'/g, "\\'");
+                        const escapedMail = mail.replace(/'/g, "\\'");
+                        const escapedPassword = password.replace(/'/g, "\\'");
 
                         return `<div class="card-bg p-4 rounded-xl space-y-3">
                             <div class="flex justify-between items-start">
@@ -995,20 +1001,20 @@ const firebaseConfig = {
                                     <p class="text-xs text-gray-500">${date}</p>
                                     <p class="text-xs font-mono text-blue-600 mt-1">ID: ${purchase.saleId || 'N/A'}</p> 
                                 </div>
-                                <button onclick="copyToClipboard('${fullData}', this)" class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-md font-semibold hover:bg-gray-200 flex items-center gap-1">
+                                <button onclick="copyToClipboard('${escapedFullData}', this)" class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-md font-semibold hover:bg-gray-200 flex items-center gap-1">
                                     <i data-lucide="copy-plus" class="w-3 h-3"></i> FULL COPY
                                 </button>
                             </div>
                             <div class="space-y-2 pt-2 border-t">
                                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md">
                                     <span class="text-sm font-medium text-gray-500 mr-2">EMAIL:</span>
-                                    <span class="font-mono text-sm text-gray-800 truncate">${purchase.mail}</span>
-                                    <button onclick="copyToClipboard('${purchase.mail}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button>
+                                    <span class="font-mono text-sm text-gray-800 truncate">${mail}</span>
+                                    <button onclick="copyToClipboard('${escapedMail}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button>
                                 </div>
                                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md">
                                     <span class="text-sm font-medium text-gray-500 mr-2">PASS:</span>
-                                    <span class="font-mono text-sm text-gray-800">${purchase.password || 'N/A'}</span>
-                                    <button onclick="copyToClipboard('${purchase.password || ''}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button>
+                                    <span class="font-mono text-sm text-gray-800">${password || 'N/A'}</span>
+                                    <button onclick="copyToClipboard('${escapedPassword}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button>
                                 </div>
                             </div>
                         </div>`;
@@ -1113,7 +1119,19 @@ const firebaseConfig = {
                     return showAlert("আপনার কোনো History নেই"); 
                 }
                 
-                const dataForExcel = querySnapshot.docs.map(doc => { const p = doc.data(); return { 'Purchase Date': p.purchasedAt.toDate().toLocaleString(), 'Mail Type': p.mailType, 'Email': p.mail, 'Password': p.password || 'N/A', 'Cost (BDT)': p.cost, 'Full Data': [p.mail,p.password,p.refreshToken,p.clientId].filter(Boolean).join('|') }; });
+                const dataForExcel = querySnapshot.docs.map(doc => { 
+                    const p = doc.data(); 
+                    const purchaseDate = p.purchasedAt ? p.purchasedAt.toDate().toLocaleString() : 'N/A';
+                    const fullData = [p.mail,p.password,p.refreshToken,p.clientId].filter(Boolean).join('|');
+                    return { 
+                        'Purchase Date': purchaseDate, 
+                        'Mail Type': p.mailType || 'N/A', 
+                        'Email': p.mail || 'N/A', 
+                        'Password': p.password || 'N/A', 
+                        'Cost (BDT)': p.cost || 0, 
+                        'Full Data': fullData 
+                    }; 
+                });
                 const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
                 const workbook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(workbook, worksheet, "Purchase History");
@@ -1137,12 +1155,13 @@ const firebaseConfig = {
                 const rows = querySnapshot.docs.map(doc => {
                     const p = doc.data();
                     const fullData = [p.mail, p.password, p.refreshToken, p.clientId].filter(Boolean).join('|');
+                    const purchaseDate = p.purchasedAt ? p.purchasedAt.toDate().toLocaleString() : 'N/A';
                     return [
-                        p.purchasedAt.toDate().toLocaleString(),
-                        p.mailType,
-                        p.mail,
+                        purchaseDate,
+                        p.mailType || 'N/A',
+                        p.mail || 'N/A',
                         p.password || 'N/A',
-                        p.cost,
+                        p.cost || 0,
                         fullData
                     ].join('\t');
                 });
@@ -1151,8 +1170,12 @@ const firebaseConfig = {
                 await navigator.clipboard.writeText(tsvContent);
                 showAlert("📋 এখন সহজেই Google Sheet-এ পেস্ট করুন।");
 
-            } catch (error) { showAlert("ইতিহাস কপি করার সময় একটি সমস্যা হয়েছে।"); console.error(error); } 
-            finally { loader.style.display = 'none'; }
+            } catch (error) { 
+                showAlert("ইতিহাস কপি করার সময় একটি সমস্যা হয়েছে।"); 
+                console.error("Copy History Error:", error);
+            } finally { 
+                loader.style.display = 'none'; 
+            }
         }
 
         window.buyMail = async function(mailType, cost, stockKey) {
