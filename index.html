@@ -974,10 +974,8 @@ const firebaseConfig = {
                     const buyButtonClasses = isOutOfStock || insufficientBalance ? 'bg-gray-400 cursor-not-allowed' : 'btn-gradient';
                     const validityTagHtml = (mail.expirationDays !== undefined && mail.expirationDays !== null) ? `<span class="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">${mail.expirationDays} h</span>` : '';
                     
-                    // FIX: Changed API button to use onclick with a robust function
-                    const apiButtonHtml = mail.apiLink 
-                        ? `<button onclick="openApiLink('${mail.apiLink}')" class="text-blue-600 font-semibold">API</button>` 
-                        : '<span class="text-gray-400 font-semibold">API</span>';
+                    // FIXED API BUTTON
+                    const apiButtonHtml = mail.apiLink ? `<button onclick="openApiLink('${mail.apiLink}')" class="text-blue-600 font-semibold">API</button>` : '<span class="text-gray-400 font-semibold">API</span>';
 
                     mailListEl.innerHTML += `<div class="card-bg p-4 rounded-xl space-y-3"><div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo"><h3 class="font-bold text-lg text-gray-800">${mail.type}</h3></div><div class="flex items-center gap-2">${validityTagHtml}<button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="text-blue-600 text-sm font-semibold">Details</button></div></div><div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200"><div class="py-2">${apiButtonHtml}</div><div class="py-2"><p class="text-gray-500 text-sm">Price</p><p class="font-bold text-lg text-blue-600">৳${costInBdt.toFixed(2)}</p></div><div class="py-2"><p class="text-gray-500 text-sm">Stock</p><p class="font-bold text-lg text-green-600">${stock}</p></div></div><button class="${buyButtonClasses} w-full py-2 rounded-lg text-md" ${buyButtonDisabled} onclick="buyMail('${mail.type}', ${costInBdt}, '${mail.stockKey}')">Buy Now</button></div>`;
                 });
@@ -1152,14 +1150,13 @@ const firebaseConfig = {
                 });
                 
                 const tsvContent = [header, ...rows].join('\n');
-                await navigator.clipboard.writeText(tsvContent);
-                showAlert("📋 এখন সহজেই Google Sheet-এ পেস্ট করুন।");
+                copyToClipboard(tsvContent); // Using the fixed copy function
 
             } catch (error) { showAlert("ইতিহাস কপি করার সময় একটি সমস্যা হয়েছে।"); console.error(error); } 
             finally { loader.style.display = 'none'; }
         }
 
-        async function buyMail(mailType, cost, stockKey) {
+        window.buyMail = async function(mailType, cost, stockKey) {
             if (userData.balance < cost) {
                 document.getElementById('insufficient-balance-modal').classList.remove('hidden');
                 lucide.createIcons();
@@ -1219,14 +1216,12 @@ const firebaseConfig = {
             } catch (e) { showAlert(typeof e === 'string' ? e : "কিনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"); } 
             finally { loader.style.display = 'none'; }
         }
-        window.buyMail = buyMail;
 
-        function showMailDetails(mailType, details) {
+        window.showMailDetails = function(mailType, details) {
             document.getElementById('mail-details-title').textContent = `${mailType} Details`;
             document.getElementById('mail-details-content').textContent = details;
             document.getElementById('mail-details-modal').classList.remove('hidden');
         }
-        window.showMailDetails = showMailDetails;
         
         async function loadUpdates() {
             const updatesContainer = document.getElementById('updates-content');
@@ -1316,32 +1311,57 @@ const firebaseConfig = {
             document.getElementById('custom-alert').classList.remove('hidden');
         }
         
-        function copyToClipboard(text, element) {
-            if (!text) return;
-            navigator.clipboard.writeText(text.trim()).then(() => {
-                if(element) {
-                    const originalContent = element.innerHTML;
-                    element.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-green-600"></i>`;
-                    lucide.createIcons();
-                    setTimeout(() => { element.innerHTML = originalContent; lucide.createIcons(); }, 1500);
-                } else showAlert('কপি করা হয়েছে!');
-            });
+        // FIXED copyToClipboard function
+        window.copyToClipboard = function(text, element) {
+            if (!text || typeof text !== 'string') {
+                console.warn("Copy to clipboard called with invalid text:", text);
+                return;
+            }
+
+            const textArea = document.createElement("textarea");
+            textArea.value = text.trim();
+
+            textArea.style.position = 'fixed';
+            textArea.style.top = '-9999px';
+            textArea.style.left = '-9999px';
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    if (element) {
+                        const originalContent = element.innerHTML;
+                        element.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-green-600"></i>`;
+                        lucide.createIcons();
+                        setTimeout(() => { element.innerHTML = originalContent; lucide.createIcons(); }, 1500);
+                    } else {
+                        showAlert('কপি করা হয়েছে!');
+                    }
+                } else {
+                    showAlert('দুঃখিত, কপি করা যায়নি।');
+                }
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+                showAlert('দুঃখিত, কপি করতে একটি ত্রুটি হয়েছে।');
+            }
+
+            document.body.removeChild(textArea);
         }
-        window.copyToClipboard = copyToClipboard;
         
-        // FIX: New function to handle API links correctly within Telegram
-        function openApiLink(url) {
-            if(url) {
+        // NEW function to handle API link
+        window.openApiLink = function(url) {
+            if (url) {
                 try {
                     window.Telegram.WebApp.openLink(url);
-                } catch(e) {
-                    console.error("Failed to open link via Telegram API, falling back to window.open", e);
+                } catch (e) {
+                    console.error("Failed to open link via Telegram SDK:", e);
                     window.open(url, '_blank');
                 }
             }
         }
-        window.openApiLink = openApiLink;
-
 
         function setupBanner() {
             const slides = document.querySelectorAll('.slide');
@@ -1376,7 +1396,6 @@ const firebaseConfig = {
                 const totalReceive = receivedSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
                 document.getElementById('total-receive-display').textContent = `৳${totalReceive.toFixed(2)}`;
 
-                // MODIFIED: Calculate Total Recharge and Send
                 const rechargeQuery = query(collection(db, "recharge_requests"), where("userId", "==", userData.tgChatId), where("status", "==", "approved"));
                 const rechargeSnapshot = await getDocs(rechargeQuery);
                 const totalRecharge = rechargeSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
@@ -1630,9 +1649,7 @@ const firebaseConfig = {
             }
         }
         
-        // MODIFIED: Added lockout check
         function handleFeaturesClick() {
-            // Check for lockout
             if (userData.featuresLockedUntil && userData.featuresLockedUntil.toDate() > new Date()) {
                 const unlockTime = userData.featuresLockedUntil.toDate().toLocaleTimeString('en-US');
                 showAlert(`⚠️ আপনি একাধিকবার ভুল পিন দেওয়ার কারণে আপনার একাউন্ট সাময়িকভাবে স্থগিত করা হয়েছে।\n🔒 ${unlockTime} পর আবার চেষ্টা করুন।\n\n💌 কোনো সমস্যা হলে Support Team 💌 এর সাথে যোগাযোগ করুন।`);
@@ -1670,13 +1687,11 @@ const firebaseConfig = {
             }
         }
 
-        // MODIFIED: Added failure tracking and lockout logic
         async function handleEnterPin() {
             const enteredPin = document.getElementById('enter-pin').value;
             const userRef = doc(db, "users", userData.tgChatId);
 
             if (enteredPin === userData.pin) {
-                // Correct PIN
                 if (userData.pinFailAttempts && userData.pinFailAttempts.length > 0) {
                     userData.pinFailAttempts = [];
                     await updateDoc(userRef, { pinFailAttempts: [] });
@@ -1684,7 +1699,6 @@ const firebaseConfig = {
                 document.getElementById('pin-enter-modal').classList.add('hidden');
                 navigateTo('features-page');
             } else {
-                // Incorrect PIN
                 const now = Timestamp.now();
                 const fiveMinutesAgo = new Date(now.toDate().getTime() - 5 * 60 * 1000);
 
