@@ -229,6 +229,43 @@
             padding: 0 4px;
         }
 
+        /* === NEW Premium Link Button Styles === */
+        .premium-link-btn {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600; /* semibold */
+            font-size: 1rem; /* text-base */
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .premium-link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+        .premium-link-btn:active {
+            transform: scale(0.98);
+        }
+        .premium-link-btn .icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+        }
+        /* Specific Button Colors */
+        .btn-reseller {
+            background-image: linear-gradient(to right, #6d28d9, #9333ea); /* Violet to Purple */
+        }
+        .btn-channel {
+            background-image: linear-gradient(to right, #0077E0, #0055A4); /* Telegram Blue */
+        }
+        .btn-offer {
+            background-image: linear-gradient(to right, #16a34a, #22c55e); /* Green */
+        }
+
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -329,15 +366,14 @@
             </div>
 
             <div id="mail-page" class="p-4 space-y-6 sub-page">
+                <a href="আপনার রিসেলার পেজের লিংক" target="_blank" class="premium-link-btn btn-reseller">
+                    <i data-lucide="store" class="icon"></i>
+                    <span>Reseller Zone</span>
+                </a>
                 <h2 class="text-xl font-bold text-center text-gray-800">MAIL SHOP</h2>
                 <p class="text-gray-600 text-center mb-4">কম দামে এবং সহজে মেইল কিনুন</p>
                 <div id="mail-list" class="space-y-4"></div>
                  <div>
-<div class="px-4">
-    <a href="আপনার রিসেলার পেজের লিংক" target="_blank" class="block w-full text-center p-3 mb-4 rounded-lg font-bold text-white bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg btn">
-        Reseller Zone
-    </a>
-</div>
                     <div class="flex justify-between items-center mb-3 mt-6">
                         <h3 class="text-lg font-semibold">Buy History</h3>
                         <div class="flex items-center gap-2">
@@ -350,16 +386,19 @@
             </div>
 
             <div id="updates-page" class="p-4 space-y-6 sub-page">
+                <div class="space-y-3">
+                    <a href="আপনার অফিসিয়াল চ্যানেলের লিংক" target="_blank" class="premium-link-btn btn-channel">
+                        <i data-lucide="send" class="icon"></i>
+                        <span>Official Channel</span>
+                    </a>
+                    <a href="আপনার রিসেলার অফারের লিংক" target="_blank" class="premium-link-btn btn-offer">
+                        <i data-lucide="percent" class="icon"></i>
+                        <span>Reseller 20% OFF</span>
+                    </a>
+                </div>
                 <h2 class="text-xl font-bold text-center text-gray-800">Update</h2>
                 <div id="updates-content" class="space-y-4"></div>
-<div class="px-4 space-y-3">
-    <a href="আপনার অফিসিয়াল চ্যানেলের লিংক" target="_blank" class="block w-full text-center p-3 rounded-lg btn-gradient">
-        Official Channel
-    </a>
-    <a href="আপনার রিসেলার অফারের লিংক" target="_blank" class="block w-full text-center p-3 rounded-lg font-bold text-white bg-gradient-to-r from-green-500 to-emerald-500 shadow-lg btn">
-        Reseller 20% OFF
-    </a>
-</div>                
+                
                 <div class="mt-8">
                     <h3 class="text-lg font-semibold text-center mb-4 text-gray-800">Customer Reviews</h3>
                     <div id="reviews-list" class="space-y-4"></div>
