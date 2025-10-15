@@ -1762,4 +1762,74 @@
             } else {
                 document.getElementById('set-pin').value = '';
                 document.getElementById('confirm-pin').value = '';
-                document.getElementById('pin-set
+                document.getElementById('pin-set-modal').classList.remove('hidden');
+            }
+        }
+
+        async function handleSetPin() {
+            const pin = document.getElementById('set-pin').value;
+            const confirmPin = document.getElementById('confirm-pin').value;
+            if (pin.length !== 4 || !/^\d{4}$/.test(pin)) return showAlert("⚠️ পিন অবশ্যই ৪ সংখ্যার হতে হবে।");
+            if (pin !== confirmPin) return showAlert("⚠️ PIN does not match.");
+            
+            loader.style.display = 'flex';
+            try {
+                const userRef = doc(db, "users", userData.tgChatId);
+                await updateDoc(userRef, { pin: pin });
+                userData.pin = pin;
+                document.getElementById('pin-set-modal').classList.add('hidden');
+                showAlert("আপনার পিন সফলভাবে সেট করা হয়েছে!");
+                navigateTo('features-page');
+            } catch (e) {
+                showAlert("পিন সেট করতে সমস্যা হয়েছে।");
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        async function handleEnterPin() {
+            const enteredPin = document.getElementById('enter-pin').value;
+            const userRef = doc(db, "users", userData.tgChatId);
+
+            if (enteredPin === userData.pin) {
+                if (userData.pinFailAttempts && userData.pinFailAttempts.length > 0) {
+                    userData.pinFailAttempts = [];
+                    await updateDoc(userRef, { pinFailAttempts: [] });
+                }
+                document.getElementById('pin-enter-modal').classList.add('hidden');
+                navigateTo('features-page');
+            } else {
+                const now = Timestamp.now();
+                const fiveMinutesAgo = new Date(now.toDate().getTime() - 5 * 60 * 1000);
+
+                let recentFails = (userData.pinFailAttempts || []).map(t => t.toDate());
+                recentFails = recentFails.filter(t => t > fiveMinutesAgo);
+                recentFails.push(now.toDate());
+                
+                userData.pinFailAttempts = recentFails.map(d => Timestamp.fromDate(d));
+
+                if (recentFails.length >= 3) {
+                    const tenHoursLater = new Date(now.toDate().getTime() + 10 * 60 * 60 * 1000);
+                    const lockTimestamp = Timestamp.fromDate(tenHoursLater);
+                    
+                    userData.featuresLockedUntil = lockTimestamp;
+                    userData.pinFailAttempts = [];
+
+                    await updateDoc(userRef, {
+                        pinFailAttempts: [],
+                        featuresLockedUntil: lockTimestamp
+                    });
+                    
+                    document.getElementById('pin-enter-modal').classList.add('hidden');
+                    showAlert("আপনি ইতিমধ্যে ৩ বার ভুল পিন দিয়েছেন। আপনার একাউন্ট নিরাপত্তার জন্য ১০ ঘণ্টার জন্য লক করা হয়েছে।");
+                } else {
+                    await updateDoc(userRef, { pinFailAttempts: userData.pinFailAttempts });
+                    showAlert(`⚠️ ভুল PIN।
+🔒 আপনি যদি আর ${3 - recentFails.length} বার ভুল PIN দেন, তাহলে আপনার অ্যাকাউন্ট কিছু ঘন্টার জন্য স্থগিত করা হবে।`);
+                    document.getElementById('enter-pin').value = '';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
