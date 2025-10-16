@@ -15,18 +15,6 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8f8f8;
             color: #333333;
-            /* ব্যবহারকারী যেন টেক্সট সিলেক্ট করতে না পারে তার জন্য কোড */
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10+ */
-            user-select: none; /* Standard syntax */
-            -webkit-touch-callout: none; /* iOS Safari */
-        }
-        /* ইনপুট এবং নির্দিষ্ট কিছু জায়গায় সিলেকশন চালু রাখার জন্য কোড */
-        input, textarea, #mail-details-content, #mail-purchase-history .font-mono {
-            -webkit-user-select: text; /* Safari */
-            -ms-user-select: text; /* IE 10+ */
-            user-select: text; /* Standard syntax */
-            -webkit-touch-callout: default;
         }
         .card-bg {
             background-color: #ffffff;
@@ -714,28 +702,6 @@
         </div>
     </div>
 
-    <!-- NEW: Purchase Success Modal -->
-    <div id="purchase-success-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
-        <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 relative">
-            <i data-lucide="check-circle-2" class="w-12 h-12 text-green-500 mx-auto"></i>
-            <h3 class="text-xl font-bold text-gray-800 text-center">সফলভাবে কেনা হয়েছে!</h3>
-            
-            <div class="space-y-3 pt-2">
-                <div class="flex items-center justify-between bg-gray-100 p-2.5 rounded-lg">
-                    <span class="font-mono text-sm text-gray-800 truncate" id="purchase-success-email"></span>
-                    <button onclick="copyToClipboard(document.getElementById('purchase-success-email').textContent, this)" class="ml-2 p-2 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button>
-                </div>
-                <div class="flex items-center justify-between bg-gray-100 p-2.5 rounded-lg">
-                    <span class="font-mono text-sm text-gray-800" id="purchase-success-password"></span>
-                    <button onclick="copyToClipboard(document.getElementById('purchase-success-password').textContent, this)" class="ml-2 p-2 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button>
-                </div>
-            </div>
-
-            <p class="text-xs text-gray-500 text-center pt-2">এই তথ্য আপনার ক্রয় হিস্টিতে সেভ করা হয়েছে।</p>
-            <button id="purchase-success-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">OK</button>
-        </div>
-    </div>
-
 
     <script type="module">
         const ADMIN_UID = "CUb4r6eg1RV6Ljkj5U2V1cSswng1";
@@ -744,7 +710,7 @@
             authDomain: "mail-store-4692b.firebaseapp.com",
             databaseURL: "https://mail-store-4692b-default-rtdb.firebaseio.com",
             projectId: "mail-store-4692b",
-            storageBucket: "mail-store-4692b.firebasestorage.app",
+            storageBucket: "backup-mail-store.firebasestorage.app",
             messagingSenderId: "264936867411",
             appId: "1:264936867411:web:5933919e5bafae617968a6"
         };
@@ -983,10 +949,6 @@
             });
             document.getElementById('alert-ok-btn').addEventListener('click', () => {
                  document.getElementById('custom-alert').classList.add('hidden');
-            });
-            // Listener for the new purchase success modal
-            document.getElementById('purchase-success-ok-btn').addEventListener('click', () => {
-                document.getElementById('purchase-success-modal').classList.add('hidden');
             });
         }
 
@@ -1399,13 +1361,7 @@
 
                 userData.balance -= cost;
                 updateUI();
-                
-                // Show the new success modal instead of the old alert
-                document.getElementById('purchase-success-email').textContent = purchasedMailData.email;
-                document.getElementById('purchase-success-password').textContent = purchasedMailData.password || 'N/A';
-                document.getElementById('purchase-success-modal').classList.remove('hidden');
-                lucide.createIcons();
-
+                showAlert(`সফলভাবে কেনা হয়েছে!\n\nEmail: ${purchasedMailData.email}\nPassword: ${purchasedMailData.password || 'N/A'}\n\nএই তথ্য আপনার ক্রয় হিস্টিতে সেভ করা হয়েছে।`);
                 loadMailStore();
             } catch (e) { showAlert(typeof e === 'string' ? e : "কিনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"); }
             finally { loader.style.display = 'none'; }
