@@ -195,41 +195,6 @@
             background-color: #d1d5db;
         }
         
-        /* NEW: Floating Action Button (FAB) Styles */
-        .fab-button {
-            position: fixed;
-            bottom: 90px;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-            z-index: 40;
-            transition: all 0.3s ease;
-            transform: scale(0); /* Hidden by default */
-        }
-        .fab-button.visible {
-             transform: scale(1);
-        }
-        .fab-button:active {
-            transform: scale(0.95) !important;
-        }
-        .fab-updates {
-            left: 20px;
-            background-color: #25D366;
-        }
-        .fab-telegram {
-            right: 20px;
-            background-color: #0088cc;
-        }
-        .fab-whatsapp {
-            right: 20px;
-            background: linear-gradient(to bottom right, #25d366, #128c7e);
-        }
-        
         /* NEW: Premium Title Style */
         .premium-title {
             background: linear-gradient(to right, #6366f1, #a855f7, #ec4899);
@@ -255,31 +220,85 @@
             justify-content: center;
             border: 2px solid white;
         }
-        
-        /* NEW: Support Page Styles */
+
+        /* --- NEW: Slide-Out Menu Styles --- */
+        #menu-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 80;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        #slide-out-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 80%;
+            max-width: 320px;
+            background: #ffffff;
+            z-index: 90;
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        #slide-out-menu.open {
+            transform: translateX(0);
+        }
+        .menu-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: center;
+        }
         .support-link-card {
             display: flex;
             align-items: center;
             gap: 16px;
-            background-color: #ffffff;
             padding: 16px;
-            border-radius: 12px;
-            border: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
             text-decoration: none;
             color: #111827;
             font-weight: 600;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            font-size: 1rem;
             transition: all 0.2s ease-in-out;
         }
         .support-link-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
-            border-color: #007bff;
+            background-color: #f9fafb;
+            color: #007bff;
         }
-        .support-link-card img {
-            width: 40px;
-            height: 40px;
+        .support-link-card img, .support-link-card .icon-placeholder {
+            width: 32px;
+            height: 32px;
+        }
+        /* --- END: Slide-Out Menu Styles --- */
+
+        /* --- NEW: Premium Support Button Style --- */
+        #go-to-support-btn.premium-support-btn {
+            background-image: linear-gradient(to right, #8e2de2, #4a00e0);
+            color: white;
+            box-shadow: 0 8px 25px -8px #8e2de2;
+            transition: all 0.3s ease;
+        }
+        #go-to-support-btn.premium-support-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px -10px #8e2de2;
+        }
+        #go-to-support-btn.premium-support-btn .icon-pulse {
+            animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.9); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(0.9); }
         }
     </style>
 </head>
@@ -294,7 +313,19 @@
         </div>
         <div id="loader-reviews">"খুবই বিশ্বস্ত একটি সাইট।" - মোঃ রায়হান</div>
     </div>
-
+    
+    <div id="menu-overlay"></div>
+    <aside id="slide-out-menu">
+        <div class="menu-header">
+            <h2 class="text-xl font-bold text-accent-gradient">Support Center</h2>
+            <p class="text-sm text-gray-500 mt-1">যেকোনো প্রয়োজনে যোগাযোগ করুন</p>
+        </div>
+        <nav id="support-channels-list" class="flex-grow overflow-y-auto">
+            </nav>
+        <div class="p-4 text-center text-xs text-gray-400 border-t">
+            MAIL STORE &copy; 2025
+        </div>
+    </aside>
     <div id="app-container" class="min-h-screen flex-col main-page">
         <header class="header flex items-center justify-between">
             <div class="flex items-center space-x-3">
@@ -306,11 +337,14 @@
                     <p id="header-balance-display" class="font-semibold text-gray-700 text-sm">৳0.00</p>
                 </div>
             </div>
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2">
                 <button id="header-deposit-btn" class="btn-gradient px-4 py-2 rounded-full text-sm font-bold shadow-lg">Deposit</button>
                 <button id="notification-btn" class="relative p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
                     <i data-lucide="bell" class="w-5 h-5 text-gray-700"></i>
                     <span id="notification-badge" class="notification-badge hidden">0</span>
+                </button>
+                <button id="hamburger-menu-btn" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                    <i data-lucide="menu" class="w-5 h-5 text-gray-700"></i>
                 </button>
             </div>
         </header>
@@ -439,9 +473,9 @@
                         <span>⚡ More Features</span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
-                    <button id="go-to-support-btn" class="w-full p-4 rounded-xl flex justify-between items-center text-left text-lg font-bold btn-gradient shadow-lg">
+                    <button id="go-to-support-btn" class="w-full p-4 rounded-xl flex justify-between items-center text-left text-lg font-bold premium-support-btn">
                         <span class="flex items-center gap-3">
-                            <i data-lucide="headphones" class="w-6 h-6"></i>
+                            <i data-lucide="headphones" class="w-6 h-6 icon-pulse"></i>
                             <span>Support Team</span>
                         </span>
                         <i data-lucide="arrow-right" class="w-5 h-5"></i>
@@ -453,18 +487,6 @@
                 </div>
             </div>
 
-            <div id="support-page" class="p-4 space-y-4 sub-page">
-                <div class="relative flex items-center justify-center mb-4">
-                    <button onclick="navigateTo('profile-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
-                        <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
-                    </button>
-                    <h2 class="text-xl font-bold text-center text-gray-800">Support Center</h2>
-                </div>
-                <p class="text-center text-gray-600 text-sm">যেকোনো প্রয়োজনে নিচের মাধ্যমগুলোতে যোগাযোগ করুন।</p>
-                <div id="support-channels-list" class="space-y-3">
-                    </div>
-            </div>
-            
             <div id="features-page" class="p-4 space-y-8 sub-page">
                 <div class="grid grid-cols-2 gap-4 text-center">
                     <div class="card-bg p-4 rounded-xl">
@@ -602,16 +624,6 @@
         </nav>
     </div>
     
-    <a id="fab-updates-plus" href="https://t.me/earn_Supportbot" target="_blank" class="fab-button fab-updates">
-        <i data-lucide="plus" class="w-8 h-8"></i>
-    </a>
-    <a id="fab-common-telegram" href="https://t.me/earn_Supportbot" target="_blank" class="fab-button fab-telegram">
-        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.65 12c-.88-.25-.89-1.02.2-1.3l15.67-6.11c.8-.32 1.45.19 1.18 1.1l-2.53 11.64c-.23.95-1.17 1.17-1.87.73l-4.5-3.33-2.15 2.07c-.24.24-.45.46-.8.46-.42 0-.59-.16-.69-.53z"/></svg>
-    </a>
-    <a id="fab-features-whatsapp" href="https://wa.me/8801855879942" target="_blank" class="fab-button fab-whatsapp">
-         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zM12.04 20.12c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31c-.82-1.31-1.26-2.83-1.26-4.38 0-4.54 3.7-8.24 8.24-8.24 4.54 0 8.24 3.7 8.24 8.24s-3.7 8.24-8.24 8.24zm4.52-6.14c-.25-.12-1.47-.72-1.7-.82s-.39-.12-.56.12c-.17.25-.64.82-.79.98-.15.17-.29.19-.54.06-.25-.12-1.06-.39-2.02-1.24-.75-.66-1.25-1.48-1.4-1.73-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.41.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.42h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07s.88 2.4 1 2.56c.12.17 1.75 2.67 4.24 3.73.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18s-.25-.11-.5-.24z"/></svg>
-    </a>
-
     <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-lg p-6 w-full max-w-sm text-center border border-gray-200 text-gray-800">
             <p id="alert-message" class="mb-5 whitespace-pre-wrap text-gray-700"></p>
@@ -707,15 +719,15 @@
 
     <script type="module">
         const ADMIN_UID = "CUb4r6eg1RV6Ljkj5U2V1cSswng1";
-const firebaseConfig = {
-  apiKey: "AIzaSyCoCy08FL_sHHdA0f2cJg0BaF-iYAhFuk0",
-  authDomain: "mail-store-4692b.firebaseapp.com",
-  databaseURL: "https://mail-store-4692b-default-rtdb.firebaseio.com",
-  projectId: "mail-store-4692b",
-  storageBucket: "mail-store-4692b.firebasestorage.app",
-  messagingSenderId: "264936867411",
-  appId: "1:264936867411:web:5933919e5bafae617968a6"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyCoCy08FL_sHHdA0f2cJg0BaF-iYAhFuk0",
+            authDomain: "mail-store-4692b.firebaseapp.com",
+            databaseURL: "https://mail-store-4692b-default-rtdb.firebaseio.com",
+            projectId: "mail-store-4692b",
+            storageBucket: "mail-store-4692b.firebasestorage.app",
+            messagingSenderId: "264936867411",
+            appId: "1:264936867411:web:5933919e5bafae617968a6"
+        };
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, Timestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
@@ -818,6 +830,8 @@ const firebaseConfig = {
             if (tgChatId === ADMIN_UID) {
                 document.getElementById('admin-nav-link').classList.remove('hidden');
             }
+            
+            loadSupportMenu(); // MODIFIED: Load support links into the slide-out menu
             updateUI();
             listenForNotifications();
             showMainPage('app-container');
@@ -853,11 +867,9 @@ const firebaseConfig = {
             document.querySelectorAll('.nav-link-premium[data-page]').forEach(link => {
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
-
-            document.getElementById('fab-updates-plus').classList.toggle('visible', pageId === 'updates-page');
-            document.getElementById('fab-common-telegram').classList.toggle('visible', pageId === 'home-page' || pageId === 'mail-page');
-            document.getElementById('fab-features-whatsapp').classList.toggle('visible', pageId === 'features-page');
             
+            // REMOVED: FAB visibility logic
+
             const pageLoadFunctions = {
                 'home-page': loadHomePageAds,
                 'pay-page': loadPaymentHistory,
@@ -867,7 +879,7 @@ const firebaseConfig = {
                 'profile-page': loadProfilePage,
                 'features-page': loadFeaturesPage,
                 'tutorial-page': loadTutorials,
-                'support-page': loadSupportPage, // New page loader
+                // REMOVED: support-page loader
                 'recharge-page': () => { 
                     loadRechargeHistory(); 
                     setupDynamicAmountHandlers('recharge');
@@ -880,6 +892,14 @@ const firebaseConfig = {
             lucide.createIcons();
         }
         window.navigateTo = navigateTo;
+
+        // --- NEW: Slide-out Menu Logic ---
+        function toggleMenu() {
+            const menu = document.getElementById('slide-out-menu');
+            const overlay = document.getElementById('menu-overlay');
+            menu.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
 
         function setupEventListeners() {
             document.querySelectorAll('.nav-link-premium[data-page]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
@@ -894,9 +914,12 @@ const firebaseConfig = {
             document.getElementById('deposit-details-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.remove('hidden'));
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
 
+            // MODIFIED: Support button and new menu buttons
+            document.getElementById('hamburger-menu-btn').addEventListener('click', toggleMenu);
+            document.getElementById('menu-overlay').addEventListener('click', toggleMenu);
+            document.getElementById('go-to-support-btn').addEventListener('click', toggleMenu);
+
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
-            document.getElementById('go-to-support-btn').addEventListener('click', () => navigateTo('support-page')); // Updated support button
-            
             document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('features-recharge-btn').addEventListener('click', () => navigateTo('recharge-page'));
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
@@ -1769,15 +1792,15 @@ const firebaseConfig = {
             }
         }
         
-        // NEW: Load Support Page dynamically from Firebase
-        async function loadSupportPage() {
+        // NEW: Load Support Channels into Slide-Out Menu
+        async function loadSupportMenu() {
             const supportContainer = document.getElementById('support-channels-list');
             supportContainer.innerHTML = getLoadingHTML();
             try {
-                const q = query(collection(db, "support_channels"));
+                const q = query(collection(db, "support_channels"), orderBy("order", "asc"));
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) {
-                    supportContainer.innerHTML = '<p class="text-center text-gray-600">দুঃখিত, এই মুহূর্তে কোনো সাপোর্ট চ্যানেল উপলব্ধ নেই।</p>';
+                    supportContainer.innerHTML = '<p class="p-4 text-center text-gray-600">দুঃখিত, এই মুহূর্তে কোনো সাপোর্ট চ্যানেল উপলব্ধ নেই।</p>';
                     return;
                 }
                 
@@ -1792,7 +1815,7 @@ const firebaseConfig = {
                 }).join('');
 
             } catch (e) {
-                supportContainer.innerHTML = '<p class="text-center text-red-600">সাপোর্ট অপশন লোড করা যায়নি।</p>';
+                supportContainer.innerHTML = '<p class="p-4 text-center text-red-600">সাপোর্ট অপশন লোড করা যায়নি।</p>';
                 console.error("Error loading support channels:", e);
             }
         }
