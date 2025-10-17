@@ -15,6 +15,18 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8f8f8;
             color: #333333;
+            /* ব্যবহারকারী যেন টেক্সট সিলেক্ট করতে না পারে তার জন্য কোড */
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Standard syntax */
+            -webkit-touch-callout: none; /* iOS Safari */
+        }
+        /* ইনপুট এবং নির্দিষ্ট কিছু জায়গায় সিলেকশন চালু রাখার জন্য কোড */
+        input, textarea, #mail-details-content, #mail-purchase-history .font-mono {
+            -webkit-user-select: text; /* Safari */
+            -ms-user-select: text; /* IE 10+ */
+            user-select: text; /* Standard syntax */
+            -webkit-touch-callout: default;
         }
         .card-bg {
             background-color: #ffffff;
@@ -413,7 +425,7 @@
                     <div id="mail-list" class="space-y-4"></div>
                      <div>
                         <div class="flex justify-between items-center mb-3 mt-6">
-                            <h3 class="text-lg font-semibold">Buy History</h3>
+                            <h3 class="text-lg font-semibold">Buy History (Last 4 Hours)</h3>
                             <div class="flex items-center gap-2">
                                <button id="copy-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="copy" class="w-4 h-4"></i><span>Copy Now</span></button>
                                <button id="download-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i><span>Download</span></button>
@@ -702,18 +714,43 @@
         </div>
     </div>
 
+    <!-- UPDATED: Purchase Success Modal -->
+    <div id="purchase-success-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
+        <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 relative">
+            <button id="close-purchase-success-modal" class="modal-close-btn">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <i data-lucide="check-circle-2" class="w-12 h-12 text-green-500 mx-auto"></i>
+            <h3 class="text-xl font-bold text-gray-800 text-center">সফলভাবে কেনা হয়েছে!</h3>
+            
+            <div class="space-y-3 pt-2">
+                <div class="flex items-center justify-between bg-gray-100 p-2.5 rounded-lg">
+                    <span class="font-mono text-sm text-gray-800 truncate" id="purchase-success-email"></span>
+                    <button onclick="copyToClipboard(document.getElementById('purchase-success-email').textContent, this)" class="ml-2 p-2 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button>
+                </div>
+                <div class="flex items-center justify-between bg-gray-100 p-2.5 rounded-lg">
+                    <span class="font-mono text-sm text-gray-800" id="purchase-success-password"></span>
+                    <button onclick="copyToClipboard(document.getElementById('purchase-success-password').textContent, this)" class="ml-2 p-2 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button>
+                </div>
+            </div>
+
+            <p class="text-xs text-gray-500 text-center pt-2">এই তথ্য আপনার ক্রয় হিস্টিতে (শেষ ৪ ঘণ্টা) সেভ করা হয়েছে।</p>
+            <button id="purchase-success-buy-again-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">আবার কিনুন</button>
+        </div>
+    </div>
+
 
     <script type="module">
         const ADMIN_UID = "CUb4r6eg1RV6Ljkj5U2V1cSswng1";
-const firebaseConfig = {
-  apiKey: "AIzaSyABzUFAkmkbYmaEPC1mpAIM3TWnG_NkxU0",
-  authDomain: "backup-mail-store.firebaseapp.com",
-  databaseURL: "https://backup-mail-store-default-rtdb.firebaseio.com",
-  projectId: "backup-mail-store",
-  storageBucket: "backup-mail-store.firebasestorage.app",
-  messagingSenderId: "856776939573",
-  appId: "1:856776939573:web:0f8b852e4028249b5ff97c"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyCoCy08FL_sHHdA0f2cJg0BaF-iYAhFuk0",
+            authDomain: "mail-store-4692b.firebaseapp.com",
+            databaseURL: "https://mail-store-4692b-default-rtdb.firebaseio.com",
+            projectId: "mail-store-4692b",
+            storageBucket: "mail-store-4692b.firebasestorage.app",
+            messagingSenderId: "264936867411",
+            appId: "1:264936867411:web:5933919e5bafae617968a6"
+        };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, Timestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
@@ -950,6 +987,10 @@ const firebaseConfig = {
             document.getElementById('alert-ok-btn').addEventListener('click', () => {
                  document.getElementById('custom-alert').classList.add('hidden');
             });
+            // MODIFIED: Event listeners for the new purchase success modal
+            const hidePurchaseSuccessModal = () => document.getElementById('purchase-success-modal').classList.add('hidden');
+            document.getElementById('purchase-success-buy-again-btn').addEventListener('click', hidePurchaseSuccessModal);
+            document.getElementById('close-purchase-success-modal').addEventListener('click', hidePurchaseSuccessModal);
         }
 
         function listenForNotifications() {
@@ -1111,6 +1152,7 @@ const firebaseConfig = {
             historyListEl.innerHTML = getLoadingHTML();
 
             try {
+                // Load Mail Store Items
                 const stockPromises = (appConfig.mails || []).map(mail => getStockCount(mail.stockKey));
                 const stockCounts = await Promise.all(stockPromises);
                 let mailsWithStock = (appConfig.mails || []).map((mail, index) => ({ ...mail, stock: stockCounts[index] }));
@@ -1130,11 +1172,19 @@ const firebaseConfig = {
 
                     mailListEl.innerHTML += `<div class="card-bg p-4 rounded-xl space-y-3"><div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo"><h3 class="font-bold text-lg text-gray-800">${mail.type}</h3></div><div class="flex items-center gap-2">${validityTagHtml}<button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="text-blue-600 text-sm font-semibold">Details</button></div></div><div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200"><div class="py-2">${apiButtonHtml}</div><div class="py-2"><p class="text-gray-500 text-sm">Price</p><p class="font-bold text-lg text-blue-600">৳${costInBdt.toFixed(2)}</p></div><div class="py-2"><p class="text-gray-500 text-sm">Stock</p><p class="font-bold text-lg text-green-600">${stock}</p></div></div><button class="${buyButtonClasses} w-full py-2 rounded-lg text-md" ${buyButtonDisabled} onclick="buyMail('${mail.type}', ${costInBdt}, '${mail.stockKey}')">Buy Now</button></div>`;
                 });
+                
+                // MODIFIED: Load Purchase History from the last 4 hours only
+                const fourHoursAgo = Timestamp.fromDate(new Date(Date.now() - 4 * 60 * 60 * 1000));
+                const q = query(
+                    collection(db, "mail_purchases"), 
+                    where("userId", "==", userData.tgChatId), 
+                    where("purchasedAt", ">=", fourHoursAgo),
+                    orderBy("purchasedAt", "desc")
+                );
 
-                const q = query(collection(db, "mail_purchases"), where("userId", "==", userData.tgChatId), orderBy("purchasedAt", "desc"));
                 const querySnapshot = await getDocs(q);
                 if(querySnapshot.empty) {
-                    historyListEl.innerHTML = '<p class="text-center text-gray-600">আপনি এখনো কোনো মেইল কিনেননি।</p>';
+                    historyListEl.innerHTML = '<p class="text-center text-gray-600">আপনি শেষ ৪ ঘণ্টায় কোনো মেইল কিনেননি।</p>';
                 } else {
                     historyListEl.innerHTML = querySnapshot.docs.map(doc => {
                         const purchase = doc.data();
@@ -1276,32 +1326,30 @@ const firebaseConfig = {
             finally { loader.style.display = 'none'; }
         }
 
+        // MODIFIED: handleCopyHistory now copies only recent (4 hours) purchases in the new format
         async function handleCopyHistory() {
              loader.style.display = 'flex';
             try {
-                const q = query(collection(db, "mail_purchases"), where("userId", "==", userData.tgChatId), orderBy("purchasedAt", "desc"));
+                const fourHoursAgo = new Date(Date.now() - 4 * 60 * 60 * 1000);
+                const q = query(
+                    collection(db, "mail_purchases"), 
+                    where("userId", "==", userData.tgChatId),
+                    where("purchasedAt", ">=", Timestamp.fromDate(fourHoursAgo)),
+                    orderBy("purchasedAt", "desc")
+                );
                 const querySnapshot = await getDocs(q);
                 if (querySnapshot.empty) {
                     loader.style.display = 'none';
-                    return showAlert("আপনার কোনো History নেই");
+                    return showAlert("শেষ ৪ ঘণ্টায় আপনার কোনো কেনাকাটার ইতিহাস নেই।");
                 }
 
-                const header = "Purchase Date\tMail Type\tEmail\tPassword\tCost (BDT)\tFull Data";
                 const rows = querySnapshot.docs.map(doc => {
                     const p = doc.data();
-                    const fullData = [p.mail, p.password, p.refreshToken, p.clientId].filter(Boolean).join('|');
-                    return [
-                        p.purchasedAt.toDate().toLocaleString(),
-                        p.mailType,
-                        p.mail,
-                        p.password || 'N/A',
-                        p.cost,
-                        fullData
-                    ].join('\t');
+                    return `Mail Type: ${p.mailType}\nEmail: ${p.mail}\nPassword: ${p.password || 'N/A'}`;
                 });
 
-                const tsvContent = [header, ...rows].join('\n');
-                copyToClipboard(tsvContent);
+                const contentToCopy = rows.join('\n\n---\n\n');
+                copyToClipboard(contentToCopy, null, 'শেষ ৪ ঘণ্টার ইতিহাস কপি করা হয়েছে!');
 
             } catch (error) { showAlert("ইতিহাস কপি করার সময় একটি সমস্যা হয়েছে।"); console.error(error); }
             finally { loader.style.display = 'none'; }
@@ -1361,7 +1409,13 @@ const firebaseConfig = {
 
                 userData.balance -= cost;
                 updateUI();
-                showAlert(`সফলভাবে কেনা হয়েছে!\n\nEmail: ${purchasedMailData.email}\nPassword: ${purchasedMailData.password || 'N/A'}\n\nএই তথ্য আপনার ক্রয় হিস্টিতে সেভ করা হয়েছে।`);
+                
+                // MODIFIED: Show the new success modal instead of the old alert
+                document.getElementById('purchase-success-email').textContent = purchasedMailData.email;
+                document.getElementById('purchase-success-password').textContent = purchasedMailData.password || 'N/A';
+                document.getElementById('purchase-success-modal').classList.remove('hidden');
+                lucide.createIcons();
+
                 loadMailStore();
             } catch (e) { showAlert(typeof e === 'string' ? e : "কিনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"); }
             finally { loader.style.display = 'none'; }
@@ -1461,7 +1515,7 @@ const firebaseConfig = {
             document.getElementById('custom-alert').classList.remove('hidden');
         }
 
-        window.copyToClipboard = function(text, element) {
+        window.copyToClipboard = function(text, element, alertMessage = 'কপি করা হয়েছে!') {
             if (!text || typeof text !== 'string') {
                 console.warn("Copy to clipboard called with invalid text:", text);
                 return;
@@ -1469,7 +1523,6 @@ const firebaseConfig = {
 
             const textArea = document.createElement("textarea");
             textArea.value = text.trim();
-
             textArea.style.position = 'fixed';
             textArea.style.top = '-9999px';
             textArea.style.left = '-9999px';
@@ -1487,7 +1540,7 @@ const firebaseConfig = {
                         lucide.createIcons();
                         setTimeout(() => { element.innerHTML = originalContent; lucide.createIcons(); }, 1500);
                     } else {
-                        showAlert('কপি করা হয়েছে!');
+                        showAlert(alertMessage);
                     }
                 } else {
                     showAlert('দুঃখিত, কপি করা যায়নি।');
@@ -1598,8 +1651,7 @@ const firebaseConfig = {
 
         function handleReceive() {
             const message = `আপনার রিসিভ আইডি:\n\n${userData.tgChatId}\n\nএই আইডি ব্যবহার করে অন্য ব্যবহারকারীর থেকে ব্যালেন্স রিসিভ করতে পারবেন।`;
-            copyToClipboard(userData.tgChatId, null);
-            showAlert(message);
+            copyToClipboard(userData.tgChatId, null, message);
         }
 
         function setupDynamicAmountHandlers(pageType) {
