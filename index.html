@@ -137,11 +137,6 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* Ads Carousel */
-        #ads-container { height: 120px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
-        .ad-slide { min-width: 100%; background-size: cover; background-position: center; }
-        #ads-dots .dot { height: 6px; width: 6px; }
-
         /* UPDATED Premium Loader Styles */
         #loader { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; transition: opacity 0.5s ease; }
         #loader .logo-container { animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards, breath 2.5s ease-in-out infinite 1s; }
@@ -366,16 +361,14 @@
                         </div>
                     </div>
 
-                    <div id="ads-section">
-                        <h2 class="text-xl font-bold px-2 mb-3 premium-title">✨ Promotions</h2>
-                        <div id="ads-container" class="relative w-full overflow-hidden rounded-xl">
-                            <div id="ads-inner" class="flex transition-transform duration-500 ease-in-out">
-                                <!-- Ads will be loaded here dynamically from Firebase -->
-                            </div>
-                            <div id="ads-dots" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-2">
-                            </div>
+                    <!-- =========== UPDATED PROMOTIONS/ADS SECTION =========== -->
+                    <div id="ads-section" class="space-y-3">
+                        <h2 class="text-xl font-bold px-2 premium-title">✨ Promotions</h2>
+                        <div>
+                            <script src='//libtl.com/sdk.js' data-zone='10056357' data-sdk='show_10056357'></script>
                         </div>
                     </div>
+                    <!-- =========== END OF PROMOTIONS/ADS SECTION =========== -->
                 </div>
             </div>
 
@@ -611,14 +604,16 @@
 
         </main>
 
+        <!-- =========== UPDATED BOTTOM NAVIGATION FOR SECURITY =========== -->
         <nav class="bottom-nav">
-            <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
-            <a href="#" class="nav-link-premium" data-page="tutorial-page"><i data-lucide="video" class="icon"></i><span>Tutorial</span></a>
-            <a href="#" class="nav-link-premium center-home-link active" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
-            <a href="#" class="nav-link-premium" data-page="mail-page"><i data-lucide="mail" class="icon"></i><span>Mail</span></a>
-            <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
-            <a href="#" id="admin-nav-link" class="nav-link-premium hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></a>
+            <button class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></button>
+            <button class="nav-link-premium" data-page="tutorial-page"><i data-lucide="video" class="icon"></i><span>Tutorial</span></button>
+            <button class="nav-link-premium center-home-link active" data-page="home-page"><i data-lucide="home" class="icon"></i></button>
+            <button class="nav-link-premium" data-page="mail-page"><i data-lucide="mail" class="icon"></i><span>Mail</span></button>
+            <button class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></button>
+            <button id="admin-nav-link" class="nav-link-premium hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></button>
         </nav>
+        <!-- =========== END OF UPDATED NAVIGATION =========== -->
     </div>
 
     <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
@@ -919,7 +914,6 @@
             });
 
             const pageLoadFunctions = {
-                'home-page': loadHomePageAds,
                 'pay-page': loadPaymentHistory,
                 'mail-page': loadMailStore,
                 'updates-page': () => { loadUpdates(); loadReviews(); },
@@ -991,7 +985,7 @@
             document.getElementById('purchase-success-buy-again-btn').addEventListener('click', hidePurchaseSuccessModal);
             document.getElementById('close-purchase-success-modal').addEventListener('click', hidePurchaseSuccessModal);
 
-            // UPDATED: নিরাপত্তা বৃদ্ধি এবং লিংক ফাঁস রোধ করার জন্য কোড
+            // নিরাপত্তা বৃদ্ধি এবং লিংক ফাঁস রোধ করার জন্য কোড
             window.addEventListener('contextmenu', function (e) {
                 // ইনপুট, টেক্সটএরিয়া বা নির্দিষ্ট কন্টেন্ট ছাড়া অন্য কোথাও কনটেক্সট মেনু দেখানো বন্ধ করা হয়েছে।
                 if (e.target.closest('input, textarea, #mail-details-content, #mail-purchase-history .font-mono')) {
@@ -1247,84 +1241,6 @@
                  mailListEl.innerHTML = '<p class="text-center text-red-600">মেইল লোড করা যায়নি।</p>';
                  historyListEl.innerHTML = '<p class="text-center text-red-600">হিস্টি লোড করা যায়নি।</p>';
                  console.error(e);
-            }
-        }
-
-        let adInterval = null;
-        // UPDATED: এই ফাংশনটি এখন Firebase থেকে প্রমোশন ব্যানার লোড করবে
-        function loadHomePageAds() {
-            const adsConfig = appConfig.ads;
-            const adsSection = document.getElementById('ads-section');
-            const innerContainer = document.getElementById('ads-inner');
-            const dotsContainer = document.getElementById('ads-dots');
-            
-            // Firebase থেকে পাওয়া কনফিগারেশন অনুযায়ী ব্যানার লোড হবে
-            if (adsConfig && adsConfig.enabled && adsConfig.items && adsConfig.items.length > 0) {
-                innerContainer.innerHTML = ''; // আগের ব্যানারগুলো মুছে ফেলা হলো
-                dotsContainer.innerHTML = '';
-
-                adsConfig.items.forEach((ad, index) => {
-                    // ব্যানার স্লাইড তৈরি
-                    const slide = document.createElement('a');
-                    slide.href = ad.linkUrl;
-                    slide.target = '_blank';
-                    slide.className = 'ad-slide block';
-                    slide.style.backgroundImage = `url('${ad.imageUrl}')`;
-                    innerContainer.appendChild(slide);
-
-                    // ব্যানার ডট তৈরি
-                    const dot = document.createElement('span');
-                    dot.className = 'dot bg-white/50 rounded-full cursor-pointer transition-all';
-                    if (index === 0) dot.classList.add('active', 'bg-white');
-                    dot.dataset.index = index;
-                    dotsContainer.appendChild(dot);
-                });
-
-            } else {
-                 adsSection.classList.add('hidden'); // যদি কোনো ব্যানার না থাকে তাহলে সেকশনটি লুকানো থাকবে
-                 return;
-            }
-
-            const slides = innerContainer.querySelectorAll('.ad-slide');
-            if(slides.length === 0) {
-                adsSection.classList.add('hidden');
-                return;
-            }
-
-            adsSection.classList.remove('hidden');
-            let currentIndex = 0;
-            const dots = dotsContainer.querySelectorAll('.dot');
-            const intervalTime = (adsConfig?.intervalSeconds || 5) * 1000;
-
-            function showAd(index) {
-                currentIndex = index;
-                innerContainer.style.transform = `translateX(-${index * 100}%)`;
-                dots.forEach(d => {
-                    d.classList.remove('active', 'bg-white');
-                    d.classList.add('bg-white/50');
-                });
-                dots[index].classList.add('active', 'bg-white');
-                dots[index].classList.remove('bg-white/50');
-            }
-
-            dotsContainer.addEventListener('click', e => {
-                if (e.target.matches('.dot')) {
-                    showAd(parseInt(e.target.dataset.index));
-                    // স্লাইডিংয়ের সময় ইন্টারভাল রিসেট করা
-                    if (adInterval) clearInterval(adInterval);
-                    if (slides.length > 1) {
-                         adInterval = setInterval(() => {
-                            showAd((currentIndex + 1) % slides.length);
-                        }, intervalTime);
-                    }
-                }
-            });
-            
-            if (adInterval) clearInterval(adInterval); 
-            if (slides.length > 1) {
-                adInterval = setInterval(() => {
-                    showAd((currentIndex + 1) % slides.length);
-                }, intervalTime);
             }
         }
 
@@ -1978,5 +1894,8 @@
             }
         }
     </script>
+    
+    <!-- =========== ADDED GLOBAL AD SCRIPT =========== -->
+    <script>(function(s){s.dataset.zone='9793049',s.src='https://gizokraijaw.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 </body>
 </html>
