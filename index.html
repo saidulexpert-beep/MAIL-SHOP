@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAIL STORE</title>
-    <!-- নতুন মেটা ট্যাগ যোগ করা হয়েছে -->
     <meta name="monetag" content="a41ceca9ffc67edad031c0024f85ef59">
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -17,18 +16,20 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8f8f8;
             color: #333333;
-            /* ব্যবহারকারী যেন টেক্সট সিলেক্ট করতে না পারে তার জন্য কোড */
             -webkit-user-select: none; /* Safari */
             -ms-user-select: none; /* IE 10+ */
             user-select: none; /* Standard syntax */
             -webkit-touch-callout: none; /* iOS Safari */
         }
-        /* ইনপুট এবং নির্দিষ্ট কিছু জায়গায় সিলেকশন চালু রাখার জন্য কোড */
         input, textarea, #mail-details-content, #mail-purchase-history .font-mono {
             -webkit-user-select: text; /* Safari */
             -ms-user-select: text; /* IE 10+ */
             user-select: text; /* Standard syntax */
             -webkit-touch-callout: default;
+        }
+        /* প্রোফাইল ছবি চেপে ধরলে লিংক আসা বন্ধ করার জন্য কোড */
+        #header-profile-pic, #profile-pic, #header-initials-avatar, #profile-initials-avatar {
+            pointer-events: none;
         }
         .card-bg {
             background-color: #ffffff;
@@ -306,7 +307,7 @@
             text-align: left;
             cursor: pointer;
         }
-        .support-link-card:hover, .menu-action-btn:hover {
+        .support-link-card:hover, .menu-action-btn:hover:not(:disabled) {
             background-color: #f9fafb;
             color: #007bff;
         }
@@ -314,6 +315,33 @@
             width: 32px;
             height: 32px;
         }
+        
+        /* উন্নত প্রিমিয়াম বাটন স্টাইল */
+        .btn-premium-buy {
+            background: linear-gradient(to right, #8b5cf6, #d946ef);
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+        .btn-premium-buy:hover {
+             box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+             background: linear-gradient(to right, #7c3aed, #c026d3);
+             color: white;
+        }
+        .menu-action-btn:disabled {
+            background-color: #f3f4f6;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+        #premium-countdown {
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: auto;
+            background: rgba(0,0,0,0.05);
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
+
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -480,10 +508,10 @@
                         <div id="profile-initials-avatar" class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center border-2 border-[#007bff]"><span id="profile-initials" class="text-3xl font-bold text-gray-500"></span></div>
                     </div>
                     <h3 id="profile-name" class="text-2xl font-bold text-gray-800">Loading...</h3>
-                    <!-- প্রিমিয়াম স্ট্যাটাসের জন্য নতুন এলিমেন্ট -->
-                    <div id="premium-status-container"></div>
                     <p id="profile-username" class="text-gray-500">@username</p>
                     <p id="profile-id" class="text-sm text-gray-600 mt-2">ID: 123456</p>
+                     <!-- প্রিমিয়াম স্ট্যাটাসের স্থান পরিবর্তন -->
+                    <div id="premium-status-container" class="mt-3"></div>
                 </div>
 
                 <div class="space-y-3">
@@ -787,6 +815,7 @@
         let userData = null;
         let appConfig = {};
         let insufficientBalanceInterval = null;
+        let premiumCountdownInterval = null; // কাউন্টডাউন টাইমার এর জন্য ভেরিয়েবল
 
         const loader = document.getElementById('loader');
 
@@ -847,51 +876,62 @@
             }
             const tgChatId = String(currentUserTg.id);
             const userRef = doc(db, "users", tgChatId);
-            const userSnap = await getDoc(userRef);
+            
+            try {
+                const userSnap = await getDoc(userRef);
 
-            if (userSnap.exists()) {
-                userData = userSnap.data();
+                if (userSnap.exists()) {
+                    userData = userSnap.data();
+                } else {
+                    const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
+                    userData = {
+                        tgChatId: tgChatId,
+                        name: userName,
+                        username: currentUserTg.username || null,
+                        balance: 0,
+                        createdAt: serverTimestamp(),
+                        isBlocked: false,
+                        pin: null,
+                        pinFailAttempts: [],
+                        featuresLockedUntil: null,
+                        lastSeenNotification: null,
+                        isPremium: false,
+                        premiumExpiresAt: null
+                    };
+                    await setDoc(userRef, userData);
+                }
+                
                 // প্রিমিয়াম স্ট্যাটাস চেক এবং আপডেট
                 if (userData.isPremium && userData.premiumExpiresAt && userData.premiumExpiresAt.toDate() < new Date()) {
                     userData.isPremium = false;
-                    await updateDoc(userRef, { isPremium: false });
+                    userData.premiumExpiresAt = null;
+                    await updateDoc(userRef, { isPremium: false, premiumExpiresAt: null });
+                    showAlert("আপনার প্রিমিয়াম সাবস্ক্রিপশনের মেয়াদ শেষ হয়ে গেছে।");
                 }
-            } else {
-                const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
-                userData = {
-                    tgChatId: tgChatId,
-                    name: userName,
-                    username: currentUserTg.username || null,
-                    balance: 0,
-                    createdAt: serverTimestamp(),
-                    isBlocked: false,
-                    pin: null,
-                    pinFailAttempts: [],
-                    featuresLockedUntil: null,
-                    lastSeenNotification: null,
-                    isPremium: false, // নতুন ফিল্ড
-                    premiumExpiresAt: null // নতুন ফিল্ড
-                };
-                await setDoc(userRef, userData);
+
+                if (userData.isBlocked) {
+                    showAlert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
+                    return;
+                }
+
+                await fetchAppConfig();
+                conditionallyLoadGlobalAds();
+
+                if (tgChatId === ADMIN_UID) {
+                    document.getElementById('admin-nav-link').classList.remove('hidden');
+                }
+
+                loadSupportMenu();
+                updateUI();
+                listenForNotifications();
+                showMainPage('app-container');
+                navigateTo('home-page');
+
+            } catch (error) {
+                console.error("Error initializing user session:", error);
+                showAlert("Failed to initialize your session. Please try again.");
+                loader.style.display = 'none';
             }
-
-            if (userData.isBlocked) {
-                showAlert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
-                return;
-            }
-
-            await fetchAppConfig();
-            conditionallyLoadGlobalAds(); // বিজ্ঞাপন লোড করার ফাংশন কল
-
-            if (tgChatId === ADMIN_UID) {
-                document.getElementById('admin-nav-link').classList.remove('hidden');
-            }
-
-            loadSupportMenu();
-            updateUI();
-            listenForNotifications();
-            showMainPage('app-container');
-            navigateTo('home-page');
         }
 
         async function fetchAppConfig() {
@@ -900,15 +940,11 @@
             appConfig = configSnap.exists() ? configSnap.data() : { mails: [] };
         }
 
-        // =========== JAVASCRIPT FOR HEADER (UPDATED) ===========
         function updateHeaderUI() {
             if (!currentUserTg) return;
-
             const profilePic = document.getElementById('header-profile-pic');
             const avatarDiv = document.getElementById('header-initials-avatar');
             const welcomeName = document.getElementById('header-welcome-name');
-
-            // Update profile picture/initials
             if (currentUserTg.photo_url) {
                 profilePic.src = currentUserTg.photo_url;
                 profilePic.classList.remove('hidden');
@@ -919,8 +955,6 @@
                 profilePic.classList.add('hidden');
                 avatarDiv.classList.remove('hidden');
             }
-
-            // Update welcome name
             const firstName = currentUserTg.first_name || 'User';
             welcomeName.textContent = `Hi, ${firstName}!`;
         }
@@ -930,10 +964,8 @@
             const balance = (userData.balance || 0).toFixed(2);
             document.getElementById('balance-display').textContent = `৳${balance}`;
             document.getElementById('header-balance-display').textContent = `৳${balance}`;
-            updateHeaderUI(); // Call the new header update function
+            updateHeaderUI();
         }
-        // =========== END OF JAVASCRIPT FOR HEADER ===========
-
 
         function showMainPage(pageId) {
             document.querySelectorAll('.main-page').forEach(p => p.classList.remove('active'));
@@ -952,14 +984,14 @@
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
             
-            // বিজ্ঞাপন সেকশন নিয়ন্ত্রণ
+            // উন্নত বিজ্ঞাপন সেকশন নিয়ন্ত্রণ
             const adsSection = document.getElementById('ads-section');
-            if (pageId === 'home-page' && !userData.isPremium) {
-                adsSection.style.display = 'block';
-            } else {
+            const adFreePages = ['mail-page', 'pay-page'];
+            if (userData.isPremium || adFreePages.includes(pageId)) {
                 adsSection.style.display = 'none';
+            } else {
+                adsSection.style.display = 'block';
             }
-
 
             const pageLoadFunctions = {
                 'pay-page': loadPaymentHistory,
@@ -981,7 +1013,188 @@
             lucide.createIcons();
         }
         window.navigateTo = navigateTo;
+        
+        //বাকি কোড আগের মতোই থাকবে...
 
+        async function loadProfilePage() {
+            const profilePic = document.getElementById('profile-pic');
+            const avatarDiv = document.getElementById('profile-initials-avatar');
+            const premiumStatusContainer = document.getElementById('premium-status-container');
+
+            if (currentUserTg) {
+                if (currentUserTg.photo_url) {
+                    profilePic.src = currentUserTg.photo_url;
+                    profilePic.classList.remove('hidden');
+                    avatarDiv.classList.add('hidden');
+                } else {
+                    const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
+                    document.getElementById('profile-initials').textContent = initials.toUpperCase();
+                    profilePic.classList.add('hidden');
+                    avatarDiv.classList.remove('hidden');
+                }
+                document.getElementById('profile-name').textContent = `${currentUserTg.first_name} ${currentUserTg.last_name || ''}`.trim();
+                document.getElementById('profile-username').textContent = currentUserTg.username ? `@${currentUserTg.username}` : 'No Telegram Username';
+                document.getElementById('profile-id').textContent = `Telegram ID: ${currentUserTg.id}`;
+            }
+
+            // প্রিমিয়াম স্ট্যাটাস UI আপডেট
+            if (userData.isPremium) {
+                const expiryDate = userData.premiumExpiresAt.toDate().toLocaleDateString('en-GB');
+                premiumStatusContainer.innerHTML = `<div class="premium-status-badge gold">Premium User</div><p class="text-xs text-gray-500 mt-1">Expires: ${expiryDate}</p>`;
+            } else {
+                premiumStatusContainer.innerHTML = `<div class="premium-status-badge gray">Not Premium</div>`;
+            }
+        }
+        
+        async function loadSupportMenu() {
+            const menuContainer = document.getElementById('menu-options');
+            menuContainer.innerHTML = getLoadingHTML();
+            let menuHtml = '';
+
+            // প্রিমিয়াম বাটন এবং কাউন্টডাউন
+            if (userData.isPremium) {
+                menuHtml += `<button id="premium-status-btn" class="menu-action-btn" disabled>
+                                <i data-lucide="shield-check" class="icon text-yellow-500"></i>
+                                <span>Premium Active</span>
+                                <span id="premium-countdown"></span>
+                             </button>`;
+                startPremiumCountdown(userData.premiumExpiresAt.toDate());
+            } else {
+                 if (premiumCountdownInterval) clearInterval(premiumCountdownInterval); // আগের টাইমার বন্ধ করুন
+                menuHtml += `<button id="buy-premium-btn" class="menu-action-btn btn-premium-buy">
+                                <i data-lucide="gem" class="icon"></i>
+                                <span>Buy Premium (৳10)</span>
+                             </button>`;
+            }
+
+            try {
+                const q = query(collection(db, "support_channels"), orderBy("order", "asc"));
+                const snapshot = await getDocs(q);
+                if (!snapshot.empty) {
+                    menuHtml += snapshot.docs.map(doc => {
+                        const channel = doc.data();
+                        return `<a href="${channel.link}" target="_blank" class="support-link-card"><img src="${channel.iconUrl}" alt="${channel.name} logo"><span>${channel.name}</span></a>`;
+                    }).join('');
+                }
+                menuContainer.innerHTML = menuHtml;
+                lucide.createIcons();
+
+                if (!userData.isPremium) {
+                    document.getElementById('buy-premium-btn').addEventListener('click', handleBuyPremium);
+                }
+
+            } catch (e) {
+                menuContainer.innerHTML = '<p class="p-4 text-center text-red-600">Failed to load menu options.</p>';
+                console.error("Error loading support channels:", e);
+            }
+        }
+        
+        function startPremiumCountdown(expiryDate) {
+            if (premiumCountdownInterval) clearInterval(premiumCountdownInterval);
+
+            const countdownElement = document.getElementById('premium-countdown');
+            if(!countdownElement) return;
+
+            premiumCountdownInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = expiryDate.getTime() - now;
+
+                if (distance < 0) {
+                    clearInterval(premiumCountdownInterval);
+                    countdownElement.innerHTML = "Expired";
+                    initUserSession(); // মেয়াদ শেষ হলে সেশন রিলোড করুন
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            }, 1000);
+        }
+
+        async function handleBuyPremium() {
+            const premiumCost = 10;
+            if (userData.isPremium) return showAlert("আপনি ইতিমধ্যে একজন প্রিমিয়াম ব্যবহারকারী।");
+            if (userData.balance < premiumCost) return showAlert(`প্রিমিয়াম কেনার জন্য আপনার পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${premiumCost.toFixed(2)}।`);
+
+            if (confirm(`আপনি কি ৳${premiumCost.toFixed(2)} দিয়ে ২০ দিনের জন্য প্রিমিয়াম সাবস্ক্রিপশন কিনতে চান? এটি কিনলে আপনি বিজ্ঞাপনমুক্ত অভিজ্ঞতা পাবেন।`)) {
+                loader.style.display = 'flex';
+                try {
+                    const userRef = doc(db, "users", userData.tgChatId);
+                    await runTransaction(db, async (transaction) => {
+                        const userDoc = await transaction.get(userRef);
+                        if (!userDoc.exists() || userDoc.data().balance < premiumCost) {
+                            throw new Error("অপর্যাপ্ত ব্যালেন্স।");
+                        }
+                        
+                        const newExpiryDate = new Date();
+                        newExpiryDate.setDate(newExpiryDate.getDate() + 20);
+                        const newBalance = userDoc.data().balance - premiumCost;
+
+                        transaction.update(userRef, {
+                            balance: newBalance,
+                            isPremium: true,
+                            premiumExpiresAt: Timestamp.fromDate(newExpiryDate)
+                        });
+                        
+                        const purchaseLogRef = doc(collection(db, "premium_purchases"));
+                        transaction.set(purchaseLogRef, {
+                            userId: userData.tgChatId,
+                            cost: premiumCost,
+                            purchasedAt: serverTimestamp(),
+                            expiresAt: Timestamp.fromDate(newExpiryDate)
+                        });
+                        
+                        // লোকাল ডেটা আপডেট করুন
+                        userData.balance = newBalance;
+                        userData.isPremium = true;
+                        userData.premiumExpiresAt = Timestamp.fromDate(newExpiryDate);
+                    });
+
+                    showAlert("অভিনন্দন! আপনি এখন একজন প্রিমিয়াম ব্যবহারকারী।");
+                    updateUI();
+                    loadProfilePage();
+                    loadSupportMenu();
+                    toggleMenu();
+                    navigateTo(document.querySelector('.sub-page.active').id); // বর্তমান পেজ রিলোড করুন
+                } catch (error) {
+                    showAlert(`প্রিমিয়াম কিনতে সমস্যা হয়েছে: ${error.message}`);
+                    console.error("Premium purchase failed:", error);
+                } finally {
+                    loader.style.display = 'none';
+                }
+            }
+        }
+
+        function conditionallyLoadGlobalAds() {
+            // আগের বিজ্ঞাপন স্ক্রিপ্টগুলো মুছে ফেলা হয়েছে কিনা তা নিশ্চিত করুন
+            document.querySelectorAll('script[src*="groleegni.net"], script[src*="forfrogadiertor.com"], script[src*="gizokraijaw.net"]').forEach(s => s.remove());
+
+            if (userData && userData.isPremium) {
+                console.log("Premium user. Ads will not be loaded.");
+                return;
+            }
+
+            const adScripts = [
+                { dataset: { zone: '10056419' }, src: 'https://groleegni.net/vignette.min.js' },
+                { dataset: { zone: '10056422' }, src: 'https://forfrogadiertor.com/tag.min.js' },
+                { dataset: { zone: '9793049' }, src: 'https://gizokraijaw.net/vignette.min.js' }
+            ];
+
+            adScripts.forEach(ad => {
+                const script = document.createElement('script');
+                Object.keys(ad.dataset).forEach(key => {
+                    script.dataset[key] = ad.dataset[key];
+                });
+                script.src = ad.src;
+                document.body.appendChild(script);
+            });
+        }
+        
         function toggleMenu() {
             const menu = document.getElementById('slide-out-menu');
             const overlay = document.getElementById('menu-overlay');
@@ -1033,9 +1246,7 @@
             document.getElementById('purchase-success-buy-again-btn').addEventListener('click', hidePurchaseSuccessModal);
             document.getElementById('close-purchase-success-modal').addEventListener('click', hidePurchaseSuccessModal);
 
-            // নিরাপত্তা বৃদ্ধি এবং লিংক ফাঁস রোধ করার জন্য কোড
             window.addEventListener('contextmenu', function (e) {
-                // ইনপুট, টেক্সটএরিয়া বা নির্দিষ্ট কন্টেন্ট ছাড়া অন্য কোথাও কনটেক্সট মেনু দেখানো বন্ধ করা হয়েছে।
                 if (e.target.closest('input, textarea, #mail-details-content, #mail-purchase-history .font-mono')) {
                     return;
                 }
@@ -1043,6 +1254,8 @@
             });
         }
 
+        // বাকি সব ফাংশন আগের মতোই অপরিবর্তিত থাকবে...
+        // listenForNotifications, showNotifications, hideNotifications, handleDepositRequest, loadPaymentHistory, etc.
         function listenForNotifications() {
             const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
             onSnapshot(q, (snapshot) => {
@@ -1096,36 +1309,6 @@
             await updateDoc(userRef, { lastSeenNotification: newTimestamp });
             userData.lastSeenNotification = newTimestamp;
             document.getElementById('notification-badge').classList.add('hidden');
-        }
-
-        function loadProfilePage() {
-            const profilePic = document.getElementById('profile-pic');
-            const avatarDiv = document.getElementById('profile-initials-avatar');
-            const premiumStatusContainer = document.getElementById('premium-status-container');
-
-            if (currentUserTg) {
-                if (currentUserTg.photo_url) {
-                    profilePic.src = currentUserTg.photo_url;
-                    profilePic.classList.remove('hidden');
-                    avatarDiv.classList.add('hidden');
-                } else {
-                    const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
-                    document.getElementById('profile-initials').textContent = initials.toUpperCase();
-                    profilePic.classList.add('hidden');
-                    avatarDiv.classList.remove('hidden');
-                }
-                document.getElementById('profile-name').textContent = `${currentUserTg.first_name} ${currentUserTg.last_name || ''}`.trim();
-                document.getElementById('profile-username').textContent = currentUserTg.username ? `@${currentUserTg.username}` : 'No Telegram Username';
-                document.getElementById('profile-id').textContent = `Telegram ID: ${currentUserTg.id}`;
-            }
-
-            // প্রিমিয়াম স্ট্যাটাস UI আপডেট
-            if (userData.isPremium) {
-                const expiryDate = userData.premiumExpiresAt.toDate().toLocaleDateString('en-GB');
-                premiumStatusContainer.innerHTML = `<div class="premium-status-badge gold">Premium User</div><p class="text-xs text-gray-500 mt-1">Expires: ${expiryDate}</p>`;
-            } else {
-                premiumStatusContainer.innerHTML = `<div class="premium-status-badge gray">Not Premium</div>`;
-            }
         }
 
         async function handleDepositRequest() {
@@ -1211,7 +1394,6 @@
             historyListEl.innerHTML = getLoadingHTML();
 
             try {
-                // Load Mail Store Items
                 const stockPromises = (appConfig.mails || []).map(mail => getStockCount(mail.stockKey));
                 const stockCounts = await Promise.all(stockPromises);
                 let mailsWithStock = (appConfig.mails || []).map((mail, index) => ({ ...mail, stock: stockCounts[index] }));
@@ -1226,9 +1408,7 @@
                     const buyButtonDisabled = isOutOfStock || insufficientBalance ? 'disabled' : '';
                     const buyButtonClasses = isOutOfStock || insufficientBalance ? 'bg-gray-400 cursor-not-allowed' : 'btn-gradient';
                     const validityTagHtml = (mail.expirationDays !== undefined && mail.expirationDays !== null) ? `<span class="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">${mail.expirationDays} h</span>` : '';
-
                     const apiButtonHtml = mail.apiLink ? `<button onclick="openApiLink('${mail.apiLink}')" class="text-blue-600 font-semibold">API</button>` : '<span class="text-gray-400 font-semibold">API</span>';
-
                     mailListEl.innerHTML += `<div class="card-bg p-4 rounded-xl space-y-3"><div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo"><h3 class="font-bold text-lg text-gray-800">${mail.type}</h3></div><div class="flex items-center gap-2">${validityTagHtml}<button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="text-blue-600 text-sm font-semibold">Details</button></div></div><div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200"><div class="py-2">${apiButtonHtml}</div><div class="py-2"><p class="text-gray-500 text-sm">Price</p><p class="font-bold text-lg text-blue-600">৳${costInBdt.toFixed(2)}</p></div><div class="py-2"><p class="text-gray-500 text-sm">Stock</p><p class="font-bold text-lg text-green-600">${stock}</p></div></div><button class="${buyButtonClasses} w-full py-2 rounded-lg text-md" ${buyButtonDisabled} onclick="buyMail('${mail.type}', ${costInBdt}, '${mail.stockKey}')">Buy Now</button></div>`;
                 });
                 
@@ -1248,7 +1428,6 @@
                         const purchase = doc.data();
                         const date = purchase.purchasedAt.toDate().toLocaleString();
                         const fullData = [purchase.mail, purchase.password, purchase.refreshToken, purchase.clientId].filter(Boolean).join('|');
-
                         return `<div class="card-bg p-4 rounded-xl space-y-3">
                             <div class="flex justify-between items-start">
                                 <div>
@@ -1310,7 +1489,6 @@
                     loader.style.display = 'none';
                     return showAlert("আপনার কোনো History নেই");
                 }
-
                 const dataForExcel = querySnapshot.docs.map(doc => { const p = doc.data(); return { 'Purchase Date': p.purchasedAt.toDate().toLocaleString(), 'Mail Type': p.mailType, 'Email': p.mail, 'Password': p.password || 'N/A', 'Cost (BDT)': p.cost, 'Full Data': [p.mail,p.password,p.refreshToken,p.clientId].filter(Boolean).join('|') }; });
                 const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
                 const workbook = XLSX.utils.book_new();
@@ -1336,15 +1514,12 @@
                     loader.style.display = 'none';
                     return showAlert("শেষ ৪ ঘণ্টায় আপনার কোনো কেনাকাটার ইতিহাস নেই।");
                 }
-
                 const rows = querySnapshot.docs.map(doc => {
                     const p = doc.data();
                     return `Mail Type: ${p.mailType}\nEmail: ${p.mail}\nPassword: ${p.password || 'N/A'}`;
                 });
-
                 const contentToCopy = rows.join('\n\n---\n\n');
                 copyToClipboard(contentToCopy, null, 'শেষ ৪ ঘণ্টার ইতিহাস কপি করা হয়েছে!');
-
             } catch (error) { showAlert("ইতিহাস কপি করার সময় একটি সমস্যা হয়েছে।"); console.error(error); }
             finally { loader.style.display = 'none'; }
         }
@@ -1355,38 +1530,28 @@
                 lucide.createIcons();
                 return;
             }
-
             if (!confirm(`আপনি কি ৳${cost.toFixed(2)} দিয়ে একটি ${mailType} কিনতে চান?`)) return;
-
             loader.style.display = 'flex';
             try {
                 const purchasedMailData = await runTransaction(db, async (transaction) => {
                     const counterRef = doc(db, "counters", "mail_purchase");
-
                     const q = query(collection(db, stockKey), where("isSold", "==", false), limit(1));
                     const mailQuerySnapshot = await getDocs(q);
-
                     if (mailQuerySnapshot.empty) throw "দুঃখিত, এই ধরনের মেইল বর্তমানে স্টক শেষ।";
-
                     const mailDoc = mailQuerySnapshot.docs[0];
                     const mailData = mailDoc.data();
                     const userRef = doc(db, "users", userData.tgChatId);
-
                     const [counterSnap, userSnap] = await Promise.all([
                         transaction.get(counterRef),
                         transaction.get(userRef)
                     ]);
-
                     if (!userSnap.exists() || userSnap.data().balance < cost) throw `অপর্যাপ্ত ব্যালেন্স।`;
                     if (!counterSnap.exists()) throw "Sale ID counter not found. Please setup 'counters/mail_purchase'.";
-
                     const saleId = counterSnap.data().currentId;
                     transaction.update(counterRef, { currentId: saleId + 1 });
-
                     transaction.update(userRef, { balance: userSnap.data().balance - cost });
                     transaction.update(mailDoc.ref, { isSold: true, soldTo: userData.tgChatId, soldAt: serverTimestamp() });
                     const purchaseLogRef = doc(collection(db, "mail_purchases"));
-
                     transaction.set(purchaseLogRef, {
                         saleId: saleId,
                         userId: userData.tgChatId,
@@ -1400,15 +1565,12 @@
                     });
                     return mailData;
                 });
-
                 userData.balance -= cost;
                 updateUI();
-                
                 document.getElementById('purchase-success-email').textContent = purchasedMailData.email;
                 document.getElementById('purchase-success-password').textContent = purchasedMailData.password || 'N/A';
                 document.getElementById('purchase-success-modal').classList.remove('hidden');
                 lucide.createIcons();
-
                 loadMailStore();
             } catch (e) { showAlert(typeof e === 'string' ? e : "কিনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"); }
             finally { loader.style.display = 'none'; }
@@ -1427,18 +1589,15 @@
                 const q = query(collection(db, "updates"), orderBy("createdAt", "desc"), limit(1));
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) return updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl text-gray-800">No new updates right now!</h3><p class="text-gray-600 mt-2">Check back later.</p></div>`;
-
                 const updateDoc = snapshot.docs[0];
                 const updateData = updateDoc.data();
                 const updateId = updateDoc.id;
                 const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", userData.tgChatId));
                 const userVote = userInteractionDoc.exists() ? userInteractionDoc.data().vote : null;
-
                 const isLiked = userVote === 'liked';
                 const isDisliked = userVote === 'disliked';
                 let linkButtonHtml = updateData.linkUrl ? `<a href="${updateData.linkUrl}" target="_blank" class="btn-gradient px-4 py-2 rounded-lg text-sm flex-1 text-center">Learn More</a>` : '';
                 const createdAtDate = updateData.createdAt ? updateData.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
-
                 updatesContainer.innerHTML = `<div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">${updateData.imageUrl ? `<img src="${updateData.imageUrl}" class="w-full aspect-[16/9] object-cover" alt="Update Banner">` : ''}<div class="p-6 space-y-4 flex flex-col flex-grow"><div><h3 class="text-2xl font-bold text-gray-800">${updateData.title}</h3>${createdAtDate ? `<p class="text-xs text-gray-500 mt-1">${createdAtDate}</p>` : ''}</div><p class="text-gray-600 text-base whitespace-pre-wrap flex-grow leading-relaxed">${updateData.content || ''}</p><div class="flex items-center justify-between gap-4 pt-4 mt-auto border-t border-gray-200"><div class="flex items-center gap-4"><div class="flex items-center space-x-2"><button id="like-btn" class="p-2 rounded-full transition-colors ${isLiked ? 'text-blue-500 bg-blue-100' : 'text-gray-500 hover:bg-gray-100'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-up" class="w-5 h-5"></i></button><span class="font-semibold text-sm text-gray-700">${updateData.likes || 0}</span></div><div class="flex items-center space-x-2"><button id="dislike-btn" class="p-2 rounded-full transition-colors ${isDisliked ? 'text-red-500 bg-red-100' : 'text-gray-500 hover:bg-gray-100'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-down" class="w-5 h-5"></i></button><span class="font-semibold text-sm text-gray-700">${updateData.dislikes || 0}</span></div></div>${linkButtonHtml}</div></div></div>`;
                 lucide.createIcons();
                 document.getElementById('like-btn').onclick = () => handleVote('like', updateId);
@@ -1478,10 +1637,8 @@
             const stockKey = document.getElementById('mail-type-select').value;
             const mailDataRaw = document.getElementById('mail-data-textarea').value;
             if (!stockKey || !mailDataRaw.trim()) return showAlert("Please select a mail type and provide mail data.");
-
             const lines = mailDataRaw.trim().split('\n').filter(line => line.trim() !== '');
             if (lines.length === 0) return showAlert("No valid mail data found.");
-
             loader.style.display = 'flex';
             try {
                 const batch = writeBatch(db);
@@ -1513,17 +1670,14 @@
                 console.warn("Copy to clipboard called with invalid text:", text);
                 return;
             }
-
             const textArea = document.createElement("textarea");
             textArea.value = text.trim();
             textArea.style.position = 'fixed';
             textArea.style.top = '-9999px';
             textArea.style.left = '-9999px';
-
             document.body.appendChild(textArea);
             textArea.focus();
             textArea.select();
-
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
@@ -1542,7 +1696,6 @@
                 console.error('Fallback: Oops, unable to copy', err);
                 showAlert('দুঃখিত, কপি করতে একটি ত্রুটি হয়েছে।');
             }
-
             document.body.removeChild(textArea);
         }
 
@@ -1619,14 +1772,11 @@
                 const transactions = [];
                 sentSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
                 receivedSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
-
                 transactions.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
-
                 if (transactions.length === 0) {
                     historyList.innerHTML = '<p class="text-gray-600 text-center">No transfer history found.</p>';
                     return;
                 }
-
                 historyList.innerHTML = transactions.map(item => {
                     const isSent = item.fromId === userData.tgChatId;
                     const date = item.timestamp.toDate().toLocaleString('en-GB');
@@ -1634,7 +1784,6 @@
                     const color = isSent ? 'text-red-600' : 'text-green-600';
                     const actionText = isSent ? `Sent to ${item.toName}` : `Received from ${item.fromName}`;
                     const amountToShow = isSent ? item.totalDeducted : item.amount;
-
                     return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div><p class="font-semibold text-gray-800">${actionText}</p><p class="text-xs text-gray-500">${date}</p></div><p class="font-bold text-lg ${color}">${sign}৳${amountToShow.toFixed(2)}</p></div>`;
                 }).join('');
             } catch (e) {
@@ -1650,22 +1799,17 @@
         function setupDynamicAmountHandlers(pageType) {
             const amountInput = document.getElementById(`${pageType}-amount`);
             const feeDisplay = document.getElementById(`${pageType}-fee-display`);
-
             if (!amountInput || !feeDisplay) return;
-
             amountInput.addEventListener('input', () => {
                 const maxAmount = Math.floor(userData.balance / 1.05);
                 let currentAmount = parseInt(amountInput.value);
-
                 if (isNaN(currentAmount) || currentAmount < 0) {
                     currentAmount = 0;
                 }
-
                 if (currentAmount > maxAmount) {
                     amountInput.value = maxAmount;
                     currentAmount = maxAmount;
                 }
-
                 if (currentAmount > 0) {
                     const fee = currentAmount * 0.05;
                     feeDisplay.textContent = `Fee (5%): ৳${fee.toFixed(2)}`;
@@ -1678,50 +1822,37 @@
         async function handleSendRequest() {
             const recipientId = document.getElementById('send-recipient-id').value.trim();
             const amountStr = document.getElementById('send-amount').value;
-
             if (!recipientId || !amountStr) return showAlert("অনুগ্রহ করে প্রাপকের আইডি এবং টাকার পরিমাণ লিখুন।");
             if (recipientId === userData.tgChatId) return showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
-
             const amount = parseFloat(amountStr);
             if (isNaN(amount) || amount < 20) return showAlert("সর্বনিম্ন পাঠানোর পরিমাণ ৳20।");
-
             const fee = amount * 0.05;
             const totalCost = amount + fee;
-
             if (totalCost > userData.balance) return showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
             if (!confirm(`আপনি কি ${recipientId} আইডিতে ৳${amount.toFixed(2)} পাঠাতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) return;
-
             loader.style.display = 'flex';
             const senderRef = doc(db, "users", userData.tgChatId);
             const recipientRef = doc(db, "users", recipientId);
-
             try {
                 await runTransaction(db, async (transaction) => {
                     const senderDoc = await transaction.get(senderRef);
                     const recipientDoc = await transaction.get(recipientRef);
-
                     if (!senderDoc.exists() || senderDoc.data().balance < totalCost) throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
                     if (!recipientDoc.exists()) throw "প্রাপক আইডি (Recipient ID) খুঁজে পাওয়া যায়নি।";
-
                     const newSenderBalance = senderDoc.data().balance - totalCost;
                     const newRecipientBalance = recipientDoc.data().balance + amount;
-
                     transaction.update(senderRef, { balance: newSenderBalance });
                     transaction.update(recipientRef, { balance: newRecipientBalance });
-
                     const transferLogRef = doc(collection(db, "transfers"));
                     transaction.set(transferLogRef, { fromId: userData.tgChatId, fromName: userData.name, toId: recipientId, toName: recipientDoc.data().name, amount: amount, fee: fee, totalDeducted: totalCost, timestamp: serverTimestamp() });
                 });
-
                 userData.balance -= totalCost;
                 updateUI();
                 showAlert(`সফলভাবে ৳${amount.toFixed(2)} পাঠানো হয়েছে।`);
-
                 document.getElementById('send-recipient-id').value = '';
                 document.getElementById('send-amount').value = '';
                 document.getElementById('send-fee-display').textContent = '';
                 navigateTo('features-page');
-
             } catch (error) {
                 console.error("Transfer failed: ", error);
                 showAlert(typeof error === 'string' ? error : "ব্যালেন্স পাঠাতে সমস্যা হয়েছে।");
@@ -1735,20 +1866,15 @@
             const amountStr = document.getElementById('recharge-amount').value;
             const operator = document.getElementById('recharge-operator').value;
             const type = document.getElementById('recharge-type').value;
-
             if (!number || !amountStr || !operator) return showAlert("অনুগ্রহ করে সমস্ত তথ্য সঠিকভাবে পূরণ করুন।");
             if (!/^(01[3-9])\d{8}$/.test(number)) return showAlert("অনুগ্রহ করে একটি সঠিক বাংলাদেশী মোবাইল নম্বর দিন।");
             const amount = parseFloat(amountStr);
             if (isNaN(amount) || amount < 20) return showAlert("সর্বনিম্ন রিচার্জের পরিমাণ ৳20।");
-
             const fee = amount * 0.05;
             const totalCost = amount + fee;
-
             if (totalCost > userData.balance) return showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
             if (!confirm(`আপনি কি ${number} নম্বরে ৳${amount.toFixed(2)} রিচার্জ করতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) return;
-
             loader.style.display = 'flex';
-
             try {
                 const userRef = doc(db, "users", userData.tgChatId);
                 await runTransaction(db, async (transaction) => {
@@ -1759,11 +1885,9 @@
                     const rechargeRequestRef = doc(collection(db, "recharge_requests"));
                     transaction.set(rechargeRequestRef, { userId: userData.tgChatId, userName: userData.name, mobileNumber: number, amount: amount, operator: operator, rechargeType: type, fee: fee, totalDeducted: totalCost, status: "pending", requestedAt: serverTimestamp() });
                 });
-
                 userData.balance -= totalCost;
                 updateUI();
                 showAlert("আপনার রিচার্জ অনুরোধ সফলভাবে জমা হয়েছে।");
-
                 document.getElementById('recharge-number').value = '';
                 document.getElementById('recharge-amount').value = '';
                 document.getElementById('recharge-operator').value = '';
@@ -1784,7 +1908,6 @@
                 const q = query(collection(db, "recharge_requests"), where("userId", "==", userData.tgChatId), orderBy("requestedAt", "desc"));
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-600 text-center">কোনো রিচার্জ হিস্ট্রি পাওয়া যায়নি।</p>';
-
                 historyList.innerHTML = snapshot.docs.map(doc => {
                     const item = doc.data();
                     let statusColor, statusIcon;
@@ -1810,7 +1933,6 @@
                 const q = query(collection(db, "tutorials"), orderBy("order"));
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) return tutorialListEl.innerHTML = '<p class="text-center text-gray-600">কোনো টিউটোরিয়াল পাওয়া যায়নি।</p>';
-
                 tutorialListEl.innerHTML = snapshot.docs.map(doc => {
                     const tutorial = doc.data();
                     return `<div class="card-bg p-4 rounded-xl"><h3 class="font-bold text-lg text-gray-800 mb-3">${tutorial.title}</h3><div class="video-container-16-9"><iframe src="${tutorial.youtubeEmbedUrl}" title="${tutorial.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>`;
@@ -1828,7 +1950,6 @@
                 const q = query(collection(db, "reviews"), orderBy("createdAt", "desc"), limit(5));
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) return reviewListEl.innerHTML = '<p class="text-center text-gray-600">কোনো রিভিউ পাওয়া যায়নি।</p>';
-
                 reviewListEl.innerHTML = snapshot.docs.map(doc => {
                     const review = doc.data();
                     let stars = '';
@@ -1841,97 +1962,7 @@
                 console.error("Error loading reviews: ", e);
             }
         }
-
-        async function loadSupportMenu() {
-            const menuContainer = document.getElementById('menu-options');
-            menuContainer.innerHTML = getLoadingHTML();
-            let menuHtml = '';
-
-            // প্রিমিয়াম বাটন যোগ
-            if (userData.isPremium) {
-                menuHtml += `<button class="menu-action-btn" disabled><i data-lucide="shield-check" class="icon text-yellow-500"></i><span>Premium Active</span></button>`;
-            } else {
-                menuHtml += `<button id="buy-premium-btn" class="menu-action-btn"><i data-lucide="gem" class="icon text-purple-500"></i><span>Buy Premium (৳10)</span></button>`;
-            }
-
-            try {
-                const q = query(collection(db, "support_channels"), orderBy("order", "asc"));
-                const snapshot = await getDocs(q);
-                if (snapshot.empty) {
-                    menuHtml += '<p class="p-4 text-center text-gray-600">No support channels available.</p>';
-                } else {
-                    menuHtml += snapshot.docs.map(doc => {
-                        const channel = doc.data();
-                        return `<a href="${channel.link}" target="_blank" class="support-link-card"><img src="${channel.iconUrl}" alt="${channel.name} logo"><span>${channel.name}</span></a>`;
-                    }).join('');
-                }
-                menuContainer.innerHTML = menuHtml;
-                lucide.createIcons();
-
-                if (!userData.isPremium) {
-                    document.getElementById('buy-premium-btn').addEventListener('click', handleBuyPremium);
-                }
-
-            } catch (e) {
-                menuContainer.innerHTML = '<p class="p-4 text-center text-red-600">Failed to load menu options.</p>';
-                console.error("Error loading support channels:", e);
-            }
-        }
         
-        async function handleBuyPremium() {
-            const premiumCost = 10;
-            if (userData.isPremium) return showAlert("আপনি ইতিমধ্যে একজন প্রিমিয়াম ব্যবহারকারী।");
-            if (userData.balance < premiumCost) return showAlert(`প্রিমিয়াম কেনার জন্য আপনার পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${premiumCost.toFixed(2)}।`);
-
-            if (confirm(`আপনি কি ৳${premiumCost.toFixed(2)} দিয়ে ২০ দিনের জন্য প্রিমিয়াম সাবস্ক্রিপশন কিনতে চান? এটি কিনলে আপনি বিজ্ঞাপনমুক্ত অভিজ্ঞতা পাবেন।`)) {
-                loader.style.display = 'flex';
-                try {
-                    const userRef = doc(db, "users", userData.tgChatId);
-                    const newExpiryDate = new Date();
-                    newExpiryDate.setDate(newExpiryDate.getDate() + 20);
-                    
-                    await runTransaction(db, async (transaction) => {
-                        const userDoc = await transaction.get(userRef);
-                        if (!userDoc.exists() || userDoc.data().balance < premiumCost) {
-                            throw "অপর্যাপ্ত ব্যালেন্স।";
-                        }
-                        const newBalance = userDoc.data().balance - premiumCost;
-                        transaction.update(userRef, {
-                            balance: newBalance,
-                            isPremium: true,
-                            premiumExpiresAt: Timestamp.fromDate(newExpiryDate)
-                        });
-                        
-                        const purchaseLogRef = doc(collection(db, "premium_purchases"));
-                        transaction.set(purchaseLogRef, {
-                            userId: userData.tgChatId,
-                            cost: premiumCost,
-                            purchasedAt: serverTimestamp(),
-                            expiresAt: Timestamp.fromDate(newExpiryDate)
-                        });
-                    });
-
-                    // Update local user data
-                    userData.balance -= premiumCost;
-                    userData.isPremium = true;
-                    userData.premiumExpiresAt = Timestamp.fromDate(newExpiryDate);
-
-                    showAlert("অভিনন্দন! আপনি এখন একজন প্রিমিয়াম ব্যবহারকারী।");
-                    updateUI();
-                    loadProfilePage();
-                    loadSupportMenu();
-                    toggleMenu(); // মেনু বন্ধ করুন
-                    navigateTo('home-page'); // হোম পেজে যান এবং বিজ্ঞাপন রিলোড করুন
-                } catch (error) {
-                    showAlert("প্রিমিয়াম কিনতে সমস্যা হয়েছে।");
-                    console.error("Premium purchase failed:", error);
-                } finally {
-                    loader.style.display = 'none';
-                }
-            }
-        }
-
-
         function handleFeaturesClick() {
             if (userData.featuresLockedUntil && userData.featuresLockedUntil.toDate() > new Date()) {
                 const unlockTime = userData.featuresLockedUntil.toDate().toLocaleTimeString('en-US');
@@ -1954,7 +1985,6 @@
             const confirmPin = document.getElementById('confirm-pin').value;
             if (pin.length !== 4 || !/^\d{4}$/.test(pin)) return showAlert("⚠️ পিন অবশ্যই ৪ সংখ্যার হতে হবে।");
             if (pin !== confirmPin) return showAlert("⚠️ PIN does not match.");
-
             loader.style.display = 'flex';
             try {
                 const userRef = doc(db, "users", userData.tgChatId);
@@ -1973,7 +2003,6 @@
         async function handleEnterPin() {
             const enteredPin = document.getElementById('enter-pin').value;
             const userRef = doc(db, "users", userData.tgChatId);
-
             if (enteredPin === userData.pin) {
                 if (userData.pinFailAttempts && userData.pinFailAttempts.length > 0) {
                     userData.pinFailAttempts = [];
@@ -1984,60 +2013,28 @@
             } else {
                 const now = Timestamp.now();
                 const fiveMinutesAgo = new Date(now.toDate().getTime() - 5 * 60 * 1000);
-
                 let recentFails = (userData.pinFailAttempts || []).map(t => t.toDate());
                 recentFails = recentFails.filter(t => t > fiveMinutesAgo);
                 recentFails.push(now.toDate());
-
                 userData.pinFailAttempts = recentFails.map(d => Timestamp.fromDate(d));
-
                 if (recentFails.length >= 3) {
                     const tenHoursLater = new Date(now.toDate().getTime() + 10 * 60 * 60 * 1000);
                     const lockTimestamp = Timestamp.fromDate(tenHoursLater);
-
                     userData.featuresLockedUntil = lockTimestamp;
                     userData.pinFailAttempts = [];
-
                     await updateDoc(userRef, {
                         pinFailAttempts: [],
                         featuresLockedUntil: lockTimestamp
                     });
-
                     document.getElementById('pin-enter-modal').classList.add('hidden');
                     showAlert("আপনি ইতিমধ্যে ৩ বার ভুল পিন দিয়েছেন। আপনার একাউন্ট নিরাপত্তার জন্য ১০ ঘণ্টার জন্য লক করা হয়েছে।");
                 } else {
                     await updateDoc(userRef, { pinFailAttempts: userData.pinFailAttempts });
-                    showAlert(`⚠️ ভুল PIN।
-🔒 আপনি যদি আর ${3 - recentFails.length} বার ভুল PIN দেন, তাহলে আপনার অ্যাকাউন্ট কিছু ঘন্টার জন্য স্থগিত করা হবে।`);
+                    showAlert(`⚠️ ভুল PIN।\n🔒 আপনি যদি আর ${3 - recentFails.length} বার ভুল PIN দেন, তাহলে আপনার অ্যাকাউন্ট কিছু ঘন্টার জন্য স্থগিত করা হবে।`);
                     document.getElementById('enter-pin').value = '';
                 }
             }
         }
-        
-        function conditionallyLoadGlobalAds() {
-            // যদি ব্যবহারকারী প্রিমিয়াম হন, তাহলে বিজ্ঞাপন লোড হবে না
-            if (userData && userData.isPremium) {
-                console.log("Premium user. Ads will not be loaded.");
-                return;
-            }
-
-            // বিজ্ঞাপন স্ক্রিপ্টগুলো ডাইনামিকভাবে যোগ করা হচ্ছে
-            const adScripts = [
-                { dataset: { zone: '10056419' }, src: 'https://groleegni.net/vignette.min.js' },
-                { dataset: { zone: '10056422' }, src: 'https://forfrogadiertor.com/tag.min.js' },
-                { dataset: { zone: '9793049' }, src: 'https://gizokraijaw.net/vignette.min.js' }
-            ];
-
-            adScripts.forEach(ad => {
-                const script = document.createElement('script');
-                Object.keys(ad.dataset).forEach(key => {
-                    script.dataset[key] = ad.dataset[key];
-                });
-                script.src = ad.src;
-                document.body.appendChild(script);
-            });
-        }
-
     </script>
 </body>
 </html>
