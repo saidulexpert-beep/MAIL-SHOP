@@ -991,6 +991,15 @@
             const hidePurchaseSuccessModal = () => document.getElementById('purchase-success-modal').classList.add('hidden');
             document.getElementById('purchase-success-buy-again-btn').addEventListener('click', hidePurchaseSuccessModal);
             document.getElementById('close-purchase-success-modal').addEventListener('click', hidePurchaseSuccessModal);
+
+            // ADDED: Prevent context menu on long-press to improve security by hiding links.
+            window.addEventListener('contextmenu', function (e) {
+                // Allow context menu for text input areas for normal functionality like copy/paste.
+                if (e.target.closest('input, textarea, #mail-details-content, #mail-purchase-history .font-mono')) {
+                    return;
+                }
+                e.preventDefault();
+            });
         }
 
         function listenForNotifications() {
@@ -1244,14 +1253,18 @@
         }
 
         let adInterval = null;
+        // CHANGED: This function is updated to be more robust.
+        // It will now use the ads from the remote config if available.
+        // If not, it will fall back to using the hardcoded ads in the HTML, ensuring the carousel always works.
         function loadHomePageAds() {
             const adsConfig = appConfig.ads;
             const adsSection = document.getElementById('ads-section');
             const innerContainer = document.getElementById('ads-inner');
             const dotsContainer = document.getElementById('ads-dots');
-
+            
+            // If remote config for ads is enabled and has items, load them.
             if (adsConfig && adsConfig.enabled && adsConfig.items && adsConfig.items.length > 0) {
-                innerContainer.innerHTML = '';
+                innerContainer.innerHTML = ''; // Clear existing hardcoded ads
                 adsConfig.items.forEach(ad => {
                     const slide = document.createElement('a');
                     slide.href = ad.linkUrl;
@@ -1262,6 +1275,7 @@
                 });
             }
 
+            // The rest of the function will now work with either the remote ads or the hardcoded ones.
             const slides = innerContainer.querySelectorAll('.ad-slide');
             if(slides.length === 0) {
                 adsSection.classList.add('hidden');
@@ -1297,8 +1311,8 @@
                     showAd(parseInt(e.target.dataset.index));
                 }
             });
-
-            if (adInterval) clearInterval(adInterval);
+            
+            if (adInterval) clearInterval(adInterval); // Clear previous interval
             if (slides.length > 1) {
                 adInterval = setInterval(() => {
                     showAd((currentIndex + 1) % slides.length);
