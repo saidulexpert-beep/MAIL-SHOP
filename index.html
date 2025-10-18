@@ -27,7 +27,6 @@
             user-select: text; /* Standard syntax */
             -webkit-touch-callout: default;
         }
-        /* প্রোফাইল ছবি চেপে ধরলে লিংক আসা বন্ধ করার জন্য কোড */
         #header-profile-pic, #profile-pic, #header-initials-avatar, #profile-initials-avatar {
             pointer-events: none;
         }
@@ -114,7 +113,6 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Banner & Marquee */
         .banner-wrapper { position: relative; width: 100%; padding-top: 56.25%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
         .banner-inner { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1); }
         .slide { min-width: 100%; position: relative; }
@@ -140,7 +138,6 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* UPDATED Premium Loader Styles */
         #loader { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; transition: opacity 0.5s ease; }
         #loader .logo-container { animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards, breath 2.5s ease-in-out infinite 1s; }
         #loader .loader-text { animation: fadeInText 1s ease-in-out 0.5s forwards; opacity: 0; font-weight: bold; font-size: 1.5rem; }
@@ -149,15 +146,12 @@
         @keyframes fadeInText { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes breath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-        /* Tutorial Page */
         .video-container-16-9 { position: relative; padding-top: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background-color: #e0e0e0; }
         .video-container-16-9 iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* Review Card */
         .review-card-new { background-color: #f9f9f9; border: 1px solid #eee; }
         .star-rating i { color: #facc15; }
 
-        /* PIN Modal */
         .pin-input {
             width: 40px; height: 50px; text-align: center; font-size: 1.5rem;
             border: 2px solid #ddd; border-radius: 8px; margin: 0 5px;
@@ -170,7 +164,6 @@
             outline: none;
         }
 
-        /* UPDATED Spinner for Loading */
         .premium-loader-spinner {
             width: 56px;
             height: 56px;
@@ -189,7 +182,6 @@
             to { transform: rotate(1turn); }
         }
 
-        /* New Modal Close Button Style */
         .modal-close-btn {
             position: absolute;
             top: 12px;
@@ -205,7 +197,6 @@
             background-color: #d1d5db;
         }
 
-        /* NEW: Premium Title Style */
         .premium-title {
             background: linear-gradient(to right, #6366f1, #a855f7, #ec4899);
             -webkit-background-clip: text;
@@ -213,7 +204,6 @@
             padding: 0 4px;
         }
         
-        /* NEW: Premium Status Styles */
         .premium-status-badge {
             font-weight: bold;
             padding: 4px 12px;
@@ -232,7 +222,6 @@
             border: 1px solid #d1d5db;
         }
 
-        /* NEW: Notification Badge */
         .notification-badge {
             position: absolute;
             top: -5px;
@@ -250,7 +239,6 @@
             border: 2px solid white;
         }
 
-        /* --- NEW: Slide-Out Menu Styles --- */
         #menu-overlay {
             position: fixed;
             inset: 0;
@@ -316,7 +304,6 @@
             height: 32px;
         }
         
-        /* উন্নত প্রিমিয়াম বাটন স্টাইল */
         .btn-premium-buy {
             background: linear-gradient(to right, #8b5cf6, #d946ef);
             color: white;
@@ -341,7 +328,6 @@
             padding: 2px 8px;
             border-radius: 8px;
         }
-
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -363,14 +349,12 @@
             <p class="text-sm text-gray-500 mt-1">যেকোনো প্রয়োজনে যোগাযোগ করুন</p>
         </div>
         <nav id="menu-options" class="flex-grow overflow-y-auto">
-             <!-- মেনু অপশনগুলো এখানে JavaScript দ্বারা লোড হবে -->
         </nav>
         <div class="p-4 text-center text-xs text-gray-400 border-t">
             MAIL STORE &copy; 2025
         </div>
     </aside>
     <div id="app-container" class="min-h-screen flex-col main-page">
-        <!-- =========== HEADER (UPDATED) =========== -->
         <header class="header flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="relative">
@@ -393,8 +377,6 @@
                 </button>
             </div>
         </header>
-        <!-- =========== END OF HEADER =========== -->
-
 
         <main class="flex-grow pb-20">
             <div id="home-page" class="space-y-6 sub-page">
@@ -418,14 +400,12 @@
                         </div>
                     </div>
 
-                    <!-- =========== UPDATED PROMOTIONS/ADS SECTION =========== -->
-                    <div id="ads-section" class="space-y-3" style="display: none;"> <!-- বিজ্ঞাপন ডিফল্টভাবে লুকানো থাকবে -->
+                    <div id="ads-section" class="space-y-3" style="display: none;">
                         <h2 class="text-xl font-bold px-2 premium-title">✨ Promotions</h2>
                         <div>
                             <script src='//libtl.com/sdk.js' data-zone='10056357' data-sdk='show_10056357'></script>
                         </div>
                     </div>
-                    <!-- =========== END OF PROMOTIONS/ADS SECTION =========== -->
                 </div>
             </div>
 
@@ -510,7 +490,6 @@
                     <h3 id="profile-name" class="text-2xl font-bold text-gray-800">Loading...</h3>
                     <p id="profile-username" class="text-gray-500">@username</p>
                     <p id="profile-id" class="text-sm text-gray-600 mt-2">ID: 123456</p>
-                     <!-- প্রিমিয়াম স্ট্যাটাসের স্থান পরিবর্তন -->
                     <div id="premium-status-container" class="mt-3"></div>
                 </div>
 
@@ -519,7 +498,11 @@
                         <span>⚡ More Features</span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
-                    <!-- =========== SUPPORT BUTTON (UPDATED) =========== -->
+                    <!-- NEW: More Function Button -->
+                    <button id="more-function-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
+                        <span>⚙️ More Function</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </button>
                     <button id="go-to-support-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
                         <span class="flex items-center gap-3">
                             <i data-lucide="headphones" class="w-6 h-6 text-gray-600"></i>
@@ -527,7 +510,6 @@
                         </span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
-                    <!-- =========== END OF SUPPORT BUTTON =========== -->
                 </div>
 
 
@@ -537,6 +519,12 @@
             </div>
 
             <div id="features-page" class="p-4 space-y-8 sub-page">
+                <div class="relative flex items-center justify-center mb-4">
+                     <button onclick="navigateTo('profile-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
+                    </button>
+                    <h2 class="text-xl font-bold text-center text-gray-800">More Features</h2>
+                </div>
                 <div class="grid grid-cols-2 gap-4 text-center">
                     <div class="card-bg p-4 rounded-xl">
                         <p class="text-sm text-gray-400 mb-1">TOTAL RECHARGE</p>
@@ -571,6 +559,46 @@
                     <div id="transfer-history-list" class="space-y-3"></div>
                 </div>
             </div>
+            
+            <!-- NEW: More Function Page -->
+            <div id="more-function-page" class="p-4 space-y-4 sub-page">
+                 <div class="relative flex items-center justify-center mb-4">
+                    <button onclick="navigateTo('profile-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
+                    </button>
+                    <h2 class="text-xl font-bold text-center text-gray-800">More Function</h2>
+                </div>
+                <button id="function-buy-premium-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold btn-premium-buy">
+                    <span class="flex items-center gap-3"><i data-lucide="gem" class="w-6 h-6"></i><span>Buy Premium</span></span>
+                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+                <button id="function-redeem-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
+                    <span class="flex items-center gap-3"><i data-lucide="gift" class="w-6 h-6 text-green-500"></i><span>Redeem Code</span></span>
+                    <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                </button>
+            </div>
+            
+            <!-- NEW: Redeem Page -->
+            <div id="redeem-page" class="p-4 space-y-6 sub-page">
+                <div class="relative flex items-center justify-center mb-4">
+                    <button onclick="navigateTo('more-function-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
+                    </button>
+                    <h2 class="text-xl font-bold text-center text-gray-800">Redeem Code</h2>
+                </div>
+                <div class="card-bg p-5 rounded-xl space-y-5">
+                    <div>
+                        <h3 class="font-semibold text-lg flex items-center gap-2 mb-4"><i data-lucide="key-round" class="w-6 h-6 text-[#007bff]"></i><span>আপনার কোডটি দিন</span></h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="redeem-code-input" class="block text-sm font-medium text-gray-600 mb-2">রিডিম কোড</label>
+                                <input id="redeem-code-input" type="text" placeholder="Enter your redeem code" class="w-full p-3 rounded-lg input-field">
+                            </div>
+                            <button id="submit-redeem-btn" class="w-full p-3 rounded-lg btn-gradient">Submit Code</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div id="admin-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center text-gray-800">Admin Panel</h2>
@@ -578,8 +606,22 @@
                     <h3 class="font-semibold text-lg text-gray-800">Add New Mails</h3>
                     <p class="text-sm text-gray-600">ফরম্যাট: <code class="bg-gray-100 p-1 rounded text-gray-700">email/password/refresh_token/client_id</code></p>
                     <div><label for="mail-type-select" class="block text-sm font-medium text-gray-600 mb-1">Mail Type</label><select id="mail-type-select" class="w-full p-3 rounded-lg input-field"></select></div>
-                    <div><label for="mail-data-textarea" class="block text-sm font-medium text-gray-600 mb-1">Mail Data (one per line)</label><textarea id="mail-data-textarea" rows="10" placeholder="mail@example.com/password/refresh_token/client_id" class="w-full p-3 rounded-lg input-field font-mono text-xs"></textarea></div>
+                    <div><label for="mail-data-textarea" class="block text-sm font-medium text-gray-600 mb-1">Mail Data (one per line)</label><textarea id="mail-data-textarea" rows="5" placeholder="mail@example.com/password/refresh_token/client_id" class="w-full p-3 rounded-lg input-field font-mono text-xs"></textarea></div>
                     <button id="add-mails-btn" class="w-full p-3 rounded-lg btn-gradient">Add Mails to Stock</button>
+                </div>
+                <!-- NEW: Admin controls for balance and redeem codes -->
+                <div class="card-bg p-5 rounded-xl space-y-4">
+                    <h3 class="font-semibold text-lg text-gray-800">Add Balance to User</h3>
+                    <div><label for="admin-add-balance-userid" class="block text-sm font-medium text-gray-600 mb-1">User Telegram ID</label><input id="admin-add-balance-userid" type="text" placeholder="User's Telegram ID" class="w-full p-3 rounded-lg input-field"></div>
+                    <div><label for="admin-add-balance-amount" class="block text-sm font-medium text-gray-600 mb-1">Amount (BDT)</label><input id="admin-add-balance-amount" type="number" placeholder="e.g., 100" class="w-full p-3 rounded-lg input-field"></div>
+                    <button id="admin-add-balance-btn" class="w-full p-3 rounded-lg btn-gradient">Add Balance</button>
+                </div>
+                 <div class="card-bg p-5 rounded-xl space-y-4">
+                    <h3 class="font-semibold text-lg text-gray-800">Create Redeem Code</h3>
+                    <div><label for="admin-redeem-code" class="block text-sm font-medium text-gray-600 mb-1">Redeem Code (leave blank to generate)</label><input id="admin-redeem-code" type="text" placeholder="e.g., NEWYEAR25" class="w-full p-3 rounded-lg input-field"></div>
+                    <div><label for="admin-redeem-type" class="block text-sm font-medium text-gray-600 mb-1">Reward Type</label><select id="admin-redeem-type" class="w-full p-3 rounded-lg input-field"><option value="balance">Balance</option><option value="premium">Premium</option></select></div>
+                    <div><label for="admin-redeem-value" class="block text-sm font-medium text-gray-600 mb-1">Value (Amount for balance / Days for premium)</label><input id="admin-redeem-value" type="number" placeholder="e.g., 50 or 30" class="w-full p-3 rounded-lg input-field"></div>
+                    <button id="create-redeem-code-btn" class="w-full p-3 rounded-lg btn-gradient">Create Code</button>
                 </div>
             </div>
 
@@ -663,7 +705,6 @@
 
         </main>
 
-        <!-- =========== UPDATED BOTTOM NAVIGATION FOR SECURITY =========== -->
         <nav class="bottom-nav">
             <button class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></button>
             <button class="nav-link-premium" data-page="tutorial-page"><i data-lucide="video" class="icon"></i><span>Tutorial</span></button>
@@ -672,7 +713,6 @@
             <button class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></button>
             <button id="admin-nav-link" class="nav-link-premium hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></button>
         </nav>
-        <!-- =========== END OF UPDATED NAVIGATION =========== -->
     </div>
 
     <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
@@ -767,7 +807,6 @@
         </div>
     </div>
 
-    <!-- UPDATED: Purchase Success Modal -->
     <div id="purchase-success-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 relative">
             <button id="close-purchase-success-modal" class="modal-close-btn">
@@ -815,7 +854,7 @@
         let userData = null;
         let appConfig = {};
         let insufficientBalanceInterval = null;
-        let premiumCountdownInterval = null; // কাউন্টডাউন টাইমার এর জন্য ভেরিয়েবল
+        let premiumCountdownInterval = null;
 
         const loader = document.getElementById('loader');
 
@@ -901,7 +940,6 @@
                     await setDoc(userRef, userData);
                 }
                 
-                // প্রিমিয়াম স্ট্যাটাস চেক এবং আপডেট
                 if (userData.isPremium && userData.premiumExpiresAt && userData.premiumExpiresAt.toDate() < new Date()) {
                     userData.isPremium = false;
                     userData.premiumExpiresAt = null;
@@ -923,7 +961,7 @@
 
                 loadSupportMenu();
                 updateUI();
-                listenForNotifications();
+                listenForNotifications(); // Changed to user-specific
                 showMainPage('app-container');
                 navigateTo('home-page');
 
@@ -984,7 +1022,6 @@
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
             
-            // উন্নত বিজ্ঞাপন সেকশন নিয়ন্ত্রণ
             const adsSection = document.getElementById('ads-section');
             const adFreePages = ['mail-page', 'pay-page'];
             if (userData.isPremium || adFreePages.includes(pageId)) {
@@ -1014,8 +1051,6 @@
         }
         window.navigateTo = navigateTo;
         
-        //বাকি কোড আগের মতোই থাকবে...
-
         async function loadProfilePage() {
             const profilePic = document.getElementById('profile-pic');
             const avatarDiv = document.getElementById('profile-initials-avatar');
@@ -1037,7 +1072,6 @@
                 document.getElementById('profile-id').textContent = `Telegram ID: ${currentUserTg.id}`;
             }
 
-            // প্রিমিয়াম স্ট্যাটাস UI আপডেট
             if (userData.isPremium) {
                 const expiryDate = userData.premiumExpiresAt.toDate().toLocaleDateString('en-GB');
                 premiumStatusContainer.innerHTML = `<div class="premium-status-badge gold">Premium User</div><p class="text-xs text-gray-500 mt-1">Expires: ${expiryDate}</p>`;
@@ -1051,7 +1085,6 @@
             menuContainer.innerHTML = getLoadingHTML();
             let menuHtml = '';
 
-            // প্রিমিয়াম বাটন এবং কাউন্টডাউন
             if (userData.isPremium) {
                 menuHtml += `<button id="premium-status-btn" class="menu-action-btn" disabled>
                                 <i data-lucide="shield-check" class="icon text-yellow-500"></i>
@@ -1060,7 +1093,7 @@
                              </button>`;
                 startPremiumCountdown(userData.premiumExpiresAt.toDate());
             } else {
-                 if (premiumCountdownInterval) clearInterval(premiumCountdownInterval); // আগের টাইমার বন্ধ করুন
+                 if (premiumCountdownInterval) clearInterval(premiumCountdownInterval);
                 menuHtml += `<button id="buy-premium-btn" class="menu-action-btn btn-premium-buy">
                                 <i data-lucide="gem" class="icon"></i>
                                 <span>Buy Premium (৳10)</span>
@@ -1091,7 +1124,6 @@
         
         function startPremiumCountdown(expiryDate) {
             if (premiumCountdownInterval) clearInterval(premiumCountdownInterval);
-
             const countdownElement = document.getElementById('premium-countdown');
             if(!countdownElement) return;
 
@@ -1102,7 +1134,7 @@
                 if (distance < 0) {
                     clearInterval(premiumCountdownInterval);
                     countdownElement.innerHTML = "Expired";
-                    initUserSession(); // মেয়াদ শেষ হলে সেশন রিলোড করুন
+                    initUserSession();
                     return;
                 }
 
@@ -1112,7 +1144,6 @@
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
                 
                 countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
             }, 1000);
         }
 
@@ -1124,8 +1155,8 @@
             if (confirm(`আপনি কি ৳${premiumCost.toFixed(2)} দিয়ে ২০ দিনের জন্য প্রিমিয়াম সাবস্ক্রিপশন কিনতে চান? এটি কিনলে আপনি বিজ্ঞাপনমুক্ত অভিজ্ঞতা পাবেন।`)) {
                 loader.style.display = 'flex';
                 try {
-                    const userRef = doc(db, "users", userData.tgChatId);
                     await runTransaction(db, async (transaction) => {
+                        const userRef = doc(db, "users", userData.tgChatId);
                         const userDoc = await transaction.get(userRef);
                         if (!userDoc.exists() || userDoc.data().balance < premiumCost) {
                             throw new Error("অপর্যাপ্ত ব্যালেন্স।");
@@ -1149,7 +1180,6 @@
                             expiresAt: Timestamp.fromDate(newExpiryDate)
                         });
                         
-                        // লোকাল ডেটা আপডেট করুন
                         userData.balance = newBalance;
                         userData.isPremium = true;
                         userData.premiumExpiresAt = Timestamp.fromDate(newExpiryDate);
@@ -1159,11 +1189,10 @@
                     updateUI();
                     loadProfilePage();
                     loadSupportMenu();
-                    toggleMenu();
-                    navigateTo(document.querySelector('.sub-page.active').id); // বর্তমান পেজ রিলোড করুন
+                    if (document.getElementById('slide-out-menu').classList.contains('open')) toggleMenu();
+                    navigateTo(document.querySelector('.sub-page.active').id);
                 } catch (error) {
                     showAlert(`প্রিমিয়াম কিনতে সমস্যা হয়েছে: ${error.message}`);
-                    console.error("Premium purchase failed:", error);
                 } finally {
                     loader.style.display = 'none';
                 }
@@ -1171,13 +1200,8 @@
         }
 
         function conditionallyLoadGlobalAds() {
-            // আগের বিজ্ঞাপন স্ক্রিপ্টগুলো মুছে ফেলা হয়েছে কিনা তা নিশ্চিত করুন
             document.querySelectorAll('script[src*="groleegni.net"], script[src*="forfrogadiertor.com"], script[src*="gizokraijaw.net"]').forEach(s => s.remove());
-
-            if (userData && userData.isPremium) {
-                console.log("Premium user. Ads will not be loaded.");
-                return;
-            }
+            if (userData && userData.isPremium) return;
 
             const adScripts = [
                 { dataset: { zone: '10056419' }, src: 'https://groleegni.net/vignette.min.js' },
@@ -1187,9 +1211,7 @@
 
             adScripts.forEach(ad => {
                 const script = document.createElement('script');
-                Object.keys(ad.dataset).forEach(key => {
-                    script.dataset[key] = ad.dataset[key];
-                });
+                Object.keys(ad.dataset).forEach(key => script.dataset[key] = ad.dataset[key]);
                 script.src = ad.src;
                 document.body.appendChild(script);
             });
@@ -1218,6 +1240,14 @@
             document.getElementById('menu-overlay').addEventListener('click', toggleMenu);
             document.getElementById('go-to-support-btn').addEventListener('click', toggleMenu);
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
+            // NEW Listeners
+            document.getElementById('more-function-btn').addEventListener('click', () => navigateTo('more-function-page'));
+            document.getElementById('function-buy-premium-btn').addEventListener('click', handleBuyPremium);
+            document.getElementById('function-redeem-btn').addEventListener('click', () => navigateTo('redeem-page'));
+            document.getElementById('submit-redeem-btn').addEventListener('click', handleRedeemCode);
+            document.getElementById('admin-add-balance-btn').addEventListener('click', handleAdminAddBalance);
+            document.getElementById('create-redeem-code-btn').addEventListener('click', handleCreateRedeemCode);
+
             document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('features-recharge-btn').addEventListener('click', () => navigateTo('recharge-page'));
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
@@ -1228,36 +1258,28 @@
             document.getElementById('enter-pin-btn').addEventListener('click', handleEnterPin);
             document.getElementById('cancel-pin-set-btn').addEventListener('click', () => document.getElementById('pin-set-modal').classList.add('hidden'));
             document.getElementById('cancel-pin-enter-btn').addEventListener('click', () => document.getElementById('pin-enter-modal').classList.add('hidden'));
-            document.getElementById('mail-details-ok-btn').addEventListener('click', () => {
-                document.getElementById('mail-details-modal').classList.add('hidden');
-            });
-            document.getElementById('close-insufficient-balance-modal').addEventListener('click', () => {
-                document.getElementById('insufficient-balance-modal').classList.add('hidden');
-            });
+            document.getElementById('mail-details-ok-btn').addEventListener('click', () => document.getElementById('mail-details-modal').classList.add('hidden'));
+            document.getElementById('close-insufficient-balance-modal').addEventListener('click', () => document.getElementById('insufficient-balance-modal').classList.add('hidden'));
             document.getElementById('insufficient-balance-deposit-btn').addEventListener('click', () => {
                 document.getElementById('insufficient-balance-modal').classList.add('hidden');
                 navigateTo('pay-page');
             });
-            document.getElementById('alert-ok-btn').addEventListener('click', () => {
-                 document.getElementById('custom-alert').classList.add('hidden');
-            });
+            document.getElementById('alert-ok-btn').addEventListener('click', () => document.getElementById('custom-alert').classList.add('hidden'));
             
             const hidePurchaseSuccessModal = () => document.getElementById('purchase-success-modal').classList.add('hidden');
             document.getElementById('purchase-success-buy-again-btn').addEventListener('click', hidePurchaseSuccessModal);
             document.getElementById('close-purchase-success-modal').addEventListener('click', hidePurchaseSuccessModal);
 
-            window.addEventListener('contextmenu', function (e) {
-                if (e.target.closest('input, textarea, #mail-details-content, #mail-purchase-history .font-mono')) {
-                    return;
-                }
+            window.addEventListener('contextmenu', e => {
+                if (e.target.closest('input, textarea, #mail-details-content, #mail-purchase-history .font-mono')) return;
                 e.preventDefault();
             });
         }
-
-        // বাকি সব ফাংশন আগের মতোই অপরিবর্তিত থাকবে...
-        // listenForNotifications, showNotifications, hideNotifications, handleDepositRequest, loadPaymentHistory, etc.
+        
+        // UPDATED: Notification listener is now user-specific
         function listenForNotifications() {
-            const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
+            if (!userData) return;
+            const q = query(collection(db, "users", userData.tgChatId, "notifications"), orderBy("createdAt", "desc"));
             onSnapshot(q, (snapshot) => {
                 let unreadCount = 0;
                 const lastSeen = userData.lastSeenNotification ? userData.lastSeenNotification.toMillis() : 0;
@@ -1278,13 +1300,14 @@
             });
         }
 
+        // UPDATED: shows user-specific notifications
         async function showNotifications() {
             const modal = document.getElementById('notification-modal');
             const listEl = document.getElementById('notification-list');
             listEl.innerHTML = getLoadingHTML();
             modal.classList.remove('hidden');
 
-            const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"), limit(10));
+            const q = query(collection(db, "users", userData.tgChatId, "notifications"), orderBy("createdAt", "desc"), limit(10));
             const snapshot = await getDocs(q);
 
             if (snapshot.empty) {
@@ -1301,7 +1324,8 @@
                 }).join('');
             }
         }
-
+        
+        // UNCHANGED
         async function hideNotifications() {
             document.getElementById('notification-modal').classList.add('hidden');
             const userRef = doc(db, "users", userData.tgChatId);
@@ -2035,6 +2059,147 @@
                 }
             }
         }
+        
+        // NEW Functions for Admin and Redeem
+        async function handleAdminAddBalance() {
+            const userId = document.getElementById('admin-add-balance-userid').value.trim();
+            const amountStr = document.getElementById('admin-add-balance-amount').value;
+            if (!userId || !amountStr) return showAlert("User ID and amount are required.");
+            
+            const amount = parseFloat(amountStr);
+            if (isNaN(amount) || amount <= 0) return showAlert("Invalid amount.");
+            
+            loader.style.display = 'flex';
+            const userRef = doc(db, "users", userId);
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const userDoc = await transaction.get(userRef);
+                    if (!userDoc.exists()) throw new Error("User not found.");
+                    
+                    const newBalance = (userDoc.data().balance || 0) + amount;
+                    transaction.update(userRef, { balance: newBalance });
+
+                    const notificationRef = doc(collection(db, "users", userId, "notifications"));
+                    transaction.set(notificationRef, {
+                        title: "Balance Added by Admin",
+                        message: `Admin has added ৳${amount.toFixed(2)} to your account.`,
+                        createdAt: serverTimestamp()
+                    });
+                });
+                showAlert(`Successfully added ৳${amount.toFixed(2)} to user ${userId}.`);
+                document.getElementById('admin-add-balance-userid').value = '';
+                document.getElementById('admin-add-balance-amount').value = '';
+            } catch (error) {
+                showAlert(`Failed to add balance: ${error.message}`);
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        async function handleCreateRedeemCode() {
+            let code = document.getElementById('admin-redeem-code').value.trim().toUpperCase();
+            const type = document.getElementById('admin-redeem-type').value;
+            const valueStr = document.getElementById('admin-redeem-value').value;
+            
+            if (!valueStr) return showAlert("Value is required.");
+            const value = parseFloat(valueStr);
+            if (isNaN(value) || value <= 0) return showAlert("Invalid value.");
+
+            if (!code) {
+                code = 'CODE' + Math.random().toString(36).substring(2, 10).toUpperCase();
+            }
+
+            loader.style.display = 'flex';
+            const codeRef = doc(db, "redeem_codes", code);
+            try {
+                const codeSnap = await getDoc(codeRef);
+                if (codeSnap.exists()) {
+                    throw new Error("This code already exists. Please use a unique code.");
+                }
+                await setDoc(codeRef, {
+                    code: code,
+                    type: type, // 'balance' or 'premium'
+                    value: value, // amount or number of days
+                    status: 'active', // 'active', 'used', 'expired'
+                    createdAt: serverTimestamp(),
+                    redeemedBy: null,
+                    redeemedAt: null
+                });
+                showAlert(`Successfully created redeem code: ${code}`);
+                document.getElementById('admin-redeem-code').value = '';
+                document.getElementById('admin-redeem-value').value = '';
+            } catch(error) {
+                showAlert(`Failed to create code: ${error.message}`);
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+        
+        async function handleRedeemCode() {
+            const code = document.getElementById('redeem-code-input').value.trim().toUpperCase();
+            if (!code) return showAlert("Please enter a redeem code.");
+
+            loader.style.display = 'flex';
+            const codeRef = doc(db, "redeem_codes", code);
+            const userRef = doc(db, "users", userData.tgChatId);
+
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const [codeDoc, userDoc] = await Promise.all([
+                        transaction.get(codeRef),
+                        transaction.get(userRef)
+                    ]);
+
+                    if (!codeDoc.exists()) throw new Error("Invalid redeem code.");
+                    const codeData = codeDoc.data();
+                    
+                    if (codeData.status !== 'active') throw new Error("This code has already been used or is expired.");
+                    if (!userDoc.exists()) throw new Error("User data not found.");
+
+                    let successMessage = "";
+
+                    if (codeData.type === 'balance') {
+                        const newBalance = (userDoc.data().balance || 0) + codeData.value;
+                        transaction.update(userRef, { balance: newBalance });
+                        userData.balance = newBalance; // Update local data
+                        successMessage = `Congratulations! ৳${codeData.value.toFixed(2)} has been added to your balance.`;
+                    } else if (codeData.type === 'premium') {
+                        const currentExpiry = (userDoc.data().isPremium && userDoc.data().premiumExpiresAt) ? userDoc.data().premiumExpiresAt.toDate() : new Date();
+                        if (currentExpiry < new Date()) { // If expired or not premium, start from now
+                           currentExpiry.setTime(new Date().getTime());
+                        }
+                        const newExpiryDate = new Date(currentExpiry.getTime() + codeData.value * 24 * 60 * 60 * 1000);
+
+                        transaction.update(userRef, {
+                            isPremium: true,
+                            premiumExpiresAt: Timestamp.fromDate(newExpiryDate)
+                        });
+                        // Update local data
+                        userData.isPremium = true;
+                        userData.premiumExpiresAt = Timestamp.fromDate(newExpiryDate);
+                        successMessage = `Congratulations! You have received ${codeData.value} days of premium subscription.`;
+                    }
+
+                    transaction.update(codeRef, {
+                        status: 'used',
+                        redeemedBy: userData.tgChatId,
+                        redeemedAt: serverTimestamp()
+                    });
+                    
+                    showAlert(successMessage);
+                });
+
+                updateUI();
+                loadProfilePage();
+                document.getElementById('redeem-code-input').value = '';
+                navigateTo('profile-page');
+            } catch (error) {
+                showAlert(`Failed to redeem code: ${error.message}`);
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
     </script>
 </body>
 </html>
