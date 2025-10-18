@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAIL STORE</title>
+    <meta name="monetag" content="a41ceca9ffc67edad031c0024f85ef59">
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,18 +16,20 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8f8f8;
             color: #333333;
-            /* ব্যবহারকারী যেন টেক্সট সিলেক্ট করতে না পারে তার জন্য কোড */
             -webkit-user-select: none; /* Safari */
             -ms-user-select: none; /* IE 10+ */
             user-select: none; /* Standard syntax */
             -webkit-touch-callout: none; /* iOS Safari */
         }
-        /* ইনপুট এবং নির্দিষ্ট কিছু জায়গায় সিলেকশন চালু রাখার জন্য কোড */
-        input, textarea, #mail-details-content, #mail-purchase-history .font-mono {
+        input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #profile-id-btn {
             -webkit-user-select: text; /* Safari */
             -ms-user-select: text; /* IE 10+ */
             user-select: text; /* Standard syntax */
             -webkit-touch-callout: default;
+        }
+        /* প্রোফাইল ছবি চেপে ধরলে লিংক আসা বন্ধ করার জন্য কোড */
+        #header-profile-pic, #profile-pic, #header-initials-avatar, #profile-initials-avatar {
+            pointer-events: none;
         }
         .card-bg {
             background-color: #ffffff;
@@ -137,11 +140,6 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* Ads Carousel */
-        #ads-container { height: 120px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
-        .ad-slide { min-width: 100%; background-size: cover; background-position: center; }
-        #ads-dots .dot { height: 6px; width: 6px; }
-
         /* UPDATED Premium Loader Styles */
         #loader { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; transition: opacity 0.5s ease; }
         #loader .logo-container { animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards, breath 2.5s ease-in-out infinite 1s; }
@@ -214,6 +212,25 @@
             -webkit-text-fill-color: transparent;
             padding: 0 4px;
         }
+        
+        /* NEW: Premium Status Styles */
+        .premium-status-badge {
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+        .premium-status-badge.gold {
+            background: linear-gradient(to right, #fde047, #facc15, #eab308);
+            color: #713f12;
+            border: 1px solid #ca8a04;
+        }
+        .premium-status-badge.gray {
+            background-color: #e5e7eb;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
 
         /* NEW: Notification Badge */
         .notification-badge {
@@ -271,7 +288,7 @@
             border-bottom: 1px solid #e5e7eb;
             text-align: center;
         }
-        .support-link-card {
+        .support-link-card, .menu-action-btn {
             display: flex;
             align-items: center;
             gap: 16px;
@@ -282,15 +299,41 @@
             font-weight: 600;
             font-size: 1rem;
             transition: all 0.2s ease-in-out;
+            background: none;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
         }
-        .support-link-card:hover {
+        .support-link-card:hover, .menu-action-btn:hover:not(:disabled) {
             background-color: #f9fafb;
             color: #007bff;
         }
-        .support-link-card img, .support-link-card .icon-placeholder {
+        .support-link-card img, .support-link-card .icon-placeholder, .menu-action-btn .icon {
             width: 32px;
             height: 32px;
         }
+        
+        /* উন্নত প্রিমিয়াম বাটন স্টাইল */
+        .btn-premium-buy {
+            background: linear-gradient(to right, #8b5cf6, #d946ef);
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+        .btn-premium-buy:hover {
+             box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+             background: linear-gradient(to right, #7c3aed, #c026d3);
+             color: white;
+        }
+        .menu-action-btn:disabled {
+            background-color: #f3f4f6;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -311,8 +354,9 @@
             <h2 class="text-xl font-bold text-accent-gradient">Support Center</h2>
             <p class="text-sm text-gray-500 mt-1">যেকোনো প্রয়োজনে যোগাযোগ করুন</p>
         </div>
-        <nav id="support-channels-list" class="flex-grow overflow-y-auto">
-            </nav>
+        <nav id="menu-options" class="flex-grow overflow-y-auto">
+             <!-- মেনু অপশনগুলো এখানে JavaScript দ্বারা লোড হবে -->
+        </nav>
         <div class="p-4 text-center text-xs text-gray-400 border-t">
             MAIL STORE &copy; 2025
         </div>
@@ -366,17 +410,14 @@
                         </div>
                     </div>
 
-                    <div id="ads-section">
-                        <h2 class="text-xl font-bold px-2 mb-3 premium-title">✨ Promotions</h2>
-                        <div id="ads-container" class="relative w-full overflow-hidden rounded-xl">
-                            <div id="ads-inner" class="flex transition-transform duration-500 ease-in-out">
-                                <a href="#" target="_blank" class="ad-slide block" style="background-image: url('https://i.postimg.cc/52HsFwvV/Black-and-Orange-Money-You-Tube-Thumbnail-20250917-224706-0000.png')"></a>
-                                <a href="#" target="_blank" class="ad-slide block" style="background-image: url('https://i.postimg.cc/W1syFD8p/Grey-Blue-Illustration-Refer-a-Friend-Instagram-Post-1080-x-720-px-20250917-223749-0000.png')"></a>
-                            </div>
-                            <div id="ads-dots" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-2">
-                            </div>
+                    <!-- =========== UPDATED PROMOTIONS/ADS SECTION =========== -->
+                    <div id="ads-section" class="space-y-3" style="display: none;"> <!-- বিজ্ঞাপন ডিফল্টভাবে লুকানো থাকবে -->
+                        <h2 class="text-xl font-bold px-2 premium-title">✨ Promotions</h2>
+                        <div>
+                            <script src='//libtl.com/sdk.js' data-zone='10056357' data-sdk='show_10056357'></script>
                         </div>
                     </div>
+                    <!-- =========== END OF PROMOTIONS/ADS SECTION =========== -->
                 </div>
             </div>
 
@@ -459,8 +500,8 @@
                         <div id="profile-initials-avatar" class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center border-2 border-[#007bff]"><span id="profile-initials" class="text-3xl font-bold text-gray-500"></span></div>
                     </div>
                     <h3 id="profile-name" class="text-2xl font-bold text-gray-800">Loading...</h3>
-                    <p id="profile-username" class="text-gray-500">@username</p>
-                    <p id="profile-id" class="text-sm text-gray-600 mt-2">ID: 123456</p>
+                    <button id="profile-id-btn" class="text-sm text-gray-500 mt-2 bg-gray-100 px-3 py-1 rounded-full hover:bg-gray-200 transition-colors">ID: 123456</button>
+                    <div id="premium-status-container" class="mt-3"></div>
                 </div>
 
                 <div class="space-y-3">
@@ -468,7 +509,6 @@
                         <span>⚡ More Features</span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
-                    <!-- =========== SUPPORT BUTTON (UPDATED) =========== -->
                     <button id="go-to-support-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
                         <span class="flex items-center gap-3">
                             <i data-lucide="headphones" class="w-6 h-6 text-gray-600"></i>
@@ -476,7 +516,6 @@
                         </span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
-                    <!-- =========== END OF SUPPORT BUTTON =========== -->
                 </div>
 
 
@@ -612,14 +651,16 @@
 
         </main>
 
+        <!-- =========== UPDATED BOTTOM NAVIGATION FOR SECURITY =========== -->
         <nav class="bottom-nav">
-            <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
-            <a href="#" class="nav-link-premium" data-page="tutorial-page"><i data-lucide="video" class="icon"></i><span>Tutorial</span></a>
-            <a href="#" class="nav-link-premium center-home-link active" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
-            <a href="#" class="nav-link-premium" data-page="mail-page"><i data-lucide="mail" class="icon"></i><span>Mail</span></a>
-            <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
-            <a href="#" id="admin-nav-link" class="nav-link-premium hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></a>
+            <button class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></button>
+            <button class="nav-link-premium" data-page="tutorial-page"><i data-lucide="video" class="icon"></i><span>Tutorial</span></button>
+            <button class="nav-link-premium center-home-link active" data-page="home-page"><i data-lucide="home" class="icon"></i></button>
+            <button class="nav-link-premium" data-page="mail-page"><i data-lucide="mail" class="icon"></i><span>Mail</span></button>
+            <button class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></button>
+            <button id="admin-nav-link" class="nav-link-premium hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></button>
         </nav>
+        <!-- =========== END OF UPDATED NAVIGATION =========== -->
     </div>
 
     <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
@@ -822,43 +863,61 @@
             }
             const tgChatId = String(currentUserTg.id);
             const userRef = doc(db, "users", tgChatId);
-            const userSnap = await getDoc(userRef);
+            
+            try {
+                const userSnap = await getDoc(userRef);
 
-            if (userSnap.exists()) {
-                userData = userSnap.data();
-            } else {
-                const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
-                userData = {
-                    tgChatId: tgChatId,
-                    name: userName,
-                    username: currentUserTg.username || null,
-                    balance: 0,
-                    createdAt: serverTimestamp(),
-                    isBlocked: false,
-                    pin: null,
-                    pinFailAttempts: [],
-                    featuresLockedUntil: null,
-                    lastSeenNotification: null
-                };
-                await setDoc(userRef, userData);
+                if (userSnap.exists()) {
+                    userData = userSnap.data();
+                } else {
+                    const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
+                    userData = {
+                        tgChatId: tgChatId,
+                        name: userName,
+                        username: currentUserTg.username || null,
+                        balance: 0,
+                        createdAt: serverTimestamp(),
+                        isBlocked: false,
+                        pin: null,
+                        pinFailAttempts: [],
+                        featuresLockedUntil: null,
+                        lastSeenNotification: null,
+                        isPremium: false,
+                        premiumExpiresAt: null
+                    };
+                    await setDoc(userRef, userData);
+                }
+                
+                if (userData.isPremium && userData.premiumExpiresAt && userData.premiumExpiresAt.toDate() < new Date()) {
+                    userData.isPremium = false;
+                    userData.premiumExpiresAt = null;
+                    await updateDoc(userRef, { isPremium: false, premiumExpiresAt: null });
+                    showAlert("আপনার প্রিমিয়াম সাবস্ক্রিপশনের মেয়াদ শেষ হয়ে গেছে।");
+                }
+
+                if (userData.isBlocked) {
+                    showAlert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
+                    return;
+                }
+
+                await fetchAppConfig();
+                conditionallyLoadGlobalAds();
+
+                if (tgChatId === ADMIN_UID) {
+                    document.getElementById('admin-nav-link').classList.remove('hidden');
+                }
+
+                loadSupportMenu();
+                updateUI();
+                listenForNotifications();
+                showMainPage('app-container');
+                navigateTo('home-page');
+
+            } catch (error) {
+                console.error("Error initializing user session:", error);
+                showAlert("Failed to initialize your session. Please try again.");
+                loader.style.display = 'none';
             }
-
-            if (userData.isBlocked) {
-                showAlert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
-                return;
-            }
-
-            await fetchAppConfig();
-
-            if (tgChatId === ADMIN_UID) {
-                document.getElementById('admin-nav-link').classList.remove('hidden');
-            }
-
-            loadSupportMenu();
-            updateUI();
-            listenForNotifications();
-            showMainPage('app-container');
-            navigateTo('home-page');
         }
 
         async function fetchAppConfig() {
@@ -867,15 +926,11 @@
             appConfig = configSnap.exists() ? configSnap.data() : { mails: [] };
         }
 
-        // =========== JAVASCRIPT FOR HEADER (UPDATED) ===========
         function updateHeaderUI() {
             if (!currentUserTg) return;
-
             const profilePic = document.getElementById('header-profile-pic');
             const avatarDiv = document.getElementById('header-initials-avatar');
             const welcomeName = document.getElementById('header-welcome-name');
-
-            // Update profile picture/initials
             if (currentUserTg.photo_url) {
                 profilePic.src = currentUserTg.photo_url;
                 profilePic.classList.remove('hidden');
@@ -886,8 +941,6 @@
                 profilePic.classList.add('hidden');
                 avatarDiv.classList.remove('hidden');
             }
-
-            // Update welcome name
             const firstName = currentUserTg.first_name || 'User';
             welcomeName.textContent = `Hi, ${firstName}!`;
         }
@@ -897,10 +950,8 @@
             const balance = (userData.balance || 0).toFixed(2);
             document.getElementById('balance-display').textContent = `৳${balance}`;
             document.getElementById('header-balance-display').textContent = `৳${balance}`;
-            updateHeaderUI(); // Call the new header update function
+            updateHeaderUI();
         }
-        // =========== END OF JAVASCRIPT FOR HEADER ===========
-
 
         function showMainPage(pageId) {
             document.querySelectorAll('.main-page').forEach(p => p.classList.remove('active'));
@@ -918,9 +969,16 @@
             document.querySelectorAll('.nav-link-premium[data-page]').forEach(link => {
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
+            
+            const adsSection = document.getElementById('ads-section');
+            const adFreePages = ['mail-page', 'pay-page'];
+            if (userData.isPremium || adFreePages.includes(pageId)) {
+                adsSection.style.display = 'none';
+            } else {
+                adsSection.style.display = 'block';
+            }
 
             const pageLoadFunctions = {
-                'home-page': loadHomePageAds,
                 'pay-page': loadPaymentHistory,
                 'mail-page': loadMailStore,
                 'updates-page': () => { loadUpdates(); loadReviews(); },
@@ -940,7 +998,169 @@
             lucide.createIcons();
         }
         window.navigateTo = navigateTo;
+        
+        async function createPersonalNotification(title, message) {
+            try {
+                await addDoc(collection(db, "notifications"), {
+                    userId: userData.tgChatId,
+                    title: title,
+                    message: message,
+                    createdAt: serverTimestamp(),
+                });
+            } catch (e) {
+                console.error("Failed to create personal notification:", e);
+            }
+        }
+        
+        async function loadProfilePage() {
+            const profilePic = document.getElementById('profile-pic');
+            const avatarDiv = document.getElementById('profile-initials-avatar');
+            const premiumStatusContainer = document.getElementById('premium-status-container');
+            const profileIdBtn = document.getElementById('profile-id-btn');
 
+            if (currentUserTg) {
+                if (currentUserTg.photo_url) {
+                    profilePic.src = currentUserTg.photo_url;
+                    profilePic.classList.remove('hidden');
+                    avatarDiv.classList.add('hidden');
+                } else {
+                    const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
+                    document.getElementById('profile-initials').textContent = initials.toUpperCase();
+                    profilePic.classList.add('hidden');
+                    avatarDiv.classList.remove('hidden');
+                }
+                document.getElementById('profile-name').textContent = `${currentUserTg.first_name} ${currentUserTg.last_name || ''}`.trim();
+                profileIdBtn.textContent = `ID: ${currentUserTg.id}`;
+                profileIdBtn.onclick = () => copyToClipboard(String(currentUserTg.id), profileIdBtn, 'Telegram ID Copied!');
+            }
+
+            if (userData.isPremium) {
+                premiumStatusContainer.innerHTML = `<div class="premium-status-badge gold">Premium User</div>`;
+            } else {
+                premiumStatusContainer.innerHTML = `<div class="premium-status-badge gray">Not Premium</div>`;
+            }
+        }
+        
+        async function loadSupportMenu() {
+            const menuContainer = document.getElementById('menu-options');
+            menuContainer.innerHTML = getLoadingHTML();
+            let menuHtml = '';
+
+            if (userData.isPremium) {
+                const expiryDate = userData.premiumExpiresAt.toDate().toLocaleDateString('en-GB');
+                menuHtml += `<div class="menu-action-btn" style="cursor: default; background-color: #f9fafb;">
+                                <i data-lucide="shield-check" class="icon text-yellow-500"></i>
+                                <div>
+                                    <span class="font-bold">Premium Active</span>
+                                    <p class="text-xs text-gray-500 font-normal mt-1">Expires: ${expiryDate}</p>
+                                </div>
+                             </div>`;
+            } else {
+                menuHtml += `<button id="buy-premium-btn" class="menu-action-btn btn-premium-buy">
+                                <i data-lucide="gem" class="icon"></i>
+                                <span>Buy Premium (৳10)</span>
+                             </button>`;
+            }
+
+            try {
+                const q = query(collection(db, "support_channels"), orderBy("order", "asc"));
+                const snapshot = await getDocs(q);
+                if (!snapshot.empty) {
+                    menuHtml += snapshot.docs.map(doc => {
+                        const channel = doc.data();
+                        return `<a href="${channel.link}" target="_blank" class="support-link-card"><img src="${channel.iconUrl}" alt="${channel.name} logo"><span>${channel.name}</span></a>`;
+                    }).join('');
+                }
+                menuContainer.innerHTML = menuHtml;
+                lucide.createIcons();
+
+                if (!userData.isPremium) {
+                    document.getElementById('buy-premium-btn').addEventListener('click', handleBuyPremium);
+                }
+
+            } catch (e) {
+                menuContainer.innerHTML = '<p class="p-4 text-center text-red-600">Failed to load menu options.</p>';
+                console.error("Error loading support channels:", e);
+            }
+        }
+
+        async function handleBuyPremium() {
+            const premiumCost = 10;
+            if (userData.isPremium) return showAlert("আপনি ইতিমধ্যে একজন প্রিমিয়াম ব্যবহারকারী।");
+            if (userData.balance < premiumCost) return showAlert(`প্রিমিয়াম কেনার জন্য আপনার পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${premiumCost.toFixed(2)}।`);
+
+            if (confirm(`আপনি কি ৳${premiumCost.toFixed(2)} দিয়ে ২০ দিনের জন্য প্রিমিয়াম সাবস্ক্রিপশন কিনতে চান? এটি কিনলে আপনি বিজ্ঞাপনমুক্ত অভিজ্ঞতা পাবেন।`)) {
+                loader.style.display = 'flex';
+                try {
+                    const userRef = doc(db, "users", userData.tgChatId);
+                    await runTransaction(db, async (transaction) => {
+                        const userDoc = await transaction.get(userRef);
+                        if (!userDoc.exists() || userDoc.data().balance < premiumCost) {
+                            throw new Error("অপর্যাপ্ত ব্যালেন্স।");
+                        }
+                        
+                        const newExpiryDate = new Date();
+                        newExpiryDate.setDate(newExpiryDate.getDate() + 20);
+                        const newBalance = userDoc.data().balance - premiumCost;
+
+                        transaction.update(userRef, {
+                            balance: newBalance,
+                            isPremium: true,
+                            premiumExpiresAt: Timestamp.fromDate(newExpiryDate)
+                        });
+                        
+                        const purchaseLogRef = doc(collection(db, "premium_purchases"));
+                        transaction.set(purchaseLogRef, {
+                            userId: userData.tgChatId,
+                            cost: premiumCost,
+                            purchasedAt: serverTimestamp(),
+                            expiresAt: Timestamp.fromDate(newExpiryDate)
+                        });
+                        
+                        userData.balance = newBalance;
+                        userData.isPremium = true;
+                        userData.premiumExpiresAt = Timestamp.fromDate(newExpiryDate);
+                    });
+
+                    showAlert("অভিনন্দন! আপনি এখন একজন প্রিমিয়াম ব্যবহারকারী।");
+                    updateUI();
+                    loadProfilePage();
+                    loadSupportMenu();
+                    toggleMenu();
+                    navigateTo(document.querySelector('.sub-page.active').id);
+                } catch (error) {
+                    showAlert(`প্রিমিয়াম কিনতে সমস্যা হয়েছে: ${error.message}`);
+                    console.error("Premium purchase failed:", error);
+                } finally {
+                    loader.style.display = 'none';
+                }
+            }
+        }
+
+        function conditionallyLoadGlobalAds() {
+            document.querySelectorAll('script[src*="groleegni.net"], script[src*="forfrogadiertor.com"], script[src*="gizokraijaw.net"]').forEach(s => s.remove());
+
+            if (userData && userData.isPremium) {
+                console.log("Premium user. Ads will not be loaded.");
+                return;
+            }
+
+            const adScripts = [
+                { dataset: { zone: '10056419' }, src: 'https://groleegni.net/vignette.min.js' },
+                { dataset: { zone: '10056422' }, src: 'https://forfrogadiertor.com/tag.min.js' },
+                { dataset: { zone: '9793049' }, src: 'https://gizokraijaw.net/vignette.min.js' }
+            ];
+
+            adScripts.forEach(ad => {
+                const script = document.createElement('script');
+                Object.keys(ad.dataset).forEach(key => {
+                    script.dataset[key] = ad.dataset[key];
+                });
+                script.src = ad.src;
+                document.body.appendChild(script);
+            });
+        }
+        
         function toggleMenu() {
             const menu = document.getElementById('slide-out-menu');
             const overlay = document.getElementById('menu-overlay');
@@ -987,19 +1207,33 @@
             document.getElementById('alert-ok-btn').addEventListener('click', () => {
                  document.getElementById('custom-alert').classList.add('hidden');
             });
-            // MODIFIED: Event listeners for the new purchase success modal
+            
             const hidePurchaseSuccessModal = () => document.getElementById('purchase-success-modal').classList.add('hidden');
             document.getElementById('purchase-success-buy-again-btn').addEventListener('click', hidePurchaseSuccessModal);
             document.getElementById('close-purchase-success-modal').addEventListener('click', hidePurchaseSuccessModal);
-        }
 
+            window.addEventListener('contextmenu', function (e) {
+                if (e.target.closest('input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #profile-id-btn')) {
+                    return;
+                }
+                e.preventDefault();
+            });
+        }
+        
         function listenForNotifications() {
             const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
             onSnapshot(q, (snapshot) => {
                 let unreadCount = 0;
                 const lastSeen = userData.lastSeenNotification ? userData.lastSeenNotification.toMillis() : 0;
+                
                 snapshot.forEach(doc => {
                     const notification = doc.data();
+                    
+                    // Skip notifications for other users
+                    if (notification.userId && notification.userId !== userData.tgChatId) {
+                        return;
+                    }
+                    
                     if (notification.createdAt.toMillis() > lastSeen) {
                         unreadCount++;
                     }
@@ -1020,22 +1254,40 @@
             const listEl = document.getElementById('notification-list');
             listEl.innerHTML = getLoadingHTML();
             modal.classList.remove('hidden');
+            
+            try {
+                // Query for global and personal notifications
+                const globalQuery = query(collection(db, "notifications"), where("userId", "==", null), orderBy("createdAt", "desc"), limit(10));
+                const personalQuery = query(collection(db, "notifications"), where("userId", "==", userData.tgChatId), orderBy("createdAt", "desc"), limit(10));
 
-            const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"), limit(10));
-            const snapshot = await getDocs(q);
+                const [globalSnapshot, personalSnapshot] = await Promise.all([
+                    getDocs(globalQuery),
+                    getDocs(personalQuery)
+                ]);
 
-            if (snapshot.empty) {
-                listEl.innerHTML = '<p class="text-center text-gray-500">No notifications yet.</p>';
-            } else {
-                listEl.innerHTML = snapshot.docs.map(doc => {
-                    const item = doc.data();
-                    const date = item.createdAt.toDate().toLocaleString('en-GB');
-                    return `<div class="p-3 bg-gray-50 rounded-lg">
-                        <p class="font-bold text-gray-800">${item.title}</p>
-                        <p class="text-sm text-gray-600">${item.message}</p>
-                        <p class="text-xs text-gray-400 text-right mt-2">${date}</p>
-                    </div>`;
-                }).join('');
+                const allDocs = [...globalSnapshot.docs, ...personalSnapshot.docs];
+                
+                // Sort combined results by date
+                allDocs.sort((a, b) => b.data().createdAt.toMillis() - a.data().createdAt.toMillis());
+
+                const uniqueDocs = allDocs.slice(0, 10); // Limit to latest 10
+
+                if (uniqueDocs.length === 0) {
+                    listEl.innerHTML = '<p class="text-center text-gray-500">No notifications yet.</p>';
+                } else {
+                    listEl.innerHTML = uniqueDocs.map(doc => {
+                        const item = doc.data();
+                        const date = item.createdAt.toDate().toLocaleString('en-GB');
+                        return `<div class="p-3 bg-gray-50 rounded-lg">
+                            <p class="font-bold text-gray-800">${item.title}</p>
+                            <p class="text-sm text-gray-600">${item.message}</p>
+                            <p class="text-xs text-gray-400 text-right mt-2">${date}</p>
+                        </div>`;
+                    }).join('');
+                }
+            } catch (e) {
+                console.error("Error fetching notifications:", e);
+                listEl.innerHTML = '<p class="text-center text-red-500">Could not load notifications.</p>';
             }
         }
 
@@ -1046,27 +1298,6 @@
             await updateDoc(userRef, { lastSeenNotification: newTimestamp });
             userData.lastSeenNotification = newTimestamp;
             document.getElementById('notification-badge').classList.add('hidden');
-        }
-
-        function loadProfilePage() {
-            const profilePic = document.getElementById('profile-pic');
-            const avatarDiv = document.getElementById('profile-initials-avatar');
-
-            if (currentUserTg) {
-                if (currentUserTg.photo_url) {
-                    profilePic.src = currentUserTg.photo_url;
-                    profilePic.classList.remove('hidden');
-                    avatarDiv.classList.add('hidden');
-                } else {
-                    const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
-                    document.getElementById('profile-initials').textContent = initials.toUpperCase();
-                    profilePic.classList.add('hidden');
-                    avatarDiv.classList.remove('hidden');
-                }
-                document.getElementById('profile-name').textContent = `${currentUserTg.first_name} ${currentUserTg.last_name || ''}`.trim();
-                document.getElementById('profile-username').textContent = currentUserTg.username ? `@${currentUserTg.username}` : 'No Telegram Username';
-                document.getElementById('profile-id').textContent = `Telegram ID: ${currentUserTg.id}`;
-            }
         }
 
         async function handleDepositRequest() {
@@ -1097,6 +1328,7 @@
                     requestedAt: serverTimestamp()
                 });
                 showAlert("আপনার ডিপোজিট অনুরোধ সফলভাবে জমা হয়েছে।");
+                await createPersonalNotification("Deposit Request Submitted", `Your request to deposit ৳${amount} via ${method} has been submitted for review.`);
                 document.getElementById('deposit-method').value = '';
                 document.getElementById('deposit-amount').value = '';
                 document.getElementById('sender-number').value = '';
@@ -1152,7 +1384,6 @@
             historyListEl.innerHTML = getLoadingHTML();
 
             try {
-                // Load Mail Store Items
                 const stockPromises = (appConfig.mails || []).map(mail => getStockCount(mail.stockKey));
                 const stockCounts = await Promise.all(stockPromises);
                 let mailsWithStock = (appConfig.mails || []).map((mail, index) => ({ ...mail, stock: stockCounts[index] }));
@@ -1167,13 +1398,10 @@
                     const buyButtonDisabled = isOutOfStock || insufficientBalance ? 'disabled' : '';
                     const buyButtonClasses = isOutOfStock || insufficientBalance ? 'bg-gray-400 cursor-not-allowed' : 'btn-gradient';
                     const validityTagHtml = (mail.expirationDays !== undefined && mail.expirationDays !== null) ? `<span class="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">${mail.expirationDays} h</span>` : '';
-
                     const apiButtonHtml = mail.apiLink ? `<button onclick="openApiLink('${mail.apiLink}')" class="text-blue-600 font-semibold">API</button>` : '<span class="text-gray-400 font-semibold">API</span>';
-
                     mailListEl.innerHTML += `<div class="card-bg p-4 rounded-xl space-y-3"><div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo"><h3 class="font-bold text-lg text-gray-800">${mail.type}</h3></div><div class="flex items-center gap-2">${validityTagHtml}<button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="text-blue-600 text-sm font-semibold">Details</button></div></div><div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200"><div class="py-2">${apiButtonHtml}</div><div class="py-2"><p class="text-gray-500 text-sm">Price</p><p class="font-bold text-lg text-blue-600">৳${costInBdt.toFixed(2)}</p></div><div class="py-2"><p class="text-gray-500 text-sm">Stock</p><p class="font-bold text-lg text-green-600">${stock}</p></div></div><button class="${buyButtonClasses} w-full py-2 rounded-lg text-md" ${buyButtonDisabled} onclick="buyMail('${mail.type}', ${costInBdt}, '${mail.stockKey}')">Buy Now</button></div>`;
                 });
                 
-                // MODIFIED: Load Purchase History from the last 4 hours only
                 const fourHoursAgo = Timestamp.fromDate(new Date(Date.now() - 4 * 60 * 60 * 1000));
                 const q = query(
                     collection(db, "mail_purchases"), 
@@ -1190,7 +1418,6 @@
                         const purchase = doc.data();
                         const date = purchase.purchasedAt.toDate().toLocaleString();
                         const fullData = [purchase.mail, purchase.password, purchase.refreshToken, purchase.clientId].filter(Boolean).join('|');
-
                         return `<div class="card-bg p-4 rounded-xl space-y-3">
                             <div class="flex justify-between items-start">
                                 <div>
@@ -1243,69 +1470,6 @@
             }
         }
 
-        let adInterval = null;
-        function loadHomePageAds() {
-            const adsConfig = appConfig.ads;
-            const adsSection = document.getElementById('ads-section');
-            const innerContainer = document.getElementById('ads-inner');
-            const dotsContainer = document.getElementById('ads-dots');
-
-            if (adsConfig && adsConfig.enabled && adsConfig.items && adsConfig.items.length > 0) {
-                innerContainer.innerHTML = '';
-                adsConfig.items.forEach(ad => {
-                    const slide = document.createElement('a');
-                    slide.href = ad.linkUrl;
-                    slide.target = '_blank';
-                    slide.className = 'ad-slide block';
-                    slide.style.backgroundImage = `url('${ad.imageUrl}')`;
-                    innerContainer.appendChild(slide);
-                });
-            }
-
-            const slides = innerContainer.querySelectorAll('.ad-slide');
-            if(slides.length === 0) {
-                adsSection.classList.add('hidden');
-                return;
-            }
-            adsSection.classList.remove('hidden');
-            dotsContainer.innerHTML = '';
-            slides.forEach((_, index) => {
-                const dot = document.createElement('span');
-                dot.className = 'dot bg-white/50 rounded-full cursor-pointer transition-all';
-                if (index === 0) dot.classList.add('active', 'bg-white');
-                dot.dataset.index = index;
-                dotsContainer.appendChild(dot);
-            });
-
-            let currentIndex = 0;
-            const dots = dotsContainer.querySelectorAll('.dot');
-            const intervalTime = (adsConfig?.intervalSeconds || 5) * 1000;
-
-            function showAd(index) {
-                currentIndex = index;
-                innerContainer.style.transform = `translateX(-${index * 100}%)`;
-                dots.forEach(d => {
-                    d.classList.remove('active', 'bg-white');
-                    d.classList.add('bg-white/50');
-                });
-                dots[index].classList.add('active', 'bg-white');
-                dots[index].classList.remove('bg-white/50');
-            }
-
-            dotsContainer.addEventListener('click', e => {
-                if (e.target.matches('.dot')) {
-                    showAd(parseInt(e.target.dataset.index));
-                }
-            });
-
-            if (adInterval) clearInterval(adInterval);
-            if (slides.length > 1) {
-                adInterval = setInterval(() => {
-                    showAd((currentIndex + 1) % slides.length);
-                }, intervalTime);
-            }
-        }
-
         async function handleDownloadHistory() {
             loader.style.display = 'flex';
             try {
@@ -1315,7 +1479,6 @@
                     loader.style.display = 'none';
                     return showAlert("আপনার কোনো History নেই");
                 }
-
                 const dataForExcel = querySnapshot.docs.map(doc => { const p = doc.data(); return { 'Purchase Date': p.purchasedAt.toDate().toLocaleString(), 'Mail Type': p.mailType, 'Email': p.mail, 'Password': p.password || 'N/A', 'Cost (BDT)': p.cost, 'Full Data': [p.mail,p.password,p.refreshToken,p.clientId].filter(Boolean).join('|') }; });
                 const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
                 const workbook = XLSX.utils.book_new();
@@ -1325,8 +1488,7 @@
             } catch (error) { showAlert("ইতিহাস ডাউনলোড করার সময় একটি সমস্যা হয়েছে।"); }
             finally { loader.style.display = 'none'; }
         }
-
-        // MODIFIED: handleCopyHistory now copies only recent (4 hours) purchases in the new format
+        
         async function handleCopyHistory() {
              loader.style.display = 'flex';
             try {
@@ -1342,15 +1504,12 @@
                     loader.style.display = 'none';
                     return showAlert("শেষ ৪ ঘণ্টায় আপনার কোনো কেনাকাটার ইতিহাস নেই।");
                 }
-
                 const rows = querySnapshot.docs.map(doc => {
                     const p = doc.data();
                     return `Mail Type: ${p.mailType}\nEmail: ${p.mail}\nPassword: ${p.password || 'N/A'}`;
                 });
-
                 const contentToCopy = rows.join('\n\n---\n\n');
                 copyToClipboard(contentToCopy, null, 'শেষ ৪ ঘণ্টার ইতিহাস কপি করা হয়েছে!');
-
             } catch (error) { showAlert("ইতিহাস কপি করার সময় একটি সমস্যা হয়েছে।"); console.error(error); }
             finally { loader.style.display = 'none'; }
         }
@@ -1361,38 +1520,28 @@
                 lucide.createIcons();
                 return;
             }
-
             if (!confirm(`আপনি কি ৳${cost.toFixed(2)} দিয়ে একটি ${mailType} কিনতে চান?`)) return;
-
             loader.style.display = 'flex';
             try {
                 const purchasedMailData = await runTransaction(db, async (transaction) => {
                     const counterRef = doc(db, "counters", "mail_purchase");
-
                     const q = query(collection(db, stockKey), where("isSold", "==", false), limit(1));
                     const mailQuerySnapshot = await getDocs(q);
-
                     if (mailQuerySnapshot.empty) throw "দুঃখিত, এই ধরনের মেইল বর্তমানে স্টক শেষ।";
-
                     const mailDoc = mailQuerySnapshot.docs[0];
                     const mailData = mailDoc.data();
                     const userRef = doc(db, "users", userData.tgChatId);
-
                     const [counterSnap, userSnap] = await Promise.all([
                         transaction.get(counterRef),
                         transaction.get(userRef)
                     ]);
-
                     if (!userSnap.exists() || userSnap.data().balance < cost) throw `অপর্যাপ্ত ব্যালেন্স।`;
                     if (!counterSnap.exists()) throw "Sale ID counter not found. Please setup 'counters/mail_purchase'.";
-
                     const saleId = counterSnap.data().currentId;
                     transaction.update(counterRef, { currentId: saleId + 1 });
-
                     transaction.update(userRef, { balance: userSnap.data().balance - cost });
                     transaction.update(mailDoc.ref, { isSold: true, soldTo: userData.tgChatId, soldAt: serverTimestamp() });
                     const purchaseLogRef = doc(collection(db, "mail_purchases"));
-
                     transaction.set(purchaseLogRef, {
                         saleId: saleId,
                         userId: userData.tgChatId,
@@ -1406,16 +1555,12 @@
                     });
                     return mailData;
                 });
-
                 userData.balance -= cost;
                 updateUI();
-                
-                // MODIFIED: Show the new success modal instead of the old alert
                 document.getElementById('purchase-success-email').textContent = purchasedMailData.email;
                 document.getElementById('purchase-success-password').textContent = purchasedMailData.password || 'N/A';
                 document.getElementById('purchase-success-modal').classList.remove('hidden');
                 lucide.createIcons();
-
                 loadMailStore();
             } catch (e) { showAlert(typeof e === 'string' ? e : "কিনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"); }
             finally { loader.style.display = 'none'; }
@@ -1434,18 +1579,15 @@
                 const q = query(collection(db, "updates"), orderBy("createdAt", "desc"), limit(1));
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) return updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl text-gray-800">No new updates right now!</h3><p class="text-gray-600 mt-2">Check back later.</p></div>`;
-
                 const updateDoc = snapshot.docs[0];
                 const updateData = updateDoc.data();
                 const updateId = updateDoc.id;
                 const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", userData.tgChatId));
                 const userVote = userInteractionDoc.exists() ? userInteractionDoc.data().vote : null;
-
                 const isLiked = userVote === 'liked';
                 const isDisliked = userVote === 'disliked';
                 let linkButtonHtml = updateData.linkUrl ? `<a href="${updateData.linkUrl}" target="_blank" class="btn-gradient px-4 py-2 rounded-lg text-sm flex-1 text-center">Learn More</a>` : '';
                 const createdAtDate = updateData.createdAt ? updateData.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
-
                 updatesContainer.innerHTML = `<div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">${updateData.imageUrl ? `<img src="${updateData.imageUrl}" class="w-full aspect-[16/9] object-cover" alt="Update Banner">` : ''}<div class="p-6 space-y-4 flex flex-col flex-grow"><div><h3 class="text-2xl font-bold text-gray-800">${updateData.title}</h3>${createdAtDate ? `<p class="text-xs text-gray-500 mt-1">${createdAtDate}</p>` : ''}</div><p class="text-gray-600 text-base whitespace-pre-wrap flex-grow leading-relaxed">${updateData.content || ''}</p><div class="flex items-center justify-between gap-4 pt-4 mt-auto border-t border-gray-200"><div class="flex items-center gap-4"><div class="flex items-center space-x-2"><button id="like-btn" class="p-2 rounded-full transition-colors ${isLiked ? 'text-blue-500 bg-blue-100' : 'text-gray-500 hover:bg-gray-100'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-up" class="w-5 h-5"></i></button><span class="font-semibold text-sm text-gray-700">${updateData.likes || 0}</span></div><div class="flex items-center space-x-2"><button id="dislike-btn" class="p-2 rounded-full transition-colors ${isDisliked ? 'text-red-500 bg-red-100' : 'text-gray-500 hover:bg-gray-100'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-down" class="w-5 h-5"></i></button><span class="font-semibold text-sm text-gray-700">${updateData.dislikes || 0}</span></div></div>${linkButtonHtml}</div></div></div>`;
                 lucide.createIcons();
                 document.getElementById('like-btn').onclick = () => handleVote('like', updateId);
@@ -1485,10 +1627,8 @@
             const stockKey = document.getElementById('mail-type-select').value;
             const mailDataRaw = document.getElementById('mail-data-textarea').value;
             if (!stockKey || !mailDataRaw.trim()) return showAlert("Please select a mail type and provide mail data.");
-
             const lines = mailDataRaw.trim().split('\n').filter(line => line.trim() !== '');
             if (lines.length === 0) return showAlert("No valid mail data found.");
-
             loader.style.display = 'flex';
             try {
                 const batch = writeBatch(db);
@@ -1520,23 +1660,20 @@
                 console.warn("Copy to clipboard called with invalid text:", text);
                 return;
             }
-
             const textArea = document.createElement("textarea");
             textArea.value = text.trim();
             textArea.style.position = 'fixed';
             textArea.style.top = '-9999px';
             textArea.style.left = '-9999px';
-
             document.body.appendChild(textArea);
             textArea.focus();
             textArea.select();
-
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
                     if (element) {
                         const originalContent = element.innerHTML;
-                        element.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-green-600"></i>`;
+                        element.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-green-600"></i> Copied`;
                         lucide.createIcons();
                         setTimeout(() => { element.innerHTML = originalContent; lucide.createIcons(); }, 1500);
                     } else {
@@ -1549,7 +1686,6 @@
                 console.error('Fallback: Oops, unable to copy', err);
                 showAlert('দুঃখিত, কপি করতে একটি ত্রুটি হয়েছে।');
             }
-
             document.body.removeChild(textArea);
         }
 
@@ -1626,14 +1762,11 @@
                 const transactions = [];
                 sentSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
                 receivedSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
-
                 transactions.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
-
                 if (transactions.length === 0) {
                     historyList.innerHTML = '<p class="text-gray-600 text-center">No transfer history found.</p>';
                     return;
                 }
-
                 historyList.innerHTML = transactions.map(item => {
                     const isSent = item.fromId === userData.tgChatId;
                     const date = item.timestamp.toDate().toLocaleString('en-GB');
@@ -1641,7 +1774,6 @@
                     const color = isSent ? 'text-red-600' : 'text-green-600';
                     const actionText = isSent ? `Sent to ${item.toName}` : `Received from ${item.fromName}`;
                     const amountToShow = isSent ? item.totalDeducted : item.amount;
-
                     return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div><p class="font-semibold text-gray-800">${actionText}</p><p class="text-xs text-gray-500">${date}</p></div><p class="font-bold text-lg ${color}">${sign}৳${amountToShow.toFixed(2)}</p></div>`;
                 }).join('');
             } catch (e) {
@@ -1657,22 +1789,17 @@
         function setupDynamicAmountHandlers(pageType) {
             const amountInput = document.getElementById(`${pageType}-amount`);
             const feeDisplay = document.getElementById(`${pageType}-fee-display`);
-
             if (!amountInput || !feeDisplay) return;
-
             amountInput.addEventListener('input', () => {
                 const maxAmount = Math.floor(userData.balance / 1.05);
                 let currentAmount = parseInt(amountInput.value);
-
                 if (isNaN(currentAmount) || currentAmount < 0) {
                     currentAmount = 0;
                 }
-
                 if (currentAmount > maxAmount) {
                     amountInput.value = maxAmount;
                     currentAmount = maxAmount;
                 }
-
                 if (currentAmount > 0) {
                     const fee = currentAmount * 0.05;
                     feeDisplay.textContent = `Fee (5%): ৳${fee.toFixed(2)}`;
@@ -1685,50 +1812,39 @@
         async function handleSendRequest() {
             const recipientId = document.getElementById('send-recipient-id').value.trim();
             const amountStr = document.getElementById('send-amount').value;
-
             if (!recipientId || !amountStr) return showAlert("অনুগ্রহ করে প্রাপকের আইডি এবং টাকার পরিমাণ লিখুন।");
             if (recipientId === userData.tgChatId) return showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
-
             const amount = parseFloat(amountStr);
             if (isNaN(amount) || amount < 20) return showAlert("সর্বনিম্ন পাঠানোর পরিমাণ ৳20।");
-
             const fee = amount * 0.05;
             const totalCost = amount + fee;
-
             if (totalCost > userData.balance) return showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
             if (!confirm(`আপনি কি ${recipientId} আইডিতে ৳${amount.toFixed(2)} পাঠাতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) return;
-
             loader.style.display = 'flex';
             const senderRef = doc(db, "users", userData.tgChatId);
             const recipientRef = doc(db, "users", recipientId);
-
             try {
-                await runTransaction(db, async (transaction) => {
+                const recipientDocForName = await runTransaction(db, async (transaction) => {
                     const senderDoc = await transaction.get(senderRef);
                     const recipientDoc = await transaction.get(recipientRef);
-
                     if (!senderDoc.exists() || senderDoc.data().balance < totalCost) throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
                     if (!recipientDoc.exists()) throw "প্রাপক আইডি (Recipient ID) খুঁজে পাওয়া যায়নি।";
-
                     const newSenderBalance = senderDoc.data().balance - totalCost;
                     const newRecipientBalance = recipientDoc.data().balance + amount;
-
                     transaction.update(senderRef, { balance: newSenderBalance });
                     transaction.update(recipientRef, { balance: newRecipientBalance });
-
                     const transferLogRef = doc(collection(db, "transfers"));
                     transaction.set(transferLogRef, { fromId: userData.tgChatId, fromName: userData.name, toId: recipientId, toName: recipientDoc.data().name, amount: amount, fee: fee, totalDeducted: totalCost, timestamp: serverTimestamp() });
+                    return recipientDoc.data();
                 });
-
                 userData.balance -= totalCost;
                 updateUI();
                 showAlert(`সফলভাবে ৳${amount.toFixed(2)} পাঠানো হয়েছে।`);
-
+                await createPersonalNotification("Balance Sent", `You have successfully sent ৳${amount.toFixed(2)} to ${recipientDocForName.name} (ID: ${recipientId}).`);
                 document.getElementById('send-recipient-id').value = '';
                 document.getElementById('send-amount').value = '';
                 document.getElementById('send-fee-display').textContent = '';
                 navigateTo('features-page');
-
             } catch (error) {
                 console.error("Transfer failed: ", error);
                 showAlert(typeof error === 'string' ? error : "ব্যালেন্স পাঠাতে সমস্যা হয়েছে।");
@@ -1742,20 +1858,15 @@
             const amountStr = document.getElementById('recharge-amount').value;
             const operator = document.getElementById('recharge-operator').value;
             const type = document.getElementById('recharge-type').value;
-
             if (!number || !amountStr || !operator) return showAlert("অনুগ্রহ করে সমস্ত তথ্য সঠিকভাবে পূরণ করুন।");
             if (!/^(01[3-9])\d{8}$/.test(number)) return showAlert("অনুগ্রহ করে একটি সঠিক বাংলাদেশী মোবাইল নম্বর দিন।");
             const amount = parseFloat(amountStr);
             if (isNaN(amount) || amount < 20) return showAlert("সর্বনিম্ন রিচার্জের পরিমাণ ৳20।");
-
             const fee = amount * 0.05;
             const totalCost = amount + fee;
-
             if (totalCost > userData.balance) return showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
             if (!confirm(`আপনি কি ${number} নম্বরে ৳${amount.toFixed(2)} রিচার্জ করতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) return;
-
             loader.style.display = 'flex';
-
             try {
                 const userRef = doc(db, "users", userData.tgChatId);
                 await runTransaction(db, async (transaction) => {
@@ -1766,11 +1877,10 @@
                     const rechargeRequestRef = doc(collection(db, "recharge_requests"));
                     transaction.set(rechargeRequestRef, { userId: userData.tgChatId, userName: userData.name, mobileNumber: number, amount: amount, operator: operator, rechargeType: type, fee: fee, totalDeducted: totalCost, status: "pending", requestedAt: serverTimestamp() });
                 });
-
                 userData.balance -= totalCost;
                 updateUI();
                 showAlert("আপনার রিচার্জ অনুরোধ সফলভাবে জমা হয়েছে।");
-
+                await createPersonalNotification("Recharge Request Submitted", `Your recharge request of ৳${amount} for ${number} has been submitted.`);
                 document.getElementById('recharge-number').value = '';
                 document.getElementById('recharge-amount').value = '';
                 document.getElementById('recharge-operator').value = '';
@@ -1791,7 +1901,6 @@
                 const q = query(collection(db, "recharge_requests"), where("userId", "==", userData.tgChatId), orderBy("requestedAt", "desc"));
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-600 text-center">কোনো রিচার্জ হিস্ট্রি পাওয়া যায়নি।</p>';
-
                 historyList.innerHTML = snapshot.docs.map(doc => {
                     const item = doc.data();
                     let statusColor, statusIcon;
@@ -1817,7 +1926,6 @@
                 const q = query(collection(db, "tutorials"), orderBy("order"));
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) return tutorialListEl.innerHTML = '<p class="text-center text-gray-600">কোনো টিউটোরিয়াল পাওয়া যায়নি।</p>';
-
                 tutorialListEl.innerHTML = snapshot.docs.map(doc => {
                     const tutorial = doc.data();
                     return `<div class="card-bg p-4 rounded-xl"><h3 class="font-bold text-lg text-gray-800 mb-3">${tutorial.title}</h3><div class="video-container-16-9"><iframe src="${tutorial.youtubeEmbedUrl}" title="${tutorial.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>`;
@@ -1835,7 +1943,6 @@
                 const q = query(collection(db, "reviews"), orderBy("createdAt", "desc"), limit(5));
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) return reviewListEl.innerHTML = '<p class="text-center text-gray-600">কোনো রিভিউ পাওয়া যায়নি।</p>';
-
                 reviewListEl.innerHTML = snapshot.docs.map(doc => {
                     const review = doc.data();
                     let stars = '';
@@ -1848,34 +1955,7 @@
                 console.error("Error loading reviews: ", e);
             }
         }
-
-        async function loadSupportMenu() {
-            const supportContainer = document.getElementById('support-channels-list');
-            supportContainer.innerHTML = getLoadingHTML();
-            try {
-                const q = query(collection(db, "support_channels"), orderBy("order", "asc"));
-                const snapshot = await getDocs(q);
-                if (snapshot.empty) {
-                    supportContainer.innerHTML = '<p class="p-4 text-center text-gray-600">দুঃখিত, এই মুহূর্তে কোনো সাপোর্ট চ্যানেল উপলব্ধ নেই।</p>';
-                    return;
-                }
-
-                supportContainer.innerHTML = snapshot.docs.map(doc => {
-                    const channel = doc.data();
-                    return `
-                        <a href="${channel.link}" target="_blank" class="support-link-card">
-                            <img src="${channel.iconUrl}" alt="${channel.name} logo">
-                            <span>${channel.name}</span>
-                        </a>
-                    `;
-                }).join('');
-
-            } catch (e) {
-                supportContainer.innerHTML = '<p class="p-4 text-center text-red-600">সাপোর্ট অপশন লোড করা যায়নি।</p>';
-                console.error("Error loading support channels:", e);
-            }
-        }
-
+        
         function handleFeaturesClick() {
             if (userData.featuresLockedUntil && userData.featuresLockedUntil.toDate() > new Date()) {
                 const unlockTime = userData.featuresLockedUntil.toDate().toLocaleTimeString('en-US');
@@ -1898,7 +1978,6 @@
             const confirmPin = document.getElementById('confirm-pin').value;
             if (pin.length !== 4 || !/^\d{4}$/.test(pin)) return showAlert("⚠️ পিন অবশ্যই ৪ সংখ্যার হতে হবে।");
             if (pin !== confirmPin) return showAlert("⚠️ PIN does not match.");
-
             loader.style.display = 'flex';
             try {
                 const userRef = doc(db, "users", userData.tgChatId);
@@ -1917,7 +1996,6 @@
         async function handleEnterPin() {
             const enteredPin = document.getElementById('enter-pin').value;
             const userRef = doc(db, "users", userData.tgChatId);
-
             if (enteredPin === userData.pin) {
                 if (userData.pinFailAttempts && userData.pinFailAttempts.length > 0) {
                     userData.pinFailAttempts = [];
@@ -1928,31 +2006,24 @@
             } else {
                 const now = Timestamp.now();
                 const fiveMinutesAgo = new Date(now.toDate().getTime() - 5 * 60 * 1000);
-
                 let recentFails = (userData.pinFailAttempts || []).map(t => t.toDate());
                 recentFails = recentFails.filter(t => t > fiveMinutesAgo);
                 recentFails.push(now.toDate());
-
                 userData.pinFailAttempts = recentFails.map(d => Timestamp.fromDate(d));
-
                 if (recentFails.length >= 3) {
                     const tenHoursLater = new Date(now.toDate().getTime() + 10 * 60 * 60 * 1000);
                     const lockTimestamp = Timestamp.fromDate(tenHoursLater);
-
                     userData.featuresLockedUntil = lockTimestamp;
                     userData.pinFailAttempts = [];
-
                     await updateDoc(userRef, {
                         pinFailAttempts: [],
                         featuresLockedUntil: lockTimestamp
                     });
-
                     document.getElementById('pin-enter-modal').classList.add('hidden');
                     showAlert("আপনি ইতিমধ্যে ৩ বার ভুল পিন দিয়েছেন। আপনার একাউন্ট নিরাপত্তার জন্য ১০ ঘণ্টার জন্য লক করা হয়েছে।");
                 } else {
                     await updateDoc(userRef, { pinFailAttempts: userData.pinFailAttempts });
-                    showAlert(`⚠️ ভুল PIN।
-🔒 আপনি যদি আর ${3 - recentFails.length} বার ভুল PIN দেন, তাহলে আপনার অ্যাকাউন্ট কিছু ঘন্টার জন্য স্থগিত করা হবে।`);
+                    showAlert(`⚠️ ভুল PIN।\n🔒 আপনি যদি আর ${3 - recentFails.length} বার ভুল PIN দেন, তাহলে আপনার অ্যাকাউন্ট কিছু ঘন্টার জন্য স্থগিত করা হবে।`);
                     document.getElementById('enter-pin').value = '';
                 }
             }
