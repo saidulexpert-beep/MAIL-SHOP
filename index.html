@@ -1104,7 +1104,8 @@
             } catch (error) { showAlert("কোড তৈরি করতে সমস্যা হয়েছে।"); } 
             finally { loader.style.display = 'none'; }
         }
-function listenForNotifications() {
+
+        function listenForNotifications() {
             const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
             onSnapshot(q, (snapshot) => {
                 let unreadCount = 0;
@@ -1136,31 +1137,50 @@ function listenForNotifications() {
             listEl.innerHTML = getLoadingHTML();
             modal.classList.remove('hidden');
             
+            let allDocs = [];
+
             try {
                 const globalQuery = query(collection(db, "notifications"), where("userId", "==", null), orderBy("createdAt", "desc"), limit(10));
-                const personalQuery = query(collection(db, "notifications"), where("userId", "==", userData.tgChatId), orderBy("createdAt", "desc"), limit(10));
-
-                const [globalSnapshot, personalSnapshot] = await Promise.all([ getDocs(globalQuery), getDocs(personalQuery) ]);
-                const allDocs = [...globalSnapshot.docs, ...personalSnapshot.docs];
-                allDocs.sort((a, b) => b.data().createdAt.toMillis() - a.data().createdAt.toMillis());
-                const uniqueDocs = allDocs.slice(0, 10);
-
-                if (uniqueDocs.length === 0) {
-                    listEl.innerHTML = '<p class="text-center text-gray-500">No notifications yet.</p>';
-                } else {
-                    listEl.innerHTML = uniqueDocs.map(doc => {
-                        const item = doc.data();
-                        const date = item.createdAt.toDate().toLocaleString('en-GB');
-                        return `<div class="p-3 bg-gray-50 rounded-lg">
-                            <p class="font-bold text-gray-800">${item.title}</p>
-                            <p class="text-sm text-gray-600">${item.message}</p>
-                            <p class="text-xs text-gray-400 text-right mt-2">${date}</p>
-                        </div>`;
-                    }).join('');
-                }
+                const globalSnapshot = await getDocs(globalQuery);
+                globalSnapshot.forEach(doc => allDocs.push(doc));
             } catch (e) {
-                console.error("Error fetching notifications:", e);
-                listEl.innerHTML = '<p class="text-center text-red-500">Could not load notifications.</p>';
+                console.error("Error fetching global notifications (check Firestore indexes):", e);
+            }
+
+            try {
+                const personalQuery = query(collection(db, "notifications"), where("userId", "==", userData.tgChatId), orderBy("createdAt", "desc"), limit(10));
+                const personalSnapshot = await getDocs(personalQuery);
+                personalSnapshot.forEach(doc => allDocs.push(doc));
+            } catch(e) {
+                console.error("Error fetching personal notifications (check Firestore indexes):", e);
+            }
+
+            if (allDocs.length > 0) {
+                allDocs.sort((a, b) => b.data().createdAt.toMillis() - a.data().createdAt.toMillis());
+                
+                const uniqueDocIds = new Set();
+                const uniqueDocs = allDocs.filter(doc => {
+                    if (uniqueDocIds.has(doc.id)) {
+                        return false;
+                    } else {
+                        uniqueDocIds.add(doc.id);
+                        return true;
+                    }
+                });
+
+                const finalDocs = uniqueDocs.slice(0, 10);
+
+                listEl.innerHTML = finalDocs.map(doc => {
+                    const item = doc.data();
+                    const date = item.createdAt.toDate().toLocaleString('en-GB');
+                    return `<div class="p-3 bg-gray-50 rounded-lg">
+                        <p class="font-bold text-gray-800">${item.title}</p>
+                        <p class="text-sm text-gray-600">${item.message}</p>
+                        <p class="text-xs text-gray-400 text-right mt-2">${date}</p>
+                    </div>`;
+                }).join('');
+            } else {
+                listEl.innerHTML = '<p class="text-center text-gray-500">No notifications yet.</p>';
             }
         }
 
