@@ -207,7 +207,7 @@
             transition: all 0.2s ease-in-out; background: none; border: none; width: 100%;
             text-align: left; cursor: pointer; border-bottom: 1px solid #e5e7eb;
         }
-        .menu-accordion-toggle:hover { background-color: #f9fafb; color: #007bff; }
+        .menu-accordion-toggle:hover, .menu-accordion-toggle.active { background-color: #f9fafb; color: #007bff; }
         .menu-accordion-toggle .icon { width: 24px; height: 24px; }
         .menu-accordion-toggle .chevron { transition: transform 0.3s ease; }
         .menu-accordion-toggle.active .chevron { transform: rotate(180deg); }
@@ -217,15 +217,15 @@
             background-color: #f9fafb;
         }
         .menu-accordion-content .content-inner {
-            padding: 16px; border-bottom: 1px solid #e5e7eb;
-            display: flex; flex-direction: column; gap: 12px;
+            padding: 1rem; border-bottom: 1px solid #e5e7eb;
+            display: flex; flex-direction: column; gap: 0.75rem;
         }
         .support-link-card {
-            display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 8px;
-            text-decoration: none; color: #333; font-weight: 500; transition: background-color 0.2s;
+            display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px;
+            text-decoration: none; color: #333; font-weight: 500; transition: background-color 0.2s, transform 0.2s;
         }
-        .support-link-card:hover { background-color: #f0f0f0; }
-        .support-link-card img { width: 32px; height: 32px; }
+        .support-link-card:hover { background-color: #e9ecef; transform: translateX(4px); }
+        .support-link-card img { width: 36px; height: 36px; border-radius: 8px; }
 
         .btn-premium-buy {
             background: linear-gradient(to right, #8b5cf6, #d946ef); color: white; font-weight: bold;
@@ -322,7 +322,10 @@
                         <p class="text-gray-600 text-sm mb-1">Your Balance</p>
                         <div class="flex items-center justify-between">
                             <p id="balance-display" class="text-4xl font-bold text-[#333333]">৳0.00</p>
-                            <button id="home-deposit-btn" class="btn-gradient px-6 py-2 rounded-lg">Deposit</button>
+                             <div class="flex items-center gap-2">
+                                <button onclick="navigateTo('mail-page')" class="bg-blue-100 text-blue-800 font-bold px-4 py-2 rounded-lg hover:bg-blue-200 transition-colors">VIEW MAIL</button>
+                                <button id="home-deposit-btn" class="btn-gradient px-6 py-2 rounded-lg">Deposit</button>
+                            </div>
                         </div>
                     </div>
                     <div id="ads-section" class="space-y-3" style="display: none;">
@@ -370,6 +373,14 @@
                 </div>
                 <div class="p-4 space-y-6">
                     <p class="text-gray-600 text-center mb-4">কম দামে এবং সহজে মেইল কিনুন</p>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <button onclick="handleLoginMailClick()" class="w-full p-3 rounded-lg font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg btn flex items-center justify-center gap-2">
+                            <i data-lucide="log-in" class="w-5 h-5"></i><span>LOGIN MAIL</span>
+                        </button>
+                         <button onclick="window.Telegram.WebApp.openLink('https://t.me/EXPERTearn_team')" class="w-full p-3 rounded-lg font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 shadow-lg btn flex items-center justify-center gap-2">
+                            <i data-lucide="shield-check" class="w-5 h-5"></i><span>OTP MAIL</span>
+                        </button>
+                    </div>
                     <div id="mail-list" class="space-y-4"></div>
                      <div>
                         <div class="flex justify-between items-center mb-3 mt-6">
@@ -829,6 +840,7 @@
             const menuContainer = document.getElementById('menu-options');
             menuContainer.innerHTML = getLoadingHTML();
             let menuHtml = '';
+
             if (userData.isPremium) {
                 const expiryDate = userData.premiumExpiresAt.toDate().toLocaleDateString('en-GB');
                 menuHtml += `<div class="p-4 flex items-center gap-4 bg-gray-50 border-b border-gray-200">
@@ -836,6 +848,16 @@
                                 <div><span class="font-bold">Premium Active</span><p class="text-xs text-gray-500 mt-1">Expires: ${expiryDate}</p></div>
                              </div>`;
             }
+
+            // SUPPORT TEAM Accordion (Moved to top)
+            menuHtml += `<div class="menu-accordion-item">
+                            <button class="menu-accordion-toggle">
+                                <span class="flex items-center gap-4"><i data-lucide="headphones" class="icon"></i>SUPPORT TEAM</span>
+                                <i data-lucide="chevron-down" class="chevron"></i>
+                            </button>
+                            <div class="menu-accordion-content"><div class="content-inner" id="support-links-container">${getLoadingHTML()}</div></div>
+                         </div>`;
+            
             // More Function Accordion
             menuHtml += `<div class="menu-accordion-item">
                             <button class="menu-accordion-toggle">
@@ -850,14 +872,6 @@
                             </div>
                          </div>`;
 
-            // SUPPORT TEAM Accordion
-            menuHtml += `<div class="menu-accordion-item">
-                            <button class="menu-accordion-toggle">
-                                <span class="flex items-center gap-4"><i data-lucide="headphones" class="icon"></i>SUPPORT TEAM</span>
-                                <i data-lucide="chevron-down" class="chevron"></i>
-                            </button>
-                            <div class="menu-accordion-content"><div class="content-inner" id="support-links-container">${getLoadingHTML()}</div></div>
-                         </div>`;
             // More Apps Accordion
             const apps = [{ name: 'App One', link: '#', iconUrl: 'https://via.placeholder.com/40' }, { name: 'App Two', link: '#', iconUrl: 'https://via.placeholder.com/40' }];
             const appsHtml = apps.map(app => `<a href="${app.link}" target="_blank" class="support-link-card"><img src="${app.iconUrl}" alt="${app.name}" class="rounded-md"><span>${app.name}</span></a>`).join('');
@@ -868,17 +882,18 @@
                             </button>
                             <div class="menu-accordion-content"><div class="content-inner">${appsHtml}</div></div>
                          </div>`;
+            
             // Social Media Accordion
              const socialLinksHtml = `
-                <a href="https://youtube.com" target="_blank" class="support-link-card"><i data-lucide="youtube" class="w-6 h-6 text-red-600"></i><span>YouTube</span></a>
-                <a href="https://tiktok.com" target="_blank" class="support-link-card"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.01-1.58-.01-3.16 0-4.75l-.04 1.38c-.7 2.12-2.2 3.53-4.13 4.45v5.05c-.62.33-1.28.6-1.94.82v-5.07c.01-1.03-.02-2.07-.01-3.1 0-2.31-1.08-4.28-2.7-5.66-1.6-1.37-3.6-2.01-5.59-1.82V4.88c1.87.08 3.74.38 5.48 1.14.01 1.57.01 3.14 0 4.71l.04-1.38c.68-2.11 2.19-3.52 4.12-4.44V.02z"/></svg><span>TikTok</span></a>
-                <a href="https://telegram.org" target="_blank" class="support-link-card"><i data-lucide="send" class="w-6 h-6 text-sky-500"></i><span>Telegram</span></a>`;
+                <a href="https://youtube.com" target="_blank" class="p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition-all"><i data-lucide="youtube" class="w-6 h-6 text-red-600"></i></a>
+                <a href="https://tiktok.com" target="_blank" class="p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition-all"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.01-1.58-.01-3.16 0-4.75l-.04 1.38c-.7 2.12-2.2 3.53-4.13 4.45v5.05c-.62.33-1.28.6-1.94.82v-5.07c.01-1.03-.02-2.07-.01-3.1 0-2.31-1.08-4.28-2.7-5.66-1.6-1.37-3.6-2.01-5.59-1.82V4.88c1.87.08 3.74.38 5.48 1.14.01 1.57.01 3.14 0 4.71l.04-1.38c.68-2.11 2.19-3.52 4.12-4.44V.02z"/></svg></a>
+                <a href="https://telegram.org" target="_blank" class="p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition-all"><i data-lucide="send" class="w-6 h-6 text-sky-500"></i></a>`;
             menuHtml += `<div class="menu-accordion-item">
                             <button class="menu-accordion-toggle">
                                 <span class="flex items-center gap-4"><i data-lucide="share-2" class="icon"></i>Official Social Media</span>
                                 <i data-lucide="chevron-down" class="chevron"></i>
                             </button>
-                            <div class="menu-accordion-content"><div class="content-inner">${socialLinksHtml}</div></div>
+                            <div class="menu-accordion-content"><div class="content-inner !p-4 !flex-row !justify-center !gap-6">${socialLinksHtml}</div></div>
                          </div>`;
 
             menuContainer.innerHTML = menuHtml;
@@ -914,12 +929,24 @@
             const accordions = document.querySelectorAll('.menu-accordion-toggle');
             accordions.forEach(acc => {
                 acc.addEventListener('click', function() {
-                    this.classList.toggle('active');
                     const content = this.nextElementSibling;
-                    if (content.style.maxHeight) {
-                        content.style.maxHeight = null;
-                    } else {
+                    const isActive = this.classList.contains('active');
+
+                    // Close all other accordions
+                    accordions.forEach(otherAcc => {
+                        if (otherAcc !== this) {
+                            otherAcc.classList.remove('active');
+                            otherAcc.nextElementSibling.style.maxHeight = null;
+                        }
+                    });
+
+                    // Toggle the clicked one
+                    if (!isActive) {
+                        this.classList.add('active');
                         content.style.maxHeight = content.scrollHeight + "px";
+                    } else {
+                        this.classList.remove('active');
+                        content.style.maxHeight = null;
                     }
                 });
             });
@@ -1720,6 +1747,20 @@ function listenForNotifications() {
                 reviewListEl.innerHTML = '<p class="text-center text-red-600">রিভিউ লোড করা যায়নি।</p>';
             }
         }
+
+        window.handleLoginMailClick = function() {
+            if (!appConfig || !appConfig.mails || appConfig.mails.length === 0) {
+                 navigateTo('pay-page');
+                 return;
+            }
+            const minPrice = Math.min(...appConfig.mails.map(m => m.priceBdt));
+            if (userData.balance < minPrice) {
+                navigateTo('pay-page');
+            } else {
+                document.getElementById('mail-list').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
     </script>
 </body>
 </html>
