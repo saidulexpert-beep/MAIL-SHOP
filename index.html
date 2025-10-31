@@ -1125,6 +1125,9 @@
             otpMailContainer.innerHTML = getLoadingHTML();
             historyListEl.innerHTML = getLoadingHTML();
             
+            // FIX: Ensure correct initial positions for the mail views to prevent layout issues.
+            loginMailContainer.style.transform = 'translateX(0%)';
+            otpMailContainer.style.transform = 'translateX(100%)';
             switchMailView('login');
 
             try {
@@ -1304,7 +1307,15 @@
             finally { loader.style.display = 'none'; }
         }
 
-        window.buyMail = async function(mailType, cost, stockKey) {
+        // --- UPDATED AND FIXED FUNCTION ---
+        window.buyMail = async function(mailType, costParam, stockKey) {
+            // FIX: Ensure cost is a number to prevent transaction errors.
+            const cost = parseFloat(costParam);
+            if (isNaN(cost) || cost <= 0) {
+                showAlert("এই আইটেমটির মূল্য অবৈধ। অনুগ্রহ করে সাপোর্টে যোগাযোগ করুন।");
+                return;
+            }
+
             let teamLeaderRef = null;
             let teamLeaderData = null;
             const buyerRef = doc(db, "users", userData.tgChatId);
@@ -1328,7 +1339,6 @@
                 return;
             }
 
-            // নতুন: appConfig থেকে মেয়াদ যুক্ত করা
             const mailConfig = appConfig.mails.find(m => m.stockKey === stockKey);
             const expirationHours = mailConfig ? mailConfig.expirationHours : null;
 
@@ -1393,7 +1403,7 @@
                         clientId: mailData.client_id || null,
                         cost: cost,
                         purchasedAt: serverTimestamp(),
-                        expirationHours: expirationHours // <-- নতুন: মেয়াদ সেভ করা হচ্ছে
+                        expirationHours: expirationHours
                     });
                     return mailData;
                 });
@@ -1409,8 +1419,10 @@
 
                 loadMailStore();
             } catch (e) { 
-                showAlert(typeof e === 'string' ? e : "কিনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"); 
-                console.error("Purchase Error:", e); // <-- উন্নত ডিবাগিং
+                // FIX: Provide more detailed error messages for debugging.
+                const errorMessage = e.message || (typeof e === 'string' ? e : "Unknown error");
+                showAlert(`কিনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।\nError: ${errorMessage}`);
+                console.error("Purchase Error:", e); 
             }
             finally { loader.style.display = 'none'; }
         }
