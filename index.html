@@ -401,7 +401,7 @@
 
                     <div class="mt-10"> <!-- Added margin-top for separation -->
                         <div class="flex justify-between items-center mb-3">
-                            <h3 class="text-lg font-semibold">Buy History (Last 4 Hours)</h3>
+                            <h3 class="text-lg font-semibold">Buy History</h3>
                             <div class="flex items-center gap-2">
                                <button id="copy-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="copy" class="w-4 h-4"></i><span>Copy</span></button>
                                <button id="download-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i><span>Download</span></button>
@@ -1236,7 +1236,7 @@
                 const querySnapshot = await getDocs(q);
                 if (querySnapshot.empty) {
                     loader.style.display = 'none';
-                    return showAlert("শেষ ৪ ঘণ্টায় আপনার কোনো কেনাকাটার ইতিহাস নেই।");
+                    return showAlert("আপনার কোনো হিস্ট্রি পাওয়া যাইনি।");
                 }
 
                 const rows = querySnapshot.docs.map(doc => {
@@ -1247,7 +1247,7 @@
                 const contentToCopy = rows.join('\n\n---\n\n');
                 copyToClipboard(contentToCopy, null, 'শেষ ৪ ঘণ্টার ইতিহাস কপি করা হয়েছে!');
 
-            } catch (error) { showAlert("ইতিহাস কপি করার সময় একটি সমস্যা হয়েছে।"); console.error(error); }
+            } catch (error) { showAlert("Error 404"); console.error(error); }
             finally { loader.style.display = 'none'; }
         }
 
