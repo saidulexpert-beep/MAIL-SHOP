@@ -21,7 +21,7 @@
             user-select: none; /* Standard syntax */
             -webkit-touch-callout: none; /* iOS Safari */
         }
-        input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #profile-id-btn, #link-team-page input {
+        input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #profile-id-btn {
             -webkit-user-select: text; /* Safari */
             -ms-user-select: text; /* IE 10+ */
             user-select: text; /* Standard syntax */
@@ -60,16 +60,6 @@
         .btn-gradient:hover {
             box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
             background-image: linear-gradient(to right, #0056b3, #007bff);
-        }
-        .btn-danger {
-            background-image: linear-gradient(to right, #ef4444, #dc2626);
-            color: #ffffff;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
-        }
-        .btn-danger:hover {
-            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
-            background-image: linear-gradient(to right, #dc2626, #ef4444);
         }
         .input-field {
             background-color: #f0f0f0;
@@ -347,18 +337,6 @@
                     </div>
                     <div id="ads-section" class="space-y-3" style="display: none;">
                         <h2 class="text-xl font-bold px-2 premium-title">✨ Promotions</h2>
-                        <!-- Link Team Promotion Card -->
-                        <div class="card-bg p-4 rounded-xl flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <i data-lucide="users" class="w-8 h-8 text-indigo-500"></i>
-                                <div>
-                                    <h3 class="font-bold text-gray-800">Link Team</h3>
-                                    <p class="text-sm text-gray-500">বন্ধুর সাথে ব্যালেন্স শেয়ার করুন!</p>
-                                </div>
-                            </div>
-                            <button onclick="navigateTo('link-team-page')" class="btn-gradient px-4 py-2 rounded-lg text-sm font-bold">Link Now</button>
-                        </div>
-                        <!-- Ad Script -->
                         <div>
                             <script src='//libtl.com/sdk.js' data-zone='10056357' data-sdk='show_10056357'></script>
                         </div>
@@ -366,7 +344,7 @@
                 </div>
             </div>
 
-            <!-- Other Sub-Pages like pay-page, mail-page etc. -->
+            <!-- Other Sub-Pages like pay-page, mail-page etc. remain the same -->
             <div id="pay-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center text-gray-800">Pay Center</h2>
                 <div class="card-bg p-5 rounded-xl space-y-5">
@@ -492,8 +470,6 @@
                     <button id="features-recharge-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg btn">Mobile Recharge</button>
                     <button id="features-receive-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-blue-500 to-sky-500 shadow-lg btn flex items-center justify-center gap-1"><i data-lucide="arrow-down-to-line" class="w-4 h-4"></i><span>Receive</span></button>
                     <button id="features-send-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 shadow-lg btn">SEND</button>
-                    <!-- Link Team Button -->
-                    <button id="features-link-team-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-indigo-500 to-fuchsia-500 shadow-lg btn col-span-2 flex items-center justify-center gap-2"><i data-lucide="users" class="w-5 h-5"></i><span>LINK TEAM</span></button>
                 </div>
                 <div>
                     <h3 class="text-lg font-semibold mb-3">Balance Transfer History</h3>
@@ -551,24 +527,6 @@
                             <button id="submit-send-btn" class="w-full p-3 rounded-lg btn-gradient">Submit Send</button>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <!-- NEW: Link Team Page -->
-            <div id="link-team-page" class="p-4 space-y-6 sub-page">
-                <div class="relative flex items-center justify-center mb-4">
-                    <button onclick="navigateTo('features-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors"><i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i></button>
-                    <h2 class="text-xl font-bold text-center text-gray-800">Link Team</h2>
-                </div>
-
-                <!-- Current Status -->
-                <div id="link-team-status-container" class="space-y-4">
-                    <!-- This will be populated by JS -->
-                </div>
-
-                <!-- Pending Requests -->
-                <div id="link-team-requests-container" class="space-y-4">
-                    <!-- This will be populated by JS -->
                 </div>
             </div>
 
@@ -681,7 +639,7 @@
         };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, Timestamp, onSnapshot, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, Timestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -707,11 +665,9 @@
                 }
             } catch (e) {
                 console.error("Telegram WebApp script failed to initialize or user data not available.", e);
-                // Fallback for development outside Telegram
-                currentUserTg = { id: '123456789', first_name: 'Test', last_name: 'User', username: 'testuser' };
-                // showAlert("Error initializing Telegram Mini App. Please try again from Telegram.");
-                // loader.style.display = 'none';
-                // return;
+                showAlert("Error initializing Telegram Mini App. Please try again from Telegram.");
+                loader.style.display = 'none';
+                return;
             }
             lucide.createIcons();
             setupEventListeners();
@@ -750,8 +706,7 @@
                     const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
                     userData = {
                         tgChatId: tgChatId, name: userName, username: currentUserTg.username || null, balance: 0,
-                        createdAt: serverTimestamp(), isBlocked: false, lastSeenNotification: null, isPremium: false, premiumExpiresAt: null,
-                        linkedUserId: null, linkRequestSentTo: null, linkRequestsFrom: []
+                        createdAt: serverTimestamp(), isBlocked: false, lastSeenNotification: null, isPremium: false, premiumExpiresAt: null
                     };
                     await setDoc(userRef, userData);
                 }
@@ -848,16 +803,15 @@
                 'features-page': loadFeaturesPage,
                 'tutorial-page': loadTutorials,
                 'recharge-page': () => { loadRechargeHistory(); setupDynamicAmountHandlers('recharge'); },
-                'send-page': () => { setupDynamicAmountHandlers('send'); },
-                'link-team-page': loadLinkTeamPage,
+                'send-page': () => { setupDynamicAmountHandlers('send'); }
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
         }
         window.navigateTo = navigateTo;
         
-        async function createPersonalNotification(targetUserId, title, message) {
-            try { await addDoc(collection(db, "notifications"), { userId: targetUserId, title: title, message: message, createdAt: serverTimestamp() }); }
+        async function createPersonalNotification(title, message) {
+            try { await addDoc(collection(db, "notifications"), { userId: userData.tgChatId, title: title, message: message, createdAt: serverTimestamp() }); }
             catch (e) { console.error("Failed to create personal notification:", e); }
         }
         
@@ -995,42 +949,29 @@
         async function handleBuyPremium() {
             const premiumCost = 10;
             if (userData.isPremium) return showAlert("আপনি ইতিমধ্যে একজন প্রিমিয়াম ব্যবহারকারী।");
-            
-            try {
-                const { sufficient, primaryUserId, secondaryUserId } = await checkTeamBalance(premiumCost);
-                if (!sufficient) {
-                     showAlert(`প্রিমিয়াম কেনার জন্য আপনার এবং আপনার সঙ্গীর সম্মিলিত ব্যালেন্সও পর্যাপ্ত নয়। প্রয়োজন ৳${premiumCost.toFixed(2)}।`);
-                     return;
-                }
-                if (!confirm(`আপনি কি ৳${premiumCost.toFixed(2)} দিয়ে ২০ দিনের জন্য প্রিমিয়াম সাবস্ক্রিপশন কিনতে চান?`)) return;
-                
+            if (userData.balance < premiumCost) return showAlert(`প্রিমিয়াম কেনার জন্য আপনার পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${premiumCost.toFixed(2)}।`);
+            if (confirm(`আপনি কি ৳${premiumCost.toFixed(2)} দিয়ে ২০ দিনের জন্য প্রিমিয়াম সাবস্ক্রিপশন কিনতে চান?`)) {
                 loader.style.display = 'flex';
-                await runTransaction(db, async (transaction) => {
-                    await deductTeamBalance(transaction, premiumCost, primaryUserId, secondaryUserId, "Premium Subscription");
-                    
-                    const userRef = doc(db, "users", userData.tgChatId);
-                    const userDoc = await transaction.get(userRef);
-                    if (!userDoc.exists()) throw new Error("User not found.");
-                    
-                    let newExpiryDate = (userDoc.data().isPremium && userDoc.data().premiumExpiresAt.toDate() > new Date()) ? userDoc.data().premiumExpiresAt.toDate() : new Date();
-                    newExpiryDate.setDate(newExpiryDate.getDate() + 20);
-                    
-                    transaction.update(userRef, { isPremium: true, premiumExpiresAt: Timestamp.fromDate(newExpiryDate) });
-                    
-                    const purchaseLogRef = doc(collection(db, "premium_purchases"));
-                    transaction.set(purchaseLogRef, { userId: userData.tgChatId, cost: premiumCost, purchasedAt: serverTimestamp(), expiresAt: Timestamp.fromDate(newExpiryDate) });
-                });
-
-                // Update local data after successful transaction
-                const userRef = doc(db, "users", userData.tgChatId);
-                const updatedUserSnap = await getDoc(userRef);
-                userData = updatedUserSnap.data();
-
-                showAlert("অভিনন্দন! আপনি এখন একজন প্রিমিয়াম ব্যবহারকারী।");
-                updateUI(); loadProfilePage(); loadSupportMenu();
-                navigateTo(document.querySelector('.sub-page.active').id);
-            } catch (error) { showAlert(`প্রিমিয়াম কিনতে সমস্যা হয়েছে: ${error.message}`); } 
-            finally { loader.style.display = 'none'; }
+                try {
+                    await runTransaction(db, async (transaction) => {
+                        const userRef = doc(db, "users", userData.tgChatId);
+                        const userDoc = await transaction.get(userRef);
+                        if (!userDoc.exists() || userDoc.data().balance < premiumCost) throw new Error("অপর্যাপ্ত ব্যালেন্স।");
+                        let newExpiryDate = (userDoc.data().isPremium && userDoc.data().premiumExpiresAt.toDate() > new Date()) ? userDoc.data().premiumExpiresAt.toDate() : new Date();
+                        newExpiryDate.setDate(newExpiryDate.getDate() + 20);
+                        const newBalance = userDoc.data().balance - premiumCost;
+                        transaction.update(userRef, { balance: newBalance, isPremium: true, premiumExpiresAt: Timestamp.fromDate(newExpiryDate) });
+                        transaction.set(doc(collection(db, "premium_purchases")), { userId: userData.tgChatId, cost: premiumCost, purchasedAt: serverTimestamp(), expiresAt: Timestamp.fromDate(newExpiryDate) });
+                        userData.balance = newBalance;
+                        userData.isPremium = true;
+                        userData.premiumExpiresAt = Timestamp.fromDate(newExpiryDate);
+                    });
+                    showAlert("অভিনন্দন! আপনি এখন একজন প্রিমিয়াম ব্যবহারকারী।");
+                    updateUI(); loadProfilePage(); loadSupportMenu();
+                    navigateTo(document.querySelector('.sub-page.active').id);
+                } catch (error) { showAlert(`প্রিমিয়াম কিনতে সমস্যা হয়েছে: ${error.message}`); } 
+                finally { loader.style.display = 'none'; }
+            }
         }
 
         function conditionallyLoadGlobalAds() {
@@ -1077,7 +1018,6 @@
             document.getElementById('features-recharge-btn').addEventListener('click', () => navigateTo('recharge-page'));
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
             document.getElementById('features-send-btn').addEventListener('click', () => navigateTo('send-page'));
-            document.getElementById('features-link-team-btn').addEventListener('click', () => navigateTo('link-team-page')); // New Listener
             document.getElementById('submit-recharge-btn').addEventListener('click', handleRechargeRequest);
             document.getElementById('submit-send-btn').addEventListener('click', handleSendRequest);
             document.getElementById('mail-details-ok-btn').addEventListener('click', () => document.getElementById('mail-details-modal').classList.add('hidden'));
@@ -1092,7 +1032,7 @@
                 overlay.addEventListener('click', (e) => { if (e.target === overlay) hideModal(overlay.id); });
             });
             window.addEventListener('contextmenu', function (e) {
-                if (!e.target.closest('input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #profile-id-btn, #link-team-page input')) {
+                if (!e.target.closest('input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #profile-id-btn')) {
                     e.preventDefault();
                 }
             });
@@ -1118,15 +1058,15 @@
                     if (codeData.type === 'balance') {
                         const newBalance = (userDoc.data().balance || 0) + codeData.value;
                         transaction.update(userRef, { balance: newBalance });
-                        userData.balance = newBalance; // local update
+                        userData.balance = newBalance;
                         showAlert(`অভিনন্দন! আপনার অ্যাকাউন্টে ৳${codeData.value.toFixed(2)} যোগ করা হয়েছে।`);
                     } else if (codeData.type === 'premium') {
                         let newExpiryDate = (userDoc.data().isPremium && userDoc.data().premiumExpiresAt && userDoc.data().premiumExpiresAt.toDate() > new Date()) ? userDoc.data().premiumExpiresAt.toDate() : new Date();
                         newExpiryDate.setDate(newExpiryDate.getDate() + codeData.value);
                         const expiryTimestamp = Timestamp.fromDate(newExpiryDate);
                         transaction.update(userRef, { isPremium: true, premiumExpiresAt: expiryTimestamp });
-                        userData.isPremium = true; // local update
-                        userData.premiumExpiresAt = expiryTimestamp; // local update
+                        userData.isPremium = true;
+                        userData.premiumExpiresAt = expiryTimestamp;
                         showAlert(`অভিনন্দন! আপনি ${codeData.value} দিনের জন্য প্রিমিয়াম সাবস্ক্রিপশন পেয়েছেন।`);
                     }
                     transaction.update(codeRef, { isUsed: true, usedBy: userData.tgChatId, usedAt: serverTimestamp() });
@@ -1136,8 +1076,9 @@
                 hideModal('redeem-code-modal');
             } catch (error) {
                 showAlert(error.message || "কোড রিডিম করতে সমস্যা হয়েছে।");
-            } finally { 
                 hideModal('redeem-code-modal');
+                navigateTo('home-page');
+            } finally { 
                 loader.style.display = 'none'; 
             }
         }
@@ -1175,10 +1116,8 @@
                     if (notification.userId && notification.userId !== userData.tgChatId) {
                         return;
                     }
-                     if (!notification.userId || notification.userId === userData.tgChatId) {
-                        if (notification.createdAt.toMillis() > lastSeen) {
-                            unreadCount++;
-                        }
+                    if (notification.createdAt.toMillis() > lastSeen) {
+                        unreadCount++;
                     }
                 });
 
@@ -1276,7 +1215,7 @@
                     senderNumber: senderNumber, transactionId: transactionId, status: "pending", requestedAt: serverTimestamp()
                 });
                 showAlert("আপনার ডিপোজিট অনুরোধ সফলভাবে জমা হয়েছে।");
-                await createPersonalNotification(userData.tgChatId, "Deposit Request Submitted", `Your request to deposit ৳${amount} via ${method} has been submitted for review.`);
+                await createPersonalNotification("Deposit Request Submitted", `Your request to deposit ৳${amount} via ${method} has been submitted for review.`);
                 document.getElementById('deposit-method').value = '';
                 document.getElementById('deposit-amount').value = '';
                 document.getElementById('sender-number').value = '';
@@ -1337,21 +1276,12 @@
                 let mailsWithStock = (appConfig.mails || []).map((mail, index) => ({ ...mail, stock: stockCounts[index] }));
                 mailsWithStock.sort((a, b) => b.stock - a.stock);
 
-                let teamBalance = 0;
-                if(userData.linkedUserId) {
-                    const partnerSnap = await getDoc(doc(db, "users", userData.linkedUserId));
-                    if(partnerSnap.exists()) {
-                        teamBalance = partnerSnap.data().balance;
-                    }
-                }
-                const combinedBalance = userData.balance + teamBalance;
-
                 mailListEl.innerHTML = '';
                 mailsWithStock.forEach(mail => {
                     const stock = mail.stock;
                     const costInBdt = mail.priceBdt;
                     const isOutOfStock = stock === 0;
-                    const insufficientBalance = combinedBalance < costInBdt;
+                    const insufficientBalance = userData.balance < costInBdt;
                     const buyButtonDisabled = isOutOfStock || insufficientBalance ? 'disabled' : '';
                     const buyButtonClasses = isOutOfStock || insufficientBalance ? 'bg-gray-400 cursor-not-allowed' : 'btn-gradient';
                     const validityTagHtml = (mail.expirationDays !== undefined && mail.expirationDays !== null) ? `<span class="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">${mail.expirationDays} h</span>` : '';
@@ -1394,10 +1324,10 @@
                 }
                 lucide.createIcons();
                 if (insufficientBalanceInterval) { clearInterval(insufficientBalanceInterval); insufficientBalanceInterval = null; }
-                
+                const hasSufficientBalanceForAny = mailsWithStock.some(mail => userData.balance >= mail.priceBdt && mail.stock > 0);
                 const hasAnyStock = mailsWithStock.some(mail => mail.stock > 0);
-                if (combinedBalance < Math.min(...mailsWithStock.map(m => m.priceBdt)) && hasAnyStock) {
-                     insufficientBalanceInterval = setInterval(() => {
+                if (!hasSufficientBalanceForAny && hasAnyStock) {
+                    insufficientBalanceInterval = setInterval(() => {
                         const isAnyModalOpen = document.querySelector('#custom-alert:not(.hidden), .modal-overlay.active');
                         if (!isAnyModalOpen) {
                             document.getElementById('insufficient-balance-modal').classList.remove('hidden');
@@ -1449,59 +1379,46 @@
         }
 
         window.buyMail = async function(mailType, cost, stockKey) {
+            if (userData.balance < cost) {
+                document.getElementById('insufficient-balance-modal').classList.remove('hidden');
+                lucide.createIcons();
+                return;
+            }
+            if (!confirm(`আপনি কি ৳${cost.toFixed(2)} দিয়ে একটি ${mailType} কিনতে চান?`)) return;
+            loader.style.display = 'flex';
             try {
-                const { sufficient, primaryUserId, secondaryUserId } = await checkTeamBalance(cost);
-                if (!sufficient) {
-                    document.getElementById('insufficient-balance-modal').classList.remove('hidden');
-                    lucide.createIcons();
-                    return;
-                }
-                if (!confirm(`আপনি কি ৳${cost.toFixed(2)} দিয়ে একটি ${mailType} কিনতে চান?`)) return;
-                loader.style.display = 'flex';
-
-                let purchasedMailData;
-                await runTransaction(db, async (transaction) => {
+                const purchasedMailData = await runTransaction(db, async (transaction) => {
                     const counterRef = doc(db, "counters", "mail_purchase");
                     const q = query(collection(db, stockKey), where("isSold", "==", false), limit(1));
                     const mailQuerySnapshot = await getDocs(q);
                     if (mailQuerySnapshot.empty) throw "দুঃখিত, এই ধরনের মেইল বর্তমানে স্টক শেষ।";
-
                     const mailDoc = mailQuerySnapshot.docs[0];
                     const mailData = mailDoc.data();
-                    const { usedFromPrimary, usedFromSecondary } = await deductTeamBalance(transaction, cost, primaryUserId, secondaryUserId, `Mail Purchase: ${mailType}`);
-                    
-                    if (!counterRef) throw "Sale ID counter not found. Please setup 'counters/mail_purchase'.";
-                    const counterSnap = await transaction.get(counterRef);
+                    const userRef = doc(db, "users", userData.tgChatId);
+                    const [counterSnap, userSnap] = await Promise.all([ transaction.get(counterRef), transaction.get(userRef) ]);
+                    if (!userSnap.exists() || userSnap.data().balance < cost) throw `অপর্যাপ্ত ব্যালেন্স।`;
+                    if (!counterSnap.exists()) throw "Sale ID counter not found. Please setup 'counters/mail_purchase'.";
                     const saleId = counterSnap.data().currentId;
                     transaction.update(counterRef, { currentId: saleId + 1 });
-
+                    transaction.update(userRef, { balance: userSnap.data().balance - cost });
                     transaction.update(mailDoc.ref, { isSold: true, soldTo: userData.tgChatId, soldAt: serverTimestamp() });
                     const purchaseLogRef = doc(collection(db, "mail_purchases"));
                     transaction.set(purchaseLogRef, {
                         saleId: saleId, userId: userData.tgChatId, mailType: mailType, mail: mailData.email,
                         password: mailData.password || null, refreshToken: mailData.refresh_token || null,
-                        clientId: mailData.client_id || null, cost: cost, purchasedAt: serverTimestamp(),
-                        usedFromPrimary: usedFromPrimary, usedFromSecondary: usedFromSecondary
+                        clientId: mailData.client_id || null, cost: cost, purchasedAt: serverTimestamp()
                     });
-                    purchasedMailData = mailData;
+                    return mailData;
                 });
-                
-                // Fetch the latest user data after the transaction
-                const userRef = doc(db, "users", userData.tgChatId);
-                const updatedUserSnap = await getDoc(userRef);
-                userData = updatedUserSnap.data();
-
+                userData.balance -= cost;
                 updateUI();
                 document.getElementById('purchase-success-email').textContent = purchasedMailData.email;
                 document.getElementById('purchase-success-password').textContent = purchasedMailData.password || 'N/A';
                 document.getElementById('purchase-success-modal').classList.remove('hidden');
                 lucide.createIcons();
                 loadMailStore();
-            } catch (e) {
-                showAlert(typeof e === 'string' ? e : "কিনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
-            } finally {
-                loader.style.display = 'none';
-            }
+            } catch (e) { showAlert(typeof e === 'string' ? e : "কিনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"); }
+            finally { loader.style.display = 'none'; }
         }
 
         window.showMailDetails = function(mailType, details) {
@@ -1542,8 +1459,7 @@
             const userInteractionRef = doc(db, "updates", updateId, "userInteractions", userData.tgChatId);
             try {
                 await runTransaction(db, async (transaction) => {
-                    const interactionDoc = await transaction.get(userInteractionRef);
-                    if (interactionDoc.exists()) throw new Error("You have already cast your vote.");
+                    if ((await transaction.get(userInteractionRef)).exists()) throw new Error("You have already cast your vote.");
                     const updateDoc = await transaction.get(updateRef);
                     if (!updateDoc.exists()) throw new Error("Update not found.");
                     const fieldToUpdate = voteType === 'like' ? 'likes' : 'dislikes';
@@ -1701,89 +1617,57 @@
             const amountInput = document.getElementById(`${pageType}-amount`);
             const feeDisplay = document.getElementById(`${pageType}-fee-display`);
             if (!amountInput || !feeDisplay) return;
-            
-            amountInput.addEventListener('input', async () => {
+            amountInput.addEventListener('input', () => {
+                const maxAmount = Math.floor(userData.balance / 1.05);
                 let currentAmount = parseInt(amountInput.value);
                 if (isNaN(currentAmount) || currentAmount < 0) currentAmount = 0;
-                
-                const fee = currentAmount * 0.05;
-                const totalCost = currentAmount + fee;
-                
-                const { combinedBalance } = await checkTeamBalance(0);
-                const maxAmount = Math.floor(combinedBalance / 1.05);
-
-                if (currentAmount > maxAmount) {
-                    amountInput.value = maxAmount;
-                    currentAmount = maxAmount;
-                }
-                
+                if (currentAmount > maxAmount) { amountInput.value = maxAmount; currentAmount = maxAmount; }
                 if (currentAmount > 0) {
-                    const updatedFee = currentAmount * 0.05;
-                    feeDisplay.textContent = `Fee (5%): ৳${updatedFee.toFixed(2)}`;
-                } else {
-                    feeDisplay.textContent = '';
-                }
+                    const fee = currentAmount * 0.05;
+                    feeDisplay.textContent = `Fee (5%): ৳${fee.toFixed(2)}`;
+                } else { feeDisplay.textContent = ''; }
             });
         }
+
         async function handleSendRequest() {
             const recipientId = document.getElementById('send-recipient-id').value.trim();
             const amountStr = document.getElementById('send-amount').value;
             if (!recipientId || !amountStr) return showAlert("অনুগ্রহ করে প্রাপকের আইডি এবং টাকার পরিমাণ লিখুন।");
             if (recipientId === userData.tgChatId) return showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
-            if (recipientId === userData.linkedUserId) return showAlert("আপনি আপনার সংযুক্ত সঙ্গীর কাছে ব্যালেন্স পাঠাতে পারবেন না। তারা সরাসরি আপনার ব্যালেন্স ব্যবহার করতে পারে।");
-
             const amount = parseFloat(amountStr);
             if (isNaN(amount) || amount < 20) return showAlert("সর্বনিম্ন পাঠানোর পরিমাণ ৳20।");
             const fee = amount * 0.05;
             const totalCost = amount + fee;
-            
-            const { sufficient, combinedBalance } = await checkTeamBalance(totalCost);
-            if (!sufficient) return showAlert(`আপনার এবং আপনার সঙ্গীর সম্মিলিত ব্যালেন্সও পর্যাপ্ত নয়। প্রয়োজন ৳${totalCost.toFixed(2)}, আছে ৳${combinedBalance.toFixed(2)}।`);
-
+            if (totalCost > userData.balance) return showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
             if (!confirm(`আপনি কি ${recipientId} আইডিতে ৳${amount.toFixed(2)} পাঠাতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) return;
-            
             loader.style.display = 'flex';
+            const senderRef = doc(db, "users", userData.tgChatId);
+            const recipientRef = doc(db, "users", recipientId);
             try {
-                await runTransaction(db, async (transaction) => {
-                    const recipientRef = doc(db, "users", recipientId);
+                const recipientDocForName = await runTransaction(db, async (transaction) => {
+                    const senderDoc = await transaction.get(senderRef);
                     const recipientDoc = await transaction.get(recipientRef);
+                    if (!senderDoc.exists() || senderDoc.data().balance < totalCost) throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
                     if (!recipientDoc.exists()) throw "প্রাপক আইডি (Recipient ID) খুঁজে পাওয়া যায়নি।";
-                    
-                    const { usedFromPrimary, usedFromSecondary } = await deductTeamBalance(transaction, totalCost, userData.tgChatId, userData.linkedUserId, `Send Money to ${recipientDoc.data().name}`);
-                    
+                    const newSenderBalance = senderDoc.data().balance - totalCost;
                     const newRecipientBalance = recipientDoc.data().balance + amount;
+                    transaction.update(senderRef, { balance: newSenderBalance });
                     transaction.update(recipientRef, { balance: newRecipientBalance });
-                    
                     const transferLogRef = doc(collection(db, "transfers"));
-                    transaction.set(transferLogRef, { 
-                        fromId: userData.tgChatId, 
-                        fromName: userData.name, 
-                        toId: recipientId, 
-                        toName: recipientDoc.data().name, 
-                        amount: amount, 
-                        fee: fee, 
-                        totalDeducted: totalCost, 
-                        timestamp: serverTimestamp() 
-                    });
+                    transaction.set(transferLogRef, { fromId: userData.tgChatId, fromName: userData.name, toId: recipientId, toName: recipientDoc.data().name, amount: amount, fee: fee, totalDeducted: totalCost, timestamp: serverTimestamp() });
+                    return recipientDoc.data();
                 });
-
-                // Update local data and UI
-                const userRef = doc(db, "users", userData.tgChatId);
-                userData = (await getDoc(userRef)).data();
+                userData.balance -= totalCost;
                 updateUI();
-
                 showAlert(`সফলভাবে ৳${amount.toFixed(2)} পাঠানো হয়েছে।`);
-                
-                // Clear inputs and navigate
+                await createPersonalNotification("Balance Sent", `You have successfully sent ৳${amount.toFixed(2)} to ${recipientDocForName.name} (ID: ${recipientId}).`);
                 document.getElementById('send-recipient-id').value = '';
                 document.getElementById('send-amount').value = '';
                 document.getElementById('send-fee-display').textContent = '';
                 navigateTo('features-page');
             } catch (error) {
                 showAlert(typeof error === 'string' ? error : "ব্যালেন্স পাঠাতে সমস্যা হয়েছে।");
-            } finally {
-                loader.style.display = 'none';
-            }
+            } finally { loader.style.display = 'none'; }
         }
 
         async function handleRechargeRequest() {
@@ -1797,41 +1681,23 @@
             if (isNaN(amount) || amount < 20) return showAlert("সর্বনিম্ন রিচার্জের পরিমাণ ৳20।");
             const fee = amount * 0.05;
             const totalCost = amount + fee;
-            
-            const { sufficient, combinedBalance } = await checkTeamBalance(totalCost);
-            if (!sufficient) return showAlert(`আপনার এবং আপনার সঙ্গীর সম্মিলিত ব্যালেন্সও পর্যাপ্ত নয়। প্রয়োজন ৳${totalCost.toFixed(2)}, আছে ৳${combinedBalance.toFixed(2)}।`);
-
+            if (totalCost > userData.balance) return showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
             if (!confirm(`আপনি কি ${number} নম্বরে ৳${amount.toFixed(2)} রিচার্জ করতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) return;
-            
             loader.style.display = 'flex';
             try {
-                await runTransaction(db, async (transaction) => {
-                    await deductTeamBalance(transaction, totalCost, userData.tgChatId, userData.linkedUserId, `Mobile Recharge: ${number}`);
-
-                    const rechargeRequestRef = doc(collection(db, "recharge_requests"));
-                    transaction.set(rechargeRequestRef, { 
-                        userId: userData.tgChatId, 
-                        userName: userData.name, 
-                        mobileNumber: number, 
-                        amount: amount, 
-                        operator: operator, 
-                        rechargeType: type, 
-                        fee: fee, 
-                        totalDeducted: totalCost, 
-                        status: "pending", 
-                        requestedAt: serverTimestamp() 
-                    });
-                });
-                
-                // Update local data and UI
                 const userRef = doc(db, "users", userData.tgChatId);
-                userData = (await getDoc(userRef)).data();
+                await runTransaction(db, async (transaction) => {
+                    const userDoc = await transaction.get(userRef);
+                    if (!userDoc.exists() || userDoc.data().balance < totalCost) throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
+                    const newBalance = userDoc.data().balance - totalCost;
+                    transaction.update(userRef, { balance: newBalance });
+                    const rechargeRequestRef = doc(collection(db, "recharge_requests"));
+                    transaction.set(rechargeRequestRef, { userId: userData.tgChatId, userName: userData.name, mobileNumber: number, amount: amount, operator: operator, rechargeType: type, fee: fee, totalDeducted: totalCost, status: "pending", requestedAt: serverTimestamp() });
+                });
+                userData.balance -= totalCost;
                 updateUI();
-
                 showAlert("আপনার রিচার্জ অনুরোধ সফলভাবে জমা হয়েছে।");
-                await createPersonalNotification(userData.tgChatId, "Recharge Request Submitted", `Your recharge request of ৳${amount} for ${number} has been submitted.`);
-                
-                // Clear inputs and reload history
+                await createPersonalNotification("Recharge Request Submitted", `Your recharge request of ৳${amount} for ${number} has been submitted.`);
                 document.getElementById('recharge-number').value = '';
                 document.getElementById('recharge-amount').value = '';
                 document.getElementById('recharge-operator').value = '';
@@ -1839,9 +1705,7 @@
                 loadRechargeHistory();
             } catch (error) {
                 showAlert(typeof error === 'string' ? error : "রিচার্জ অনুরোধে সমস্যা হয়েছে।");
-            } finally {
-                loader.style.display = 'none';
-            }
+            } finally { loader.style.display = 'none'; }
         }
 
         async function loadRechargeHistory() {
@@ -1922,246 +1786,6 @@
             } else {
                 showAlert("OTP Mail service is currently unavailable.");
             }
-        }
-        
-        // =======================================================
-        // NEW: LINK TEAM FUNCTIONS
-        // =======================================================
-        
-        async function loadLinkTeamPage() {
-            const statusContainer = document.getElementById('link-team-status-container');
-            const requestsContainer = document.getElementById('link-team-requests-container');
-            statusContainer.innerHTML = getLoadingHTML();
-            requestsContainer.innerHTML = '';
-
-            // Refresh user data
-            const userRef = doc(db, "users", userData.tgChatId);
-            userData = (await getDoc(userRef)).data();
-            
-            let statusHtml = '';
-
-            if (userData.linkedUserId) {
-                const partnerSnap = await getDoc(doc(db, "users", userData.linkedUserId));
-                if (partnerSnap.exists()) {
-                    const partner = partnerSnap.data();
-                    statusHtml = `<div class="card-bg p-5 rounded-xl text-center space-y-3">
-                                    <i data-lucide="link" class="w-10 h-10 mx-auto text-green-500"></i>
-                                    <h3 class="font-semibold text-lg">You are linked with</h3>
-                                    <p class="text-2xl font-bold text-gray-800">${partner.name}</p>
-                                    <p class="text-sm text-gray-500">(ID: ${partner.tgChatId})</p>
-                                    <button onclick="handleUnlink()" class="w-full p-3 mt-2 rounded-lg btn-danger">Unlink</button>
-                                </div>`;
-                } else {
-                    statusHtml = `<div class="card-bg p-5 rounded-xl"><p class="text-red-500 text-center">Error: Linked partner not found. Please unlink.</p><button onclick="handleUnlink()" class="w-full p-3 mt-2 rounded-lg btn-danger">Unlink</button></div>`;
-                }
-            } else if (userData.linkRequestSentTo) {
-                const recipientSnap = await getDoc(doc(db, "users", userData.linkRequestSentTo));
-                 if (recipientSnap.exists()) {
-                    const recipient = recipientSnap.data();
-                    statusHtml = `<div class="card-bg p-5 rounded-xl text-center space-y-3">
-                                    <i data-lucide="hourglass" class="w-10 h-10 mx-auto text-yellow-500"></i>
-                                    <h3 class="font-semibold text-lg">Request Sent To</h3>
-                                    <p class="text-2xl font-bold text-gray-800">${recipient.name}</p>
-                                    <p class="text-sm text-gray-500">(ID: ${recipient.tgChatId})</p>
-                                    <p class="text-gray-600 mt-2">Waiting for response...</p>
-                                    <button onclick="handleCancelLinkRequest()" class="w-full p-3 mt-2 rounded-lg btn-danger">Cancel Request</button>
-                                </div>`;
-                }
-            } else {
-                 statusHtml = `<div class="card-bg p-5 rounded-xl space-y-4">
-                                <h3 class="font-semibold text-lg flex items-center gap-2"><i data-lucide="user-plus" class="w-6 h-6 text-[#007bff]"></i><span>Send Link Request</span></h3>
-                                <p class="text-sm text-gray-600">অন্য ব্যবহারকারীর সাথে আপনার অ্যাকাউন্ট লিঙ্ক করুন এবং প্রয়োজনে তার ব্যালেন্স ব্যবহার করুন।</p>
-                                <div>
-                                    <label for="link-recipient-id" class="block text-sm font-medium text-gray-600 mb-2">Recipient's Telegram ID</label>
-                                    <input id="link-recipient-id" type="number" placeholder="Enter Telegram Chat ID" class="w-full p-3 rounded-lg input-field">
-                                </div>
-                                <button onclick="handleSendLinkRequest()" class="w-full p-3 rounded-lg btn-gradient">Send Request</button>
-                              </div>`;
-            }
-            statusContainer.innerHTML = statusHtml;
-
-            if (userData.linkRequestsFrom && userData.linkRequestsFrom.length > 0) {
-                let requestsHtml = `<div class="card-bg p-5 rounded-xl space-y-4">
-                                        <h3 class="font-semibold text-lg">Pending Requests</h3>`;
-                for (const senderId of userData.linkRequestsFrom) {
-                    const senderSnap = await getDoc(doc(db, "users", senderId));
-                    if (senderSnap.exists()) {
-                        const sender = senderSnap.data();
-                        requestsHtml += `<div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-                                            <div>
-                                                <p class="font-bold">${sender.name}</p>
-                                                <p class="text-xs text-gray-500">ID: ${sender.tgChatId}</p>
-                                            </div>
-                                            <div class="flex gap-2">
-                                                <button onclick="handleAcceptLinkRequest('${sender.tgChatId}')" class="p-2 bg-green-500 text-white rounded-full hover:bg-green-600"><i data-lucide="check" class="w-5 h-5"></i></button>
-                                                <button onclick="handleRejectLinkRequest('${sender.tgChatId}')" class="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"><i data-lucide="x" class="w-5 h-5"></i></button>
-                                            </div>
-                                         </div>`;
-                    }
-                }
-                requestsHtml += `</div>`;
-                requestsContainer.innerHTML = requestsHtml;
-            }
-            lucide.createIcons();
-        }
-        
-        window.handleSendLinkRequest = async function() {
-            const recipientId = document.getElementById('link-recipient-id').value.trim();
-            if (!recipientId) return showAlert("Please enter a recipient ID.");
-            if (recipientId === userData.tgChatId) return showAlert("You cannot link with yourself.");
-
-            loader.style.display = 'flex';
-            try {
-                const recipientRef = doc(db, "users", recipientId);
-                const recipientSnap = await getDoc(recipientRef);
-                if (!recipientSnap.exists()) throw "Recipient not found.";
-                
-                await runTransaction(db, async (transaction) => {
-                    const userRef = doc(db, "users", userData.tgChatId);
-                    const userSnap = await transaction.get(userRef);
-                    const currentRecipientSnap = await transaction.get(recipientRef);
-                    
-                    if (userSnap.data().linkedUserId || userSnap.data().linkRequestSentTo) throw "You already have a linked partner or a pending request.";
-                    if (currentRecipientSnap.data().linkedUserId || currentRecipientSnap.data().linkRequestSentTo) throw "This user is already linked or has a pending request.";
-
-                    transaction.update(userRef, { linkRequestSentTo: recipientId });
-                    transaction.update(recipientRef, { linkRequestsFrom: arrayUnion(userData.tgChatId) });
-                });
-
-                await createPersonalNotification(recipientId, "Link Request", `${userData.name} wants to link with you.`);
-                showAlert("Link request sent successfully!");
-                loadLinkTeamPage();
-            } catch (e) { showAlert(typeof e === 'string' ? e : "Failed to send request."); }
-            finally { loader.style.display = 'none'; }
-        }
-
-        window.handleCancelLinkRequest = async function() {
-            if (!userData.linkRequestSentTo) return;
-            loader.style.display = 'flex';
-            const recipientId = userData.linkRequestSentTo;
-            try {
-                await runTransaction(db, async (transaction) => {
-                    const userRef = doc(db, "users", userData.tgChatId);
-                    const recipientRef = doc(db, "users", recipientId);
-                    transaction.update(userRef, { linkRequestSentTo: null });
-                    transaction.update(recipientRef, { linkRequestsFrom: arrayRemove(userData.tgChatId) });
-                });
-                showAlert("Request cancelled.");
-                loadLinkTeamPage();
-            } catch(e) { showAlert("Failed to cancel request."); }
-            finally { loader.style.display = 'none'; }
-        }
-
-        window.handleAcceptLinkRequest = async function(senderId) {
-             loader.style.display = 'flex';
-             try {
-                await runTransaction(db, async (transaction) => {
-                    const userRef = doc(db, "users", userData.tgChatId);
-                    const senderRef = doc(db, "users", senderId);
-                    const userSnap = await transaction.get(userRef);
-                    const senderSnap = await transaction.get(senderRef);
-
-                    if (userSnap.data().linkedUserId || senderSnap.data().linkedUserId) throw "One of the users is already linked.";
-                    
-                    // Accept
-                    transaction.update(userRef, { linkedUserId: senderId, linkRequestsFrom: arrayRemove(senderId) });
-                    transaction.update(senderRef, { linkedUserId: userData.tgChatId, linkRequestSentTo: null });
-                });
-                await createPersonalNotification(senderId, "Request Accepted", `${userData.name} accepted your link request.`);
-                showAlert("You are now linked!");
-                loadLinkTeamPage();
-             } catch(e) { showAlert(typeof e === 'string' ? e : "Failed to accept request."); }
-             finally { loader.style.display = 'none'; }
-        }
-
-        window.handleRejectLinkRequest = async function(senderId) {
-            loader.style.display = 'flex';
-            try {
-                await runTransaction(db, async (transaction) => {
-                    const userRef = doc(db, "users", userData.tgChatId);
-                    const senderRef = doc(db, "users", senderId);
-                    transaction.update(userRef, { linkRequestsFrom: arrayRemove(senderId) });
-                    transaction.update(senderRef, { linkRequestSentTo: null });
-                });
-                await createPersonalNotification(senderId, "Request Rejected", `${userData.name} rejected your link request.`);
-                showAlert("Request rejected.");
-                loadLinkTeamPage();
-            } catch(e) { showAlert("Failed to reject request."); }
-            finally { loader.style.display = 'none'; }
-        }
-
-        window.handleUnlink = async function() {
-            if (!userData.linkedUserId) return;
-            if (!confirm("Are you sure you want to unlink?")) return;
-
-            loader.style.display = 'flex';
-            const partnerId = userData.linkedUserId;
-            try {
-                 await runTransaction(db, async (transaction) => {
-                    const userRef = doc(db, "users", userData.tgChatId);
-                    const partnerRef = doc(db, "users", partnerId);
-                    transaction.update(userRef, { linkedUserId: null });
-                    transaction.update(partnerRef, { linkedUserId: null });
-                });
-                await createPersonalNotification(partnerId, "Team Unlinked", `${userData.name} has unlinked from you.`);
-                showAlert("Successfully unlinked.");
-                loadLinkTeamPage();
-            } catch(e) { showAlert("Failed to unlink."); }
-            finally { loader.style.display = 'none'; }
-        }
-        
-        // =======================================================
-        // NEW: SHARED BALANCE LOGIC
-        // =======================================================
-
-        async function checkTeamBalance(cost) {
-            let primaryBalance = userData.balance;
-            let secondaryBalance = 0;
-            let secondaryUserId = null;
-
-            if (userData.linkedUserId) {
-                const partnerSnap = await getDoc(doc(db, "users", userData.linkedUserId));
-                if (partnerSnap.exists()) {
-                    secondaryBalance = partnerSnap.data().balance;
-                    secondaryUserId = userData.linkedUserId;
-                }
-            }
-            const combinedBalance = primaryBalance + secondaryBalance;
-            return {
-                sufficient: combinedBalance >= cost,
-                combinedBalance: combinedBalance,
-                primaryUserId: userData.tgChatId,
-                secondaryUserId: secondaryUserId
-            };
-        }
-        
-        async function deductTeamBalance(transaction, totalCost, primaryUserId, secondaryUserId, reason) {
-            const primaryUserRef = doc(db, "users", primaryUserId);
-            const primaryUserSnap = await transaction.get(primaryUserRef);
-            if (!primaryUserSnap.exists()) throw new Error("Primary user not found.");
-            
-            const primaryBalance = primaryUserSnap.data().balance;
-            let usedFromPrimary = Math.min(totalCost, primaryBalance);
-            let usedFromSecondary = totalCost - usedFromPrimary;
-            
-            transaction.update(primaryUserRef, { balance: primaryBalance - usedFromPrimary });
-            
-            if (usedFromSecondary > 0) {
-                if (!secondaryUserId) throw new Error("Insufficient balance and no linked partner to pull from.");
-                
-                const secondaryUserRef = doc(db, "users", secondaryUserId);
-                const secondaryUserSnap = await transaction.get(secondaryUserRef);
-                if (!secondaryUserSnap.exists()) throw new Error("Linked partner not found.");
-                
-                const secondaryBalance = secondaryUserSnap.data().balance;
-                if (secondaryBalance < usedFromSecondary) throw new Error("Insufficient combined team balance.");
-                
-                transaction.update(secondaryUserRef, { balance: secondaryBalance - usedFromSecondary });
-
-                // Notify the secondary user
-                await createPersonalNotification(secondaryUserId, "Balance Used by Partner", `Your partner ${primaryUserSnap.data().name} used ৳${usedFromSecondary.toFixed(2)} from your balance for: ${reason}.`);
-            }
-            return { usedFromPrimary, usedFromSecondary };
         }
 
     </script>
