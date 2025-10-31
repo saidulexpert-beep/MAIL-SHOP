@@ -137,11 +137,6 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* Ads Carousel */
-        #ads-container { height: 120px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
-        .ad-slide { min-width: 100%; background-size: cover; background-position: center; }
-        #ads-dots .dot { height: 6px; width: 6px; }
-
         /* UPDATED Premium Loader Styles */
         #loader { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; transition: opacity 0.5s ease; }
         #loader .logo-container { animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards, breath 2.5s ease-in-out infinite 1s; }
@@ -352,18 +347,6 @@
                             <button id="home-deposit-btn" class="btn-gradient px-6 py-2 rounded-lg">Deposit</button>
                         </div>
                     </div>
-
-                    <div id="ads-section">
-                        <h2 class="text-xl font-bold px-2 mb-3 premium-title">✨ Promotions</h2>
-                        <div id="ads-container" class="relative w-full overflow-hidden rounded-xl">
-                            <div id="ads-inner" class="flex transition-transform duration-500 ease-in-out">
-                                <a href="#" target="_blank" class="ad-slide block" style="background-image: url('https://i.postimg.cc/52HsFwvV/Black-and-Orange-Money-You-Tube-Thumbnail-20250917-224706-0000.png')"></a>
-                                <a href="#" target="_blank" class="ad-slide block" style="background-image: url('https://i.postimg.cc/W1syFD8p/Grey-Blue-Illustration-Refer-a-Friend-Instagram-Post-1080-x-720-px-20250917-223749-0000.png')"></a>
-                            </div>
-                            <div id="ads-dots" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-2">
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -475,10 +458,6 @@
             <div id="features-page" class="p-4 space-y-8 sub-page">
                 <div class="grid grid-cols-2 gap-4 text-center">
                     <div class="card-bg p-4 rounded-xl">
-                        <p class="text-sm text-gray-400 mb-1">TOTAL RECHARGE</p>
-                        <p id="total-recharge-display" class="text-2xl font-bold text-purple-500">৳0.00</p>
-                    </div>
-                    <div class="card-bg p-4 rounded-xl">
                         <p class="text-sm text-gray-400 mb-1">TOTAL SEND</p>
                         <p id="total-send-display" class="text-2xl font-bold text-orange-500">৳0.00</p>
                     </div>
@@ -494,7 +473,7 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <button id="features-deposit-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-green-500 to-emerald-500 shadow-lg btn">Deposit</button>
-                    <button id="features-recharge-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg btn">Mobile Recharge</button>
+                    <button id="features-link-team-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg btn">LINK TEAM</button>
                     <button id="features-receive-btn" class="p-3 rounded-lg font-bold text-white bg-gradient-to-r from-blue-500 to-sky-500 shadow-lg btn flex items-center justify-center gap-1">
                         <i data-lucide="arrow-down-to-line" class="w-4 h-4"></i>
                         <span>Receive</span>
@@ -519,56 +498,35 @@
                 </div>
             </div>
 
-            <div id="recharge-page" class="p-4 space-y-6 sub-page">
+            <!-- =========== NEW LINK TEAM PAGE =========== -->
+            <div id="link-team-page" class="p-4 space-y-6 sub-page">
                 <div class="relative flex items-center justify-center mb-4">
                     <button onclick="navigateTo('features-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
                         <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
                     </button>
-                    <h2 class="text-xl font-bold text-center text-gray-800">Mobile Recharge</h2>
+                    <h2 class="text-xl font-bold text-center text-gray-800">Link Team</h2>
                 </div>
                 <div class="card-bg p-5 rounded-xl space-y-5">
                     <div>
-                        <h3 class="font-semibold text-lg flex items-center gap-2 mb-4"><i data-lucide="smartphone" class="w-6 h-6 text-[#007bff]"></i><span>রিচার্জ করুন</span></h3>
-                        <p class="text-sm text-center text-red-600 bg-red-100 p-2 rounded-lg mb-4">প্রতিটি রিচার্জে 5% ফি প্রযোজ্য।</p>
+                        <h3 class="font-semibold text-lg flex items-center gap-2 mb-4"><i data-lucide="users" class="w-6 h-6 text-[#007bff]"></i><span>Add Friend to Team</span></h3>
+                        <p class="text-sm text-center text-gray-600 bg-gray-100 p-2 rounded-lg mb-4">আপনার বন্ধুর Telegram Chat ID দিয়ে তাকে আপনার টিমের সাথে যুক্ত করুন। যুক্ত হলে সে আপনার ব্যালেন্স ব্যবহার করে মেইল কিনতে পারবে।</p>
                         <div class="space-y-4">
                             <div>
-                                <label for="recharge-number" class="block text-sm font-medium text-gray-600 mb-2">মোবাইল নম্বর</label>
-                                <input id="recharge-number" type="tel" placeholder="e.g., 018********" class="w-full p-3 rounded-lg input-field">
+                                <label for="link-friend-id" class="block text-sm font-medium text-gray-600 mb-2">Friend's Chat ID</label>
+                                <input id="link-friend-id" type="text" placeholder="Enter friend's chat ID" class="w-full p-3 rounded-lg input-field">
                             </div>
-                            <div>
-                                <label for="recharge-amount" class="block text-sm font-medium text-gray-600 mb-2">টাকার পরিমাণ (BDT)</label>
-                                <input id="recharge-amount" type="number" placeholder="Minimum ৳20" class="w-full p-3 rounded-lg input-field">
-                                <p id="recharge-fee-display" class="text-sm text-green-600 mt-1 h-5"></p>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label for="recharge-operator" class="block text-sm font-medium text-gray-600 mb-2">অপারেটর</label>
-                                    <select id="recharge-operator" class="w-full p-3 rounded-lg input-field">
-                                        <option value="">Select Operator</option>
-                                        <option value="Grameenphone">Grameenphone</option>
-                                        <option value="Robi">Robi</option>
-                                        <option value="Airtel">Airtel</option>
-                                        <option value="Banglalink">Banglalink</option>
-                                        <option value="Teletalk">Teletalk</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="recharge-type" class="block text-sm font-medium text-gray-600 mb-2">সিমের ধরন</label>
-                                    <select id="recharge-type" class="w-full p-3 rounded-lg input-field">
-                                        <option value="Prepaid">Prepaid</option>
-                                        <option value="Postpaid">Postpaid</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <button id="submit-recharge-btn" class="w-full p-3 rounded-lg btn-gradient">Submit Recharge</button>
+                            <button id="search-friend-btn" class="w-full p-3 rounded-lg btn-gradient">Search & Link Friend</button>
                         </div>
+                         <div id="friend-search-result" class="mt-4"></div>
                     </div>
                 </div>
                 <div class="mt-6">
-                    <h3 class="text-lg font-semibold mb-3">Recharge History</h3>
-                    <div id="recharge-history-list" class="space-y-3"></div>
+                    <h3 class="text-lg font-semibold mb-3">My Team Members</h3>
+                    <div id="linked-friends-list" class="space-y-3"></div>
                 </div>
             </div>
+            <!-- =========== END OF LINK TEAM PAGE =========== -->
+
 
             <div id="send-page" class="p-4 space-y-6 sub-page">
                 <div class="relative flex items-center justify-center mb-4">
@@ -708,7 +666,7 @@
         };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, Timestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, Timestamp, onSnapshot, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -783,7 +741,6 @@
                 userData = userSnap.data();
             } else {
                 const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
-                // --- REMOVED PIN-RELATED FIELDS FROM NEW USER DATA ---
                 userData = {
                     tgChatId: tgChatId,
                     name: userName,
@@ -791,10 +748,17 @@
                     balance: 0,
                     createdAt: serverTimestamp(),
                     isBlocked: false,
-                    lastSeenNotification: null
+                    lastSeenNotification: null,
+                    linkedUsers: [], // For team leader
+                    linkedBy: null, // For team member
+                    teamSpending: {} // To track spending of each team member
                 };
                 await setDoc(userRef, userData);
             }
+            
+            // Update last seen timestamp for online status
+            await updateDoc(userRef, { lastSeen: serverTimestamp() });
+
 
             if (userData.isBlocked) {
                 showAlert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
@@ -829,17 +793,12 @@
             const welcomeName = document.getElementById('header-welcome-name');
 
             // Update profile picture/initials
-            if (currentUserTg.photo_url) {
-                profilePic.src = currentUserTg.photo_url;
-                profilePic.classList.remove('hidden');
-                avatarDiv.classList.add('hidden');
-            } else {
-                const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
-                document.getElementById('header-initials').textContent = initials.toUpperCase();
-                profilePic.classList.add('hidden');
-                avatarDiv.classList.remove('hidden');
-            }
-
+            // Will implement getting TG profile pic later if possible, for now use initials
+            const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
+            document.getElementById('header-initials').textContent = initials.toUpperCase();
+            profilePic.classList.add('hidden');
+            avatarDiv.classList.remove('hidden');
+            
             // Update welcome name
             const firstName = currentUserTg.first_name || 'User';
             welcomeName.textContent = `Hi, ${firstName}!`;
@@ -850,7 +809,7 @@
             const balance = (userData.balance || 0).toFixed(2);
             document.getElementById('balance-display').textContent = `৳${balance}`;
             document.getElementById('header-balance-display').textContent = `৳${balance}`;
-            updateHeaderUI(); // Call the new header update function
+            updateHeaderUI();
         }
         // =========== END OF JAVASCRIPT FOR HEADER ===========
 
@@ -873,7 +832,7 @@
             });
 
             const pageLoadFunctions = {
-                'home-page': loadHomePageAds,
+                'home-page': () => {},
                 'pay-page': loadPaymentHistory,
                 'mail-page': loadMailStore,
                 'updates-page': () => { loadUpdates(); loadReviews(); },
@@ -881,10 +840,7 @@
                 'profile-page': loadProfilePage,
                 'features-page': loadFeaturesPage,
                 'tutorial-page': loadTutorials,
-                'recharge-page': () => {
-                    loadRechargeHistory();
-                    setupDynamicAmountHandlers('recharge');
-                },
+                'link-team-page': loadLinkedFriends,
                 'send-page': () => {
                     setupDynamicAmountHandlers('send');
                 }
@@ -917,15 +873,14 @@
             document.getElementById('menu-overlay').addEventListener('click', toggleMenu);
             document.getElementById('go-to-support-btn').addEventListener('click', toggleMenu);
             
-            // --- MODIFIED: Event listener for "More Features" button ---
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             
             document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
-            document.getElementById('features-recharge-btn').addEventListener('click', () => navigateTo('recharge-page'));
+            document.getElementById('features-link-team-btn').addEventListener('click', () => navigateTo('link-team-page')); // Changed
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
             document.getElementById('features-send-btn').addEventListener('click', () => navigateTo('send-page'));
-            document.getElementById('submit-recharge-btn').addEventListener('click', handleRechargeRequest);
             document.getElementById('submit-send-btn').addEventListener('click', handleSendRequest);
+            document.getElementById('search-friend-btn').addEventListener('click', handleSearchAndLinkFriend);
 
             document.getElementById('mail-details-ok-btn').addEventListener('click', () => {
                 document.getElementById('mail-details-modal').classList.add('hidden');
@@ -940,7 +895,7 @@
             document.getElementById('alert-ok-btn').addEventListener('click', () => {
                  document.getElementById('custom-alert').classList.add('hidden');
             });
-            // MODIFIED: Event listeners for the new purchase success modal
+
             const hidePurchaseSuccessModal = () => document.getElementById('purchase-success-modal').classList.add('hidden');
             document.getElementById('purchase-success-buy-again-btn').addEventListener('click', hidePurchaseSuccessModal);
             document.getElementById('close-purchase-success-modal').addEventListener('click', hidePurchaseSuccessModal);
@@ -1006,16 +961,12 @@
             const avatarDiv = document.getElementById('profile-initials-avatar');
 
             if (currentUserTg) {
-                if (currentUserTg.photo_url) {
-                    profilePic.src = currentUserTg.photo_url;
-                    profilePic.classList.remove('hidden');
-                    avatarDiv.classList.add('hidden');
-                } else {
-                    const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
-                    document.getElementById('profile-initials').textContent = initials.toUpperCase();
-                    profilePic.classList.add('hidden');
-                    avatarDiv.classList.remove('hidden');
-                }
+                // Not using photo_url for now
+                const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
+                document.getElementById('profile-initials').textContent = initials.toUpperCase();
+                profilePic.classList.add('hidden');
+                avatarDiv.classList.remove('hidden');
+                
                 document.getElementById('profile-name').textContent = `${currentUserTg.first_name} ${currentUserTg.last_name || ''}`.trim();
                 document.getElementById('profile-username').textContent = currentUserTg.username ? `@${currentUserTg.username}` : 'No Telegram Username';
                 document.getElementById('profile-id').textContent = `Telegram ID: ${currentUserTg.id}`;
@@ -1104,6 +1055,23 @@
             mailListEl.innerHTML = getLoadingHTML();
             historyListEl.innerHTML = getLoadingHTML();
 
+            // Refetch user data to check for linked status
+            const userRef = doc(db, "users", userData.tgChatId);
+            const userSnap = await getDoc(userRef);
+            userData = userSnap.data();
+
+            let effectiveBalance = userData.balance;
+            let teamLeaderData = null;
+            if (userData.linkedBy) {
+                const teamLeaderRef = doc(db, "users", userData.linkedBy);
+                const teamLeaderSnap = await getDoc(teamLeaderRef);
+                if (teamLeaderSnap.exists()) {
+                    teamLeaderData = teamLeaderSnap.data();
+                    effectiveBalance += teamLeaderData.balance;
+                }
+            }
+
+
             try {
                 // Load Mail Store Items
                 const stockPromises = (appConfig.mails || []).map(mail => getStockCount(mail.stockKey));
@@ -1116,7 +1084,7 @@
                     const stock = mail.stock;
                     const costInBdt = mail.priceBdt;
                     const isOutOfStock = stock === 0;
-                    const insufficientBalance = userData.balance < costInBdt;
+                    const insufficientBalance = effectiveBalance < costInBdt;
                     const buyButtonDisabled = isOutOfStock || insufficientBalance ? 'disabled' : '';
                     const buyButtonClasses = isOutOfStock || insufficientBalance ? 'bg-gray-400 cursor-not-allowed' : 'btn-gradient';
                     const validityTagHtml = (mail.expirationDays !== undefined && mail.expirationDays !== null) ? `<span class="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">${mail.expirationDays} h</span>` : '';
@@ -1126,7 +1094,6 @@
                     mailListEl.innerHTML += `<div class="card-bg p-4 rounded-xl space-y-3"><div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo"><h3 class="font-bold text-lg text-gray-800">${mail.type}</h3></div><div class="flex items-center gap-2">${validityTagHtml}<button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="text-blue-600 text-sm font-semibold">Details</button></div></div><div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200"><div class="py-2">${apiButtonHtml}</div><div class="py-2"><p class="text-gray-500 text-sm">Price</p><p class="font-bold text-lg text-blue-600">৳${costInBdt.toFixed(2)}</p></div><div class="py-2"><p class="text-gray-500 text-sm">Stock</p><p class="font-bold text-lg text-green-600">${stock}</p></div></div><button class="${buyButtonClasses} w-full py-2 rounded-lg text-md" ${buyButtonDisabled} onclick="buyMail('${mail.type}', ${costInBdt}, '${mail.stockKey}')">Buy Now</button></div>`;
                 });
                 
-                // MODIFIED: Load Purchase History from the last 4 hours only
                 const fourHoursAgo = Timestamp.fromDate(new Date(Date.now() - 4 * 60 * 60 * 1000));
                 const q = query(
                     collection(db, "mail_purchases"), 
@@ -1177,7 +1144,7 @@
                     clearInterval(insufficientBalanceInterval);
                     insufficientBalanceInterval = null;
                 }
-                const hasSufficientBalanceForAny = mailsWithStock.some(mail => userData.balance >= mail.priceBdt && mail.stock > 0);
+                const hasSufficientBalanceForAny = mailsWithStock.some(mail => effectiveBalance >= mail.priceBdt && mail.stock > 0);
                 const hasAnyStock = mailsWithStock.some(mail => mail.stock > 0);
                 if (!hasSufficientBalanceForAny && hasAnyStock) {
                     insufficientBalanceInterval = setInterval(() => {
@@ -1193,69 +1160,6 @@
                  mailListEl.innerHTML = '<p class="text-center text-red-600">মেইল লোড করা যায়নি।</p>';
                  historyListEl.innerHTML = '<p class="text-center text-red-600">হিস্টি লোড করা যায়নি।</p>';
                  console.error(e);
-            }
-        }
-
-        let adInterval = null;
-        function loadHomePageAds() {
-            const adsConfig = appConfig.ads;
-            const adsSection = document.getElementById('ads-section');
-            const innerContainer = document.getElementById('ads-inner');
-            const dotsContainer = document.getElementById('ads-dots');
-
-            if (adsConfig && adsConfig.enabled && adsConfig.items && adsConfig.items.length > 0) {
-                innerContainer.innerHTML = '';
-                adsConfig.items.forEach(ad => {
-                    const slide = document.createElement('a');
-                    slide.href = ad.linkUrl;
-                    slide.target = '_blank';
-                    slide.className = 'ad-slide block';
-                    slide.style.backgroundImage = `url('${ad.imageUrl}')`;
-                    innerContainer.appendChild(slide);
-                });
-            }
-
-            const slides = innerContainer.querySelectorAll('.ad-slide');
-            if(slides.length === 0) {
-                adsSection.classList.add('hidden');
-                return;
-            }
-            adsSection.classList.remove('hidden');
-            dotsContainer.innerHTML = '';
-            slides.forEach((_, index) => {
-                const dot = document.createElement('span');
-                dot.className = 'dot bg-white/50 rounded-full cursor-pointer transition-all';
-                if (index === 0) dot.classList.add('active', 'bg-white');
-                dot.dataset.index = index;
-                dotsContainer.appendChild(dot);
-            });
-
-            let currentIndex = 0;
-            const dots = dotsContainer.querySelectorAll('.dot');
-            const intervalTime = (adsConfig?.intervalSeconds || 5) * 1000;
-
-            function showAd(index) {
-                currentIndex = index;
-                innerContainer.style.transform = `translateX(-${index * 100}%)`;
-                dots.forEach(d => {
-                    d.classList.remove('active', 'bg-white');
-                    d.classList.add('bg-white/50');
-                });
-                dots[index].classList.add('active', 'bg-white');
-                dots[index].classList.remove('bg-white/50');
-            }
-
-            dotsContainer.addEventListener('click', e => {
-                if (e.target.matches('.dot')) {
-                    showAd(parseInt(e.target.dataset.index));
-                }
-            });
-
-            if (adInterval) clearInterval(adInterval);
-            if (slides.length > 1) {
-                adInterval = setInterval(() => {
-                    showAd((currentIndex + 1) % slides.length);
-                }, intervalTime);
             }
         }
 
@@ -1279,7 +1183,6 @@
             finally { loader.style.display = 'none'; }
         }
 
-        // MODIFIED: handleCopyHistory now copies only recent (4 hours) purchases in the new format
         async function handleCopyHistory() {
              loader.style.display = 'flex';
             try {
@@ -1309,7 +1212,25 @@
         }
 
         window.buyMail = async function(mailType, cost, stockKey) {
-            if (userData.balance < cost) {
+            let teamLeaderRef = null;
+            let teamLeaderData = null;
+            const buyerRef = doc(db, "users", userData.tgChatId);
+            
+            // Check if the user is part of a team
+            if (userData.linkedBy) {
+                teamLeaderRef = doc(db, "users", userData.linkedBy);
+                const teamLeaderSnap = await getDoc(teamLeaderRef);
+                if(teamLeaderSnap.exists()){
+                    teamLeaderData = teamLeaderSnap.data();
+                } else {
+                    showAlert("Your team leader's account could not be found.");
+                    return;
+                }
+            }
+
+            const effectiveBalance = userData.balance + (teamLeaderData ? teamLeaderData.balance : 0);
+
+            if (effectiveBalance < cost) {
                 document.getElementById('insufficient-balance-modal').classList.remove('hidden');
                 lucide.createIcons();
                 return;
@@ -1321,7 +1242,6 @@
             try {
                 const purchasedMailData = await runTransaction(db, async (transaction) => {
                     const counterRef = doc(db, "counters", "mail_purchase");
-
                     const q = query(collection(db, stockKey), where("isSold", "==", false), limit(1));
                     const mailQuerySnapshot = await getDocs(q);
 
@@ -1329,26 +1249,50 @@
 
                     const mailDoc = mailQuerySnapshot.docs[0];
                     const mailData = mailDoc.data();
-                    const userRef = doc(db, "users", userData.tgChatId);
+                    const buyerSnap = await transaction.get(buyerRef);
+                    let currentBuyerData = buyerSnap.data();
 
-                    const [counterSnap, userSnap] = await Promise.all([
-                        transaction.get(counterRef),
-                        transaction.get(userRef)
-                    ]);
+                    let costRemaining = cost;
+                    let paidBy = 'self';
 
-                    if (!userSnap.exists() || userSnap.data().balance < cost) throw `অপর্যাপ্ত ব্যালেন্স।`;
-                    if (!counterSnap.exists()) throw "Sale ID counter not found. Please setup 'counters/mail_purchase'.";
+                    // First, deduct from the buyer's own balance
+                    let buyerDeduction = Math.min(costRemaining, currentBuyerData.balance);
+                    if (buyerDeduction > 0) {
+                        transaction.update(buyerRef, { balance: currentBuyerData.balance - buyerDeduction });
+                        costRemaining -= buyerDeduction;
+                    }
 
+                    // If cost still remains, deduct from team leader's balance
+                    if (costRemaining > 0 && teamLeaderRef) {
+                        const leaderSnap = await transaction.get(teamLeaderRef);
+                        const currentLeaderData = leaderSnap.data();
+                        if (currentLeaderData.balance < costRemaining) {
+                            throw "অপর্যাপ্ত ব্যালেন্স (টিম লিডার সহ)।";
+                        }
+                        transaction.update(teamLeaderRef, { balance: currentLeaderData.balance - costRemaining });
+                        
+                        // Track team spending
+                        const currentSpending = currentLeaderData.teamSpending?.[userData.tgChatId] || 0;
+                        const newSpending = currentSpending + costRemaining;
+                        transaction.update(teamLeaderRef, { [`teamSpending.${userData.tgChatId}`]: newSpending });
+
+                        paidBy = userData.linkedBy;
+                    } else if (costRemaining > 0) {
+                         throw "অপর্যাপ্ত ব্যালেন্স।";
+                    }
+
+                    const counterSnap = await transaction.get(counterRef);
+                    if (!counterSnap.exists()) throw "Sale ID counter not found.";
                     const saleId = counterSnap.data().currentId;
                     transaction.update(counterRef, { currentId: saleId + 1 });
 
-                    transaction.update(userRef, { balance: userSnap.data().balance - cost });
                     transaction.update(mailDoc.ref, { isSold: true, soldTo: userData.tgChatId, soldAt: serverTimestamp() });
                     const purchaseLogRef = doc(collection(db, "mail_purchases"));
 
                     transaction.set(purchaseLogRef, {
                         saleId: saleId,
                         userId: userData.tgChatId,
+                        paidBy: paidBy,
                         mailType: mailType,
                         mail: mailData.email,
                         password: mailData.password || null,
@@ -1360,10 +1304,12 @@
                     return mailData;
                 });
 
-                userData.balance -= cost;
+                // Update local user data after successful transaction
+                const finalUserSnap = await getDoc(buyerRef);
+                userData = finalUserSnap.data();
+
                 updateUI();
                 
-                // MODIFIED: Show the new success modal instead of the old alert
                 document.getElementById('purchase-success-email').textContent = purchasedMailData.email;
                 document.getElementById('purchase-success-password').textContent = purchasedMailData.password || 'N/A';
                 document.getElementById('purchase-success-modal').classList.remove('hidden');
@@ -1373,6 +1319,7 @@
             } catch (e) { showAlert(typeof e === 'string' ? e : "কিনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"); }
             finally { loader.style.display = 'none'; }
         }
+
 
         window.showMailDetails = function(mailType, details) {
             document.getElementById('mail-details-title').textContent = `${mailType} Details`;
@@ -1550,11 +1497,6 @@
                 const totalReceive = receivedSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
                 document.getElementById('total-receive-display').textContent = `৳${totalReceive.toFixed(2)}`;
 
-                const rechargeQuery = query(collection(db, "recharge_requests"), where("userId", "==", userData.tgChatId), where("status", "==", "approved"));
-                const rechargeSnapshot = await getDocs(rechargeQuery);
-                const totalRecharge = rechargeSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
-                document.getElementById('total-recharge-display').textContent = `৳${totalRecharge.toFixed(2)}`;
-
                 const sendQuery = query(collection(db, "transfers"), where("fromId", "==", userData.tgChatId));
                 const sendSnapshot = await getDocs(sendQuery);
                 const totalSend = sendSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
@@ -1689,79 +1631,138 @@
                 loader.style.display = 'none';
             }
         }
+        
+        async function handleSearchAndLinkFriend() {
+            const friendId = document.getElementById('link-friend-id').value.trim();
+            if (!friendId) return showAlert("Please enter a friend's Chat ID.");
+            if (friendId === userData.tgChatId) return showAlert("You cannot link to yourself.");
+            
+            const searchResultEl = document.getElementById('friend-search-result');
+            searchResultEl.innerHTML = getLoadingHTML();
+            
+            const friendRef = doc(db, "users", friendId);
+            const friendSnap = await getDoc(friendRef);
 
-        async function handleRechargeRequest() {
-            const number = document.getElementById('recharge-number').value.trim();
-            const amountStr = document.getElementById('recharge-amount').value;
-            const operator = document.getElementById('recharge-operator').value;
-            const type = document.getElementById('recharge-type').value;
+            if (!friendSnap.exists()) {
+                searchResultEl.innerHTML = `<p class="text-red-500 text-center mt-2">User not found.</p>`;
+                return;
+            }
 
-            if (!number || !amountStr || !operator) return showAlert("অনুগ্রহ করে সমস্ত তথ্য সঠিকভাবে পূরণ করুন।");
-            if (!/^(01[3-9])\d{8}$/.test(number)) return showAlert("অনুগ্রহ করে একটি সঠিক বাংলাদেশী মোবাইল নম্বর দিন।");
-            const amount = parseFloat(amountStr);
-            if (isNaN(amount) || amount < 20) return showAlert("সর্বনিম্ন রিচার্জের পরিমাণ ৳20।");
+            const friendData = friendSnap.data();
+            if (friendData.linkedBy) {
+                if (friendData.linkedBy === userData.tgChatId) {
+                     searchResultEl.innerHTML = `<p class="text-yellow-600 text-center mt-2">This user is already in your team.</p>`;
+                } else {
+                     searchResultEl.innerHTML = `<p class="text-red-500 text-center mt-2">This user is already linked to another team.</p>`;
+                }
+                return;
+            }
 
-            const fee = amount * 0.05;
-            const totalCost = amount + fee;
+            const userRef = doc(db, "users", userData.tgChatId);
+            await updateDoc(userRef, {
+                linkedUsers: arrayUnion(friendId)
+            });
+            await updateDoc(friendRef, {
+                linkedBy: userData.tgChatId
+            });
 
-            if (totalCost > userData.balance) return showAlert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই। আপনার প্রয়োজন ৳${totalCost.toFixed(2)}।`);
-            if (!confirm(`আপনি কি ${number} নম্বরে ৳${amount.toFixed(2)} রিচার্জ করতে চান?\n\nফি (5%): ৳${fee.toFixed(2)}\nমোট কাটা হবে: ৳${totalCost.toFixed(2)}\n\nআপনি কি নিশ্চিত?`)) return;
+            showAlert(`Successfully linked with ${friendData.name}!`);
+            document.getElementById('link-friend-id').value = '';
+            searchResultEl.innerHTML = '';
+            loadLinkedFriends();
+        }
 
+        async function loadLinkedFriends() {
+            const listEl = document.getElementById('linked-friends-list');
+            listEl.innerHTML = getLoadingHTML();
+            
+            // Refetch current user data to get the latest linkedUsers array
+            const userRef = doc(db, "users", userData.tgChatId);
+            const userSnap = await getDoc(userRef);
+            userData = userSnap.data();
+            
+            const linkedIds = userData.linkedUsers || [];
+
+            if (linkedIds.length === 0) {
+                listEl.innerHTML = '<p class="text-center text-gray-500">You have not linked any friends to your team yet.</p>';
+                return;
+            }
+
+            const friendPromises = linkedIds.map(id => getDoc(doc(db, "users", id)));
+            const friendSnaps = await Promise.all(friendPromises);
+
+            listEl.innerHTML = '';
+            for (const friendDoc of friendSnaps) {
+                if (friendDoc.exists()) {
+                    const friendData = friendDoc.data();
+                    const totalSpent = userData.teamSpending?.[friendData.tgChatId] || 0;
+                    
+                    const fiveMinutesAgo = Timestamp.now().toMillis() - (5 * 60 * 1000);
+                    const isOnline = friendData.lastSeen && friendData.lastSeen.toMillis() > fiveMinutesAgo;
+                    const statusColor = isOnline ? 'bg-green-500' : 'bg-red-500';
+                    const statusTooltip = isOnline ? 'Active Now' : 'Inactive';
+
+                    const purchaseHistoryQ = query(collection(db, "mail_purchases"), where("userId", "==", friendData.tgChatId), where("paidBy", "==", userData.tgChatId), orderBy("purchasedAt", "desc"), limit(5));
+                    const historySnapshot = await getDocs(purchaseHistoryQ);
+                    
+                    let historyHtml = historySnapshot.empty 
+                        ? '<p class="text-xs text-gray-500 text-center py-2">No purchases yet.</p>'
+                        : historySnapshot.docs.map(d => {
+                            const p = d.data();
+                            return `<div class="text-xs flex justify-between"><span class="font-mono">${p.mailType}</span> <span>৳${p.cost.toFixed(2)}</span></div>`;
+                        }).join('');
+
+                    listEl.innerHTML += `
+                        <div class="card-bg p-4 rounded-xl space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="relative">
+                                        <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"><span class="text-xl font-bold text-gray-500">${friendData.name?.[0] || 'U'}</span></div>
+                                        <span title="${statusTooltip}" class="absolute bottom-0 right-0 block h-3.5 w-3.5 rounded-full ${statusColor} ring-2 ring-white"></span>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-gray-800">${friendData.name}</p>
+                                        <p class="text-sm text-gray-600">Total Spent: <span class="font-semibold text-blue-600">৳${totalSpent.toFixed(2)}</span></p>
+                                    </div>
+                                </div>
+                                <button onclick="unlinkFriend('${friendData.tgChatId}')" class="p-2 rounded-full hover:bg-red-100 text-red-500 transition-colors">
+                                    <i data-lucide="user-x" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                            <div class="pt-2 border-t">
+                                <h4 class="font-semibold text-sm mb-1 text-gray-700">Recent Purchases (BY List):</h4>
+                                <div class="space-y-1">${historyHtml}</div>
+                            </div>
+                        </div>`;
+                }
+            }
+            lucide.createIcons();
+        }
+
+        window.unlinkFriend = async function(friendId) {
+            if (!confirm("Are you sure you want to remove this user from your team?")) return;
+            
             loader.style.display = 'flex';
-
+            const userRef = doc(db, "users", userData.tgChatId);
+            const friendRef = doc(db, "users", friendId);
+            
             try {
-                const userRef = doc(db, "users", userData.tgChatId);
-                await runTransaction(db, async (transaction) => {
-                    const userDoc = await transaction.get(userRef);
-                    if (!userDoc.exists() || userDoc.data().balance < totalCost) throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
-                    const newBalance = userDoc.data().balance - totalCost;
-                    transaction.update(userRef, { balance: newBalance });
-                    const rechargeRequestRef = doc(collection(db, "recharge_requests"));
-                    transaction.set(rechargeRequestRef, { userId: userData.tgChatId, userName: userData.name, mobileNumber: number, amount: amount, operator: operator, rechargeType: type, fee: fee, totalDeducted: totalCost, status: "pending", requestedAt: serverTimestamp() });
+                await updateDoc(userRef, {
+                    linkedUsers: arrayRemove(friendId)
                 });
-
-                userData.balance -= totalCost;
-                updateUI();
-                showAlert("আপনার রিচার্জ অনুরোধ সফলভাবে জমা হয়েছে।");
-
-                document.getElementById('recharge-number').value = '';
-                document.getElementById('recharge-amount').value = '';
-                document.getElementById('recharge-operator').value = '';
-                document.getElementById('recharge-fee-display').textContent = '';
-                loadRechargeHistory();
-            } catch (error) {
-                console.error("Recharge failed: ", error);
-                showAlert(typeof error === 'string' ? error : "রিচার্জ অনুরোধে সমস্যা হয়েছে।");
+                await updateDoc(friendRef, {
+                    linkedBy: null
+                });
+                showAlert("Friend has been unlinked successfully.");
+                loadLinkedFriends();
+            } catch (e) {
+                showAlert("Failed to unlink friend.");
+                console.error("Unlink error: ", e);
             } finally {
                 loader.style.display = 'none';
             }
         }
 
-        async function loadRechargeHistory() {
-            const historyList = document.getElementById('recharge-history-list');
-            historyList.innerHTML = getLoadingHTML();
-            try {
-                const q = query(collection(db, "recharge_requests"), where("userId", "==", userData.tgChatId), orderBy("requestedAt", "desc"));
-                const snapshot = await getDocs(q);
-                if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-600 text-center">কোনো রিচার্জ হিস্ট্রি পাওয়া যায়নি।</p>';
-
-                historyList.innerHTML = snapshot.docs.map(doc => {
-                    const item = doc.data();
-                    let statusColor, statusIcon;
-                    switch (item.status) {
-                        case 'approved': statusColor = 'text-green-600'; statusIcon = 'check-circle-2'; break;
-                        case 'rejected': statusColor = 'text-red-600'; statusIcon = 'x-circle'; break;
-                        default: statusColor = 'text-yellow-600'; statusIcon = 'hourglass';
-                    }
-                    const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString('en-GB') : 'N/A';
-                    return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div class="flex items-center gap-3"><i data-lucide="${statusIcon}" class="w-6 h-6 ${statusColor}"></i><div><p class="font-semibold text-gray-800">${item.mobileNumber}</p><p class="text-xs text-gray-500">${item.operator} - ${date}</p></div></div><div class="text-right"><p class="font-bold text-lg text-gray-800">৳${item.amount.toFixed(2)}</p><p class="font-semibold ${statusColor} capitalize text-xs">${item.status}</p></div></div>`;
-                }).join('');
-                lucide.createIcons();
-            } catch (error) {
-                console.error("Error loading recharge history: ", error);
-                historyList.innerHTML = '<p class="text-red-600 text-center">হিস্ট্রি লোড করা যায়নি।</p>';
-            }
-        }
 
         async function loadTutorials() {
             const tutorialListEl = document.getElementById('tutorial-list');
@@ -1793,7 +1794,9 @@
                     const review = doc.data();
                     let stars = '';
                     for (let i = 0; i < 5; i++) stars += `<i data-lucide="star" class="w-4 h-4 ${i < review.rating ? 'fill-current' : ''}"></i>`;
-                    return `<div class="review-card-new p-4 rounded-lg"><div class="flex items-start gap-4"><img src="${review.imageUrl}" class="w-12 h-12 rounded-full object-cover" alt="User"><div class="flex-1"><div class="flex justify-between items-center"><h5 class="font-bold">${review.name}</h5><div class="star-rating flex text-sm">${stars}</div></div><p class="text-gray-600 text-sm mt-1">"${review.reviewText}"</p></div></div></div>`;
+                    // Assuming review.imageUrl might not exist, provide a fallback.
+                    const imageUrl = review.imageUrl || `https://ui-avatars.com/api/?name=${review.name.replace(/\s/g, "+")}&background=random`;
+                    return `<div class="review-card-new p-4 rounded-lg"><div class="flex items-start gap-4"><img src="${imageUrl}" class="w-12 h-12 rounded-full object-cover" alt="User"><div class="flex-1"><div class="flex justify-between items-center"><h5 class="font-bold">${review.name}</h5><div class="star-rating flex text-sm">${stars}</div></div><p class="text-gray-600 text-sm mt-1">"${review.reviewText}"</p></div></div></div>`;
                 }).join('');
                 lucide.createIcons();
             } catch (e) {
@@ -1829,7 +1832,6 @@
             }
         }
 
-        // --- MODIFIED: "More Features" click handler now directly navigates ---
         function handleFeaturesClick() {
             navigateTo('features-page');
         }
