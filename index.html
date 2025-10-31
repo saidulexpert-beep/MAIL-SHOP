@@ -1181,14 +1181,17 @@
         }
 
         /**
-         * MAIL PAGE ENHANCEMENT:
-         * To add a verified badge and text, your mail configuration object in Firestore
-         * (under 'config/main') should include 'isVerified: true' and 
-         * 'verifiedText: "Your custom text"' for the desired mail types.
+         * MAIL PAGE ENHANCEMENT (based on user feedback):
+         * To add a feature list like in the user's image, your mail configuration object in Firestore
+         * (under 'config/main') should include a 'featureList' array.
          * Example for a mail item in the array:
          * { 
          *   type: "Gmail", stockKey: "gmail_stock", priceBdt: 25, 
-         *   isVerified: true, verifiedText: "Best for OTP Verification" 
+         *   featureList: [
+         *      "একদম ফ্রেশ কোয়ালিটির মেইল",
+         *      "সারাদিন ব্যবহার করলেও সমস্যা হবে না",
+         *      "মার্কেটের সেরা মেইল"
+         *   ]
          * }
         */
         async function renderMailList(mails, containerEl, effectiveBalance) {
@@ -1206,27 +1209,43 @@
                 const insufficientBalance = effectiveBalance < mail.priceBdt;
                 const buyButtonDisabled = isOutOfStock || insufficientBalance;
                 const buyButtonClasses = buyButtonDisabled ? 'bg-gray-400 cursor-not-allowed' : 'btn-gradient';
-                const validityTagHtml = (mail.expirationHours != null) ? `<span class="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">${mail.expirationHours}h validity</span>` : '';
+                const validityTagHtml = (mail.expirationHours != null) ? `<span class="bg-blue-100 text-blue-700 text-xs font-semibold px-2 py-1 rounded-full">${mail.expirationHours}h validity</span>` : '';
                 const apiButtonHtml = mail.apiLink ? `<button onclick="openApiLink('${mail.apiLink}')" class="text-blue-600 font-semibold">API</button>` : '<span class="text-gray-400 font-semibold">API</span>';
 
-                const verifiedBadgeHtml = mail.isVerified ? `<i data-lucide="shield-check" class="w-5 h-5 text-green-500" title="Verified"></i>` : '';
-                const verifiedTextHtml = mail.verifiedText ? `<p class="text-xs text-green-700 bg-green-100/80 rounded-md p-2 font-medium flex items-center gap-1.5"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> ${mail.verifiedText}</p>` : '';
+                // NEW: Feature List Implementation based on user feedback
+                let featureListHtml = '';
+                if (mail.featureList && Array.isArray(mail.featureList) && mail.featureList.length > 0) {
+                    featureListHtml = `
+                        <div class="space-y-2.5 pt-3 mt-3 border-t border-gray-200/80">
+                            ${mail.featureList.map(feature => `
+                                <div class="flex items-center gap-3">
+                                    <div class="flex-shrink-0">
+                                        <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M16 2C17.2 7.7 22.3 9.6 25.1 10.4C27.9 11.2 30 14 30 16.5C30 19 27.9 21.8 25.1 22.6C22.3 23.4 17.2 25.3 16 31C14.8 25.3 9.7 23.4 6.9 22.6C4.1 21.8 2 19 2 16.5C2 14 4.1 11.2 6.9 10.4C9.7 9.6 14.8 7.7 16 2Z" fill="#1F2937" stroke="#F43F5E" stroke-width="1.5"/>
+                                            <path d="M21.5 12.5L14.5 19.5L10.5 15.5" stroke="#34D399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <p class="text-sm text-gray-700 font-medium">${feature}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
 
                 return `<div class="card-bg p-4 rounded-xl space-y-3">
-                    <div class="flex justify-between items-start">
+                    <div class="flex justify-between items-center">
                         <div class="flex items-center gap-3">
                             <img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo">
-                            <div class="flex items-center gap-2">
-                                <h3 class="font-bold text-lg text-gray-800">${mail.type}</h3>
-                                ${verifiedBadgeHtml}
-                            </div>
+                            <h3 class="font-bold text-lg text-gray-800">${mail.type}</h3>
                         </div>
                         <div class="flex items-center gap-2">
                             ${validityTagHtml}
                             <button onclick="showMailDetails('${mail.type}', '${mail.details.replace(/'/g, "\\'")}')" class="text-blue-600 text-sm font-semibold">Details</button>
                         </div>
                     </div>
-                    ${verifiedTextHtml}
+                    
+                    ${featureListHtml}
+                    
                     <div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200">
                         <div class="py-2">${apiButtonHtml}</div>
                         <div class="py-2"><p class="text-gray-500 text-sm">Price</p><p class="font-bold text-lg text-blue-600">৳${parseFloat(mail.priceBdt).toFixed(2)}</p></div>
