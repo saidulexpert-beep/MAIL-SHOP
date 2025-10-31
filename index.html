@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USED MAIL SHOP</title>
+    <title>𝐌𝐀𝐈𝐋 𝐒𝐓𝐎𝐑𝐄</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;7.00;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
@@ -282,7 +282,7 @@
             <div class="logo-container">
                 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#007bff] mx-auto"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
             </div>
-            <h1 class="text-accent-gradient loader-text mt-4">USED MAIL SHOP</h1>
+            <h1 class="text-accent-gradient loader-text mt-4">𝐌𝐀𝐈𝐋 𝐒𝐓𝐎𝐑𝐄</h1>
         </div>
         <div id="loader-reviews">"খুবই বিশ্বস্ত একটি সাইট।" - মোঃ রায়হান</div>
     </div>
@@ -296,7 +296,7 @@
         <nav id="support-channels-list" class="flex-grow overflow-y-auto">
             </nav>
         <div class="p-4 text-center text-xs text-gray-400 border-t">
-            USED MAIL SHOP &copy; 2025
+            𝐌𝐀𝐈𝐋 𝐒𝐓𝐎𝐑𝐄 &copy; 2025
         </div>
     </aside>
     <div id="app-container" class="min-h-screen flex-col main-page">
@@ -381,13 +381,13 @@
             <div id="mail-page" class="sub-page">
                  <div class="marquee mt-4">
                     <p class="marquee-content">
-💌 USED MAIL SHOP-এ আপনাকে স্বাগতম!
+💌 𝐌𝐀𝐈𝐋 𝐒𝐓𝐎𝐑𝐄-এ আপনাকে স্বাগতম!
 ✨ আমাদের সব সার্ভিস এখন চালু!
 📩 এখানে পাবেন ১০০% ভালো কোয়ালিটির মেইল।
 ⚡ কোনো সমস্যা হলে আমরা সঙ্গে সঙ্গে সমাধান করি।
 🕐 আমরা ২৪ ঘণ্টা সার্ভিস দিয়ে থাকি।
 💬 যেকোনো প্রয়োজনে যোগাযোগ করুন আমাদের সাপোর্ট টিমের সাথে।
-💎 USED MAIL SHOP — বিশ্বাস, গুণমান ও সাপোর্টের প্রতীক!
+💎 𝐌𝐀𝐈𝐋 𝐒𝐓𝐎𝐑𝐄 — বিশ্বাস, গুণমান ও সাপোর্টের প্রতীক!
                     </p>
                 </div>
                 <div class="p-4 space-y-6">
@@ -425,8 +425,8 @@
             <div id="profile-page" class="p-4 space-y-6 sub-page">
                 <div class="card-bg p-6 rounded-2xl flex flex-col items-center text-center">
                     <div class="relative mb-4">
-                        <img id="profile-pic" class="w-24 h-24 rounded-full border-2 border-[#007bff] object-cover hidden" src="" alt="Profile Picture">
-                        <div id="profile-initials-avatar" class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center border-2 border-[#007bff]"><span id="profile-initials" class="text-3xl font-bold text-gray-500"></span></div>
+                        <img id="profile-pic" class="w-24 h-24 rounded-full border-2 border-[#007bff] object-cover" src="" alt="Profile Picture">
+                        <div id="profile-initials-avatar" class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center border-2 border-[#007bff] hidden"><span id="profile-initials" class="text-3xl font-bold text-gray-500"></span></div>
                     </div>
                     <h3 id="profile-name" class="text-2xl font-bold text-gray-800">Loading...</h3>
                     <p id="profile-username" class="text-gray-500">@username</p>
@@ -515,7 +515,7 @@
                                 <label for="link-friend-id" class="block text-sm font-medium text-gray-600 mb-2">Friend's Chat ID</label>
                                 <input id="link-friend-id" type="text" placeholder="Enter friend's chat ID" class="w-full p-3 rounded-lg input-field">
                             </div>
-                            <button id="search-friend-btn" class="w-full p-3 rounded-lg btn-gradient">Search & Link Friend</button>
+                            <button id="search-friend-btn" class="w-full p-3 rounded-lg btn-gradient">Search Friend</button>
                         </div>
                          <div id="friend-search-result" class="mt-4"></div>
                     </div>
@@ -739,26 +739,33 @@
 
             if (userSnap.exists()) {
                 userData = userSnap.data();
+                 // Always update photo_url and name on login, in case they changed it in Telegram
+                await updateDoc(userRef, {
+                    name: `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim(),
+                    photo_url: currentUserTg.photo_url || null,
+                    lastSeen: serverTimestamp()
+                });
+                userData.photo_url = currentUserTg.photo_url || null; // Update local copy
+                userData.name = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim();
+
             } else {
                 const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
                 userData = {
                     tgChatId: tgChatId,
                     name: userName,
                     username: currentUserTg.username || null,
+                    photo_url: currentUserTg.photo_url || null,
                     balance: 0,
                     createdAt: serverTimestamp(),
                     isBlocked: false,
                     lastSeenNotification: null,
-                    linkedUsers: [], // For team leader
-                    linkedBy: null, // For team member
-                    teamSpending: {} // To track spending of each team member
+                    linkedUsers: [], 
+                    linkedBy: null, 
+                    teamSpending: {},
+                    lastSeen: serverTimestamp()
                 };
                 await setDoc(userRef, userData);
             }
-            
-            // Update last seen timestamp for online status
-            await updateDoc(userRef, { lastSeen: serverTimestamp() });
-
 
             if (userData.isBlocked) {
                 showAlert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
@@ -783,8 +790,7 @@
             const configSnap = await getDoc(configRef);
             appConfig = configSnap.exists() ? configSnap.data() : { mails: [] };
         }
-
-        // =========== JAVASCRIPT FOR HEADER (UPDATED) ===========
+        
         function updateHeaderUI() {
             if (!currentUserTg) return;
 
@@ -792,14 +798,17 @@
             const avatarDiv = document.getElementById('header-initials-avatar');
             const welcomeName = document.getElementById('header-welcome-name');
 
-            // Update profile picture/initials
-            // Will implement getting TG profile pic later if possible, for now use initials
-            const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
-            document.getElementById('header-initials').textContent = initials.toUpperCase();
-            profilePic.classList.add('hidden');
-            avatarDiv.classList.remove('hidden');
+            if (userData.photo_url) {
+                profilePic.src = userData.photo_url;
+                profilePic.classList.remove('hidden');
+                avatarDiv.classList.add('hidden');
+            } else {
+                const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
+                document.getElementById('header-initials').textContent = initials.toUpperCase();
+                profilePic.classList.add('hidden');
+                avatarDiv.classList.remove('hidden');
+            }
             
-            // Update welcome name
             const firstName = currentUserTg.first_name || 'User';
             welcomeName.textContent = `Hi, ${firstName}!`;
         }
@@ -811,8 +820,6 @@
             document.getElementById('header-balance-display').textContent = `৳${balance}`;
             updateHeaderUI();
         }
-        // =========== END OF JAVASCRIPT FOR HEADER ===========
-
 
         function showMainPage(pageId) {
             document.querySelectorAll('.main-page').forEach(p => p.classList.remove('active'));
@@ -876,11 +883,11 @@
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             
             document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
-            document.getElementById('features-link-team-btn').addEventListener('click', () => navigateTo('link-team-page')); // Changed
+            document.getElementById('features-link-team-btn').addEventListener('click', () => navigateTo('link-team-page')); 
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
             document.getElementById('features-send-btn').addEventListener('click', () => navigateTo('send-page'));
             document.getElementById('submit-send-btn').addEventListener('click', handleSendRequest);
-            document.getElementById('search-friend-btn').addEventListener('click', handleSearchAndLinkFriend);
+            document.getElementById('search-friend-btn').addEventListener('click', handleSearchFriend);
 
             document.getElementById('mail-details-ok-btn').addEventListener('click', () => {
                 document.getElementById('mail-details-modal').classList.add('hidden');
@@ -961,11 +968,16 @@
             const avatarDiv = document.getElementById('profile-initials-avatar');
 
             if (currentUserTg) {
-                // Not using photo_url for now
-                const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
-                document.getElementById('profile-initials').textContent = initials.toUpperCase();
-                profilePic.classList.add('hidden');
-                avatarDiv.classList.remove('hidden');
+                 if (userData.photo_url) {
+                    profilePic.src = userData.photo_url;
+                    profilePic.classList.remove('hidden');
+                    avatarDiv.classList.add('hidden');
+                } else {
+                    const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
+                    document.getElementById('profile-initials').textContent = initials.toUpperCase();
+                    profilePic.classList.add('hidden');
+                    avatarDiv.classList.remove('hidden');
+                }
                 
                 document.getElementById('profile-name').textContent = `${currentUserTg.first_name} ${currentUserTg.last_name || ''}`.trim();
                 document.getElementById('profile-username').textContent = currentUserTg.username ? `@${currentUserTg.username}` : 'No Telegram Username';
@@ -1055,7 +1067,6 @@
             mailListEl.innerHTML = getLoadingHTML();
             historyListEl.innerHTML = getLoadingHTML();
 
-            // Refetch user data to check for linked status
             const userRef = doc(db, "users", userData.tgChatId);
             const userSnap = await getDoc(userRef);
             userData = userSnap.data();
@@ -1073,7 +1084,6 @@
 
 
             try {
-                // Load Mail Store Items
                 const stockPromises = (appConfig.mails || []).map(mail => getStockCount(mail.stockKey));
                 const stockCounts = await Promise.all(stockPromises);
                 let mailsWithStock = (appConfig.mails || []).map((mail, index) => ({ ...mail, stock: stockCounts[index] }));
@@ -1216,7 +1226,6 @@
             let teamLeaderData = null;
             const buyerRef = doc(db, "users", userData.tgChatId);
             
-            // Check if the user is part of a team
             if (userData.linkedBy) {
                 teamLeaderRef = doc(db, "users", userData.linkedBy);
                 const teamLeaderSnap = await getDoc(teamLeaderRef);
@@ -1255,14 +1264,12 @@
                     let costRemaining = cost;
                     let paidBy = 'self';
 
-                    // First, deduct from the buyer's own balance
                     let buyerDeduction = Math.min(costRemaining, currentBuyerData.balance);
                     if (buyerDeduction > 0) {
                         transaction.update(buyerRef, { balance: currentBuyerData.balance - buyerDeduction });
                         costRemaining -= buyerDeduction;
                     }
 
-                    // If cost still remains, deduct from team leader's balance
                     if (costRemaining > 0 && teamLeaderRef) {
                         const leaderSnap = await transaction.get(teamLeaderRef);
                         const currentLeaderData = leaderSnap.data();
@@ -1271,7 +1278,6 @@
                         }
                         transaction.update(teamLeaderRef, { balance: currentLeaderData.balance - costRemaining });
                         
-                        // Track team spending
                         const currentSpending = currentLeaderData.teamSpending?.[userData.tgChatId] || 0;
                         const newSpending = currentSpending + costRemaining;
                         transaction.update(teamLeaderRef, { [`teamSpending.${userData.tgChatId}`]: newSpending });
@@ -1304,10 +1310,9 @@
                     return mailData;
                 });
 
-                // Update local user data after successful transaction
+                // Correctly update local data after transaction
                 const finalUserSnap = await getDoc(buyerRef);
                 userData = finalUserSnap.data();
-
                 updateUI();
                 
                 document.getElementById('purchase-success-email').textContent = purchasedMailData.email;
@@ -1316,10 +1321,9 @@
                 lucide.createIcons();
 
                 loadMailStore();
-            } catch (e) { showAlert(typeof e === 'string' ? e : "কিনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"); }
+            } catch (e) { showAlert(typeof e === 'string' ? e : "কিনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"); console.error(e); }
             finally { loader.style.display = 'none'; }
         }
-
 
         window.showMailDetails = function(mailType, details) {
             document.getElementById('mail-details-title').textContent = `${mailType} Details`;
@@ -1632,7 +1636,7 @@
             }
         }
         
-        async function handleSearchAndLinkFriend() {
+        async function handleSearchFriend() {
             const friendId = document.getElementById('link-friend-id').value.trim();
             if (!friendId) return showAlert("Please enter a friend's Chat ID.");
             if (friendId === userData.tgChatId) return showAlert("You cannot link to yourself.");
@@ -1658,25 +1662,59 @@
                 return;
             }
 
-            const userRef = doc(db, "users", userData.tgChatId);
-            await updateDoc(userRef, {
-                linkedUsers: arrayUnion(friendId)
-            });
-            await updateDoc(friendRef, {
-                linkedBy: userData.tgChatId
-            });
+            let profileHTML = '';
+            if(friendData.photo_url) {
+                profileHTML = `<img src="${friendData.photo_url}" class="w-12 h-12 rounded-full object-cover">`;
+            } else {
+                profileHTML = `<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"><span class="text-xl font-bold text-gray-500">${friendData.name?.[0] || 'U'}</span></div>`;
+            }
 
-            showAlert(`Successfully linked with ${friendData.name}!`);
-            document.getElementById('link-friend-id').value = '';
-            searchResultEl.innerHTML = '';
-            loadLinkedFriends();
+            searchResultEl.innerHTML = `
+                <div class="bg-gray-50 p-4 rounded-lg mt-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            ${profileHTML}
+                            <div>
+                                <p class="font-bold text-gray-800">${friendData.name}</p>
+                                <p class="text-xs text-gray-500">ID: ${friendData.tgChatId}</p>
+                            </div>
+                        </div>
+                        <button onclick="confirmLinkFriend('${friendData.tgChatId}')" class="btn-gradient px-4 py-2 rounded-lg text-sm">Confirm Link</button>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        window.confirmLinkFriend = async function(friendId) {
+            const searchResultEl = document.getElementById('friend-search-result');
+            searchResultEl.innerHTML = getLoadingHTML();
+            
+            const userRef = doc(db, "users", userData.tgChatId);
+            const friendRef = doc(db, "users", friendId);
+
+            try {
+                await updateDoc(userRef, {
+                    linkedUsers: arrayUnion(friendId)
+                });
+                await updateDoc(friendRef, {
+                    linkedBy: userData.tgChatId
+                });
+
+                showAlert(`Successfully linked!`);
+                document.getElementById('link-friend-id').value = '';
+                searchResultEl.innerHTML = '';
+                loadLinkedFriends();
+            } catch (e) {
+                 searchResultEl.innerHTML = `<p class="text-red-500 text-center mt-2">An error occurred. Please try again.</p>`;
+                 console.error("Link confirmation error:", e);
+            }
         }
 
         async function loadLinkedFriends() {
             const listEl = document.getElementById('linked-friends-list');
             listEl.innerHTML = getLoadingHTML();
             
-            // Refetch current user data to get the latest linkedUsers array
             const userRef = doc(db, "users", userData.tgChatId);
             const userSnap = await getDoc(userRef);
             userData = userSnap.data();
@@ -1712,12 +1750,19 @@
                             return `<div class="text-xs flex justify-between"><span class="font-mono">${p.mailType}</span> <span>৳${p.cost.toFixed(2)}</span></div>`;
                         }).join('');
 
+                    let profileHTML = '';
+                    if(friendData.photo_url) {
+                        profileHTML = `<img src="${friendData.photo_url}" class="w-12 h-12 rounded-full object-cover">`;
+                    } else {
+                        profileHTML = `<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"><span class="text-xl font-bold text-gray-500">${friendData.name?.[0] || 'U'}</span></div>`;
+                    }
+
                     listEl.innerHTML += `
                         <div class="card-bg p-4 rounded-xl space-y-3">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
                                     <div class="relative">
-                                        <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"><span class="text-xl font-bold text-gray-500">${friendData.name?.[0] || 'U'}</span></div>
+                                        ${profileHTML}
                                         <span title="${statusTooltip}" class="absolute bottom-0 right-0 block h-3.5 w-3.5 rounded-full ${statusColor} ring-2 ring-white"></span>
                                     </div>
                                     <div>
@@ -1794,7 +1839,6 @@
                     const review = doc.data();
                     let stars = '';
                     for (let i = 0; i < 5; i++) stars += `<i data-lucide="star" class="w-4 h-4 ${i < review.rating ? 'fill-current' : ''}"></i>`;
-                    // Assuming review.imageUrl might not exist, provide a fallback.
                     const imageUrl = review.imageUrl || `https://ui-avatars.com/api/?name=${review.name.replace(/\s/g, "+")}&background=random`;
                     return `<div class="review-card-new p-4 rounded-lg"><div class="flex items-start gap-4"><img src="${imageUrl}" class="w-12 h-12 rounded-full object-cover" alt="User"><div class="flex-1"><div class="flex justify-between items-center"><h5 class="font-bold">${review.name}</h5><div class="star-rating flex text-sm">${stars}</div></div><p class="text-gray-600 text-sm mt-1">"${review.reviewText}"</p></div></div></div>`;
                 }).join('');
