@@ -1715,8 +1715,13 @@
             const listEl = document.getElementById('linked-friends-list');
             listEl.innerHTML = getLoadingHTML();
             
+            // Fetch the latest user data to ensure linkedUsers is up to date
             const userRef = doc(db, "users", userData.tgChatId);
             const userSnap = await getDoc(userRef);
+            if (!userSnap.exists()) {
+                listEl.innerHTML = '<p class="text-center text-red-500">Could not load your data.</p>';
+                return;
+            }
             userData = userSnap.data();
             
             const linkedIds = userData.linkedUsers || [];
@@ -1729,7 +1734,7 @@
             const friendPromises = linkedIds.map(id => getDoc(doc(db, "users", id)));
             const friendSnaps = await Promise.all(friendPromises);
 
-            listEl.innerHTML = '';
+            listEl.innerHTML = ''; // Clear the loader
             for (const friendDoc of friendSnaps) {
                 if (friendDoc.exists()) {
                     const friendData = friendDoc.data();
@@ -1737,49 +1742,59 @@
                     
                     const fiveMinutesAgo = Timestamp.now().toMillis() - (5 * 60 * 1000);
                     const isOnline = friendData.lastSeen && friendData.lastSeen.toMillis() > fiveMinutesAgo;
-                    const statusColor = isOnline ? 'bg-green-500' : 'bg-red-500';
+                    const statusColor = isOnline ? 'bg-green-500' : 'bg-gray-400';
                     const statusTooltip = isOnline ? 'Active Now' : 'Inactive';
 
-                    const purchaseHistoryQ = query(collection(db, "mail_purchases"), where("userId", "==", friendData.tgChatId), where("paidBy", "==", userData.tgChatId), orderBy("purchasedAt", "desc"), limit(5));
+                    const purchaseHistoryQ = query(collection(db, "mail_purchases"), where("userId", "==", friendData.tgChatId), where("paidBy", "==", userData.tgChatId), orderBy("purchasedAt", "desc"), limit(3));
                     const historySnapshot = await getDocs(purchaseHistoryQ);
                     
                     let historyHtml = historySnapshot.empty 
-                        ? '<p class="text-xs text-gray-500 text-center py-2">No purchases yet.</p>'
-                        : historySnapshot.docs.map(d => {
+                        ? '<p class="text-xs text-gray-500 text-center italic py-2">This member has not made any purchases yet.</p>'
+                        : '<ul class="space-y-2">' + historySnapshot.docs.map(d => {
                             const p = d.data();
-                            return `<div class="text-xs flex justify-between"><span class="font-mono">${p.mailType}</span> <span>৳${p.cost.toFixed(2)}</span></div>`;
-                        }).join('');
+                            const purchaseDate = p.purchasedAt.toDate().toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+                            return `<li class="flex justify-between items-center text-sm bg-gray-50 p-2 rounded-md">
+                                        <div>
+                                            <span class="font-semibold text-gray-800">${p.mailType}</span>
+                                            <span class="block text-xs text-gray-500">${purchaseDate}</span>
+                                        </div>
+                                        <span class="font-bold text-gray-700">৳${p.cost.toFixed(2)}</span>
+                                    </li>`;
+                        }).join('') + '</ul>';
 
                     let profileHTML = '';
                     if(friendData.photo_url) {
                         profileHTML = `<img src="${friendData.photo_url}" class="w-12 h-12 rounded-full object-cover">`;
                     } else {
-                        profileHTML = `<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"><span class="text-xl font-bold text-gray-500">${friendData.name?.[0] || 'U'}</span></div>`;
+                        profileHTML = `<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"><span class="text-xl font-bold text-gray-500">${(friendData.name?.[0] || 'U').toUpperCase()}</span></div>`;
                     }
 
                     listEl.innerHTML += `
-                        <div class="card-bg p-4 rounded-xl space-y-3">
+                        <div class="card-bg p-4 rounded-2xl space-y-4 shadow-md">
                             <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-4">
                                     <div class="relative">
                                         ${profileHTML}
                                         <span title="${statusTooltip}" class="absolute bottom-0 right-0 block h-3.5 w-3.5 rounded-full ${statusColor} ring-2 ring-white"></span>
                                     </div>
                                     <div>
-                                        <p class="font-bold text-gray-800">${friendData.name}</p>
+                                        <p class="font-bold text-lg text-gray-900">${friendData.name}</p>
                                         <p class="text-sm text-gray-600">Total Spent: <span class="font-semibold text-blue-600">৳${totalSpent.toFixed(2)}</span></p>
                                     </div>
                                 </div>
-                                <button onclick="unlinkFriend('${friendData.tgChatId}')" class="p-2 rounded-full hover:bg-red-100 text-red-500 transition-colors">
+                                <button onclick="unlinkFriend('${friendData.tgChatId}')" class="p-2 rounded-full hover:bg-red-100 text-red-600 transition-colors" title="Unlink ${friendData.name}">
                                     <i data-lucide="user-x" class="w-5 h-5"></i>
                                 </button>
                             </div>
-                            <div class="pt-2 border-t">
-                                <h4 class="font-semibold text-sm mb-1 text-gray-700">Recent Purchases (BY List):</h4>
-                                <div class="space-y-1">${historyHtml}</div>
+                            <div class="pt-3 border-t border-gray-200">
+                                <h4 class="font-semibold text-md mb-2 text-gray-800">Purchase List (Last 3)</h4>
+                                ${historyHtml}
                             </div>
                         </div>`;
                 }
+            }
+            if (listEl.innerHTML === '') {
+                 listEl.innerHTML = '<p class="text-center text-gray-500">Could not load any team members.</p>';
             }
             lucide.createIcons();
         }
@@ -1808,19 +1823,35 @@
             }
         }
 
-
         async function loadTutorials() {
             const tutorialListEl = document.getElementById('tutorial-list');
             tutorialListEl.innerHTML = getLoadingHTML();
             try {
+                // فرض করা হচ্ছে যে ফায়ারস্টোর 'tutorials' কালেকশনের প্রতিটি ডকুমেন্টে निम्न ফিল্ডগুলো আছে:
+                // { order: 1, title: "...", youtubeWatchUrl: "...", bannerImageUrl: "..." }
                 const q = query(collection(db, "tutorials"), orderBy("order"));
                 const snapshot = await getDocs(q);
-                if (snapshot.empty) return tutorialListEl.innerHTML = '<p class="text-center text-gray-600">কোনো টিউটোরিয়াল পাওয়া যায়নি।</p>';
+                if (snapshot.empty) {
+                    tutorialListEl.innerHTML = '<p class="text-center text-gray-600">কোনো টিউটোরিয়াল পাওয়া যায়নি।</p>';
+                    return;
+                }
 
                 tutorialListEl.innerHTML = snapshot.docs.map(doc => {
                     const tutorial = doc.data();
-                    return `<div class="card-bg p-4 rounded-xl"><h3 class="font-bold text-lg text-gray-800 mb-3">${tutorial.title}</h3><div class="video-container-16-9"><iframe src="${tutorial.youtubeEmbedUrl}" title="${tutorial.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>`;
+                    return `
+                    <div class="card-bg rounded-2xl overflow-hidden shadow-lg transition-transform hover:scale-[1.03] duration-300">
+                        <a href="${tutorial.youtubeWatchUrl}" target="_blank" class="block">
+                            <div class="relative">
+                                <img src="${tutorial.bannerImageUrl}" alt="${tutorial.title}" class="w-full aspect-video object-cover">
+                                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity opacity-0 hover:opacity-100">
+                                    <i data-lucide="play-circle" class="w-16 h-16 text-white"></i>
+                                </div>
+                            </div>
+                            <h3 class="font-bold text-lg text-gray-800 p-4 text-center">${tutorial.title}</h3>
+                        </a>
+                    </div>`;
                 }).join('');
+                lucide.createIcons();
             } catch (e) {
                 tutorialListEl.innerHTML = '<p class="text-center text-red-600">টিউটোরিয়াল লোড করা যায়নি।</p>';
                 console.error("Error loading tutorials: ", e);
