@@ -7,7 +7,7 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;7.00;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
@@ -37,6 +37,7 @@
         .card-bg:hover {
             border-color: rgba(0, 123, 255, 0.4);
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
         }
         .text-accent-gradient {
             background: linear-gradient(to right, #007bff, #0056b3);
@@ -119,23 +120,6 @@
         .dots { position: absolute; bottom: 12px; width: 100%; text-align: center; z-index: 10; }
         .dot { display: inline-block; height: 8px; width: 8px; margin: 0 4px; background: #bbb; border-radius: 50%; cursor: pointer; transition: background 0.3s; }
         .dot.active { background: #007bff; }
-        .marquee {
-            background-color: #007bff;
-            color: white;
-            padding: 8px 0;
-            white-space: nowrap;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .marquee-content {
-            display: inline-block;
-            padding-left: 100%;
-            animation: marquee 20s linear infinite;
-        }
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
 
         /* UPDATED Premium Loader Styles */
         #loader { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; transition: opacity 0.5s ease; }
@@ -183,14 +167,6 @@
         }
         .modal-close-btn:hover {
             background-color: #d1d5db;
-        }
-
-        /* NEW: Premium Title Style */
-        .premium-title {
-            background: linear-gradient(to right, #6366f1, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            padding: 0 4px;
         }
 
         /* NEW: Notification Badge */
@@ -423,8 +399,8 @@
                         <div id="otp-mail-container" class="mail-view space-y-4"></div>
                     </div>
 
-                    <div>
-                        <div class="flex justify-between items-center mb-3 mt-6">
+                    <div class="mt-10"> <!-- Added margin-top for separation -->
+                        <div class="flex justify-between items-center mb-3">
                             <h3 class="text-lg font-semibold">Buy History (Last 4 Hours)</h3>
                             <div class="flex items-center gap-2">
                                <button id="copy-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="copy" class="w-4 h-4"></i><span>Copy</span></button>
@@ -438,8 +414,9 @@
             <!-- =========== END OF UPDATED MAIL PAGE =========== -->
 
 
+            <!-- =========== UPDATED UPDATES PAGE =========== -->
             <div id="updates-page" class="p-4 space-y-6 sub-page">
-                <h2 class="text-xl font-bold text-center text-gray-800">Update</h2>
+                <h2 class="text-xl font-bold text-center text-gray-800">Latest Update</h2>
                 <div id="updates-content" class="space-y-4"></div>
 
                 <div class="mt-8">
@@ -447,6 +424,8 @@
                     <div id="reviews-list" class="space-y-4"></div>
                 </div>
             </div>
+            <!-- =========== END OF UPDATED UPDATES PAGE =========== -->
+
 
             <div id="tutorial-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center text-gray-800">Tutorials</h2>
@@ -470,7 +449,6 @@
                         <span>⚡ More Features</span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
-                    <!-- =========== SUPPORT BUTTON (UPDATED) =========== -->
                     <button id="go-to-support-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
                         <span class="flex items-center gap-3">
                             <i data-lucide="headphones" class="w-6 h-6 text-gray-600"></i>
@@ -478,7 +456,6 @@
                         </span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
-                    <!-- =========== END OF SUPPORT BUTTON =========== -->
                 </div>
 
 
@@ -487,7 +464,6 @@
                 </div>
             </div>
 
-            <!-- =========== UPDATED FEATURES PAGE =========== -->
             <div id="features-page" class="p-4 space-y-8 sub-page">
                 <div class="grid grid-cols-2 gap-4 text-center">
                     <div class="card-bg p-4 rounded-xl">
@@ -513,7 +489,6 @@
                     <div id="transfer-history-list" class="space-y-3"></div>
                 </div>
             </div>
-            <!-- =========== END OF UPDATED FEATURES PAGE =========== -->
 
             <div id="admin-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center text-gray-800">Admin Panel</h2>
@@ -1386,6 +1361,21 @@
             document.getElementById('mail-details-modal').classList.remove('hidden');
         }
 
+        // NEW: Function to toggle long text in updates
+        window.toggleUpdateContent = (updateId, encodedContent) => {
+            const contentEl = document.getElementById(`update-content-${updateId}`);
+            const buttonEl = contentEl.nextElementSibling;
+            const fullContent = decodeURIComponent(encodedContent);
+
+            if (buttonEl.innerText === "Read More") {
+                contentEl.innerText = fullContent;
+                buttonEl.innerText = "Show Less";
+            } else {
+                contentEl.innerText = fullContent.substring(0, 120) + '...';
+                buttonEl.innerText = "Read More";
+            }
+        }
+
         async function loadUpdates() {
             const updatesContainer = document.getElementById('updates-content');
             updatesContainer.innerHTML = getLoadingHTML();
@@ -1397,24 +1387,33 @@
                 const updateDoc = snapshot.docs[0];
                 const updateData = updateDoc.data();
                 const updateId = updateDoc.id;
-                const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", userData.tgChatId));
-                const userVote = userInteractionDoc.exists() ? userInteractionDoc.data().vote : null;
+                
+                const content = updateData.content || '';
+                const isLong = content.length > 120; // Set character limit for "Read More"
+                const shortContent = isLong ? content.substring(0, 120) + '...' : content;
+                const encodedContent = encodeURIComponent(content);
 
-                const isLiked = userVote === 'liked';
-                const isDisliked = userVote === 'disliked';
-                let linkButtonHtml = updateData.linkUrl ? `<a href="${updateData.linkUrl}" target="_blank" class="btn-gradient px-4 py-2 rounded-lg text-sm flex-1 text-center">Learn More</a>` : '';
                 const createdAtDate = updateData.createdAt ? updateData.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
 
-                updatesContainer.innerHTML = `<div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">${updateData.imageUrl ? `<img src="${updateData.imageUrl}" class="w-full aspect-[16/9] object-cover" alt="Update Banner">` : ''}<div class="p-6 space-y-4 flex flex-col flex-grow"><div><h3 class="text-2xl font-bold text-gray-800">${updateData.title}</h3>${createdAtDate ? `<p class="text-xs text-gray-500 mt-1">${createdAtDate}</p>` : ''}</div><p class="text-gray-600 text-base whitespace-pre-wrap flex-grow leading-relaxed">${updateData.content || ''}</p><div class="flex items-center justify-between gap-4 pt-4 mt-auto border-t border-gray-200"><div class="flex items-center gap-4"><div class="flex items-center space-x-2"><button id="like-btn" class="p-2 rounded-full transition-colors ${isLiked ? 'text-blue-500 bg-blue-100' : 'text-gray-500 hover:bg-gray-100'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-up" class="w-5 h-5"></i></button><span class="font-semibold text-sm text-gray-700">${updateData.likes || 0}</span></div><div class="flex items-center space-x-2"><button id="dislike-btn" class="p-2 rounded-full transition-colors ${isDisliked ? 'text-red-500 bg-red-100' : 'text-gray-500 hover:bg-gray-100'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-down" class="w-5 h-5"></i></button><span class="font-semibold text-sm text-gray-700">${updateData.dislikes || 0}</span></div></div>${linkButtonHtml}</div></div></div>`;
+                updatesContainer.innerHTML = `
+                    <div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">
+                        ${updateData.imageUrl ? `<img src="${updateData.imageUrl}" class="w-full aspect-[16/9] object-cover" alt="Update Banner">` : ''}
+                        <div class="p-5 space-y-3">
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800">${updateData.title}</h3>
+                                ${createdAtDate ? `<p class="text-xs text-gray-500 mt-1">${createdAtDate}</p>` : ''}
+                            </div>
+                            <p id="update-content-${updateId}" class="text-gray-600 text-sm whitespace-pre-wrap leading-relaxed">${shortContent}</p>
+                            ${isLong ? `<button onclick="toggleUpdateContent('${updateId}', '${encodedContent}')" class="font-semibold text-blue-600 text-sm hover:underline">Read More</button>` : ''}
+                        </div>
+                    </div>`;
                 lucide.createIcons();
-                document.getElementById('like-btn').onclick = () => handleVote('like', updateId);
-                document.getElementById('dislike-btn').onclick = () => handleVote('dislike', updateId);
             } catch(e) {
                 updatesContainer.innerHTML = `<p class="text-center text-red-600">Failed to load updates.</p>`;
                 console.error("Error loading updates:", e);
             }
         }
-
+        
         async function handleVote(voteType, updateId) {
             loader.style.display = 'flex';
             const updateRef = doc(db, "updates", updateId);
@@ -1876,6 +1875,8 @@
             const tutorialListEl = document.getElementById('tutorial-list');
             tutorialListEl.innerHTML = getLoadingHTML();
             try {
+                // The 'tutorials' collection in Firebase should have documents with fields:
+                // 'order' (number), 'title' (string), 'youtubeWatchUrl' (string), 'bannerImageUrl' (string)
                 const q = query(collection(db, "tutorials"), orderBy("order"));
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) {
@@ -1885,19 +1886,18 @@
 
                 tutorialListEl.innerHTML = snapshot.docs.map(doc => {
                     const tutorial = doc.data();
-                    // Fallback banner image if not provided in Firebase
                     const bannerImage = tutorial.bannerImageUrl || 'https://i.postimg.cc/zBp8rCX9/Yellow-Orange-Modern-Marketing-Courses-You-Tube-Thumbnail-20250910-185659-0000.png';
                     
                     return `
                     <div class="card-bg rounded-xl overflow-hidden shadow-lg transition-transform hover:scale-[1.02] duration-300">
-                        <a href="${tutorial.youtubeWatchUrl}" target="_blank" class="block group">
-                            <div class="relative">
+                        <h3 class="font-bold text-lg text-gray-800 p-4 pb-2">${tutorial.title}</h3>
+                        <a href="${tutorial.youtubeWatchUrl}" target="_blank" class="block group p-4 pt-2">
+                            <div class="relative rounded-lg overflow-hidden">
                                 <img src="${bannerImage}" alt="${tutorial.title}" class="w-full aspect-video object-cover">
                                 <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100">
                                     <i data-lucide="play-circle" class="w-16 h-16 text-white opacity-80"></i>
                                 </div>
                             </div>
-                            <h3 class="font-bold text-lg text-gray-800 p-4">${tutorial.title}</h3>
                         </a>
                     </div>`;
                 }).join('');
