@@ -20,7 +20,7 @@
             user-select: none; /* Standard syntax */
             -webkit-touch-callout: none; /* iOS Safari */
         }
-        input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #extra-earn-details {
+        input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #extra-earn-details, #account-purchase-history .font-mono {
             -webkit-user-select: text; /* Safari */
             -ms-user-select: text; /* IE 10+ */
             user-select: text; /* Standard syntax */
@@ -305,7 +305,6 @@
         </div>
     </aside>
     <div id="app-container" class="min-h-screen flex-col main-page">
-        <!-- =========== HEADER =========== -->
         <header class="header flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="relative">
@@ -328,9 +327,6 @@
                 </button>
             </div>
         </header>
-        <!-- =========== END OF HEADER =========== -->
-
-
         <main class="flex-grow pb-20">
             <div id="home-page" class="space-y-6 sub-page">
                 <div class="p-4">
@@ -355,7 +351,6 @@
                 </div>
             </div>
             
-            <!-- =========== DEPOSIT PAGE =========== -->
             <div id="pay-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-2xl font-bold text-center text-accent-gradient">Deposit Center</h2>
 
@@ -390,10 +385,6 @@
                 </div>
                 <div class="mt-6"><h3 class="text-lg font-semibold mb-3">Payment History</h3><div id="payment-history-list" class="space-y-3"></div></div>
             </div>
-            <!-- =========== END OF DEPOSIT PAGE =========== -->
-
-
-            <!-- =========== MAIL PAGE =========== -->
             <div id="mail-page" class="sub-page">
                 <div class="p-4 space-y-6">
                     <div class="view-switcher">
@@ -418,9 +409,35 @@
                     </div>
                 </div>
             </div>
-            <!-- =========== END OF MAIL PAGE =========== -->
+            <div id="account-page" class="sub-page">
+                <div class="p-4 space-y-6">
+                    <div class="view-switcher">
+                        <button id="account-login-btn" class="active">ACCOUNT LOGIN</button>
+                        <button id="account-otp-btn">ACCOUNT OTP</button>
+                    </div>
 
-            <!-- =========== NEW EARN PAGE =========== -->
+                    <div id="account-views-container" class="views-container">
+                        <div id="account-login-container" class="view space-y-4">
+                            <div class="loading-container"><div class="premium-loader-spinner"></div></div>
+                        </div>
+                        <div id="account-otp-container" class="view space-y-4">
+                            <div class="loading-container"><div class="premium-loader-spinner"></div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-lg font-semibold">Account History</h3>
+                            <div class="flex items-center gap-2">
+                               <button id="account-copy-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="copy" class="w-4 h-4"></i><span>Copy</span></button>
+                               <button id="account-download-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i><span>Download</span></button>
+                            </div>
+                        </div>
+                        <div id="account-purchase-history" class="space-y-3">
+                             </div>
+                    </div>
+                </div>
+            </div>
             <div id="earn-page" class="sub-page">
                 <div class="p-4 space-y-6">
                     <div class="view-switcher">
@@ -439,10 +456,6 @@
                     </div>
                 </div>
             </div>
-            <!-- =========== END OF NEW EARN PAGE =========== -->
-
-
-            <!-- =========== UPDATES PAGE (REDESIGNED) =========== -->
             <div id="updates-page" class="p-4 space-y-6 sub-page">
                  <div class="view-switcher">
                     <button id="reviews-view-btn" class="active">Reviews</button>
@@ -453,9 +466,6 @@
                     <div id="tutorials-container" class="view space-y-4"></div>
                 </div>
             </div>
-            <!-- =========== END OF UPDATES PAGE =========== -->
-
-            <!-- =========== PROFILE PAGE =========== -->
             <div id="profile-page" class="p-4 space-y-6 sub-page">
                 <div class="card-bg p-6 rounded-2xl flex flex-col items-center text-center">
                     <div class="relative mb-4">
@@ -474,9 +484,6 @@
 
                 <div class="text-center pt-6"><p class="text-center text-gray-600 text-sm">Developed by <a href="https://t.me/bd_Storebot/Botshop" target="_blank" class="font-semibold text-[#007bff] hover:underline">𝐁𝐃 𝐒𝐓𝐎𝐑𝐄</a></p></div>
             </div>
-            <!-- =========== END OF PROFILE PAGE =========== -->
-
-            <!-- =========== FEATURES PAGE =========== -->
             <div id="features-page" class="p-4 space-y-8 sub-page">
                 <div class="grid grid-cols-2 gap-4 text-center">
                     <div class="card-bg p-4 rounded-xl"><p class="text-sm text-gray-400 mb-1">TOTAL SEND</p><p id="total-send-display" class="text-2xl font-bold text-orange-500">৳0.00</p></div>
@@ -488,9 +495,6 @@
                 </div>
                 <div><h3 class="text-lg font-semibold mb-3">Balance Transfer History</h3><div id="transfer-history-list" class="space-y-3"></div></div>
             </div>
-            <!-- =========== END OF FEATURES PAGE =========== -->
-
-            <!-- =========== ADMIN PAGE =========== -->
             <div id="admin-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center text-gray-800">Admin Panel</h2>
                 <div class="card-bg p-5 rounded-xl space-y-4">
@@ -516,8 +520,6 @@
                 <div class="mt-6"><h3 class="text-lg font-semibold mb-3 text-center">Replace Requests</h3><div id="replace-requests-list" class="space-y-3"></div></div>
                 <div class="mt-6"><h3 class="text-lg font-semibold mb-3 text-center">Sell Requests</h3><div id="sell-requests-list" class="space-y-3"></div></div>
             </div>
-            <!-- =========== END OF ADMIN PAGE =========== -->
-
             <div id="link-team-page" class="p-4 space-y-6 sub-page">
                 <div class="relative flex items-center justify-center mb-4"><button onclick="navigateTo('features-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors"><i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i></button><h2 class="text-xl font-bold text-center text-gray-800">Link Team</h2></div>
                 <div class="card-bg p-5 rounded-xl space-y-5">
@@ -552,7 +554,7 @@
         </main>
 
         <nav class="bottom-nav">
-            <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
+            <a href="#" class="nav-link-premium" data-page="account-page"><i data-lucide="wallet" class="icon"></i><span>Account</span></a>
             <a href="#" class="nav-link-premium" data-page="earn-page"><i data-lucide="dollar-sign" class="icon"></i><span>Earn</span></a>
             <a href="#" class="nav-link-premium center-home-link active" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
             <a href="#" class="nav-link-premium" data-page="mail-page"><i data-lucide="mail" class="icon"></i><span>Mail</span></a>
@@ -561,15 +563,13 @@
         </nav>
     </div>
 
-    <!-- Modals -->
     <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm"><div class="bg-white rounded-lg p-6 w-full max-w-sm text-center"><p id="alert-message" class="mb-5 whitespace-pre-wrap text-gray-700"></p><button id="alert-ok-btn" class="btn-gradient px-8 py-2 rounded-lg">OK</button></div></div>
     <div id="notification-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm"><div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4"><h3 class="text-xl font-bold text-center text-accent-gradient mb-4">Notifications</h3><div id="notification-list" class="space-y-3 max-h-80 overflow-y-auto"></div><button id="notification-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">Close</button></div></div>
     <div id="mail-details-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm"><div class="card-bg rounded-2xl p-6 w-full max-w-lg space-y-4 relative"><h3 id="mail-details-title" class="text-2xl font-bold text-center text-accent-gradient">Mail Details</h3><div id="mail-details-content" class="text-gray-700 bg-gray-100 p-4 rounded-lg whitespace-pre-wrap text-sm leading-relaxed max-h-80 overflow-y-auto"></div><button id="mail-details-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">Got It!</button></div></div>
     <div id="insufficient-balance-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm"><div class="card-bg rounded-2xl p-6 w-full max-w-sm text-center space-y-4 relative"><button id="close-insufficient-balance-modal" class="modal-close-btn"><i data-lucide="x" class="w-5 h-5"></i></button><i data-lucide="wallet" class="w-12 h-12 text-amber-500 mx-auto"></i><h3 class="text-xl font-bold text-gray-800">ব্যালেন্স কম!</h3><p class="text-gray-600">স্টক সীমিত, তাই তাড়াতাড়ি কিনুন। দেরি করলে লস! এখনই ডিপোজিট করে আপনার মেইলটি সংগ্রহ করুন।</p><button id="insufficient-balance-deposit-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">Deposit Now</button></div></div>
-    <div id="purchase-success-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm"><div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 relative"><button id="close-purchase-success-modal" class="modal-close-btn"><i data-lucide="x" class="w-5 h-5"></i></button><i data-lucide="check-circle-2" class="w-12 h-12 text-green-500 mx-auto"></i><h3 class="text-xl font-bold text-gray-800 text-center">সফলভাবে কেনা হয়েছে!</h3><div class="space-y-3 pt-2"><div class="flex items-center justify-between bg-gray-100 p-2.5 rounded-lg"><span class="font-mono text-sm text-gray-800 truncate" id="purchase-success-email"></span><button onclick="copyToClipboard(document.getElementById('purchase-success-email').textContent, this)" class="ml-2 p-2 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div><div class="flex items-center justify-between bg-gray-100 p-2.5 rounded-lg"><span class="font-mono text-sm text-gray-800" id="purchase-success-password"></span><button onclick="copyToClipboard(document.getElementById('purchase-success-password').textContent, this)" class="ml-2 p-2 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div></div><p class="text-xs text-gray-500 text-center pt-2">এই তথ্য আপনার ক্রয় হিস্টিতে সেভ করা হয়েছে।</p><button id="purchase-success-buy-again-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">আবার কিনুন</button></div></div>
+    <div id="purchase-success-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm"><div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 relative"><button id="close-purchase-success-modal" class="modal-close-btn"><i data-lucide="x" class="w-5 h-5"></i></button><i data-lucide="check-circle-2" class="w-12 h-12 text-green-500 mx-auto"></i><h3 class="text-xl font-bold text-gray-800 text-center">সফলভাবে কেনা হয়েছে!</h3><div class="space-y-3 pt-2"><div class="flex items-center justify-between bg-gray-100 p-2.5 rounded-lg"><span class="font-mono text-sm text-gray-800 truncate" id="purchase-success-email"></span><button onclick="copyToClipboard(document.getElementById('purchase-success-email').textContent, this)" class="ml-2 p-2 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div><div class="flex items-center justify-between bg-gray-100 p-2.5 rounded-lg"><span class="font-mono text-sm text-gray-800" id="purchase-success-password"></span><button onclick="copyToClipboard(document.getElementById('purchase-success-password').textContent, this)" class="ml-2 p-2 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div></div><p class="text-xs text-gray-500 text-center pt-2">এই তথ্য আপনার ক্রয় হিস্টিতে সেভ করা হয়েছে।</p><button id="purchase-success-buy-again-btn" class="w-full p-3 rounded-lg btn-gradient mt-4"> আবার কিনুন</button></div></div>
     <div id="report-issue-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm"><div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 relative"><button onclick="document.getElementById('report-issue-modal').classList.add('hidden')" class="modal-close-btn"><i data-lucide="x" class="w-5 h-5"></i></button><h3 class="text-xl font-bold text-center text-accent-gradient">Report an Issue</h3><p id="report-modal-mail-type" class="text-center font-semibold text-gray-700"></p><div class="bg-red-50 border-l-4 border-red-400 text-red-700 p-3 rounded-md text-xs space-y-2"><p class="font-bold">রিপোর্টের নিয়মাবলী:</p><ul class="list-disc list-inside"><li>ভুল পাসওয়ার্ড বা লগইন না হলে রিপোর্ট করুন।</li><li>মেইল নষ্ট বা কাজ না করলে রিপোর্ট করুন।</li><li>মেইল ব্যবহারের পর ব্যক্তিগত সমস্যার জন্য রিপোর্ট গ্রহণযোগ্য নয়।</li></ul><p class="font-bold mt-2">আপনার রিপোর্ট যদি মিথ্যা প্রমাণিত হয়, তবে আপনার অ্যাকাউন্ট ব্লক করা হতে পারে।</p></div><form id="report-issue-form" class="space-y-4"><input type="hidden" id="report-purchase-id"><input type="hidden" id="report-purchase-cost"><input type="hidden" id="report-purchase-saleId"><div><label for="report-reason" class="block text-sm font-medium text-gray-600 mb-1">সমস্যার কারণ</label><textarea id="report-reason" rows="4" class="w-full p-3 rounded-lg input-field" placeholder="আপনার সমস্যাটি বিস্তারিত লিখুন..." required></textarea></div><div><label for="report-proof" class="block text-sm font-medium text-gray-600 mb-1">প্রমাণ (ঐচ্ছিক)</label><input type="text" id="report-proof" class="w-full p-3 rounded-lg input-field" placeholder="প্রমাণের জন্য স্ক্রিনশট বা ভিডিও লিঙ্ক দিন"></div><button type="submit" class="w-full p-3 rounded-lg btn-gradient">Submit Report</button></form></div></div>
     
-    <!-- SELL NOW MODAL -->
     <div id="sell-now-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 relative">
             <button onclick="document.getElementById('sell-now-modal').classList.add('hidden')" class="modal-close-btn"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -760,6 +760,7 @@
             const pageLoadFunctions = {
                 'pay-page': loadPaymentHistory,
                 'mail-page': loadMailStore,
+                'account-page': loadAccountPage, // নতুন পেজের জন্য ফাংশন
                 'earn-page': loadEarnPage,
                 'updates-page': loadUpdatesAndTutorials,
                 'admin-page': () => { populateAdminMailTypes(); loadReplaceRequests(); loadSellRequests(); },
@@ -791,6 +792,11 @@
             document.getElementById('add-earn-post-btn').addEventListener('click', handleAddEarnPost);
             document.getElementById('download-history-btn').addEventListener('click', handleDownloadHistory);
             document.getElementById('copy-history-btn').addEventListener('click', handleCopyHistory);
+            
+            // New listeners for Account Page
+            document.getElementById('account-copy-history-btn').addEventListener('click', handleAccountCopyHistory);
+            document.getElementById('account-download-history-btn').addEventListener('click', handleAccountDownloadHistory);
+
             document.getElementById('hamburger-menu-btn').addEventListener('click', toggleMenu);
             document.getElementById('menu-overlay').addEventListener('click', toggleMenu);
             document.getElementById('go-to-support-btn').addEventListener('click', toggleMenu);
@@ -810,6 +816,11 @@
 
             document.getElementById('login-mail-btn').addEventListener('click', () => switchTabView('login', 'mail'));
             document.getElementById('otp-mail-btn').addEventListener('click', () => switchTabView('otp', 'mail'));
+
+            // New Listeners for Account Page Tabs
+            document.getElementById('account-login-btn').addEventListener('click', () => switchTabView('login', 'account'));
+            document.getElementById('account-otp-btn').addEventListener('click', () => switchTabView('otp', 'account'));
+            
             document.getElementById('extra-earn-btn').addEventListener('click', () => switchTabView('extra', 'earn'));
             document.getElementById('sell-earn-btn').addEventListener('click', () => switchTabView('sell', 'earn'));
             document.getElementById('reviews-view-btn').addEventListener('click', () => switchTabView('reviews', 'updates'));
@@ -886,10 +897,161 @@
         async function loadPaymentHistory() { /* Unchanged, same as original */ }
         async function getStockCount(collectionName) { /* Unchanged */ }
         async function renderMailList(mails, containerEl, effectiveBalance) { /* Unchanged */ }
-        async function loadMailStore() { /* Unchanged, same as original */ }
+        
+        async function loadMailStore() { 
+            const loginContainer = document.getElementById('login-mail-container');
+            const otpContainer = document.getElementById('otp-mail-container');
+            loginContainer.innerHTML = getLoadingHTML();
+            otpContainer.innerHTML = getLoadingHTML();
+
+            const effectiveBalance = (userData.balance || 0);
+            
+            const loginMails = appConfig.mails.filter(m => m.category === 'login' && m.stockKey);
+            const otpMails = appConfig.mails.filter(m => m.category === 'otp' && m.stockKey);
+
+            await Promise.all([
+                renderMailList(loginMails, loginContainer, effectiveBalance),
+                renderMailList(otpMails, otpContainer, effectiveBalance)
+            ]);
+            
+            loadMailPurchaseHistory();
+            switchTabView('login', 'mail');
+            startCountdownTimers();
+        }
+
+        async function loadMailPurchaseHistory() {
+            const historyEl = document.getElementById('mail-purchase-history');
+            historyEl.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(db, "sales"), where("buyerId", "==", userData.tgChatId), orderBy("purchasedAt", "desc"), limit(20));
+                const snapshot = await getDocs(q);
+                if (snapshot.empty) {
+                    historyEl.innerHTML = '<p class="text-center text-gray-500">No purchase history found.</p>';
+                    return;
+                }
+                historyEl.innerHTML = snapshot.docs.map(doc => {
+                    const item = doc.data();
+                    const date = item.purchasedAt.toDate().toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                    const [email, password, ...rest] = item.mail.split(/[\/:]/);
+                    const mailData = item.mail.replace(/\//g, '/<wbr>'); // Word break
+                    
+                    return `<div class="card-bg p-3 rounded-lg flex items-center justify-between">
+                        <div>
+                            <p class="font-semibold text-gray-800">${item.mailType}</p>
+                            <p class="text-xs text-gray-500">${date}</p>
+                            <div class="font-mono text-sm text-gray-700 mt-2" style="word-break: break-all;">${mailData}</div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <button onclick="copyToClipboard('${item.mail}', this)" class="p-2 rounded-lg hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button>
+                            <button onclick="showReportForm('${doc.id}', '${item.mailType}', ${item.cost}, '${item.saleId}')" class="p-2 rounded-lg hover:bg-red-100"><i data-lucide="shield-alert" class="w-4 h-4 text-red-500"></i></button>
+                        </div>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch (e) {
+                console.error("Error loading purchase history: ", e);
+                historyEl.innerHTML = '<p class="text-center text-red-600">Could not load history.</p>';
+            }
+        }
+
+        // --- NEW ACCOUNT PAGE FUNCTIONS ---
+        
+        async function loadAccountPage() {
+            // এই ফাংশনটি নতুন অ্যাকাউন্ট পেজের ডেটা লোড করবে।
+            // এটি মেইল স্টোরের মতোই কন্টেন্ট লোড করছে।
+            
+            const loginContainer = document.getElementById('account-login-container');
+            const otpContainer = document.getElementById('account-otp-container');
+            loginContainer.innerHTML = getLoadingHTML();
+            otpContainer.innerHTML = getLoadingHTML();
+
+            const effectiveBalance = (userData.balance || 0);
+            
+            // মেইল পেজের মতোই দুটি ক্যাটাগরি লোড করা হচ্ছে
+            // আপনি চাইলে এখানে appConfig.accounts বা অন্য কিছু লোড করতে পারেন
+            const loginMails = appConfig.mails.filter(m => m.category === 'login' && m.stockKey);
+            const otpMails = appConfig.mails.filter(m => m.category === 'otp' && m.stockKey);
+
+            await Promise.all([
+                renderMailList(loginMails, loginContainer, effectiveBalance),
+                renderMailList(otpMails, otpContainer, effectiveBalance)
+            ]);
+            
+            loadAccountPurchaseHistory(); // অ্যাকাউন্ট পেজের নিজস্ব হিস্ট্রি লোড
+            switchTabView('login', 'account'); // প্রথম ট্যাবটি ডিফল্ট হিসেবে দেখাবে
+            startCountdownTimers();
+        }
+
+        async function loadAccountPurchaseHistory() {
+            // এটি mail-purchase-history এর মতোই, শুধু নতুন পেজের জন্য
+            const historyEl = document.getElementById('account-purchase-history');
+            historyEl.innerHTML = getLoadingHTML();
+            try {
+                // একই সেলস কালেকশন ব্যবহার করা হচ্ছে। প্রয়োজন হলে আলাদা করতে পারেন।
+                const q = query(collection(db, "sales"), where("buyerId", "==", userData.tgChatId), orderBy("purchasedAt", "desc"), limit(20));
+                const snapshot = await getDocs(q);
+                if (snapshot.empty) {
+                    historyEl.innerHTML = '<p class="text-center text-gray-500">No purchase history found.</p>';
+                    return;
+                }
+                historyEl.innerHTML = snapshot.docs.map(doc => {
+                    const item = doc.data();
+                    const date = item.purchasedAt.toDate().toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                    const [email, password, ...rest] = item.mail.split(/[\/:]/);
+                    const mailData = item.mail.replace(/\//g, '/<wbr>'); // Word break
+                    
+                    return `<div class="card-bg p-3 rounded-lg flex items-center justify-between">
+                        <div>
+                            <p class="font-semibold text-gray-800">${item.mailType}</p>
+                            <p class="text-xs text-gray-500">${date}</p>
+                            <div class="font-mono text-sm text-gray-700 mt-2" style="word-break: break-all;">${mailData}</div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <button onclick="copyToClipboard('${item.mail}', this)" class="p-2 rounded-lg hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button>
+                            <button onclick="showReportForm('${doc.id}', '${item.mailType}', ${item.cost}, '${item.saleId}')" class="p-2 rounded-lg hover:bg-red-100"><i data-lucide="shield-alert" class="w-4 h-4 text-red-500"></i></button>
+                        </div>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch (e) {
+                console.error("Error loading account purchase history: ", e);
+                historyEl.innerHTML = '<p class="text-center text-red-600">Could not load history.</p>';
+            }
+        }
+
         function startCountdownTimers() { /* Unchanged */ }
+        
         async function handleDownloadHistory() { /* Unchanged */ }
+        
         async function handleCopyHistory() { /* Unchanged */ }
+
+        // --- NEW ACCOUNT HISTORY HELPERS ---
+        async function handleAccountDownloadHistory() {
+            const historyEl = document.getElementById('account-purchase-history');
+            if (!historyEl.children.length || historyEl.children[0].tagName === 'P') {
+                return showAlert("No history to download.");
+            }
+            const data = Array.from(historyEl.children).map(child => {
+                const mail = child.querySelector('.font-mono').textContent;
+                const type = child.querySelector('.font-semibold').textContent;
+                const date = child.querySelector('.text-xs.text-gray-500').textContent;
+                return { Date: date, Type: type, Mail: mail };
+            });
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Purchase History");
+            XLSX.writeFile(wb, "MailStore_Account_History.xlsx");
+        }
+
+        async function handleAccountCopyHistory() {
+            const historyEl = document.getElementById('account-purchase-history');
+            if (!historyEl.children.length || historyEl.children[0].tagName === 'P') {
+                return showAlert("No history to copy.");
+            }
+            const text = Array.from(historyEl.children).map(child => child.querySelector('.font-mono').textContent).join('\n');
+            copyToClipboard(text, null, 'History copied to clipboard!');
+        }
+
         window.buyMail = async function(mailType, costParam, stockKey) { /* Unchanged, same as original */ }
         window.showMailDetails = function(mailType, encodedDetails, encodedFeatures) { /* Unchanged */ }
         
