@@ -22,7 +22,7 @@
             -webkit-touch-callout: none; /* iOS Safari */
         }
         /* ইনপুট এবং নির্দিষ্ট কিছু জায়গায় সিলেকশন চালু রাখার জন্য কোড */
-        input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #account-purchase-history .font-mono {
+        input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #account-purchase-history .font-mono, #replace-history-list .text-sm {
             -webkit-user-select: text; /* Safari */
             -ms-user-select: text; /* IE 10+ */
             user-select: text; /* Standard syntax */
@@ -513,6 +513,13 @@
                         <span>⚡ More Features</span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
+                    <button id="go-to-replace-list-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
+                        <span class="flex items-center gap-3">
+                            <i data-lucide="history" class="w-6 h-6 text-gray-600"></i>
+                            <span>Replace History</span>
+                        </span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </button>
                     <button id="go-to-support-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
                         <span class="flex items-center gap-3">
                             <i data-lucide="headphones" class="w-6 h-6 text-gray-600"></i>
@@ -569,7 +576,16 @@
                     <div id="replace-requests-list" class="space-y-3"></div>
                 </div>
             </div>
-
+            
+            <div id="replace-list-page" class="p-4 space-y-6 sub-page">
+                <div class="relative flex items-center justify-center mb-4">
+                    <button onclick="navigateTo('profile-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
+                    </button>
+                    <h2 class="text-xl font-bold text-center text-gray-800">My Replace History</h2>
+                </div>
+                <div id="replace-history-list" class="space-y-3"></div>
+            </div>
             <div id="link-team-page" class="p-4 space-y-6 sub-page">
                 <div class="relative flex items-center justify-center mb-4">
                     <button onclick="navigateTo('features-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
@@ -631,7 +647,7 @@
             <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
             <a href="#" class="nav-link-premium" data-page="mail-page"><i data-lucide="mail" class="icon"></i><span>Mail</span></a>
             <a href="#" class="nav-link-premium center-home-link active" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
-            <a href="#" class="nav-link-premium" data-page="account-page"><i data-lucide="user-round" class="icon"></i><span>Account</span></a>
+            <a href="#" class="nav-link-premium" data-page="account-page"><i data-lucide="shopping-bag" class="icon"></i><span>Account</span></a>
             <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
             <a href="#" id="admin-nav-link" class="nav-link-premium hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></a>
         </nav>
@@ -780,7 +796,7 @@
         let appConfig = {};
         let insufficientBalanceInterval = null;
         let countdownInterval = null;
-        let accountCountdownInterval = null; // [NEW] Countdown timer for account page
+        let accountCountdownInterval = null;
 
         const loader = document.getElementById('loader');
 
@@ -834,7 +850,6 @@
             }, 4000);
         }
         
-        // [UPDATED] User session initialization with unblocking logic
         async function initUserSession() {
             if (!currentUserTg) {
                 showAlert("Telegram user data is missing. Cannot proceed.");
@@ -847,7 +862,6 @@
             if (userSnap.exists()) {
                 userData = userSnap.data();
                 
-                // Check if user is currently blocked and if the block has expired
                 if (userData.isBlocked && userData.blockedUntil && userData.blockedUntil.toMillis() < Date.now()) {
                     await updateDoc(userRef, {
                         isBlocked: false,
@@ -856,7 +870,6 @@
                         photo_url: currentUserTg.photo_url || null,
                         lastSeen: serverTimestamp()
                     });
-                    // Re-fetch user data after unblocking
                     userSnap = await getDoc(userRef);
                     userData = userSnap.data();
                 } else {
@@ -878,8 +891,8 @@
                     balance: 0,
                     createdAt: serverTimestamp(),
                     isBlocked: false,
-                    blockedUntil: null, // For timed blocks
-                    dailyRejections: { date: new Date().toISOString().slice(0, 10), count: 0 }, // For tracking rejected reports
+                    blockedUntil: null, 
+                    dailyRejections: { date: new Date().toISOString().slice(0, 10), count: 0 },
                     lastSeenNotification: null,
                     linkedUsers: [], 
                     linkedBy: null, 
@@ -960,12 +973,11 @@
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
 
-            // [NEW] Added account-page load function
             const pageLoadFunctions = {
                 'home-page': () => {},
                 'pay-page': loadPaymentHistory,
                 'mail-page': loadMailStore,
-                'account-page': loadAccountStore, // [NEW]
+                'account-page': loadAccountStore,
                 'updates-page': () => { 
                     loadUpdates(); 
                     loadReviews(); 
@@ -976,7 +988,8 @@
                 'profile-page': loadProfilePage,
                 'features-page': loadFeaturesPage,
                 'link-team-page': loadLinkedFriends,
-                'send-page': () => { setupDynamicAmountHandlers('send'); }
+                'send-page': () => { setupDynamicAmountHandlers('send'); },
+                'replace-list-page': loadReplaceHistory // NEW
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
@@ -999,11 +1012,9 @@
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('add-mails-btn').addEventListener('click', handleAddMails);
             
-            // Mail Page History Buttons
             document.getElementById('download-history-btn').addEventListener('click', () => handleDownloadHistory('mail-purchase-history'));
             document.getElementById('copy-history-btn').addEventListener('click', () => handleCopyHistory('mail-purchase-history'));
             
-            // [NEW] Account Page History Buttons
             document.getElementById('download-account-history-btn').addEventListener('click', () => handleDownloadHistory('account-purchase-history'));
             document.getElementById('copy-account-history-btn').addEventListener('click', () => handleCopyHistory('account-purchase-history'));
 
@@ -1014,6 +1025,9 @@
             
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             
+            // NEW: Replace List Button
+            document.getElementById('go-to-replace-list-btn').addEventListener('click', () => navigateTo('replace-list-page'));
+
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
             document.getElementById('features-send-btn').addEventListener('click', () => navigateTo('send-page'));
             document.getElementById('submit-send-btn').addEventListener('click', handleSendRequest);
@@ -1031,22 +1045,19 @@
             document.getElementById('purchase-success-buy-again-btn').addEventListener('click', hidePurchaseSuccessModal);
             document.getElementById('close-purchase-success-modal').addEventListener('click', hidePurchaseSuccessModal);
 
-            // Event Listeners for Mail Page Switcher
             document.getElementById('login-mail-btn').addEventListener('click', () => switchMailView('login'));
             document.getElementById('otp-mail-btn').addEventListener('click', () => switchMailView('otp'));
 
-            // [NEW] Event Listeners for Account Page Switcher
             document.getElementById('social-media-btn').addEventListener('click', () => switchAccountView('social'));
             document.getElementById('ads-btn').addEventListener('click', () => switchAccountView('ads'));
 
-            // NEW: Event Listeners for Updates Page Switcher
             document.getElementById('reviews-view-btn').addEventListener('click', () => switchUpdateView('reviews'));
             document.getElementById('tutorials-view-btn').addEventListener('click', () => switchUpdateView('tutorials'));
 
             document.getElementById('report-issue-form').addEventListener('submit', handleReportSubmit);
         }
 
-        // --- [NEW] Functions for Updates Page Switcher ---
+        // --- Functions for Updates Page Switcher ---
 
         function adjustUpdateViewContainerHeight() {
             setTimeout(() => {
@@ -1117,7 +1128,7 @@
             adjustMailViewContainerHeight();
         }
 
-        // --- [NEW] Functions for Account Page Switcher ---
+        // --- Functions for Account Page Switcher ---
         function adjustAccountViewContainerHeight() {
             setTimeout(() => {
                 const container = document.getElementById('account-views-container');
@@ -1298,7 +1309,6 @@
             } catch (error) { console.error(`Error getting stock count for ${collectionName}:`, error); return 0; }
         }
         
-        // [UPDATED] Mail rendering logic
         async function renderMailList(mails, containerEl, effectiveBalance, pageType) {
             if (!mails || mails.length === 0) {
                 containerEl.innerHTML = `<p class="text-center text-gray-500 pt-10">এই ক্যাটাগরিতে কোনো মেইল উপলব্ধ নেই।</p>`;
@@ -1317,11 +1327,9 @@
                 const validityTagHtml = (mail.expirationHours != null) ? `<span class="bg-blue-100 text-blue-700 text-xs font-semibold px-2 py-1 rounded-full">${mail.expirationHours}h validity</span>` : '';
                 const apiButtonHtml = mail.apiLink ? `<button onclick="openApiLink('${mail.apiLink}')" class="text-blue-600 font-semibold">API</button>` : '<span class="text-gray-400 font-semibold">API</span>';
                 
-                // Encode details and features to be passed into the modal function
                 const encodedDetails = encodeURIComponent(mail.details || '');
                 const encodedFeatures = encodeURIComponent(JSON.stringify(mail.featureList || []));
 
-                // [NEW] Pass pageType to buyMail function
                 return `<div class="card-bg p-4 rounded-xl space-y-3">
                     <div class="flex justify-between items-center">
                         <div class="flex items-center gap-3">
@@ -1345,7 +1353,6 @@
             lucide.createIcons();
         }
 
-        // [UPDATED] Generic function to load purchase history
         async function loadPurchaseHistory(historyListElId, countdownIntervalVarName, filterCategories = null) {
             const historyListEl = document.getElementById(historyListElId);
             historyListEl.innerHTML = getLoadingHTML();
@@ -1363,7 +1370,6 @@
 
                 let purchases = querySnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 
-                // [NEW] Filter by category if provided
                 if (filterCategories) {
                     const mailConfigs = appConfig.mails || [];
                     const allowedStockKeys = mailConfigs
@@ -1378,7 +1384,6 @@
                         return stockKey && allowedStockKeys.includes(stockKey);
                     });
                 } else {
-                    // Default mail-page logic (login/otp)
                     const mailConfigs = appConfig.mails || [];
                     const excludedStockKeys = mailConfigs
                         .filter(m => ['social', 'ads'].includes(m.category))
@@ -1403,7 +1408,7 @@
                 });
 
                 const activePurchases = purchases.filter(p => {
-                    if (p.isRefunded) return false; // Hide refunded mails
+                    if (p.isRefunded) return false;
                     if (p.expirationHours && p.purchasedAt) {
                         const expiryTime = p.purchasedAt.toDate().getTime() + (p.expirationHours * 3600000);
                         return Date.now() < expiryTime;
@@ -1438,7 +1443,6 @@
                         return `<div class="card-bg p-4 rounded-xl space-y-3"><div class="flex justify-between items-start"><div><h4 class="font-bold text-lg text-gray-800">${purchase.mailType}</h4><p class="text-xs text-gray-500">${date}</p><p class="text-xs font-mono text-blue-600 mt-1">ID: ${purchase.saleId || 'N/A'}</p></div><div class="flex flex-col items-end gap-2">${reportButton}<button onclick="copyToClipboard('${fullData}', this)" class="bg-gray-100 text-gray-700 text-xs px-3 py-1.5 rounded-md font-semibold hover:bg-gray-200 flex items-center gap-1"><i data-lucide="copy-plus" class="w-3 h-3"></i> FULL COPY</button></div></div><div class="space-y-2 pt-2 border-t"><div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">EMAIL:</span><span class="font-mono text-sm text-gray-800 truncate">${purchase.mail}</span><button onclick="copyToClipboard('${purchase.mail}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div><div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">PASS:</span><span class="font-mono text-sm text-gray-800">${purchase.password || 'N/A'}</span><button onclick="copyToClipboard('${purchase.password || ''}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div></div>${countdownHtml}</div>`;
                     }).join('');
                     
-                    // [NEW] Start the correct countdown timer
                     if (countdownIntervalVarName === 'mail') {
                          startCountdownTimers(historyListElId, countdownInterval);
                     } else if (countdownIntervalVarName === 'account') {
@@ -1453,7 +1457,6 @@
         }
 
 
-        // [UPDATED] Load mail store and history
         async function loadMailStore() {
             const loginMailContainer = document.getElementById('login-mail-container');
             const otpMailContainer = document.getElementById('otp-mail-container');
@@ -1482,7 +1485,6 @@
                 
                 switchMailView('login');
                 
-                // [NEW] Load history specifically for this page
                 await loadPurchaseHistory('mail-purchase-history', 'mail', ['login', 'otp', undefined]);
 
             } catch(e) {
@@ -1492,7 +1494,7 @@
             }
         }
         
-        // --- [NEW] Load Account Store Function ---
+        // --- UPDATED: Load Account Store Function ---
         async function loadAccountStore() {
             const socialContainer = document.getElementById('social-media-container');
             const adsContainer = document.getElementById('ads-container');
@@ -1512,17 +1514,16 @@
 
                 const allMails = appConfig.mails || [];
                 const socialMails = allMails.filter(m => m.category === 'social');
-                const adsMails = allMails.filter(m => m.category === 'ads');
-
+                
                 await Promise.all([
                     renderMailList(socialMails, socialContainer, effectiveBalance, 'account'),
-                    renderMailList(adsMails, adsContainer, effectiveBalance, 'account')
+                    loadAds() // NEW: Load ads instead of mail list
                 ]);
                 
                 switchAccountView('social');
                 
-                // [NEW] Load history specifically for this page
-                await loadPurchaseHistory('account-purchase-history', 'account', ['social', 'ads']);
+                // NEW: Load history only for 'social' category
+                await loadPurchaseHistory('account-purchase-history', 'account', ['social']);
 
             } catch(e) {
                  socialContainer.innerHTML = '<p class="text-center text-red-600">লোড করা যায়নি।</p>';
@@ -1530,9 +1531,40 @@
                  console.error(e);
             }
         }
+        
+        // --- NEW: Load Ads Function ---
+        async function loadAds() {
+            const adsContainer = document.getElementById('ads-container');
+            adsContainer.innerHTML = getLoadingHTML();
+            try {
+                const snapshot = await getDocs(query(collection(db, "ads"), orderBy("order", "asc")));
+                if (snapshot.empty) return adsContainer.innerHTML = '<p class="text-center text-gray-600">No promotions available right now.</p>';
+
+                adsContainer.innerHTML = '<div class="space-y-4">' + snapshot.docs.map(doc => {
+                    const ad = doc.data();
+                    const imageUrl = ad.imageUrl || `https://ui-avatars.com/api/?name=${ad.title.replace(/\s/g, "+")}&background=random`;
+                    return `<div class="review-card-new p-4 rounded-lg">
+                        <div class="flex items-center gap-4">
+                            <img src="${imageUrl}" class="w-16 h-16 rounded-lg object-cover" alt="Ad">
+                            <div class="flex-1">
+                                <h5 class="font-bold text-lg">${ad.title}</h5>
+                                <p class="text-gray-600 text-sm mt-1">${ad.description || ''}</p>
+                            </div>
+                            <a href="${ad.linkUrl}" target="_blank" class="btn-gradient px-5 py-2 rounded-lg text-sm font-bold flex items-center gap-1.5">
+                                <span>GO</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>`;
+                }).join('') + '</div>';
+                lucide.createIcons();
+            } catch (e) { 
+                console.error("Error loading ads:", e);
+                adsContainer.innerHTML = '<p class="text-center text-red-600">Promotions could not be loaded.</p>'; 
+            }
+        }
 
 
-        // [UPDATED] Countdown timer to be reusable
         function startCountdownTimers(containerId, intervalVariable) {
             if (intervalVariable) clearInterval(intervalVariable);
             const container = document.getElementById(containerId);
@@ -1560,16 +1592,13 @@
                 if (!hasActiveTimers) clearInterval(intervalVariable);
             }, 1000);
             
-            // Assign back to global var
             if(containerId === 'mail-purchase-history') countdownInterval = intervalVariable;
             else if(containerId === 'account-purchase-history') accountCountdownInterval = intervalVariable;
         }
 
-        // [UPDATED] handleDownloadHistory to be generic
         async function handleDownloadHistory(historyContainerId) {
             loader.style.display = 'flex';
             try {
-                // We fetch the data again to ensure we get all history, not just 24h
                 const q = query(collection(db, "mail_purchases"), where("userId", "==", userData.tgChatId), orderBy("purchasedAt", "desc"));
                 const querySnapshot = await getDocs(q);
                 
@@ -1580,16 +1609,15 @@
                 
                 let purchases = querySnapshot.docs.map(doc => doc.data());
                 
-                // Filter based on which page is calling
                 const mailConfigs = appConfig.mails || [];
                 const stockKeyMap = new Map();
-                mailConfigs.forEach(m => stockKeyMap.set(m.type, m.category || 'login')); // default to 'login'
+                mailConfigs.forEach(m => stockKeyMap.set(m.type, m.category || 'login'));
 
                 if (historyContainerId === 'mail-purchase-history') {
                     const allowedCategories = ['login', 'otp'];
                     purchases = purchases.filter(p => allowedCategories.includes(stockKeyMap.get(p.mailType)));
                 } else if (historyContainerId === 'account-purchase-history') {
-                    const allowedCategories = ['social', 'ads'];
+                    const allowedCategories = ['social']; // 'ads' removed
                     purchases = purchases.filter(p => allowedCategories.includes(stockKeyMap.get(p.mailType)));
                 }
 
@@ -1616,7 +1644,6 @@
             finally { loader.style.display = 'none'; }
         }
 
-        // [UPDATED] handleCopyHistory to be generic
         async function handleCopyHistory(historyContainerId) {
              loader.style.display = 'flex';
             try {
@@ -1631,16 +1658,15 @@
                 
                 let purchases = querySnapshot.docs.map(doc => doc.data());
                 
-                // Filter based on which page is calling
                 const mailConfigs = appConfig.mails || [];
                 const stockKeyMap = new Map();
-                mailConfigs.forEach(m => stockKeyMap.set(m.type, m.category || 'login')); // default to 'login'
+                mailConfigs.forEach(m => stockKeyMap.set(m.type, m.category || 'login'));
 
                 if (historyContainerId === 'mail-purchase-history') {
                     const allowedCategories = ['login', 'otp'];
                     purchases = purchases.filter(p => allowedCategories.includes(stockKeyMap.get(p.mailType)));
                 } else if (historyContainerId === 'account-purchase-history') {
-                    const allowedCategories = ['social', 'ads'];
+                    const allowedCategories = ['social']; // 'ads' removed
                     purchases = purchases.filter(p => allowedCategories.includes(stockKeyMap.get(p.mailType)));
                 }
                 
@@ -1655,7 +1681,6 @@
             finally { loader.style.display = 'none'; }
         }
 
-        // [UPDATED] buyMail to know which page to reload
         window.buyMail = async function(mailType, costParam, stockKey, pageType) {
             const cost = parseFloat(costParam);
             if (!confirm(`আপনি কি ৳${cost.toFixed(2)} দিয়ে একটি ${mailType} কিনতে চান?`)) return;
@@ -1740,7 +1765,6 @@
                 document.getElementById('purchase-success-modal').classList.remove('hidden');
                 lucide.createIcons();
                 
-                // [NEW] Reload the correct store based on pageType
                 if (pageType === 'mail') {
                     loadMailStore();
                 } else if (pageType === 'account') {
@@ -1754,7 +1778,6 @@
             } catch (e) { 
                 showAlert(`কিনতে সমস্যা হয়েছে।\nকারণ: ${e.message}`);
                 console.error("Purchase Transaction Error:", e);
-                // [NEW] Reload the correct store on error
                 if (pageType === 'mail') {
                     loadMailStore();
                 } else if (pageType === 'account') {
@@ -1765,7 +1788,6 @@
             }
         }
 
-        // [UPDATED] Show Mail Details modal with features
         window.showMailDetails = function(mailType, encodedDetails, encodedFeatures) {
             const details = decodeURIComponent(encodedDetails);
             const features = JSON.parse(decodeURIComponent(encodedFeatures));
@@ -2109,7 +2131,44 @@
 
         function handleFeaturesClick() { navigateTo('features-page'); }
 
-        // --- NEW FUNCTIONS FOR REPLACE/REPORT SYSTEM ---
+        // --- NEW: Load User's Replace History ---
+        async function loadReplaceHistory() {
+            const historyList = document.getElementById('replace-history-list');
+            historyList.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(db, "replace_requests"), where("userId", "==", userData.tgChatId), orderBy("requestedAt", "desc"));
+                const snapshot = await getDocs(q);
+                if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-600 text-center">আপনার কোনো রিপ্লেস হিস্ট্রি নেই।</p>';
+
+                historyList.innerHTML = snapshot.docs.map(doc => {
+                    const item = doc.data();
+                    const statusMap = {
+                        approved: { color: 'text-green-600', text: 'Approved' },
+                        rejected: { color: 'text-red-600', text: 'Rejected' },
+                        pending: { color: 'text-yellow-600', text: 'Pending' }
+                    };
+                    const status = statusMap[item.status] || statusMap.pending;
+                    const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString('en-GB') : 'N/A';
+                    
+                    return `<div class="card-bg p-4 rounded-lg space-y-2">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-semibold text-gray-800">${item.mailType.split(' (ID:')[0]}</h4>
+                            <span class="font-bold ${status.color}">${status.text}</span>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <p><strong>ID:</strong> ${item.saleId || 'N/A'}</p>
+                            <p><strong>Cost:</strong> ৳${item.cost.toFixed(2)}</p>
+                            <p><strong>Date:</strong> ${date}</p>
+                        </div>
+                        <p class="text-sm text-gray-700 pt-2 border-t border-gray-200"><strong>Reason:</strong> ${item.reason}</p>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch (error) { 
+                console.error("Error loading replace history:", error);
+                historyList.innerHTML = '<p class="text-red-600 text-center">হিস্ট্রি লোড করা যায়নি।</p>'; 
+            }
+        }
 
         window.showReportForm = (purchaseId, mailType, cost, saleId) => {
             document.getElementById('report-modal-mail-type').textContent = `${mailType} (ID: ${saleId})`;
@@ -2154,8 +2213,6 @@
                 showAlert("আপনার অভিযোগ সফলভাবে জমা হয়েছে। অ্যাডমিন শীঘ্রই এটি পর্যালোচনা করবেন।");
                 document.getElementById('report-issue-modal').classList.add('hidden');
                 
-                // [NEW] Refresh both history lists, as we don't know which one the report came from
-                // A better approach would be to pass pageType to the report function, but this is safer for now
                 loadMailStore(); 
                 loadAccountStore();
 
@@ -2186,8 +2243,8 @@
                         <p class="text-sm"><strong>Reason:</strong> ${req.reason}</p>
                         ${req.proof ? `<p class="text-sm"><strong>Proof:</strong> <a href="${req.proof}" target="_blank" class="text-blue-600 hover:underline">View Proof</a></p>` : ''}
                         <div class="flex justify-end gap-2 pt-2 border-t">
-                            <button onclick="handleRejectRequest('${req.id}', '${req.userId}')" class="px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-lg hover:bg-red-600">Reject</button>
-                            <button onclick="handleApproveRequest('${req.id}', '${req.userId}', ${req.cost}, '${req.purchaseId}')" class="px-3 py-1 text-sm font-semibold text-white bg-green-500 rounded-lg hover:bg-green-600">Approve (Refund ৳${req.cost})</button>
+                            <button onclick="handleRejectRequest('${req.id}', '${req.userId}', '${req.saleId}', '${req.mailType}')" class="px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-lg hover:bg-red-600">Reject</button>
+                            <button onclick="handleApproveRequest('${req.id}', '${req.userId}', ${req.cost}, '${req.purchaseId}', '${req.saleId}', '${req.mailType}')" class="px-3 py-1 text-sm font-semibold text-white bg-green-500 rounded-lg hover:bg-green-600">Approve (Refund ৳${req.cost})</button>
                         </div>
                     </div>`;
                 }).join('');
@@ -2196,7 +2253,8 @@
             }
         }
 
-        window.handleApproveRequest = async (requestId, userId, cost, purchaseId) => {
+        // UPDATED: Function signature and notification logic
+        window.handleApproveRequest = async (requestId, userId, cost, purchaseId, saleId, mailType) => {
             if (!confirm(`Are you sure you want to approve this request and refund ৳${cost} to user ${userId}?`)) return;
             loader.style.display = 'flex';
             try {
@@ -2212,6 +2270,15 @@
                     transaction.update(userRef, { balance: increment(cost) });
                     transaction.update(purchaseRef, { isRefunded: true });
                 });
+
+                // NEW: Send notification
+                await addDoc(collection(db, "notifications"), {
+                    recipientId: userId,
+                    title: "✅ Report Approved",
+                    message: `Your report for ${mailType.split(' (ID:')[0]} (ID: ${saleId}) has been approved. ৳${cost.toFixed(2)} has been refunded.`,
+                    createdAt: serverTimestamp()
+                });
+
                 showAlert("Request approved and balance refunded successfully.");
                 loadReplaceRequests();
             } catch(e) {
@@ -2221,8 +2288,8 @@
             }
         }
         
-        // [UPDATED] Reject request with penalty logic
-        window.handleRejectRequest = async (requestId, userId) => {
+        // UPDATED: Function signature and notification logic
+        window.handleRejectRequest = async (requestId, userId, saleId, mailType) => {
             if (!confirm("Are you sure you want to reject this request? This may trigger a penalty for the user.")) return;
             loader.style.display = 'flex';
             try {
@@ -2254,6 +2321,14 @@
                     
                     transaction.update(userRef, updates);
                     transaction.update(requestRef, { status: 'rejected', resolvedAt: serverTimestamp() });
+                });
+
+                // NEW: Send notification
+                await addDoc(collection(db, "notifications"), {
+                    recipientId: userId,
+                    title: "❌ Report Rejected",
+                    message: `Your report for ${mailType.split(' (ID:')[0]} (ID: ${saleId}) has been rejected.`,
+                    createdAt: serverTimestamp()
                 });
 
                 showAlert("Request has been rejected. User's rejection count updated.");
