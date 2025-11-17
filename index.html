@@ -15,13 +15,11 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8f8f8;
             color: #333333;
-            /* ব্যবহারকারী যেন টেক্সট সিলেক্ট করতে না পারে তার জন্য কোড */
             -webkit-user-select: none; /* Safari */
             -ms-user-select: none; /* IE 10+ */
             user-select: none; /* Standard syntax */
             -webkit-touch-callout: none; /* iOS Safari */
         }
-        /* ইনপুট এবং নির্দিষ্ট কিছু জায়গায় সিলেকশন চালু রাখার জন্য কোড */
         input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #account-purchase-history .font-mono, #replace-history-list .text-sm {
             -webkit-user-select: text; /* Safari */
             -ms-user-select: text; /* IE 10+ */
@@ -36,8 +34,8 @@
         }
         .card-bg:hover {
             border-color: rgba(0, 123, 255, 0.4);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transform: translateY(-3px);
         }
         .text-accent-gradient {
             background: linear-gradient(to right, #007bff, #0056b3);
@@ -112,7 +110,6 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Banner & Marquee */
         .banner-wrapper { position: relative; width: 100%; padding-top: 56.25%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
         .banner-inner { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1); }
         .slide { min-width: 100%; position: relative; }
@@ -121,7 +118,6 @@
         .dot { display: inline-block; height: 8px; width: 8px; margin: 0 4px; background: #bbb; border-radius: 50%; cursor: pointer; transition: background 0.3s; }
         .dot.active { background: #007bff; }
 
-        /* UPDATED Premium Loader Styles */
         #loader { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; transition: opacity 0.5s ease; }
         #loader .logo-container { animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards, breath 2.5s ease-in-out infinite 1s; }
         #loader .loader-text { animation: fadeInText 1s ease-in-out 0.5s forwards; opacity: 0; font-weight: bold; font-size: 1.5rem; }
@@ -130,11 +126,9 @@
         @keyframes fadeInText { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes breath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-        /* Review Card */
         .review-card-new { background-color: #f9f9f9; border: 1px solid #eee; }
         .star-rating i { color: #facc15; }
 
-        /* UPDATED Spinner for Loading */
         .premium-loader-spinner {
             width: 56px;
             height: 56px;
@@ -153,7 +147,6 @@
             to { transform: rotate(1turn); }
         }
 
-        /* New Modal Close Button Style */
         .modal-close-btn {
             position: absolute;
             top: 12px;
@@ -169,7 +162,6 @@
             background-color: #d1d5db;
         }
 
-        /* NEW: Notification Badge */
         .notification-badge {
             position: absolute;
             top: -5px;
@@ -187,7 +179,6 @@
             border: 2px solid white;
         }
 
-        /* --- NEW: Slide-Out Menu Styles --- */
         #menu-overlay {
             position: fixed;
             inset: 0;
@@ -246,7 +237,6 @@
             height: 32px;
         }
 
-        /* NEW: View Switcher (Generic) */
         .view-switcher {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -270,7 +260,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        /* --- UPDATED & FIXED CSS for Views Containers --- */
         .views-container {
             position: relative;
             overflow: hidden;
@@ -278,20 +267,25 @@
         }
         .view {
             width: 100%;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
             position: absolute;
             top: 0;
             left: 0;
         }
         
-        /* NEW Ad Card Style */
+        /* UPDATED Ad Card Style */
+        .ad-card {
+            cursor: pointer;
+        }
         .ad-card .full-desc {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.5s ease-in-out;
+            transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+            opacity: 0;
         }
         .ad-card.expanded .full-desc {
-            max-height: 1000px; /* Large enough for any content */
+            max-height: 1000px;
+            opacity: 1;
         }
         .ad-card.expanded .short-desc {
             display: none;
@@ -299,8 +293,6 @@
         .ad-card:not(.expanded) .full-desc {
             display: none;
         }
-
-
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -331,7 +323,7 @@
         <header class="header flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="relative">
-                    <img id="header-profile-pic" class="w-12 h-12 rounded-full border-2 border-blue-300 object-cover hidden" src="" alt="Profile Picture">
+                    <img id="header-profile-pic" class="w-12 h-12 rounded-full border-2 border-blue-300 object-cover hidden" src="" alt="Profile Picture" loading="lazy">
                     <div id="header-initials-avatar" class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center border-2 border-blue-300"><span id="header-initials" class="text-xl font-bold text-gray-500"></span></div>
                 </div>
                 <div>
@@ -355,9 +347,9 @@
                 <div class="p-4">
                     <div class="banner-wrapper">
                         <div class="banner-inner" id="slides">
-                            <div class="slide active"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/zBp8rCX9/Yellow-Orange-Modern-Marketing-Courses-You-Tube-Thumbnail-20250910-185659-0000.png" alt="Slide 1"></a></div>
-                            <div class="slide"><a href="https.t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/W1syFD8p/Grey-Blue-Illustration-Refer-a-Friend-Instagram-Post-1080-x-720-px-20250917-223749-0000.png" alt="Slide 2"></a></div>
-                            <div class="slide"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/52HsFwvV/Black-and-Orange-Money-You-Tube-Thumbnail-20250917-224706-0000.png" alt="Slide 3"></a></div>
+                            <div class="slide active"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/zBp8rCX9/Yellow-Orange-Modern-Marketing-Courses-You-Tube-Thumbnail-20250910-185659-0000.png" alt="Slide 1" loading="lazy"></a></div>
+                            <div class="slide"><a href="https.t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/W1syFD8p/Grey-Blue-Illustration-Refer-a-Friend-Instagram-Post-1080-x-720-px-20250917-223749-0000.png" alt="Slide 2" loading="lazy"></a></div>
+                            <div class="slide"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/52HsFwvV/Black-and-Orange-Money-You-Tube-Thumbnail-20250917-224706-0000.png" alt="Slide 3" loading="lazy"></a></div>
                         </div>
                         <div class="dots" id="dots"></div>
                     </div>
@@ -407,28 +399,27 @@
                         </div>
                     </div>
 
-
                     <div class="grid grid-cols-2 gap-4 pt-4">
                         <div class="bg-white p-3 rounded-lg text-center border hover:border-blue-400 transition-all duration-300 shadow-sm hover:shadow-md">
-                            <img src="https://i.postimg.cc/Jh9s6jWw/20250922-113350.png" alt="Nagad" class="w-10 h-10 rounded-full mx-auto mb-2">
+                            <img src="https://i.postimg.cc/Jh9s6jWw/20250922-113350.png" alt="Nagad" class="w-10 h-10 rounded-full mx-auto mb-2" loading="lazy">
                             <p class="font-bold text-md">নগদ</p>
                             <p class="text-gray-600 font-mono tracking-wider text-sm my-1">01864260513</p>
                             <button onclick="copyToClipboard('01864260513', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy</span></button>
                         </div>
                         <div class="bg-white p-3 rounded-lg text-center border hover:border-blue-400 transition-all duration-300 shadow-sm hover:shadow-md">
-                            <img src="https://i.postimg.cc/tCwGVkdH/20250922-113514.png" alt="bKash" class="w-10 h-10 rounded-full mx-auto mb-2">
+                            <img src="https://i.postimg.cc/tCwGVkdH/20250922-113514.png" alt="bKash" class="w-10 h-10 rounded-full mx-auto mb-2" loading="lazy">
                             <p class="font-bold text-md">বিকাশ</p>
                             <p class="text-gray-600 font-mono tracking-wider text-sm my-1">01827750260</p>
                             <button onclick="copyToClipboard('01827750260', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy</span></button>
                         </div>
                         <div class="bg-white p-3 rounded-lg text-center border hover:border-blue-400 transition-all duration-300 shadow-sm hover:shadow-md">
-                            <img src="https://i.postimg.cc/htsw10Tj/20250922-113924.png" alt="Rocket" class="w-10 h-10 rounded-full mx-auto mb-2">
+                            <img src="https://i.postimg.cc/htsw10Tj/20250922-113924.png" alt="Rocket" class="w-10 h-10 rounded-full mx-auto mb-2" loading="lazy">
                             <p class="font-bold text-md">রকেট</p>
                             <p class="text-gray-600 font-mono tracking-wider text-sm my-1">018277502604</p>
                             <button onclick="copyToClipboard('018277502604', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy</span></button>
                         </div>
                         <div class="bg-white p-3 rounded-lg text-center border hover:border-blue-400 transition-all duration-300 shadow-sm hover:shadow-md">
-                            <img src="https://i.postimg.cc/L6LFLfxY/20250922-113752.png" alt="Binance Pay" class="w-10 h-10 rounded-full mx-auto mb-2">
+                            <img src="https://i.postimg.cc/L6LFLfxY/20250922-113752.png" alt="Binance Pay" class="w-10 h-10 rounded-full mx-auto mb-2" loading="lazy">
                             <p class="font-bold text-md">Binance Pay</p>
                             <p class="text-gray-600 font-mono tracking-wider text-sm my-1">1105989483</p>
                             <button onclick="copyToClipboard('1105989483', this)" class="w-full text-xs p-1 mt-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i><span>Copy ID</span></button>
@@ -479,7 +470,6 @@
 
                     <div id="account-views-container" class="views-container">
                         <div id="social-media-container" class="view space-y-4">
-                            <!-- Social Media Products will be loaded here -->
                              <div class="mt-8">
                                 <div class="flex justify-between items-center mb-3">
                                     <h3 class="text-lg font-semibold">Buy History (Accounts)</h3>
@@ -492,7 +482,6 @@
                             </div>
                         </div>
                         <div id="ads-container" class="view space-y-4">
-                            <!-- Ads will be loaded here -->
                         </div>
                     </div>
                 </div>
@@ -520,7 +509,7 @@
             <div id="profile-page" class="p-4 space-y-6 sub-page">
                 <div class="card-bg p-6 rounded-2xl flex flex-col items-center text-center">
                     <div class="relative mb-4">
-                        <img id="profile-pic" class="w-24 h-24 rounded-full border-2 border-[#007bff] object-cover" src="" alt="Profile Picture">
+                        <img id="profile-pic" class="w-24 h-24 rounded-full border-2 border-[#007bff] object-cover" src="" alt="Profile Picture" loading="lazy">
                         <div id="profile-initials-avatar" class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center border-2 border-[#007bff] hidden"><span id="profile-initials" class="text-3xl font-bold text-gray-500"></span></div>
                     </div>
                     <h3 id="profile-name" class="text-2xl font-bold text-gray-800">Loading...</h3>
@@ -548,7 +537,6 @@
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
                 </div>
-
 
                 <div class="text-center pt-6">
                      <p class="text-center text-gray-600 text-sm">Developed by <a href="https://t.me/bd_Storebot/Botshop" target="_blank" class="font-semibold text-[#007bff] hover:underline">𝐁𝐃 𝐒𝐓𝐎𝐑𝐄</a></p>
@@ -633,7 +621,6 @@
                 </div>
             </div>
 
-
             <div id="send-page" class="p-4 space-y-6 sub-page">
                 <div class="relative flex items-center justify-center mb-4">
                     <button onclick="navigateTo('features-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
@@ -688,7 +675,6 @@
             <button id="notification-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">Close</button>
         </div>
     </div>
-
 
     <div id="deposit-details-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4">
@@ -794,7 +780,6 @@
 
     <script type="module">
         const ADMIN_UID = "6954647230";
-        // --- UPDATED FIREBASE CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyCoCy08FL_sHHdA0f2cJg0BaF-iYAhFuk0",
             authDomain: "mail-store-4692b.firebaseapp.com",
@@ -940,7 +925,6 @@
             navigateTo('home-page');
         }
 
-
         async function fetchAppConfig() {
             const configRef = doc(db, "config", "main");
             const configSnap = await getDoc(configRef);
@@ -1009,7 +993,7 @@
                 'features-page': loadFeaturesPage,
                 'link-team-page': loadLinkedFriends,
                 'send-page': () => { setupDynamicAmountHandlers('send'); },
-                'replace-list-page': loadReplaceHistory // NEW
+                'replace-list-page': loadReplaceHistory
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
@@ -1045,7 +1029,6 @@
             
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             
-            // NEW: Replace List Button
             document.getElementById('go-to-replace-list-btn').addEventListener('click', () => navigateTo('replace-list-page'));
 
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
@@ -1077,8 +1060,6 @@
             document.getElementById('report-issue-form').addEventListener('submit', handleReportSubmit);
         }
 
-        // --- Functions for Updates Page Switcher ---
-
         function adjustUpdateViewContainerHeight() {
             setTimeout(() => {
                 const container = document.getElementById('updates-views-container');
@@ -1103,17 +1084,20 @@
                 reviewsBtn.classList.add('active');
                 tutorialsBtn.classList.remove('active');
                 reviewsContainer.style.transform = 'translateX(0%)';
+                reviewsContainer.style.opacity = '1';
                 tutorialsContainer.style.transform = 'translateX(100%)';
-            } else { // tutorials
+                tutorialsContainer.style.opacity = '0';
+            } else {
                 reviewsBtn.classList.remove('active');
                 tutorialsBtn.classList.add('active');
                 reviewsContainer.style.transform = 'translateX(-100%)';
+                reviewsContainer.style.opacity = '0';
                 tutorialsContainer.style.transform = 'translateX(0%)';
+                tutorialsContainer.style.opacity = '1';
             }
             adjustUpdateViewContainerHeight();
         }
 
-        // --- Functions for Mail Page Switcher ---
         function adjustMailViewContainerHeight() {
             setTimeout(() => {
                 const container = document.getElementById('mail-views-container');
@@ -1138,17 +1122,20 @@
                 loginBtn.classList.add('active');
                 otpBtn.classList.remove('active');
                 loginContainer.style.transform = 'translateX(0%)';
+                loginContainer.style.opacity = '1';
                 otpContainer.style.transform = 'translateX(100%)';
-            } else { // otp
+                otpContainer.style.opacity = '0';
+            } else {
                 loginBtn.classList.remove('active');
                 otpBtn.classList.add('active');
                 loginContainer.style.transform = 'translateX(-100%)';
+                loginContainer.style.opacity = '0';
                 otpContainer.style.transform = 'translateX(0%)';
+                otpContainer.style.opacity = '1';
             }
             adjustMailViewContainerHeight();
         }
 
-        // --- Functions for Account Page Switcher ---
         function adjustAccountViewContainerHeight() {
             setTimeout(() => {
                 const container = document.getElementById('account-views-container');
@@ -1173,16 +1160,19 @@
                 socialBtn.classList.add('active');
                 adsBtn.classList.remove('active');
                 socialContainer.style.transform = 'translateX(0%)';
+                socialContainer.style.opacity = '1';
                 adsContainer.style.transform = 'translateX(100%)';
-            } else { // ads
+                adsContainer.style.opacity = '0';
+            } else {
                 socialBtn.classList.remove('active');
                 adsBtn.classList.add('active');
                 socialContainer.style.transform = 'translateX(-100%)';
+                socialContainer.style.opacity = '0';
                 adsContainer.style.transform = 'translateX(0%)';
+                adsContainer.style.opacity = '1';
             }
             adjustAccountViewContainerHeight();
         }
-
 
         function listenForNotifications() {
             const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
@@ -1240,7 +1230,6 @@
                 }).join('');
             }
         }
-
 
         async function hideNotifications() {
             document.getElementById('notification-modal').classList.add('hidden');
@@ -1345,29 +1334,41 @@
                 const buyButtonDisabled = isOutOfStock || insufficientBalance;
                 const buyButtonClasses = buyButtonDisabled ? 'bg-gray-400 cursor-not-allowed' : 'btn-gradient';
                 const validityTagHtml = (mail.expirationHours != null) ? `<span class="bg-blue-100 text-blue-700 text-xs font-semibold px-2 py-1 rounded-full">${mail.expirationHours}h validity</span>` : '';
-                const apiButtonHtml = mail.apiLink ? `<button onclick="openApiLink('${mail.apiLink}')" class="text-blue-600 font-semibold">API</button>` : '<span class="text-gray-400 font-semibold">API</span>';
+                const apiButtonHtml = mail.apiLink ? `<button onclick="openApiLink('${mail.apiLink}')" class="text-blue-600 font-semibold hover:underline">API</button>` : '';
                 
                 const encodedDetails = encodeURIComponent(mail.details || '');
                 const encodedFeatures = encodeURIComponent(JSON.stringify(mail.featureList || []));
 
-                return `<div class="card-bg p-4 rounded-xl space-y-3">
-                    <div class="flex justify-between items-center">
+                return `<div class="card-bg p-4 rounded-xl space-y-4">
+                    <div class="flex justify-between items-start">
                         <div class="flex items-center gap-3">
-                            <img src="${mail.logoUrl}" class="w-8 h-8 rounded-lg object-cover" alt="${mail.type} logo">
-                            <h3 class="font-bold text-lg text-gray-800">${mail.type}</h3>
+                            <img src="${mail.logoUrl}" class="w-10 h-10 rounded-lg object-cover" alt="${mail.type} logo" loading="lazy">
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-800">${mail.type}</h3>
+                                <div class="flex items-center gap-2 mt-1">
+                                    ${validityTagHtml}
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-2">
-                            ${validityTagHtml}
-                            <button onclick="showMailDetails('${mail.type}', '${encodedDetails}', '${encodedFeatures}')" class="text-blue-600 text-sm font-semibold">Details</button>
-                        </div>
+                        <button onclick="showMailDetails('${mail.type}', '${encodedDetails}', '${encodedFeatures}')" class="text-blue-600 text-sm font-semibold hover:underline">Details</button>
                     </div>
                     
-                    <div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200">
-                        <div class="py-2">${apiButtonHtml}</div>
-                        <div class="py-2"><p class="text-gray-500 text-sm">Price</p><p class="font-bold text-lg text-blue-600">৳${parseFloat(mail.priceBdt).toFixed(2)}</p></div>
-                        <div class="py-2"><p class="text-gray-500 text-sm">Stock</p><p class="font-bold text-lg text-green-600">${mail.stock}</p></div>
+                    <div class="flex justify-between items-center pt-3 border-t border-gray-200/80">
+                         <div class="text-center">
+                            <p class="text-xs text-gray-500 font-medium flex items-center justify-center gap-1.5"><i data-lucide="tag" class="w-4 h-4 text-blue-500"></i>Price</p>
+                            <p class="font-bold text-lg text-blue-600">৳${parseFloat(mail.priceBdt).toFixed(2)}</p>
+                        </div>
+                        <div class="text-center">
+                             <p class="text-xs text-gray-500 font-medium flex items-center justify-center gap-1.5"><i data-lucide="package" class="w-4 h-4 text-green-500"></i>Stock</p>
+                             <p class="font-bold text-lg text-green-600">${mail.stock}</p>
+                        </div>
+                        <div class="text-center min-w-[50px]">
+                            ${apiButtonHtml}
+                        </div>
                     </div>
-                    <button class="${buyButtonClasses} w-full py-2 rounded-lg text-md" ${buyButtonDisabled ? 'disabled' : ''} onclick="buyMail('${mail.type}', ${mail.priceBdt}, '${mail.stockKey}', '${pageType}')">Buy Now</button>
+                    <button class="${buyButtonClasses} w-full py-2.5 rounded-lg text-md font-bold" ${buyButtonDisabled ? 'disabled' : ''} onclick="buyMail('${mail.type}', ${mail.priceBdt}, '${mail.stockKey}', '${pageType}')">
+                        ${isOutOfStock ? 'Out of Stock' : (insufficientBalance ? 'Insufficient Balance' : 'Buy Now')}
+                    </button>
                 </div>`;
             }).join('');
             lucide.createIcons();
@@ -1452,7 +1453,6 @@
                             default: reportButton = `<button id="report-btn-${purchase.id}" onclick="showReportForm('${purchase.id}', '${purchase.mailType}', ${purchase.cost}, '${purchase.saleId}')" class="bg-orange-100 text-orange-700 text-xs px-3 py-1.5 rounded-md font-semibold hover:bg-orange-200 flex items-center gap-1"><i data-lucide="shield-alert" class="w-3 h-3"></i> Report</button>`;
                         }
                         
-                        // OTP Mail INBOX button logic
                         let inboxButton = '';
                         if (purchase.expirationHours) {
                              const mailConfig = (appConfig.mails || []).find(m => m.type === purchase.mailType);
@@ -1470,7 +1470,7 @@
                                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">2FA:</span><span class="font-mono text-sm text-gray-800 truncate">${purchase.twoFactor || 'N/A'}</span><button onclick="copyToClipboard('${purchase.twoFactor || ''}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div>
                                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">EMAIL:</span><span class="font-mono text-sm text-gray-800 truncate">${purchase.mail || 'N/A'}</span><button onclick="copyToClipboard('${purchase.mail || ''}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div>
                             </div>`;
-                        } else { // 'mail' or 'otp' format
+                        } else {
                             fullData = [purchase.mail, purchase.password, purchase.refreshToken, purchase.clientId].filter(Boolean).join('|');
                              detailsHtml = `<div class="space-y-2 pt-2 border-t">
                                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">EMAIL:</span><span class="font-mono text-sm text-gray-800 truncate">${purchase.mail}</span><button onclick="copyToClipboard('${purchase.mail}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div>
@@ -1510,7 +1510,6 @@
                 historyListEl.innerHTML = '<p class="text-center text-red-600">হিস্টি লোড করা যায়নি।</p>';
             }
         }
-
 
         async function loadMailStore() {
             const loginMailContainer = document.getElementById('login-mail-container');
@@ -1601,7 +1600,6 @@
             if (event.target.classList.contains('toggle-btn')) {
                  event.stopPropagation();
             }
-
             const isExpanded = element.classList.contains('expanded');
             element.classList.toggle('expanded');
             const button = element.querySelector('.toggle-btn');
@@ -1620,24 +1618,27 @@
                 adsContainer.innerHTML = '<div class="space-y-4">' + snapshot.docs.map(doc => {
                     const ad = doc.data();
                     const description = ad.description || '';
-                    const hasMore = description.length > 100;
-                    const shortDesc = hasMore ? description.substring(0, 100) + '...' : description;
+                    const hasMore = description.length > 120;
+                    const shortDesc = hasMore ? description.substring(0, 120) + '...' : description;
                     
-                    return `<div class="ad-card card-bg p-4 rounded-xl space-y-3 cursor-pointer" onclick="toggleAdDetails(event, this)">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-4">
-                                <img src="${ad.imageUrl}" class="w-16 h-16 rounded-lg object-cover" alt="Ad">
+                    return `<div class="ad-card card-bg p-4 rounded-xl space-y-3" onclick="toggleAdDetails(event, this)">
+                        <div class="flex justify-between items-start gap-4">
+                            <div class="flex items-center gap-3 flex-1">
+                                <img src="${ad.imageUrl}" class="w-16 h-16 rounded-lg object-cover flex-shrink-0" alt="Ad Profile" loading="lazy">
                                 <div class="flex-1">
-                                    <h5 class="font-bold text-lg">${ad.title}</h5>
+                                    <h5 class="font-bold text-lg text-gray-800 leading-tight">${ad.title}</h5>
+                                    <p class="font-semibold text-blue-600 mt-1">দাম: ৳${parseFloat(ad.price || 0).toFixed(2)}</p>
                                 </div>
                             </div>
-                            <a href="${ad.linkUrl}" target="_blank" onclick="event.stopPropagation()" class="btn-gradient px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-1.5">
-                                <span>Visit</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            <a href="${ad.linkUrl}" target="_blank" onclick="event.stopPropagation()" class="btn-gradient px-5 py-2 rounded-lg text-sm font-bold flex items-center gap-1.5 flex-shrink-0">
+                                <span>GO!</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
                             </a>
                         </div>
-                        <div class="pt-2 border-t">
+                        <div class="pt-3 mt-3 border-t border-gray-200/80">
                             <p class="text-gray-600 text-sm short-desc">${shortDesc}</p>
-                            <p class="text-gray-600 text-sm full-desc">${description}</p>
+                            <div class="full-desc">
+                                <p class="text-gray-600 text-sm">${description}</p>
+                            </div>
                             ${hasMore ? `<button class="font-semibold text-blue-600 text-sm hover:underline mt-2 toggle-btn">Read More</button>` : ''}
                         </div>
                     </div>`;
@@ -1648,7 +1649,6 @@
                 adsContainer.innerHTML = '<p class="text-center text-red-600">Promotions could not be loaded.</p>'; 
             }
         }
-
 
         function startCountdownTimers(containerId, intervalVariable) {
             if (intervalVariable) clearInterval(intervalVariable);
@@ -1844,19 +1844,15 @@
                         saleId: saleId, userId: userData.tgChatId, paidBy: paidBy, mailType: mailType,
                         cost: cost, purchasedAt: serverTimestamp(),
                         expirationHours: mailConfig ? mailConfig.expirationHours : null,
-                        // Common fields
                         mail: mailData.email || null,
                         password: mailData.password || null,
-                        // Social specific fields
                         uid: mailData.uid || null,
                         twoFactor: mailData.twoFactor || null,
-                        // Mail specific fields
                         refreshToken: mailData.refresh_token || null, 
                         clientId: mailData.client_id || null
                     };
 
                     transaction.set(purchaseLogRef, purchaseData);
-                    
                     transaction.update(counterRef, { currentId: saleId + 1 });
                 });
 
@@ -1865,11 +1861,8 @@
                 document.getElementById('purchase-success-modal').classList.remove('hidden');
                 lucide.createIcons();
                 
-                if (pageType === 'mail') {
-                    loadMailStore();
-                } else if (pageType === 'account') {
-                    loadAccountStore();
-                }
+                if (pageType === 'mail') loadMailStore();
+                else if (pageType === 'account') loadAccountStore();
                 
                 const finalUserSnap = await getDoc(doc(db, "users", userData.tgChatId));
                 userData = finalUserSnap.data();
@@ -1878,11 +1871,8 @@
             } catch (e) { 
                 showAlert(`কিনতে সমস্যা হয়েছে।\nকারণ: ${e.message}`);
                 console.error("Purchase Transaction Error:", e);
-                if (pageType === 'mail') {
-                    loadMailStore();
-                } else if (pageType === 'account') {
-                    loadAccountStore();
-                }
+                if (pageType === 'mail') loadMailStore();
+                else if (pageType === 'account') loadAccountStore();
             } finally { 
                 loader.style.display = 'none';
             }
@@ -1941,7 +1931,7 @@
                 const encodedContent = encodeURIComponent(content);
                 const date = update.createdAt ? update.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
 
-                updatesContainer.innerHTML = `<div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">${update.imageUrl ? `<img src="${update.imageUrl}" class="w-full aspect-[16/9] object-cover" alt="Update Banner">` : ''}<div class="p-5 space-y-3"><div><h3 class="text-xl font-bold text-gray-800">${update.title}</h3>${date ? `<p class="text-xs text-gray-500 mt-1">${date}</p>` : ''}</div><p id="update-content-${update.id}" class="text-gray-600 text-sm whitespace-pre-wrap leading-relaxed">${shortContent}</p>${content.length > 120 ? `<button onclick="toggleUpdateContent('${update.id}', '${encodedContent}')" class="font-semibold text-blue-600 text-sm hover:underline">Read More</button>` : ''}</div></div>`;
+                updatesContainer.innerHTML = `<div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">${update.imageUrl ? `<img src="${update.imageUrl}" class="w-full aspect-[16/9] object-cover" alt="Update Banner" loading="lazy">` : ''}<div class="p-5 space-y-3"><div><h3 class="text-xl font-bold text-gray-800">${update.title}</h3>${date ? `<p class="text-xs text-gray-500 mt-1">${date}</p>` : ''}</div><p id="update-content-${update.id}" class="text-gray-600 text-sm whitespace-pre-wrap leading-relaxed">${shortContent}</p>${content.length > 120 ? `<button onclick="toggleUpdateContent('${update.id}', '${encodedContent}')" class="font-semibold text-blue-600 text-sm hover:underline">Read More</button>` : ''}</div></div>`;
                 lucide.createIcons();
             } catch(e) {
                 updatesContainer.innerHTML = `<p class="text-center text-red-600">Failed to load updates.</p>`;
@@ -2138,7 +2128,7 @@
             const friend = friendSnap.data();
             if (friend.linkedBy) return searchResultEl.innerHTML = `<p class="text-red-500 text-center mt-2">This user is already in a team.</p>`;
 
-            const profileHTML = friend.photo_url ? `<img src="${friend.photo_url}" class="w-12 h-12 rounded-full object-cover">` : `<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"><span class="text-xl font-bold text-gray-500">${friend.name?.[0] || 'U'}</span></div>`;
+            const profileHTML = friend.photo_url ? `<img src="${friend.photo_url}" class="w-12 h-12 rounded-full object-cover" loading="lazy">` : `<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"><span class="text-xl font-bold text-gray-500">${friend.name?.[0] || 'U'}</span></div>`;
             searchResultEl.innerHTML = `<div class="bg-gray-50 p-4 rounded-lg mt-4 flex items-center justify-between"><div class="flex items-center gap-3">${profileHTML}<div><p class="font-bold text-gray-800">${friend.name}</p><p class="text-xs text-gray-500">ID: ${friend.tgChatId}</p></div></div><button onclick="confirmLinkFriend('${friend.tgChatId}')" class="btn-gradient px-4 py-2 rounded-lg text-sm">Confirm Link</button></div>`;
             lucide.createIcons();
         }
@@ -2174,7 +2164,7 @@
                 const friend = friendDoc.data();
                 const totalSpent = userData.teamSpending?.[friend.tgChatId] || 0;
                 const isOnline = friend.lastSeen && (Timestamp.now().toMillis() - friend.lastSeen.toMillis()) < 300000;
-                const profileHTML = friend.photo_url ? `<img src="${friend.photo_url}" class="w-12 h-12 rounded-full object-cover">` : `<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"><span class="text-xl font-bold text-gray-500">${(friend.name?.[0] || 'U').toUpperCase()}</span></div>`;
+                const profileHTML = friend.photo_url ? `<img src="${friend.photo_url}" class="w-12 h-12 rounded-full object-cover" loading="lazy">` : `<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"><span class="text-xl font-bold text-gray-500">${(friend.name?.[0] || 'U').toUpperCase()}</span></div>`;
                 
                 return `<div class="card-bg p-4 rounded-2xl space-y-4 shadow-md"><div class="flex items-center justify-between"><div class="flex items-center gap-4"><div class="relative">${profileHTML}<span title="${isOnline ? 'Active Now' : 'Inactive'}" class="absolute bottom-0 right-0 block h-3.5 w-3.5 rounded-full ${isOnline ? 'bg-green-500' : 'bg-gray-400'} ring-2 ring-white"></span></div><div><p class="font-bold text-lg text-gray-900">${friend.name}</p><p class="text-sm text-gray-600">Total Spent: <span class="font-semibold text-blue-600">৳${totalSpent.toFixed(2)}</span></p></div></div><button onclick="unlinkFriend('${friend.tgChatId}')" class="p-2 rounded-full hover:bg-red-100 text-red-600 transition-colors" title="Unlink"><i data-lucide="user-x" class="w-5 h-5"></i></button></div></div>`;
             }).join('');
@@ -2202,7 +2192,7 @@
                 tutorialListEl.innerHTML = snapshot.docs.map(doc => {
                     const t = doc.data();
                     const banner = t.bannerImageUrl || 'https://i.postimg.cc/zBp8rCX9/Yellow-Orange-Modern-Marketing-Courses-You-Tube-Thumbnail-20250910-185659-0000.png';
-                    return `<div class="card-bg rounded-xl overflow-hidden shadow-lg transition-transform hover:scale-[1.02] duration-300"><h3 class="font-bold text-lg text-gray-800 p-4 pb-2">${t.title}</h3><a href="${t.youtubeWatchUrl}" target="_blank" class="block group p-4 pt-2"><div class="relative rounded-lg overflow-hidden"><img src="${banner}" alt="${t.title}" class="w-full aspect-video object-cover"><div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100"><i data-lucide="play-circle" class="w-16 h-16 text-white opacity-80"></i></div></div></a></div>`;
+                    return `<div class="card-bg rounded-xl overflow-hidden shadow-lg transition-transform hover:scale-[1.02] duration-300"><h3 class="font-bold text-lg text-gray-800 p-4 pb-2">${t.title}</h3><a href="${t.youtubeWatchUrl}" target="_blank" class="block group p-4 pt-2"><div class="relative rounded-lg overflow-hidden"><img src="${banner}" alt="${t.title}" class="w-full aspect-video object-cover" loading="lazy"><div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100"><i data-lucide="play-circle" class="w-16 h-16 text-white opacity-80"></i></div></div></a></div>`;
                 }).join('');
                 lucide.createIcons();
             } catch (e) { tutorialListEl.innerHTML = '<p class="text-center text-red-600">Tutorials could not be loaded.</p>'; }
@@ -2219,7 +2209,19 @@
                     const review = doc.data();
                     const stars = Array(5).fill(0).map((_, i) => `<i data-lucide="star" class="w-4 h-4 ${i < review.rating ? 'fill-current' : ''}"></i>`).join('');
                     const imageUrl = review.imageUrl || `https://ui-avatars.com/api/?name=${review.name.replace(/\s/g, "+")}&background=random`;
-                    return `<div class="review-card-new p-4 rounded-lg"><div class="flex items-start gap-4"><img src="${imageUrl}" class="w-12 h-12 rounded-full object-cover" alt="User"><div class="flex-1"><div class="flex justify-between items-center"><h5 class="font-bold">${review.name}</h5><div class="star-rating flex text-sm">${stars}</div></div><p class="text-gray-600 text-sm mt-1">"${review.reviewText}"</p></div></div></div>`;
+                    return `<div class="review-card-new p-4 rounded-lg relative overflow-hidden">
+                        <i data-lucide="quote" class="absolute top-2 right-2 w-12 h-12 text-gray-200/80 -rotate-12"></i>
+                        <div class="flex items-start gap-4 relative z-10">
+                            <img src="${imageUrl}" class="w-12 h-12 rounded-full object-cover" alt="User" loading="lazy">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center">
+                                    <h5 class="font-bold">${review.name}</h5>
+                                    <div class="star-rating flex text-sm">${stars}</div>
+                                </div>
+                                <p class="text-gray-600 text-sm mt-1">"${review.reviewText}"</p>
+                            </div>
+                        </div>
+                    </div>`;
                 }).join('');
                 lucide.createIcons();
             } catch (e) { reviewListEl.innerHTML = '<p class="text-center text-red-600">Reviews could not be loaded.</p>'; }
@@ -2233,14 +2235,13 @@
                 if (snapshot.empty) return supportContainer.innerHTML = '<p class="p-4 text-center text-gray-600">No support channels available.</p>';
                 supportContainer.innerHTML = snapshot.docs.map(doc => {
                     const channel = doc.data();
-                    return `<a href="${channel.link}" target="_blank" class="support-link-card"><img src="${channel.iconUrl}" alt="${channel.name} logo"><span>${channel.name}</span></a>`;
+                    return `<a href="${channel.link}" target="_blank" class="support-link-card"><img src="${channel.iconUrl}" alt="${channel.name} logo" loading="lazy"><span>${channel.name}</span></a>`;
                 }).join('');
             } catch (e) { supportContainer.innerHTML = '<p class="p-4 text-center text-red-600">Support options could not be loaded.</p>'; }
         }
 
         function handleFeaturesClick() { navigateTo('features-page'); }
 
-        // --- NEW: Load User's Replace History ---
         async function loadReplaceHistory() {
             const historyList = document.getElementById('replace-history-list');
             historyList.innerHTML = getLoadingHTML();
@@ -2362,7 +2363,6 @@
             }
         }
 
-        // UPDATED: Function signature and notification logic
         window.handleApproveRequest = async (requestId, userId, cost, purchaseId, saleId, mailType) => {
             if (!confirm(`Are you sure you want to approve this request and refund ৳${cost} to user ${userId}?`)) return;
             loader.style.display = 'flex';
@@ -2380,7 +2380,6 @@
                     transaction.update(purchaseRef, { isRefunded: true });
                 });
 
-                // NEW: Send notification
                 await addDoc(collection(db, "notifications"), {
                     recipientId: userId,
                     title: "✅ Report Approved",
@@ -2397,7 +2396,6 @@
             }
         }
         
-        // UPDATED: Function signature and notification logic
         window.handleRejectRequest = async (requestId, userId, saleId, mailType) => {
             if (!confirm("Are you sure you want to reject this request? This may trigger a penalty for the user.")) return;
             loader.style.display = 'flex';
@@ -2425,14 +2423,13 @@
 
                     if (dailyRejections.count >= 5) {
                         updates.isBlocked = true;
-                        updates.blockedUntil = Timestamp.fromMillis(Date.now() + 5 * 60 * 60 * 1000); // 5 hours block
+                        updates.blockedUntil = Timestamp.fromMillis(Date.now() + 5 * 60 * 60 * 1000);
                     }
                     
                     transaction.update(userRef, updates);
                     transaction.update(requestRef, { status: 'rejected', resolvedAt: serverTimestamp() });
                 });
 
-                // NEW: Send notification
                 await addDoc(collection(db, "notifications"), {
                     recipientId: userId,
                     title: "❌ Report Rejected",
