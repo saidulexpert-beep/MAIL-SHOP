@@ -20,7 +20,7 @@
             user-select: none; /* Standard syntax */
             -webkit-touch-callout: none; /* iOS Safari */
         }
-        input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #account-purchase-history .font-mono, #replace-history-list .text-sm {
+        input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #replace-history-list .text-sm {
             -webkit-user-select: text; /* Safari */
             -ms-user-select: text; /* IE 10+ */
             user-select: text; /* Standard syntax */
@@ -74,9 +74,10 @@
         .sub-page { display: none; }
         .sub-page.active { display: block; animation: fadeIn 0.3s ease-in-out; }
 
+        /* MODIFIED BOTTOM NAVIGATION */
         .bottom-nav {
              border-top: 1px solid #e0e0e0;
-             background-color: rgba(255, 255, 255, 0.9);
+             background-color: rgba(255, 255, 255, 0.95);
              backdrop-filter: blur(10px);
              -webkit-backdrop-filter: blur(10px);
              position: fixed;
@@ -88,26 +89,53 @@
              display: flex;
              justify-content: space-around;
              align-items: center;
-             padding: 12px 16px;
+             padding: 8px 16px;
              z-index: 50;
+             height: 70px;
         }
-        .nav-link-premium { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #6b7280; font-size: 0.75rem; font-weight: 500; padding: 8px; border-radius: 12px; transition: all 0.2s ease; position: relative; cursor: pointer; background: none; border: none; }
-        .nav-link-premium:hover { color: #333333; }
-        .nav-link-premium.active { color: #007bff; }
-        .nav-link-premium .icon { width: 24px; height: 24px; }
-        .center-home-link { position: relative; transform: translateY(-20px) scale(1.1); background: rgba(0, 123, 255, 0.2); border: 1px solid rgba(0, 123, 255, 0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0, 123, 255, 0.4); transition: all 0.3s ease; color: #ffffff; }
-        .center-home-link:hover { transform: translateY(-20px) scale(1.15); }
-        .center-home-link .icon { width: 32px; height: 32px; color: #fff; }
-        .header {
-            border-bottom: 1px solid #e0e0e0;
-            background: linear-gradient(to right, #ffffff, #f9f9f9);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+        .nav-link-native {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #6b7280;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 8px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 90px;
+        }
+        .nav-link-native.active { color: #007bff; }
+        .nav-link-native .icon { width: 28px; height: 28px; }
+        .center-nav-link {
+            background-color: #f0f3f5;
+            padding: 8px 20px;
+            border-radius: 9999px;
+            color: #eab308; /* yellow-500 */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transform: translateY(-10px);
+        }
+        .center-nav-link.active {
+             color: #ca8a04; /* yellow-600 */
+             background-color: #e5e7eb; /* gray-200 */
+        }
+        /* MODIFIED HEADER */
+        .header-native {
+            background-color: #007bff; /* Blue background */
             padding: 1rem;
             position: sticky;
             top: 0;
             z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
         }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .banner-wrapper { position: relative; width: 100%; padding-top: 56.25%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
@@ -300,28 +328,31 @@
         </div>
     </aside>
     <div id="app-container" class="min-h-screen flex-col main-page">
-        <header class="header flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="relative">
-                    <img id="header-profile-pic" class="w-12 h-12 rounded-full border-2 border-blue-300 object-cover hidden" src="" alt="Profile Picture" loading="lazy">
-                    <div id="header-initials-avatar" class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center border-2 border-blue-300"><span id="header-initials" class="text-xl font-bold text-gray-500"></span></div>
-                </div>
-                <div>
-                    <h1 id="header-welcome-name" class="text-lg font-bold text-gray-800">Welcome!</h1>
-                    <p id="header-balance-display" class="font-semibold text-gray-700 text-sm">৳0.00</p>
-                </div>
-            </div>
-            <div class="flex items-center space-x-2">
-                <button id="header-deposit-btn" class="btn-gradient px-4 py-2 rounded-full text-sm font-bold shadow-lg">Deposit</button>
-                <button id="notification-btn" class="relative p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
-                    <i data-lucide="bell" class="w-5 h-5 text-gray-700"></i>
-                    <span id="notification-badge" class="notification-badge hidden">0</span>
-                </button>
-                <button id="hamburger-menu-btn" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
-                    <i data-lucide="menu" class="w-5 h-5 text-gray-700"></i>
+        
+        <!-- HEADER SECTION MODIFIED AS PER YOUR REQUEST -->
+        <header class="header-native">
+            <!-- Profile Picture with Deposit (+) Button -->
+            <div class="relative">
+                <img id="header-profile-pic" class="w-12 h-12 rounded-full border-2 border-white object-cover" src="" alt="Profile Picture" loading="lazy">
+                <div id="header-initials-avatar" class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center border-2 border-white hidden"><span id="header-initials" class="text-xl font-bold text-gray-600"></span></div>
+                <button id="header-deposit-plus-btn" class="absolute -bottom-1 -right-1 bg-white text-blue-600 w-6 h-6 rounded-full flex items-center justify-center shadow-md border-2 border-blue-500">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
                 </button>
             </div>
+
+            <!-- Coin Balance Display -->
+            <div class="bg-white text-black rounded-full px-4 py-2 flex items-center gap-2 shadow-inner">
+                <i data-lucide="circle-dollar-sign" class="w-6 h-6 text-yellow-500"></i>
+                <span id="header-coin-balance" class="font-bold text-xl">0</span>
+            </div>
+
+            <!-- Help (?) Button -->
+            <button id="support-menu-btn" class="bg-white/20 p-2 rounded-full">
+                <i data-lucide="help-circle" class="w-7 h-7 text-white"></i>
+            </button>
         </header>
+        <!-- END OF MODIFIED HEADER SECTION -->
+
         <main class="flex-grow pb-20">
             <div id="home-page" class="space-y-6 sub-page">
                 <div class="p-4">
@@ -441,31 +472,9 @@
                     </div>
                 </div>
             </div>
-            <div id="account-page" class="sub-page">
-                <div class="p-4 space-y-6">
-                    <div class="view-switcher">
-                        <button id="social-media-btn" class="active">সোশ্যাল মিডিয়া</button>
-                        <button id="ads-btn">বিজ্ঞাপন</button>
-                    </div>
+            
+            <!-- ACCOUNT PAGE HAS BEEN REMOVED -->
 
-                    <div id="account-views-container" class="views-container">
-                        <div id="social-media-container" class="view space-y-4">
-                             <div class="mt-8">
-                                <div class="flex justify-between items-center mb-3">
-                                    <h3 class="text-lg font-semibold">Buy History (Accounts)</h3>
-                                    <div class="flex items-center gap-2">
-                                       <button id="copy-account-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="copy" class="w-4 h-4"></i><span>Copy</span></button>
-                                       <button id="download-account-history-btn" class="btn-outline-accent p-2 rounded-lg text-sm flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i><span>Download</span></button>
-                                    </div>
-                                </div>
-                                <div id="account-purchase-history" class="space-y-3"></div>
-                            </div>
-                        </div>
-                        <div id="ads-container" class="view space-y-4">
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div id="updates-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center text-gray-800">Latest Update</h2>
                 <div id="updates-content" class="space-y-4"></div>
@@ -630,14 +639,24 @@
 
         </main>
         
+        <!-- BOTTOM NAVIGATION MODIFIED AS PER YOUR REQUEST -->
         <nav class="bottom-nav">
-            <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
-            <a href="#" class="nav-link-premium" data-page="mail-page"><i data-lucide="mail" class="icon"></i><span>Mail</span></a>
-            <a href="#" class="nav-link-premium center-home-link active" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
-            <a href="#" class="nav-link-premium" data-page="account-page"><i data-lucide="shopping-bag" class="icon"></i><span>Account</span></a>
-            <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
-            <a href="#" id="admin-nav-link" class="nav-link-premium hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></a>
+            <a href="#" class="nav-link-native" data-page="home-page">
+                <i data-lucide="home" class="icon"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-link-native center-nav-link" data-page="pay-page">
+                <i data-lucide="circle-dollar-sign" class="icon"></i>
+                <span>Get Coin</span>
+            </a>
+            <a href="#" class="nav-link-native" data-page="mail-page">
+                <i data-lucide="user-plus" class="icon"></i>
+                <span>Get Follower</span>
+            </a>
+            <!-- Removed Profile, Updates and other old buttons -->
+            <a href="#" id="admin-nav-link" class="nav-link-native hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></a>
         </nav>
+        <!-- END OF MODIFIED BOTTOM NAVIGATION -->
     </div>
 
     <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
@@ -781,7 +800,7 @@
         let appConfig = {};
         let insufficientBalanceInterval = null;
         let countdownInterval = null;
-        let accountCountdownInterval = null;
+        // let accountCountdownInterval = null; // REMOVED
 
         const loader = document.getElementById('loader');
 
@@ -915,28 +934,26 @@
             if (!currentUserTg) return;
             const profilePic = document.getElementById('header-profile-pic');
             const avatarDiv = document.getElementById('header-initials-avatar');
-            const welcomeName = document.getElementById('header-welcome-name');
-
+            
             if (userData.photo_url) {
                 profilePic.src = userData.photo_url;
                 profilePic.classList.remove('hidden');
                 avatarDiv.classList.add('hidden');
             } else {
                 const initials = (currentUserTg.first_name?.[0] || '') + (currentUserTg.last_name?.[0] || '');
-                document.getElementById('header-initials').textContent = initials.toUpperCase();
+                document.getElementById('header-initials').textContent = initials.toUpperCase() || 'U';
                 profilePic.classList.add('hidden');
                 avatarDiv.classList.remove('hidden');
             }
-            
-            const firstName = currentUserTg.first_name || 'User';
-            welcomeName.textContent = `Hi, ${firstName}!`;
         }
 
         function updateUI() {
             if (!userData) return;
-            const balance = (userData.balance || 0).toFixed(2);
-            document.getElementById('balance-display').textContent = `৳${balance}`;
-            document.getElementById('header-balance-display').textContent = `৳${balance}`;
+            const balance = Math.floor(userData.balance || 0);
+            const balanceFormatted = (userData.balance || 0).toFixed(2);
+            
+            document.getElementById('balance-display').textContent = `৳${balanceFormatted}`;
+            document.getElementById('header-coin-balance').textContent = balance; // Show integer balance in header
             updateHeaderUI();
         }
 
@@ -946,14 +963,16 @@
         }
 
         function navigateTo(pageId) {
-            if (pageId !== 'mail-page' && pageId !== 'account-page' && insufficientBalanceInterval) {
+            if (pageId !== 'mail-page' && insufficientBalanceInterval) {
                 clearInterval(insufficientBalanceInterval);
                 insufficientBalanceInterval = null;
             }
 
             document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.nav-link-premium[data-page]').forEach(link => {
+            
+            // Updated navigation active state logic
+            document.querySelectorAll('.nav-link-native[data-page]').forEach(link => {
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
 
@@ -961,7 +980,6 @@
                 'home-page': () => {},
                 'pay-page': loadPaymentHistory,
                 'mail-page': loadMailStore,
-                'account-page': loadAccountStore,
                 'updates-page': () => { 
                     loadUpdates(); 
                     loadReviews(); 
@@ -988,9 +1006,13 @@
         }
 
         function setupEventListeners() {
-            document.querySelectorAll('.nav-link-premium[data-page]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
-            document.getElementById('header-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
-            document.getElementById('notification-btn').addEventListener('click', showNotifications);
+            document.querySelectorAll('.nav-link-native[data-page]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
+            
+            // New Header Button Listeners
+            document.getElementById('header-deposit-plus-btn').addEventListener('click', () => navigateTo('pay-page'));
+            document.getElementById('support-menu-btn').addEventListener('click', toggleMenu);
+
+            document.getElementById('notification-btn')?.addEventListener('click', showNotifications); // Kept for future use, but button is removed
             document.getElementById('notification-ok-btn').addEventListener('click', hideNotifications);
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
@@ -999,11 +1021,10 @@
             document.getElementById('download-history-btn').addEventListener('click', () => handleDownloadHistory('mail-purchase-history'));
             document.getElementById('copy-history-btn').addEventListener('click', () => handleCopyHistory('mail-purchase-history'));
             
-            document.getElementById('download-account-history-btn').addEventListener('click', () => handleDownloadHistory('account-purchase-history'));
-            document.getElementById('copy-account-history-btn').addEventListener('click', () => handleCopyHistory('account-purchase-history'));
-
+            // REMOVED ACCOUNT HISTORY BUTTONS
+            
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
-            document.getElementById('hamburger-menu-btn').addEventListener('click', toggleMenu);
+            
             document.getElementById('menu-overlay').addEventListener('click', toggleMenu);
             document.getElementById('go-to-support-btn').addEventListener('click', toggleMenu);
             
@@ -1030,8 +1051,6 @@
                 modal.classList.add('hidden');
                 if (pageType === 'mail') {
                     navigateTo('mail-page');
-                } else if (pageType === 'account') {
-                    navigateTo('account-page');
                 }
             });
             document.getElementById('close-purchase-success-modal').addEventListener('click', () => document.getElementById('purchase-success-modal').classList.add('hidden'));
@@ -1039,8 +1058,7 @@
             document.getElementById('login-mail-btn').addEventListener('click', () => switchMailView('login'));
             document.getElementById('otp-mail-btn').addEventListener('click', () => switchMailView('otp'));
 
-            document.getElementById('social-media-btn').addEventListener('click', () => switchAccountView('social'));
-            document.getElementById('ads-btn').addEventListener('click', () => switchAccountView('ads'));
+            // REMOVED ACCOUNT VIEW SWITCHER LISTENERS
 
             document.getElementById('reviews-view-btn').addEventListener('click', () => switchUpdateView('reviews'));
             document.getElementById('tutorials-view-btn').addEventListener('click', () => switchUpdateView('tutorials'));
@@ -1123,45 +1141,8 @@
             }
             adjustMailViewContainerHeight();
         }
-
-        function adjustAccountViewContainerHeight() {
-            setTimeout(() => {
-                const container = document.getElementById('account-views-container');
-                if (!container) return;
-                const socialView = document.getElementById('social-media-container');
-                const adsView = document.getElementById('ads-container');
-                
-                const activeView = socialView.style.transform === 'translateX(0%)' ? socialView : adsView;
-                
-                if (container && activeView) {
-                    container.style.height = `${activeView.scrollHeight}px`;
-                }
-            }, 50);
-        }
-
-        function switchAccountView(view) {
-            const socialBtn = document.getElementById('social-media-btn');
-            const adsBtn = document.getElementById('ads-btn');
-            const socialContainer = document.getElementById('social-media-container');
-            const adsContainer = document.getElementById('ads-container');
-
-            if (view === 'social') {
-                socialBtn.classList.add('active');
-                adsBtn.classList.remove('active');
-                socialContainer.style.transform = 'translateX(0%)';
-                socialContainer.style.opacity = '1';
-                adsContainer.style.transform = 'translateX(100%)';
-                adsContainer.style.opacity = '0';
-            } else {
-                socialBtn.classList.remove('active');
-                adsBtn.classList.add('active');
-                socialContainer.style.transform = 'translateX(-100%)';
-                socialContainer.style.opacity = '0';
-                adsContainer.style.transform = 'translateX(0%)';
-                adsContainer.style.opacity = '1';
-            }
-            adjustAccountViewContainerHeight();
-        }
+        
+        // REMOVED ACCOUNT VIEW SWITCHER LOGIC
 
         function listenForNotifications() {
             const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
@@ -1181,12 +1162,14 @@
                     }
                 });
 
-                const badge = document.getElementById('notification-badge');
-                if (unreadCount > 0) {
-                    badge.textContent = unreadCount;
-                    badge.classList.remove('hidden');
-                } else {
-                    badge.classList.add('hidden');
+                const badge = document.getElementById('notification-badge'); // This element is removed, but logic is kept
+                if (badge) {
+                    if (unreadCount > 0) {
+                        badge.textContent = unreadCount;
+                        badge.classList.remove('hidden');
+                    } else {
+                        badge.classList.add('hidden');
+                    }
                 }
             });
         }
@@ -1226,7 +1209,8 @@
             const newTimestamp = Timestamp.now();
             await updateDoc(userRef, { lastSeenNotification: newTimestamp });
             userData.lastSeenNotification = newTimestamp;
-            document.getElementById('notification-badge').classList.add('hidden');
+            const badge = document.getElementById('notification-badge'); // This element is removed
+            if(badge) badge.classList.add('hidden');
         }
 
         function loadProfilePage() {
@@ -1368,34 +1352,20 @@
 
                 let purchases = querySnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 
-                if (filterCategories) {
-                    const mailConfigs = appConfig.mails || [];
-                    const allowedStockKeys = mailConfigs
-                        .filter(m => filterCategories.includes(m.category))
-                        .map(m => m.stockKey);
-                    
-                    const stockKeyMap = new Map();
-                    mailConfigs.forEach(m => stockKeyMap.set(m.type, m.stockKey));
+                // Filter logic for mail page (non-account categories)
+                const mailConfigs = appConfig.mails || [];
+                const excludedStockKeys = mailConfigs
+                    .filter(m => ['social', 'ads'].includes(m.category))
+                    .map(m => m.stockKey);
 
-                    purchases = purchases.filter(p => {
-                        const stockKey = stockKeyMap.get(p.mailType);
-                        return stockKey && allowedStockKeys.includes(stockKey);
-                    });
-                } else {
-                    const mailConfigs = appConfig.mails || [];
-                    const excludedStockKeys = mailConfigs
-                        .filter(m => ['social', 'ads'].includes(m.category))
-                        .map(m => m.stockKey);
+                const stockKeyMap = new Map();
+                mailConfigs.forEach(m => stockKeyMap.set(m.type, m.stockKey));
 
-                    const stockKeyMap = new Map();
-                    mailConfigs.forEach(m => stockKeyMap.set(m.type, m.stockKey));
-
-                    purchases = purchases.filter(p => {
-                        const stockKey = stockKeyMap.get(p.mailType);
-                        return !stockKey || !excludedStockKeys.includes(stockKey);
-                    });
-                }
-
+                purchases = purchases.filter(p => {
+                    const stockKey = stockKeyMap.get(p.mailType);
+                    return !stockKey || !excludedStockKeys.includes(stockKey);
+                });
+                
                 const purchaseIds = purchases.map(p => p.id);
                 const replaceRequestsQuery = purchaseIds.length ? query(collection(db, "replace_requests"), where("purchaseId", "in", purchaseIds)) : null;
                 const replaceSnapshot = replaceRequestsQuery ? await getDocs(replaceRequestsQuery) : { docs: [] };
@@ -1439,21 +1409,12 @@
                         }
 
                         let detailsHtml, fullData;
-                        if(formatType === 'social') {
-                            fullData = `UID: ${purchase.uid || 'N/A'}\nPASS: ${purchase.password || 'N/A'}\n2FA: ${purchase.twoFactor || 'N/A'}\nEMAIL: ${purchase.mail || 'N/A'}`;
-                            detailsHtml = `<div class="space-y-2 pt-2 border-t">
-                                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">UID:</span><span class="font-mono text-sm text-gray-800 truncate">${purchase.uid || 'N/A'}</span><button onclick="copyToClipboard('${purchase.uid || ''}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div>
-                                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">PASS:</span><span class="font-mono text-sm text-gray-800">${purchase.password || 'N/A'}</span><button onclick="copyToClipboard('${purchase.password || ''}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div>
-                                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">2FA:</span><span class="font-mono text-sm text-gray-800 truncate">${purchase.twoFactor || 'N/A'}</span><button onclick="copyToClipboard('${purchase.twoFactor || ''}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div>
-                                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">EMAIL:</span><span class="font-mono text-sm text-gray-800 truncate">${purchase.mail || 'N/A'}</span><button onclick="copyToClipboard('${purchase.mail || ''}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div>
-                            </div>`;
-                        } else {
-                            fullData = [purchase.mail, purchase.password, purchase.refreshToken, purchase.clientId].filter(Boolean).join('|');
-                             detailsHtml = `<div class="space-y-2 pt-2 border-t">
-                                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">EMAIL:</span><span class="font-mono text-sm text-gray-800 truncate">${purchase.mail}</span><button onclick="copyToClipboard('${purchase.mail}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div>
-                                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">PASS:</span><span class="font-mono text-sm text-gray-800">${purchase.password || 'N/A'}</span><button onclick="copyToClipboard('${purchase.password || ''}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div>
-                            </div>`;
-                        }
+                        // Simplified details for mail only
+                        fullData = [purchase.mail, purchase.password, purchase.refreshToken, purchase.clientId].filter(Boolean).join('|');
+                         detailsHtml = `<div class="space-y-2 pt-2 border-t">
+                            <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">EMAIL:</span><span class="font-mono text-sm text-gray-800 truncate">${purchase.mail}</span><button onclick="copyToClipboard('${purchase.mail}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div>
+                            <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">PASS:</span><span class="font-mono text-sm text-gray-800">${purchase.password || 'N/A'}</span><button onclick="copyToClipboard('${purchase.password || ''}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div>
+                        </div>`;
 
                         return `<div class="card-bg p-4 rounded-xl space-y-3">
                             <div class="flex justify-between items-start">
@@ -1477,16 +1438,12 @@
                     
                     if (countdownIntervalVarName === 'mail') {
                          startCountdownTimers(historyListElId, countdownInterval);
-                    } else if (countdownIntervalVarName === 'account') {
-                         startCountdownTimers(historyListElId, accountCountdownInterval);
                     }
                 }
                 lucide.createIcons();
                 
                 if (historyListElId === 'mail-purchase-history') {
                     adjustMailViewContainerHeight();
-                } else if (historyListElId === 'account-purchase-history') {
-                    adjustAccountViewContainerHeight();
                 }
 
             } catch (error) {
@@ -1516,9 +1473,6 @@
                 const loginMails = allMails.filter(m => m.category === 'login' || !m.category);
                 const otpMails = allMails.filter(m => m.category === 'otp');
 
-                const productContainer = document.createElement('div');
-                productContainer.className = 'space-y-4';
-
                 await Promise.all([
                     renderMailList(loginMails, loginMailContainer, effectiveBalance, 'mail'),
                     renderMailList(otpMails, otpMailContainer, effectiveBalance, 'mail')
@@ -1526,7 +1480,7 @@
                 
                 switchMailView('login');
                 
-                await loadPurchaseHistory('mail-purchase-history', 'mail', ['login', 'otp', undefined], 'mail');
+                await loadPurchaseHistory('mail-purchase-history', 'mail', null, 'mail');
 
             } catch(e) {
                  loginMailContainer.innerHTML = '<p class="text-center text-red-600">মেইল লোড করা যায়নি।</p>';
@@ -1535,78 +1489,7 @@
             }
         }
         
-        async function loadAccountStore() {
-            const socialContainer = document.getElementById('social-media-container');
-            const adsContainer = document.getElementById('ads-container');
-            
-            const productContainer = socialContainer.querySelector('.product-list') || document.createElement('div');
-            productContainer.className = 'product-list space-y-4';
-            if (!socialContainer.querySelector('.product-list')) {
-                socialContainer.prepend(productContainer);
-            }
-            
-            productContainer.innerHTML = getLoadingHTML();
-            adsContainer.innerHTML = getLoadingHTML();
-            
-            try {
-                const userSnap = await getDoc(doc(db, "users", userData.tgChatId));
-                userData = userSnap.data();
-
-                let effectiveBalance = userData.balance;
-                if (userData.linkedBy) {
-                    const teamLeaderSnap = await getDoc(doc(db, "users", userData.linkedBy));
-                    if (teamLeaderSnap.exists()) effectiveBalance += teamLeaderSnap.data().balance;
-                }
-
-                const allMails = appConfig.mails || [];
-                const socialMails = allMails.filter(m => m.category === 'social');
-                
-                await Promise.all([
-                    renderMailList(socialMails, productContainer, effectiveBalance, 'account'),
-                    loadAds() 
-                ]);
-                
-                switchAccountView('social');
-                
-                await loadPurchaseHistory('account-purchase-history', 'account', ['social'], 'social');
-
-            } catch(e) {
-                 productContainer.innerHTML = '<p class="text-center text-red-600">লোড করা যায়নি।</p>';
-                 adsContainer.innerHTML = '<p class="text-center text-red-600">লোড করা যায়নি।</p>';
-                 console.error(e);
-            }
-        }
-        
-        async function loadAds() {
-            const adsContainer = document.getElementById('ads-container');
-            adsContainer.innerHTML = getLoadingHTML();
-            try {
-                const snapshot = await getDocs(query(collection(db, "ads"), orderBy("order", "asc")));
-                if (snapshot.empty) return adsContainer.innerHTML = '<p class="text-center text-gray-600">No promotions available right now.</p>';
-
-                adsContainer.innerHTML = '<div class="space-y-4">' + snapshot.docs.map(doc => {
-                    const ad = doc.data();
-                    return `<div class="card-bg p-4 rounded-xl">
-                        <div class="flex justify-between items-center gap-4">
-                            <div class="flex items-center gap-3 flex-1">
-                                <img src="${ad.imageUrl}" class="w-16 h-16 rounded-lg object-cover flex-shrink-0" alt="Ad Profile" loading="lazy">
-                                <div class="flex-1">
-                                    <h5 class="font-bold text-lg text-gray-800 leading-tight">${ad.title}</h5>
-                                    <p class="font-semibold text-blue-600 mt-1">দাম: ৳${parseFloat(ad.price || 0).toFixed(2)}</p>
-                                </div>
-                            </div>
-                            <a href="${ad.linkUrl}" target="_blank" onclick="event.stopPropagation()" class="btn-gradient px-5 py-2 rounded-lg text-sm font-bold flex items-center gap-1.5 flex-shrink-0">
-                                <span>GO!</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </a>
-                        </div>
-                    </div>`;
-                }).join('') + '</div>';
-                lucide.createIcons();
-            } catch (e) { 
-                console.error("Error loading ads:", e);
-                adsContainer.innerHTML = '<p class="text-center text-red-600">Promotions could not be loaded.</p>'; 
-            }
-        }
+        // REMOVED loadAccountStore and related functions
 
         function startCountdownTimers(containerId, intervalVariable) {
             if (intervalVariable) clearInterval(intervalVariable);
@@ -1635,8 +1518,8 @@
                 if (!hasActiveTimers) clearInterval(intervalVariable);
             }, 1000);
             
+            // Only mail countdown is needed now
             if(containerId === 'mail-purchase-history') countdownInterval = intervalVariable;
-            else if(containerId === 'account-purchase-history') accountCountdownInterval = intervalVariable;
         }
 
         async function handleDownloadHistory(historyContainerId) {
@@ -1656,24 +1539,14 @@
                 const stockKeyMap = new Map();
                 mailConfigs.forEach(m => stockKeyMap.set(m.type, m.category || 'login'));
 
-                let dataForExcel;
-
-                if (historyContainerId === 'mail-purchase-history') {
-                    const allowedCategories = ['login', 'otp'];
-                    purchases = purchases.filter(p => allowedCategories.includes(stockKeyMap.get(p.mailType)));
-                     dataForExcel = purchases.map(p => ({
-                        'Purchase Date': p.purchasedAt.toDate().toLocaleString(), 'Mail Type': p.mailType, 'Email': p.mail,
-                        'Password': p.password || 'N/A', 'Cost (BDT)': p.cost,
-                        'Full Data': [p.mail, p.password, p.refreshToken, p.clientId].filter(Boolean).join('|')
-                    }));
-                } else if (historyContainerId === 'account-purchase-history') {
-                    const allowedCategories = ['social'];
-                    purchases = purchases.filter(p => allowedCategories.includes(stockKeyMap.get(p.mailType)));
-                    dataForExcel = purchases.map(p => ({
-                        'Purchase Date': p.purchasedAt.toDate().toLocaleString(), 'Account Type': p.mailType, 'UID': p.uid || 'N/A',
-                        'Password': p.password || 'N/A', '2FA': p.twoFactor || 'N/A', 'Email': p.mail || 'N/A', 'Cost (BDT)': p.cost
-                    }));
-                }
+                // This function now only serves the mail page history
+                const allowedCategories = ['login', 'otp'];
+                purchases = purchases.filter(p => allowedCategories.includes(stockKeyMap.get(p.mailType)));
+                 const dataForExcel = purchases.map(p => ({
+                    'Purchase Date': p.purchasedAt.toDate().toLocaleString(), 'Mail Type': p.mailType, 'Email': p.mail,
+                    'Password': p.password || 'N/A', 'Cost (BDT)': p.cost,
+                    'Full Data': [p.mail, p.password, p.refreshToken, p.clientId].filter(Boolean).join('|')
+                }));
 
                 if (purchases.length === 0) {
                     loader.style.display = 'none';
@@ -1683,7 +1556,7 @@
                 const ws = XLSX.utils.json_to_sheet(dataForExcel);
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, "Purchase History");
-                ws['!cols'] = [ {wch: 22}, {wch: 20}, {wch: 30}, {wch: 30}, {wch: 30}, {wch: 30}, {wch: 15} ];
+                ws['!cols'] = [ {wch: 22}, {wch: 20}, {wch: 30}, {wch: 30}, {wch: 15}, {wch: 50} ];
                 XLSX.writeFile(wb, "My_Purchase_History.xlsx");
             } catch (error) { showAlert("ইতিহাস ডাউনলোড করার সময় একটি সমস্যা হয়েছে।"); }
             finally { loader.style.display = 'none'; }
@@ -1707,17 +1580,10 @@
                 const stockKeyMap = new Map();
                 mailConfigs.forEach(m => stockKeyMap.set(m.type, m.category || 'login'));
                 
-                let contentToCopy;
-
-                if (historyContainerId === 'mail-purchase-history') {
-                    const allowedCategories = ['login', 'otp'];
-                    purchases = purchases.filter(p => allowedCategories.includes(stockKeyMap.get(p.mailType)));
-                    contentToCopy = purchases.map(p => `Mail Type: ${p.mailType}\nEmail: ${p.mail}\nPassword: ${p.password || 'N/A'}`).join('\n\n---\n\n');
-                } else if (historyContainerId === 'account-purchase-history') {
-                    const allowedCategories = ['social'];
-                    purchases = purchases.filter(p => allowedCategories.includes(stockKeyMap.get(p.mailType)));
-                    contentToCopy = purchases.map(p => `Type: ${p.mailType}\nUID: ${p.uid || 'N/A'}\nPASS: ${p.password || 'N/A'}\n2FA: ${p.twoFactor || 'N/A'}\nEMAIL: ${p.mail || 'N/A'}`).join('\n\n---\n\n');
-                }
+                // This function now only serves the mail page history
+                const allowedCategories = ['login', 'otp'];
+                purchases = purchases.filter(p => allowedCategories.includes(stockKeyMap.get(p.mailType)));
+                const contentToCopy = purchases.map(p => `Mail Type: ${p.mailType}\nEmail: ${p.mail}\nPassword: ${p.password || 'N/A'}`).join('\n\n---\n\n');
                 
                 if (purchases.length === 0) {
                     loader.style.display = 'none';
@@ -1742,7 +1608,6 @@
                 loader.style.display = 'none';
                 showAlert("দুঃখিত, এই ধরনের পণ্য বর্তমানে স্টক শেষ।");
                 if (pageType === 'mail') loadMailStore();
-                else if (pageType === 'account') loadAccountStore();
                 return;
             }
             const mailDocToPurchase = mailQuerySnapshot.docs[0];
@@ -1824,7 +1689,6 @@
                 lucide.createIcons();
                 
                 if (pageType === 'mail') loadMailStore();
-                else if (pageType === 'account') loadAccountStore();
                 
                 const finalUserSnap = await getDoc(doc(db, "users", userData.tgChatId));
                 userData = finalUserSnap.data();
@@ -1834,7 +1698,6 @@
                 showAlert(`কিনতে সমস্যা হয়েছে।\nকারণ: ${e.message}`);
                 console.error("Purchase Transaction Error:", e);
                 if (pageType === 'mail') loadMailStore();
-                else if (pageType === 'account') loadAccountStore();
             } finally { 
                 loader.style.display = 'none';
             }
@@ -2274,7 +2137,6 @@
                 document.getElementById('report-issue-modal').classList.add('hidden');
                 
                 loadMailStore(); 
-                loadAccountStore();
 
             } catch (e) {
                 showAlert(`একটি সমস্যা হয়েছে: ${e.message}`);
