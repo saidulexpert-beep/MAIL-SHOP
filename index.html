@@ -84,45 +84,34 @@
              bottom: 0;
              left: 0;
              right: 0;
-             max-width: 672px;
+             max-width: 448px; /* max-w-md */
              margin: 0 auto;
              display: flex;
              justify-content: space-around;
              align-items: center;
-             padding: 8px 16px;
+             padding: 8px 0;
              z-index: 50;
-             height: 70px;
+             height: 65px;
         }
         .nav-link-native {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
             color: #6b7280;
-            font-size: 0.8rem;
+            font-size: 0.75rem; /* 12px */
             font-weight: 600;
-            padding: 8px;
+            padding: 4px;
             border-radius: 12px;
             transition: all 0.2s ease;
             cursor: pointer;
             background: none;
             border: none;
-            width: 90px;
+            width: 80px;
         }
         .nav-link-native.active { color: #007bff; }
-        .nav-link-native .icon { width: 28px; height: 28px; }
-        .center-nav-link {
-            background-color: #f0f3f5;
-            padding: 8px 20px;
-            border-radius: 9999px;
-            color: #eab308; /* yellow-500 */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            transform: translateY(-10px);
-        }
-        .center-nav-link.active {
-             color: #ca8a04; /* yellow-600 */
-             background-color: #e5e7eb; /* gray-200 */
-        }
+        .nav-link-native .icon { width: 26px; height: 26px; }
+
         /* MODIFIED HEADER */
         .header-native {
             background-color: #007bff; /* Blue background */
@@ -189,82 +178,7 @@
         .modal-close-btn:hover {
             background-color: #d1d5db;
         }
-
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: #ef4444;
-            color: white;
-            border-radius: 9999px;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid white;
-        }
-
-        #menu-overlay {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 80;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        #menu-overlay.open {
-            opacity: 1;
-            visibility: visible;
-        }
-        #slide-out-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 80%;
-            max-width: 320px;
-            background: #ffffff;
-            z-index: 90;
-            transform: translateX(-100%);
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        #slide-out-menu.open {
-            transform: translateX(0);
-        }
-        .menu-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: center;
-        }
-        .support-link-card {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px;
-            border-bottom: 1px solid #e5e7eb;
-            text-decoration: none;
-            color: #111827;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.2s ease-in-out;
-        }
-        .support-link-card:hover {
-            background-color: #f9fafb;
-            color: #007bff;
-        }
-        .support-link-card img, .support-link-card .icon-placeholder {
-            width: 32px;
-            height: 32px;
-        }
-
+        
         .view-switcher {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -300,7 +214,6 @@
             top: 0;
             left: 0;
         }
-        
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -314,41 +227,29 @@
         </div>
         <div id="loader-reviews">"খুবই বিশ্বস্ত একটি সাইট।" - মোঃ রায়হান</div>
     </div>
-
-    <div id="menu-overlay"></div>
-    <aside id="slide-out-menu">
-        <div class="menu-header">
-            <h2 class="text-xl font-bold text-accent-gradient">Support Center</h2>
-            <p class="text-sm text-gray-500 mt-1">যেকোনো প্রয়োজনে যোগাযোগ করুন</p>
-        </div>
-        <nav id="support-channels-list" class="flex-grow overflow-y-auto">
-            </nav>
-        <div class="p-4 text-center text-xs text-gray-400 border-t">
-            𝐌𝐀𝐈𝐋 𝐒𝐓𝐎𝐑𝐄 &copy; 2025
-        </div>
-    </aside>
+    
     <div id="app-container" class="min-h-screen flex-col main-page">
         
         <!-- HEADER SECTION MODIFIED AS PER YOUR REQUEST -->
         <header class="header-native">
-            <!-- Profile Picture with Deposit (+) Button -->
+            <!-- Profile Picture -->
             <div class="relative">
-                <img id="header-profile-pic" class="w-12 h-12 rounded-full border-2 border-white object-cover" src="" alt="Profile Picture" loading="lazy">
-                <div id="header-initials-avatar" class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center border-2 border-white hidden"><span id="header-initials" class="text-xl font-bold text-gray-600"></span></div>
-                <button id="header-deposit-plus-btn" class="absolute -bottom-1 -right-1 bg-white text-blue-600 w-6 h-6 rounded-full flex items-center justify-center shadow-md border-2 border-blue-500">
-                    <i data-lucide="plus" class="w-4 h-4"></i>
-                </button>
+                <img id="header-profile-pic" class="w-10 h-10 rounded-full border-2 border-white object-cover" src="" alt="Profile Picture" loading="lazy">
+                <div id="header-initials-avatar" class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center border-2 border-white hidden"><span id="header-initials" class="text-lg font-bold text-gray-600"></span></div>
             </div>
 
-            <!-- Coin Balance Display -->
-            <div class="bg-white text-black rounded-full px-4 py-2 flex items-center gap-2 shadow-inner">
-                <i data-lucide="circle-dollar-sign" class="w-6 h-6 text-yellow-500"></i>
-                <span id="header-coin-balance" class="font-bold text-xl">0</span>
+            <!-- Coin Balance Display with Deposit Button -->
+            <div id="header-deposit-btn" class="bg-white text-black rounded-full px-3 py-1.5 flex items-center gap-2 shadow-inner cursor-pointer">
+                <div class="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                </div>
+                <i data-lucide="circle-dollar-sign" class="w-5 h-5 text-yellow-500"></i>
+                <span id="header-coin-balance" class="font-bold text-lg">0</span>
             </div>
 
             <!-- Help (?) Button -->
-            <button id="support-menu-btn" class="bg-white/20 p-2 rounded-full">
-                <i data-lucide="help-circle" class="w-7 h-7 text-white"></i>
+            <button id="how-to-earn-btn" class="bg-white/20 p-2 rounded-full">
+                <i data-lucide="help-circle" class="w-6 h-6 text-white"></i>
             </button>
         </header>
         <!-- END OF MODIFIED HEADER SECTION -->
@@ -448,6 +349,19 @@
                 </div>
                 <div class="mt-6"><h3 class="text-lg font-semibold mb-3">Payment History</h3><div id="payment-history-list" class="space-y-3"></div></div>
             </div>
+
+            <!-- EARN PAGE (NEW) -->
+            <div id="earn-page" class="p-4 space-y-6 sub-page">
+                 <div class="flex flex-col items-center justify-center text-center h-[60vh]">
+                    <i data-lucide="rocket" class="w-20 h-20 text-blue-500 mb-6"></i>
+                    <h2 class="text-3xl font-bold text-gray-800">Coming Soon!</h2>
+                    <p class="text-gray-600 mt-2 max-w-sm">
+                        আমরা একটি নতুন এবং আকর্ষণীয় আর্নিং ফিচার নিয়ে কাজ করছি। খুব শীঘ্রই এটি আপনাদের জন্য উন্মুক্ত করা হবে। আমাদের সাথেই থাকুন!
+                    </p>
+                </div>
+            </div>
+
+            <!-- BUY PAGE (Previously mail-page) -->
             <div id="mail-page" class="sub-page">
                 <div class="p-4 space-y-6">
                     <div class="view-switcher">
@@ -473,28 +387,6 @@
                 </div>
             </div>
             
-            <!-- ACCOUNT PAGE HAS BEEN REMOVED -->
-
-            <div id="updates-page" class="p-4 space-y-6 sub-page">
-                <h2 class="text-xl font-bold text-center text-gray-800">Latest Update</h2>
-                <div id="updates-content" class="space-y-4"></div>
-
-                <div class="mt-8">
-                    <div class="view-switcher">
-                        <button id="reviews-view-btn" class="active">REVIEWS</button>
-                        <button id="tutorials-view-btn">TUTORIALS</button>
-                    </div>
-
-                    <div id="updates-views-container" class="views-container mt-4">
-                        <div id="reviews-view-container" class="view space-y-4">
-                            <div id="reviews-list" class="space-y-4"></div>
-                        </div>
-                        <div id="tutorials-view-container" class="view space-y-4">
-                             <div id="tutorial-list" class="space-y-5"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div id="profile-page" class="p-4 space-y-6 sub-page">
                 <div class="card-bg p-6 rounded-2xl flex flex-col items-center text-center">
                     <div class="relative mb-4">
@@ -643,21 +535,54 @@
         <nav class="bottom-nav">
             <a href="#" class="nav-link-native" data-page="home-page">
                 <i data-lucide="home" class="icon"></i>
-                <span>Home</span>
+                <span>HOME</span>
             </a>
-            <a href="#" class="nav-link-native center-nav-link" data-page="pay-page">
-                <i data-lucide="circle-dollar-sign" class="icon"></i>
-                <span>Get Coin</span>
+            <a href="#" class="nav-link-native" data-page="earn-page">
+                <i data-lucide="rocket" class="icon"></i>
+                <span>EARN</span>
             </a>
             <a href="#" class="nav-link-native" data-page="mail-page">
-                <i data-lucide="user-plus" class="icon"></i>
-                <span>Get Follower</span>
+                <i data-lucide="shopping-cart" class="icon"></i>
+                <span>BUY</span>
             </a>
-            <!-- Removed Profile, Updates and other old buttons -->
-            <a href="#" id="admin-nav-link" class="nav-link-native hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></a>
+            <a href="#" class="nav-link-native" data-page="profile-page">
+                <i data-lucide="user" class="icon"></i>
+                <span>PROFILE</span>
+            </a>
+            <a href="#" id="admin-nav-link" class="nav-link-native hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>ADMIN</span></a>
         </nav>
         <!-- END OF MODIFIED BOTTOM NAVIGATION -->
     </div>
+
+    <!-- HOW TO EARN MODAL (NEW) -->
+    <div id="how-to-earn-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
+        <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 relative">
+            <button id="how-to-earn-close-btn" class="modal-close-btn">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h3 class="text-xl font-bold text-center text-accent-gradient mb-4">কীভাবে কাজ করবেন?</h3>
+            <div class="text-gray-700 space-y-4 text-sm max-h-80 overflow-y-auto">
+                <div>
+                    <h4 class="font-semibold text-gray-800 mb-1">ধাপ ১: টাকা যোগ করুন</h4>
+                    <p>প্রথমে, হেডার থেকে <span class="font-bold text-blue-600">'+'</span> বাটনে ক্লিক করে অথবা হোম পেজের 'Deposit' বাটনে ক্লিক করে টাকা জমা দেওয়ার পেজে যান। বিকাশ, নগদ বা অন্য কোনো মাধ্যমে টাকা পাঠিয়ে ফর্মটি পূরণ করুন। আপনার ব্যালেন্স কিছুক্ষণের মধ্যেই যোগ হয়ে যাবে।</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-800 mb-1">ধাপ ২: পণ্য কিনুন</h4>
+                    <p>নিচের নেভিগেশন বার থেকে 'BUY' বাটনে ক্লিক করুন। এখানে বিভিন্ন ধরনের পণ্য (যেমন: মেইল) দেখতে পাবেন। আপনার প্রয়োজনীয় পণ্যটি পছন্দমত কিনুন। কেনার সাথে সাথেই পণ্যের বিস্তারিত তথ্য পেয়ে যাবেন।</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-800 mb-1">ধাপ ৩: আয় করুন (শীঘ্রই আসছে)</h4>
+                    <p>আমরা খুব শীঘ্রই 'EARN' সেকশনে নতুন কিছু ফিচার যোগ করতে যাচ্ছি যা আপনাকে আয়ের সুযোগ করে দেবে। নতুন আপডেট পেতে আমাদের সাথে থাকুন।</p>
+                </div>
+                 <div class="pt-3 border-t">
+                    <h4 class="font-semibold text-gray-800 mb-1">যেকোনো প্রয়োজনে</h4>
+                    <p>আপনার কোনো প্রশ্ন বা সমস্যা থাকলে, প্রোফাইল পেজ থেকে 'Support Team' অপশনে যোগাযোগ করুন।</p>
+                </div>
+            </div>
+            <button id="how-to-earn-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">ঠিক আছে</button>
+        </div>
+    </div>
+
 
     <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-lg p-6 w-full max-w-sm text-center border border-gray-200 text-gray-800">
@@ -800,7 +725,6 @@
         let appConfig = {};
         let insufficientBalanceInterval = null;
         let countdownInterval = null;
-        // let accountCountdownInterval = null; // REMOVED
 
         const loader = document.getElementById('loader');
 
@@ -917,7 +841,7 @@
                 document.getElementById('admin-nav-link').classList.remove('hidden');
             }
 
-            loadSupportMenu();
+            // Removed loadSupportMenu() call as side menu is gone
             updateUI();
             listenForNotifications();
             showMainPage('app-container');
@@ -971,7 +895,6 @@
             document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             
-            // Updated navigation active state logic
             document.querySelectorAll('.nav-link-native[data-page]').forEach(link => {
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
@@ -979,13 +902,8 @@
             const pageLoadFunctions = {
                 'home-page': () => {},
                 'pay-page': loadPaymentHistory,
+                'earn-page': () => {}, // No specific function needed for a static page
                 'mail-page': loadMailStore,
-                'updates-page': () => { 
-                    loadUpdates(); 
-                    loadReviews(); 
-                    loadTutorials(); 
-                    switchUpdateView('reviews'); 
-                },
                 'admin-page': () => { populateAdminMailTypes(); loadReplaceRequests(); },
                 'profile-page': loadProfilePage,
                 'features-page': loadFeaturesPage,
@@ -997,22 +915,22 @@
             lucide.createIcons();
         }
         window.navigateTo = navigateTo;
-
-        function toggleMenu() {
-            const menu = document.getElementById('slide-out-menu');
-            const overlay = document.getElementById('menu-overlay');
-            menu.classList.toggle('open');
-            overlay.classList.toggle('open');
-        }
-
+        
         function setupEventListeners() {
             document.querySelectorAll('.nav-link-native[data-page]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
             
             // New Header Button Listeners
-            document.getElementById('header-deposit-plus-btn').addEventListener('click', () => navigateTo('pay-page'));
-            document.getElementById('support-menu-btn').addEventListener('click', toggleMenu);
-
-            document.getElementById('notification-btn')?.addEventListener('click', showNotifications); // Kept for future use, but button is removed
+            document.getElementById('header-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
+            document.getElementById('how-to-earn-btn').addEventListener('click', () => {
+                document.getElementById('how-to-earn-modal').classList.remove('hidden');
+            });
+            document.getElementById('how-to-earn-close-btn').addEventListener('click', () => {
+                document.getElementById('how-to-earn-modal').classList.add('hidden');
+            });
+            document.getElementById('how-to-earn-ok-btn').addEventListener('click', () => {
+                document.getElementById('how-to-earn-modal').classList.add('hidden');
+            });
+            
             document.getElementById('notification-ok-btn').addEventListener('click', hideNotifications);
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
@@ -1021,12 +939,12 @@
             document.getElementById('download-history-btn').addEventListener('click', () => handleDownloadHistory('mail-purchase-history'));
             document.getElementById('copy-history-btn').addEventListener('click', () => handleCopyHistory('mail-purchase-history'));
             
-            // REMOVED ACCOUNT HISTORY BUTTONS
-            
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
             
-            document.getElementById('menu-overlay').addEventListener('click', toggleMenu);
-            document.getElementById('go-to-support-btn').addEventListener('click', toggleMenu);
+            document.getElementById('go-to-support-btn').addEventListener('click', () => {
+                // Since the side-menu is gone, this can be repurposed or linked to a TG contact
+                 window.Telegram.WebApp.openTelegramLink("https://t.me/EXPERTearn_team");
+            });
             
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             
@@ -1058,50 +976,7 @@
             document.getElementById('login-mail-btn').addEventListener('click', () => switchMailView('login'));
             document.getElementById('otp-mail-btn').addEventListener('click', () => switchMailView('otp'));
 
-            // REMOVED ACCOUNT VIEW SWITCHER LISTENERS
-
-            document.getElementById('reviews-view-btn').addEventListener('click', () => switchUpdateView('reviews'));
-            document.getElementById('tutorials-view-btn').addEventListener('click', () => switchUpdateView('tutorials'));
-
             document.getElementById('report-issue-form').addEventListener('submit', handleReportSubmit);
-        }
-
-        function adjustUpdateViewContainerHeight() {
-            setTimeout(() => {
-                const container = document.getElementById('updates-views-container');
-                const reviewsView = document.getElementById('reviews-view-container');
-                const tutorialsView = document.getElementById('tutorials-view-container');
-                
-                const activeView = reviewsView.style.transform === 'translateX(0%)' ? reviewsView : tutorialsView;
-                
-                if (container && activeView) {
-                    container.style.height = `${activeView.scrollHeight}px`;
-                }
-            }, 50); 
-        }
-
-        function switchUpdateView(view) {
-            const reviewsBtn = document.getElementById('reviews-view-btn');
-            const tutorialsBtn = document.getElementById('tutorials-view-btn');
-            const reviewsContainer = document.getElementById('reviews-view-container');
-            const tutorialsContainer = document.getElementById('tutorials-view-container');
-
-            if (view === 'reviews') {
-                reviewsBtn.classList.add('active');
-                tutorialsBtn.classList.remove('active');
-                reviewsContainer.style.transform = 'translateX(0%)';
-                reviewsContainer.style.opacity = '1';
-                tutorialsContainer.style.transform = 'translateX(100%)';
-                tutorialsContainer.style.opacity = '0';
-            } else {
-                reviewsBtn.classList.remove('active');
-                tutorialsBtn.classList.add('active');
-                reviewsContainer.style.transform = 'translateX(-100%)';
-                reviewsContainer.style.opacity = '0';
-                tutorialsContainer.style.transform = 'translateX(0%)';
-                tutorialsContainer.style.opacity = '1';
-            }
-            adjustUpdateViewContainerHeight();
         }
 
         function adjustMailViewContainerHeight() {
@@ -1141,76 +1016,20 @@
             }
             adjustMailViewContainerHeight();
         }
-        
-        // REMOVED ACCOUNT VIEW SWITCHER LOGIC
 
         function listenForNotifications() {
             const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
             onSnapshot(q, (snapshot) => {
-                const filteredDocs = snapshot.docs.filter(doc => {
-                    const data = doc.data();
-                    return !data.recipientId || data.recipientId === userData.tgChatId;
-                });
-
-                let unreadCount = 0;
-                const lastSeen = userData.lastSeenNotification ? userData.lastSeenNotification.toMillis() : 0;
-                
-                filteredDocs.forEach(doc => {
-                    const notification = doc.data();
-                    if (notification.createdAt.toMillis() > lastSeen) {
-                        unreadCount++;
-                    }
-                });
-
-                const badge = document.getElementById('notification-badge'); // This element is removed, but logic is kept
-                if (badge) {
-                    if (unreadCount > 0) {
-                        badge.textContent = unreadCount;
-                        badge.classList.remove('hidden');
-                    } else {
-                        badge.classList.add('hidden');
-                    }
-                }
+                // This function can be kept for future features if a notification icon is re-added.
             });
         }
-
-        async function showNotifications() {
-            const modal = document.getElementById('notification-modal');
-            const listEl = document.getElementById('notification-list');
-            listEl.innerHTML = getLoadingHTML();
-            modal.classList.remove('hidden');
-
-            const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"), limit(20));
-            const snapshot = await getDocs(q);
-
-            const filteredDocs = snapshot.docs.filter(doc => {
-                const data = doc.data();
-                return !data.recipientId || data.recipientId === userData.tgChatId;
-            });
-
-            if (filteredDocs.length === 0) {
-                listEl.innerHTML = '<p class="text-center text-gray-500">No notifications yet.</p>';
-            } else {
-                listEl.innerHTML = filteredDocs.slice(0, 10).map(doc => {
-                    const item = doc.data();
-                    const date = item.createdAt.toDate().toLocaleString('en-GB');
-                    return `<div class="p-3 bg-gray-50 rounded-lg">
-                        <p class="font-bold text-gray-800">${item.title}</p>
-                        <p class="text-sm text-gray-600">${item.message}</p>
-                        <p class="text-xs text-gray-400 text-right mt-2">${date}</p>
-                    </div>`;
-                }).join('');
-            }
-        }
-
+        
         async function hideNotifications() {
             document.getElementById('notification-modal').classList.add('hidden');
             const userRef = doc(db, "users", userData.tgChatId);
             const newTimestamp = Timestamp.now();
             await updateDoc(userRef, { lastSeenNotification: newTimestamp });
             userData.lastSeenNotification = newTimestamp;
-            const badge = document.getElementById('notification-badge'); // This element is removed
-            if(badge) badge.classList.add('hidden');
         }
 
         function loadProfilePage() {
@@ -1335,7 +1154,7 @@
             lucide.createIcons();
         }
 
-        async function loadPurchaseHistory(historyListElId, countdownIntervalVarName, filterCategories = null, formatType = 'mail') {
+        async function loadPurchaseHistory(historyListElId, countdownIntervalVarName, formatType = 'mail') {
             const historyListEl = document.getElementById(historyListElId);
             historyListEl.innerHTML = getLoadingHTML();
             
@@ -1352,7 +1171,6 @@
 
                 let purchases = querySnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 
-                // Filter logic for mail page (non-account categories)
                 const mailConfigs = appConfig.mails || [];
                 const excludedStockKeys = mailConfigs
                     .filter(m => ['social', 'ads'].includes(m.category))
@@ -1409,7 +1227,6 @@
                         }
 
                         let detailsHtml, fullData;
-                        // Simplified details for mail only
                         fullData = [purchase.mail, purchase.password, purchase.refreshToken, purchase.clientId].filter(Boolean).join('|');
                          detailsHtml = `<div class="space-y-2 pt-2 border-t">
                             <div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><span class="text-sm font-medium text-gray-500 mr-2">EMAIL:</span><span class="font-mono text-sm text-gray-800 truncate">${purchase.mail}</span><button onclick="copyToClipboard('${purchase.mail}', this)" class="ml-2 p-1.5 rounded-md hover:bg-gray-200"><i data-lucide="copy" class="w-4 h-4 text-gray-600"></i></button></div>
@@ -1480,7 +1297,7 @@
                 
                 switchMailView('login');
                 
-                await loadPurchaseHistory('mail-purchase-history', 'mail', null, 'mail');
+                await loadPurchaseHistory('mail-purchase-history', 'mail', 'mail');
 
             } catch(e) {
                  loginMailContainer.innerHTML = '<p class="text-center text-red-600">মেইল লোড করা যায়নি।</p>';
@@ -1489,8 +1306,6 @@
             }
         }
         
-        // REMOVED loadAccountStore and related functions
-
         function startCountdownTimers(containerId, intervalVariable) {
             if (intervalVariable) clearInterval(intervalVariable);
             const container = document.getElementById(containerId);
@@ -1518,7 +1333,6 @@
                 if (!hasActiveTimers) clearInterval(intervalVariable);
             }, 1000);
             
-            // Only mail countdown is needed now
             if(containerId === 'mail-purchase-history') countdownInterval = intervalVariable;
         }
 
@@ -1539,7 +1353,6 @@
                 const stockKeyMap = new Map();
                 mailConfigs.forEach(m => stockKeyMap.set(m.type, m.category || 'login'));
 
-                // This function now only serves the mail page history
                 const allowedCategories = ['login', 'otp'];
                 purchases = purchases.filter(p => allowedCategories.includes(stockKeyMap.get(p.mailType)));
                  const dataForExcel = purchases.map(p => ({
@@ -1580,7 +1393,6 @@
                 const stockKeyMap = new Map();
                 mailConfigs.forEach(m => stockKeyMap.set(m.type, m.category || 'login'));
                 
-                // This function now only serves the mail page history
                 const allowedCategories = ['login', 'otp'];
                 purchases = purchases.filter(p => allowedCategories.includes(stockKeyMap.get(p.mailType)));
                 const contentToCopy = purchases.map(p => `Mail Type: ${p.mailType}\nEmail: ${p.mail}\nPassword: ${p.password || 'N/A'}`).join('\n\n---\n\n');
@@ -1728,42 +1540,6 @@
             lucide.createIcons();
         }
 
-        window.toggleUpdateContent = (updateId, encodedContent) => {
-            const contentEl = document.getElementById(`update-content-${updateId}`);
-            const buttonEl = contentEl.nextElementSibling;
-            const fullContent = decodeURIComponent(encodedContent);
-            if (buttonEl.innerText === "Read More") {
-                contentEl.innerText = fullContent;
-                buttonEl.innerText = "Show Less";
-            } else {
-                contentEl.innerText = fullContent.substring(0, 120) + '...';
-                buttonEl.innerText = "Read More";
-            }
-        }
-
-        async function loadUpdates() {
-            const updatesContainer = document.getElementById('updates-content');
-            updatesContainer.innerHTML = getLoadingHTML();
-            try {
-                const q = query(collection(db, "updates"), orderBy("createdAt", "desc"), limit(1));
-                const snapshot = await getDocs(q);
-                if (snapshot.empty) return updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl text-gray-800">No new updates right now!</h3><p class="text-gray-600 mt-2">Check back later.</p></div>`;
-
-                const updateDoc = snapshot.docs[0];
-                const update = { id: updateDoc.id, ...updateDoc.data() };
-                const content = update.content || '';
-                const shortContent = content.length > 120 ? content.substring(0, 120) + '...' : content;
-                const encodedContent = encodeURIComponent(content);
-                const date = update.createdAt ? update.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
-
-                updatesContainer.innerHTML = `<div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">${update.imageUrl ? `<img src="${update.imageUrl}" class="w-full aspect-[16/9] object-cover" alt="Update Banner" loading="lazy">` : ''}<div class="p-5 space-y-3"><div><h3 class="text-xl font-bold text-gray-800">${update.title}</h3>${date ? `<p class="text-xs text-gray-500 mt-1">${date}</p>` : ''}</div><p id="update-content-${update.id}" class="text-gray-600 text-sm whitespace-pre-wrap leading-relaxed">${shortContent}</p>${content.length > 120 ? `<button onclick="toggleUpdateContent('${update.id}', '${encodedContent}')" class="font-semibold text-blue-600 text-sm hover:underline">Read More</button>` : ''}</div></div>`;
-                lucide.createIcons();
-            } catch(e) {
-                updatesContainer.innerHTML = `<p class="text-center text-red-600">Failed to load updates.</p>`;
-                console.error("Error loading updates:", e);
-            }
-        }
-        
         function populateAdminMailTypes() {
             const selectEl = document.getElementById('mail-type-select');
             selectEl.innerHTML = '<option value="">Select mail type...</option>';
@@ -2007,52 +1783,7 @@
             } catch (e) { showAlert("Failed to unlink friend."); } 
             finally { loader.style.display = 'none'; }
         }
-
-        async function loadTutorials() {
-            const tutorialListEl = document.getElementById('tutorial-list');
-            tutorialListEl.innerHTML = getLoadingHTML();
-            try {
-                const snapshot = await getDocs(query(collection(db, "tutorials"), orderBy("order")));
-                if (snapshot.empty) return tutorialListEl.innerHTML = '<p class="text-center text-gray-600">No tutorials available.</p>';
-                tutorialListEl.innerHTML = snapshot.docs.map(doc => {
-                    const t = doc.data();
-                    const banner = t.bannerImageUrl || 'https://i.postimg.cc/zBp8rCX9/Yellow-Orange-Modern-Marketing-Courses-You-Tube-Thumbnail-20250910-185659-0000.png';
-                    return `<div class="card-bg rounded-xl overflow-hidden shadow-lg transition-transform hover:scale-[1.02] duration-300"><h3 class="font-bold text-lg text-gray-800 p-4 pb-2">${t.title}</h3><a href="${t.youtubeWatchUrl}" target="_blank" class="block group p-4 pt-2"><div class="relative rounded-lg overflow-hidden"><img src="${banner}" alt="${t.title}" class="w-full aspect-video object-cover" loading="lazy"><div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100"><i data-lucide="play-circle" class="w-16 h-16 text-white opacity-80"></i></div></div></a></div>`;
-                }).join('');
-                lucide.createIcons();
-            } catch (e) { tutorialListEl.innerHTML = '<p class="text-center text-red-600">Tutorials could not be loaded.</p>'; }
-        }
-
-        async function loadReviews() {
-            const reviewListEl = document.getElementById('reviews-list');
-            reviewListEl.innerHTML = getLoadingHTML();
-            try {
-                const snapshot = await getDocs(query(collection(db, "reviews"), orderBy("createdAt", "desc"), limit(5)));
-                if (snapshot.empty) return reviewListEl.innerHTML = '<p class="text-center text-gray-600">No reviews yet.</p>';
-
-                reviewListEl.innerHTML = snapshot.docs.map(doc => {
-                    const review = doc.data();
-                    const stars = Array(5).fill(0).map((_, i) => `<i data-lucide="star" class="w-4 h-4 ${i < review.rating ? 'fill-current' : ''}"></i>`).join('');
-                    const imageUrl = review.imageUrl || `https://ui-avatars.com/api/?name=${review.name.replace(/\s/g, "+")}&background=random`;
-                    return `<div class="review-card-new p-4 rounded-lg"><div class="flex items-start gap-4"><img src="${imageUrl}" class="w-12 h-12 rounded-full object-cover" alt="User" loading="lazy"><div class="flex-1"><div class="flex justify-between items-center"><h5 class="font-bold">${review.name}</h5><div class="star-rating flex text-sm">${stars}</div></div><p class="text-gray-600 text-sm mt-1">"${review.reviewText}"</p></div></div></div>`;
-                }).join('');
-                lucide.createIcons();
-            } catch (e) { reviewListEl.innerHTML = '<p class="text-center text-red-600">Reviews could not be loaded.</p>'; }
-        }
-
-        async function loadSupportMenu() {
-            const supportContainer = document.getElementById('support-channels-list');
-            supportContainer.innerHTML = getLoadingHTML();
-            try {
-                const snapshot = await getDocs(query(collection(db, "support_channels"), orderBy("order", "asc")));
-                if (snapshot.empty) return supportContainer.innerHTML = '<p class="p-4 text-center text-gray-600">No support channels available.</p>';
-                supportContainer.innerHTML = snapshot.docs.map(doc => {
-                    const channel = doc.data();
-                    return `<a href="${channel.link}" target="_blank" class="support-link-card"><img src="${channel.iconUrl}" alt="${channel.name} logo" loading="lazy"><span>${channel.name}</span></a>`;
-                }).join('');
-            } catch (e) { supportContainer.innerHTML = '<p class="p-4 text-center text-red-600">Support options could not be loaded.</p>'; }
-        }
-
+        
         function handleFeaturesClick() { navigateTo('features-page'); }
 
         async function loadReplaceHistory() {
