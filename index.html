@@ -111,9 +111,10 @@
         .nav-link-native.active { color: #007bff; }
         .nav-link-native .icon { width: 26px; height: 26px; }
 
+        /* NEW HEADER STYLES */
         .header-native {
             background-color: #007bff;
-            padding: 1rem;
+            padding: 0.75rem;
             position: sticky;
             top: 0;
             z-index: 10;
@@ -121,6 +122,30 @@
             align-items: center;
             justify-content: space-between;
             color: white;
+            gap: 8px;
+        }
+        .header-btn {
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .header-btn:active { background: rgba(255,255,255,0.3); }
+        
+        .notif-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            border: 2px solid #007bff;
+            display: none; /* Show via JS if needed */
         }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -189,25 +214,43 @@
     
     <div id="app-container" class="min-h-screen flex-col main-page">
         
+        <!-- NEW HEADER IMPLEMENTATION -->
         <header class="header-native">
-            <!-- Profile Picture -->
-            <div class="relative">
-                <img id="header-profile-pic" class="w-10 h-10 rounded-full border-2 border-white object-cover" src="" alt="Profile Picture" loading="lazy">
-                <div id="header-initials-avatar" class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center border-2 border-white hidden"><span id="header-initials" class="text-lg font-bold text-gray-600"></span></div>
-            </div>
-
-            <!-- Coin Balance -->
-            <div id="header-deposit-btn" class="bg-white text-black rounded-full px-3 py-1.5 flex items-center gap-2 shadow-inner cursor-pointer">
-                <div class="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center">
-                    <i data-lucide="plus" class="w-4 h-4"></i>
+            <!-- 1. Profile (Left) -->
+            <div id="header-profile-area" class="relative cursor-pointer" onclick="navigateTo('profile-page')">
+                <img id="header-profile-pic" class="w-9 h-9 rounded-full border-2 border-white object-cover" src="" alt="Profile" loading="lazy">
+                <div id="header-initials-avatar" class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center border-2 border-white hidden">
+                    <span id="header-initials" class="text-sm font-bold text-gray-600"></span>
                 </div>
-                <i data-lucide="circle-dollar-sign" class="w-5 h-5 text-yellow-500"></i>
-                <span id="header-coin-balance" class="font-bold text-lg">0</span>
             </div>
 
-            <!-- Help Button -->
-            <button id="how-to-earn-btn" class="bg-white/20 p-2 rounded-full">
-                <i data-lucide="help-circle" class="w-6 h-6 text-white"></i>
+            <!-- 2. Plus (Deposit) -->
+            <button id="header-deposit-btn" class="header-btn" title="Deposit">
+                <i data-lucide="plus" class="w-5 h-5 text-white"></i>
+            </button>
+
+            <!-- 3. Balance (Center/Flex, Click -> Withdraw) -->
+            <div id="header-balance-area" class="bg-white/20 rounded-full px-3 py-1 flex items-center gap-1 cursor-pointer flex-grow justify-center" title="Withdraw">
+                <i data-lucide="circle-dollar-sign" class="w-4 h-4 text-yellow-300"></i>
+                <span id="header-coin-balance" class="font-bold text-sm text-white">0.00</span>
+            </div>
+
+            <!-- 4. Notification -->
+            <div class="relative">
+                <button id="header-notif-btn" class="header-btn">
+                    <i data-lucide="bell" class="w-5 h-5 text-white"></i>
+                </button>
+                <div id="notif-dot" class="notif-badge"></div>
+            </div>
+
+            <!-- 5. Menu (Support) -->
+            <button id="header-menu-btn" class="header-btn" title="Support">
+                <i data-lucide="layout-grid" class="w-5 h-5 text-white"></i>
+            </button>
+
+            <!-- 6. Help (?) -->
+            <button id="header-help-btn" class="header-btn" title="Help">
+                <i data-lucide="help-circle" class="w-5 h-5 text-white"></i>
             </button>
         </header>
 
@@ -281,6 +324,47 @@
                     </div>
                 </div>
                 <div class="mt-6"><h3 class="text-lg font-semibold mb-3">Payment History</h3><div id="payment-history-list" class="space-y-3"></div></div>
+            </div>
+
+            <!-- NEW WITHDRAW PAGE -->
+            <div id="withdraw-page" class="p-4 space-y-6 sub-page">
+                <div class="relative flex items-center justify-center mb-4">
+                    <button onclick="navigateTo('home-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
+                    </button>
+                    <h2 class="text-xl font-bold text-center text-gray-800">Withdraw Balance</h2>
+                </div>
+
+                <div class="card-bg p-5 rounded-2xl shadow-lg space-y-5">
+                     <div class="text-center">
+                        <h3 class="font-semibold text-xl flex items-center justify-center gap-2 text-gray-800"><i data-lucide="wallet" class="w-6 h-6 text-blue-500"></i><span>টাকা উত্তোলন</span></h3>
+                        <p class="text-sm text-gray-500 mt-1">আপনার বিকাশ বা নগদ নম্বর দিন</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="withdraw-method" class="block text-sm font-medium text-gray-600 mb-2">উত্তোলন মাধ্যম</label>
+                            <select id="withdraw-method" class="w-full p-3 rounded-lg input-field">
+                                <option value="">Select Method</option>
+                                <option value="bKash">bKash</option>
+                                <option value="Nagad">Nagad</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="withdraw-number" class="block text-sm font-medium text-gray-600 mb-2">আপনার নম্বর</label>
+                            <input id="withdraw-number" type="text" placeholder="01xxxxxxxxx" class="w-full p-3 rounded-lg input-field">
+                        </div>
+                        <div>
+                            <label for="withdraw-amount" class="block text-sm font-medium text-gray-600 mb-2">টাকার পরিমাণ (BDT)</label>
+                            <input id="withdraw-amount" type="number" placeholder="Minimum 100" class="w-full p-3 rounded-lg input-field">
+                        </div>
+                        <button id="submit-withdraw-btn" class="w-full p-3 rounded-lg btn-gradient">Submit Withdraw Request</button>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold mb-3">Withdraw History</h3>
+                    <div id="withdraw-history-list" class="space-y-3"></div>
+                </div>
             </div>
 
             <!-- UPDATED EARN PAGE -->
@@ -518,25 +602,28 @@
         </div>
     </div>
 
-    <!-- HOW TO EARN MODAL -->
+    <!-- UPDATED HOW TO EARN MODAL -->
     <div id="how-to-earn-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 relative">
             <button id="how-to-earn-close-btn" class="modal-close-btn">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
-            <h3 class="text-xl font-bold text-center text-accent-gradient">কীভাবে কাজ করবেন?</h3>
+            <h3 class="text-xl font-bold text-center text-accent-gradient">সহায়িকা</h3>
             <div class="text-gray-700 space-y-4 text-sm max-h-80 overflow-y-auto">
                 <div>
-                    <h4 class="font-semibold text-gray-800 mb-1">ধাপ ১: টাকা যোগ করুন</h4>
-                    <p>প্রথমে, হেডার থেকে <span class="font-bold text-blue-600">'+'</span> বাটনে ক্লিক করে অথবা হোম পেজের 'Deposit' বাটনে ক্লিক করে টাকা জমা দেওয়ার পেজে যান।</p>
+                    <h4 class="font-semibold text-gray-800 mb-1 flex items-center gap-2"><i data-lucide="dollar-sign" class="w-4 h-4 text-blue-500"></i>কীভাবে ইনকাম করবেন?</h4>
+                    <p>EARN পেজে যান এবং উপলব্ধ টাস্ক (যেমন: মেইল সেল, সোশ্যাল মিডিয়া টাস্ক) সম্পন্ন করুন।</p>
                 </div>
                 <div>
-                    <h4 class="font-semibold text-gray-800 mb-1">ধাপ ২: পণ্য কিনুন</h4>
-                    <p>নিচের নেভিগেশন বার থেকে 'BUY' বাটনে ক্লিক করুন। এখানে বিভিন্ন ধরনের পণ্য দেখতে পাবেন।</p>
+                    <h4 class="font-semibold text-gray-800 mb-1 flex items-center gap-2"><i data-lucide="plus-circle" class="w-4 h-4 text-green-500"></i>কীভাবে ডিপোজিট করবেন?</h4>
+                    <p>হেডারের <span class="font-bold text-blue-600">'+'</span> আইকনে ক্লিক করুন। পেমেন্ট মাধ্যম নির্বাচন করুন, টাকা পাঠান এবং TrxID দিয়ে সাবমিট করুন।</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-800 mb-1 flex items-center gap-2"><i data-lucide="arrow-up-circle" class="w-4 h-4 text-yellow-500"></i>কীভাবে উইথড্র করবেন?</h4>
+                    <p>হেডারে আপনার <span class="font-bold text-yellow-600">ব্যালেন্স</span>-এর উপর ক্লিক করুন। উইথড্র পেজে বিকাশ/নগদ নম্বর ও টাকার পরিমাণ দিয়ে সাবমিট করুন।</p>
                 </div>
                  <div class="pt-3 border-t">
-                    <h4 class="font-semibold text-gray-800 mb-1">যেকোনো প্রয়োজনে</h4>
-                    <p>আপনার কোনো প্রশ্ন বা সমস্যা থাকলে, প্রোফাইল পেজ থেকে 'Support Team' অপশনে যোগাযোগ করুন।</p>
+                    <p class="text-xs text-center">যেকোনো প্রয়োজনে মেনু বাটন থেকে সাপোর্টে যোগাযোগ করুন।</p>
                 </div>
             </div>
             <button id="how-to-earn-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">ঠিক আছে</button>
@@ -552,11 +639,15 @@
     </div>
 
     <div id="notification-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
-        <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4">
-            <h3 class="text-xl font-bold text-center text-accent-gradient mb-4">Notifications</h3>
-            <div id="notification-list" class="space-y-3 max-h-80 overflow-y-auto">
-                </div>
-            <button id="notification-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">Close</button>
+        <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 max-h-[80vh] flex flex-col">
+             <button onclick="document.getElementById('notification-modal').classList.add('hidden')" class="modal-close-btn">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h3 class="text-xl font-bold text-center text-accent-gradient mb-2">Notifications</h3>
+            <div id="notification-list" class="space-y-3 overflow-y-auto flex-grow">
+                <!-- Notifications loaded here -->
+            </div>
+            <button id="notification-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-2">Close</button>
         </div>
     </div>
 
@@ -836,7 +927,7 @@
             const balanceFormatted = (userData.balance || 0).toFixed(2);
             
             document.getElementById('balance-display').textContent = `৳${balanceFormatted}`;
-            document.getElementById('header-coin-balance').textContent = balance; 
+            document.getElementById('header-coin-balance').textContent = `৳${balanceFormatted}`; 
             updateHeaderUI();
         }
 
@@ -861,6 +952,7 @@
             const pageLoadFunctions = {
                 'home-page': () => {},
                 'pay-page': loadPaymentHistory,
+                'withdraw-page': loadWithdrawHistory,
                 'earn-page': () => {}, 
                 'mail-page': loadMailStore,
                 'admin-page': () => { populateAdminMailTypes(); loadReplaceRequests(); },
@@ -876,10 +968,17 @@
         window.navigateTo = navigateTo;
         
         function setupEventListeners() {
+            // Updated Header Listeners
+            document.getElementById('header-profile-area').addEventListener('click', () => navigateTo('profile-page'));
+            document.getElementById('header-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
+            document.getElementById('header-balance-area').addEventListener('click', () => navigateTo('withdraw-page'));
+            document.getElementById('header-notif-btn').addEventListener('click', openNotifications);
+            document.getElementById('header-menu-btn').addEventListener('click', () => window.Telegram.WebApp.openTelegramLink("https://t.me/EXPERTearn_team"));
+            document.getElementById('header-help-btn').addEventListener('click', () => document.getElementById('how-to-earn-modal').classList.remove('hidden'));
+            
             document.querySelectorAll('.nav-link-native[data-page]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
             
-            document.getElementById('header-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
-            document.getElementById('how-to-earn-btn').addEventListener('click', () => {
+            document.getElementById('how-to-earn-btn')?.addEventListener('click', () => {
                 document.getElementById('how-to-earn-modal').classList.remove('hidden');
             });
             document.getElementById('how-to-earn-close-btn').addEventListener('click', () => {
@@ -899,6 +998,8 @@
 
             document.getElementById('notification-ok-btn').addEventListener('click', hideNotifications);
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
+            document.getElementById('submit-withdraw-btn').addEventListener('click', handleWithdrawRequest);
+
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('add-mails-btn').addEventListener('click', handleAddMails);
             
@@ -942,18 +1043,76 @@
             document.getElementById('report-issue-form').addEventListener('submit', handleReportSubmit);
         }
 
+        // Updated Notification Logic
+        async function openNotifications() {
+            const listEl = document.getElementById('notification-list');
+            listEl.innerHTML = getLoadingHTML();
+            document.getElementById('notification-modal').classList.remove('hidden');
+            
+            try {
+                // Fetch Broadcasts and User Specific Notifications
+                const notifQuery = query(collection(db, "notifications"), 
+                    where("recipientId", "in", [userData.tgChatId, "all"]),
+                    orderBy("createdAt", "desc"),
+                    limit(20)
+                );
+
+                const snapshot = await getDocs(notifQuery);
+                if (snapshot.empty) {
+                    listEl.innerHTML = '<p class="text-center text-gray-500 mt-4">কোনো নোটিফিকেশন নেই।</p>';
+                } else {
+                    listEl.innerHTML = snapshot.docs.map(doc => {
+                        const n = doc.data();
+                        const time = n.createdAt ? n.createdAt.toDate().toLocaleString() : '';
+                        let icon = 'info';
+                        let color = 'blue';
+                        
+                        // Determine icon based on title/type
+                        if(n.title.includes("Approved") || n.title.includes("Success")) { icon = 'check-circle'; color = 'green'; }
+                        else if(n.title.includes("Rejected") || n.title.includes("Failed")) { icon = 'x-circle'; color = 'red'; }
+                        else if(n.title.includes("Broadcast")) { icon = 'megaphone'; color = 'orange'; }
+
+                        return `<div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="${icon}" class="w-5 h-5 text-${color}-500 mt-1 flex-shrink-0"></i>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 text-sm">${n.title}</h4>
+                                    <p class="text-xs text-gray-600 mt-1">${n.message}</p>
+                                    <p class="text-[10px] text-gray-400 mt-2">${time}</p>
+                                </div>
+                            </div>
+                        </div>`;
+                    }).join('');
+                    lucide.createIcons();
+                }
+                
+                // Update last seen
+                const userRef = doc(db, "users", userData.tgChatId);
+                await updateDoc(userRef, { lastSeenNotification: serverTimestamp() });
+                document.getElementById('notif-dot').style.display = 'none';
+
+            } catch(e) {
+                console.error(e);
+                listEl.innerHTML = '<p class="text-center text-red-500">Error loading notifications.</p>';
+            }
+        }
+
         function listenForNotifications() {
-            const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
+            // Listen for Broadcasts OR User specific alerts (Assuming backend writes to 'notifications' collection)
+            const q = query(collection(db, "notifications"), 
+                where("recipientId", "in", [userData.tgChatId, "all"]),
+                where("createdAt", ">", Timestamp.now()) // Only new ones
+            );
+            
             onSnapshot(q, (snapshot) => {
+                if (!snapshot.empty) {
+                    document.getElementById('notif-dot').style.display = 'block';
+                }
             });
         }
         
         async function hideNotifications() {
             document.getElementById('notification-modal').classList.add('hidden');
-            const userRef = doc(db, "users", userData.tgChatId);
-            const newTimestamp = Timestamp.now();
-            await updateDoc(userRef, { lastSeenNotification: newTimestamp });
-            userData.lastSeenNotification = newTimestamp;
         }
 
         function loadProfilePage() {
@@ -975,6 +1134,7 @@
             }
         }
 
+        // Deposit Logic
         async function handleDepositRequest() {
             const method = document.getElementById('deposit-method').value;
             const amount = parseInt(document.getElementById('deposit-amount').value);
@@ -1003,6 +1163,50 @@
             finally { loader.style.display = 'none'; }
         }
 
+        // Withdraw Logic (New)
+        async function handleWithdrawRequest() {
+            const method = document.getElementById('withdraw-method').value;
+            const number = document.getElementById('withdraw-number').value.trim();
+            const amount = parseInt(document.getElementById('withdraw-amount').value);
+
+            if (!method || !number || !amount || amount < 100) return showAlert("সঠিক তথ্য দিন। সর্বনিম্ন উইথড্র ১০০ টাকা।");
+            if (userData.balance < amount) return showAlert("অপর্যাপ্ত ব্যালেন্স।");
+
+            loader.style.display = 'flex';
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const userRef = doc(db, "users", userData.tgChatId);
+                    const userDoc = await transaction.get(userRef);
+                    if (!userDoc.exists()) throw "User not found";
+                    const currentBal = userDoc.data().balance;
+                    
+                    if (currentBal < amount) throw "Insufficient Balance";
+
+                    transaction.update(userRef, { balance: currentBal - amount });
+                    transaction.set(doc(collection(db, "withdrawals")), {
+                        userId: userData.tgChatId,
+                        userName: userData.name,
+                        method: method,
+                        number: number,
+                        amount: amount,
+                        status: "pending",
+                        requestedAt: serverTimestamp()
+                    });
+                });
+
+                userData.balance -= amount;
+                updateUI();
+                showAlert("উইথড্র রিকোয়েস্ট জমা হয়েছে।");
+                ['withdraw-method', 'withdraw-number', 'withdraw-amount'].forEach(id => document.getElementById(id).value = '');
+                loadWithdrawHistory();
+
+            } catch(e) {
+                showAlert(`সমস্যা হয়েছে: ${e.message || e}`);
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
         async function loadPaymentHistory() {
             const historyList = document.getElementById('payment-history-list');
             historyList.innerHTML = getLoadingHTML();
@@ -1021,6 +1225,29 @@
                     const { color, icon } = statusMap[item.status] || statusMap.pending;
                     const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString('en-GB') : 'N/A';
                     return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div class="flex items-center gap-3"><i data-lucide="${icon}" class="w-6 h-6 ${color}"></i><div><p class="font-semibold text-gray-800">${item.type || 'Deposit'} - ${item.method}</p><p class="text-xs text-gray-500">${date}</p></div></div><div class="text-right"><p class="font-bold text-lg text-gray-800">৳${item.amount}</p><p class="font-semibold ${color} capitalize text-xs">${item.status}</p></div></div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch (error) { historyList.innerHTML = '<p class="text-red-600 text-center">হিস্টি লোড করা যায়নি।</p>'; }
+        }
+
+        async function loadWithdrawHistory() {
+            const historyList = document.getElementById('withdraw-history-list');
+            historyList.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(db, "withdrawals"), where("userId", "==", userData.tgChatId), orderBy("requestedAt", "desc"));
+                const snapshot = await getDocs(q);
+                if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-600 text-center">কোনো রেকর্ড পাওয়া যায়নি।</p>';
+
+                historyList.innerHTML = snapshot.docs.map(doc => {
+                    const item = doc.data();
+                    const statusMap = {
+                        approved: { color: 'text-green-600', icon: 'check-circle-2' },
+                        rejected: { color: 'text-red-600', icon: 'x-circle' },
+                        pending: { color: 'text-yellow-600', icon: 'hourglass' }
+                    };
+                    const { color, icon } = statusMap[item.status] || statusMap.pending;
+                    const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString('en-GB') : 'N/A';
+                    return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div class="flex items-center gap-3"><i data-lucide="${icon}" class="w-6 h-6 ${color}"></i><div><p class="font-semibold text-gray-800">Withdraw - ${item.method}</p><p class="text-xs text-gray-500">${date}</p></div></div><div class="text-right"><p class="font-bold text-lg text-gray-800">৳${item.amount}</p><p class="font-semibold ${color} capitalize text-xs">${item.status}</p></div></div>`;
                 }).join('');
                 lucide.createIcons();
             } catch (error) { historyList.innerHTML = '<p class="text-red-600 text-center">হিস্টি লোড করা যায়নি।</p>'; }
