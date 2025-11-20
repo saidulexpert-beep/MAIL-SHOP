@@ -20,7 +20,7 @@
             user-select: none;
             -webkit-touch-callout: none;
         }
-        input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #replace-history-list .text-sm {
+        input, textarea, #mail-details-content, #mail-purchase-history .font-mono, #replace-history-list .text-sm, #naval-admin-id-display {
             -webkit-user-select: text;
             -ms-user-select: text;
             user-select: text;
@@ -411,11 +411,11 @@
                 </div>
             </div>
 
-            <!-- UPDATED EARN PAGE WITH MANUAL EARN -->
+            <!-- UPDATED EARN PAGE -->
             <div id="earn-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-2xl font-bold text-center text-accent-gradient">Start Earning</h2>
                 
-                <!-- Naval Coin Section -->
+                <!-- Naval Coin Section (Action Changed to New Page) -->
                 <div class="card-bg p-5 rounded-xl flex justify-between items-center shadow-sm">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shadow-inner">
@@ -426,7 +426,7 @@
                             <p class="text-xs text-gray-500">Sell & Earn</p>
                         </div>
                     </div>
-                    <button class="btn-gradient px-6 py-2.5 rounded-lg text-sm shadow-md sell-btn">SELL</button>
+                    <button onclick="navigateTo('naval-coin-page')" class="btn-gradient px-6 py-2.5 rounded-lg text-sm shadow-md">SELL</button>
                 </div>
 
                 <!-- Instagram Section -->
@@ -455,6 +455,52 @@
                         </div>
                     </div>
                     <button class="btn-gradient px-6 py-2.5 rounded-lg text-sm shadow-md sell-btn">START</button>
+                </div>
+            </div>
+
+            <!-- NEW NAVAL COIN PAGE -->
+            <div id="naval-coin-page" class="p-4 space-y-6 sub-page">
+                <div class="relative flex items-center justify-center mb-4">
+                    <button onclick="navigateTo('earn-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
+                    </button>
+                    <h2 class="text-xl font-bold text-center text-gray-800">Naval Coin</h2>
+                </div>
+
+                <!-- Rate Display -->
+                <div class="bg-gradient-to-r from-amber-500 to-orange-600 p-6 rounded-2xl text-center shadow-lg text-white">
+                    <p class="text-sm opacity-90 mb-1">Current Rate</p>
+                    <h3 id="naval-rate-display" class="text-3xl font-bold tracking-wider">Loading...</h3>
+                </div>
+
+                <div class="card-bg p-5 rounded-xl space-y-5">
+                    <!-- Admin ID Display -->
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 text-center">
+                         <p class="text-xs text-gray-500 mb-2">Admin ID (Send Coins Here)</p>
+                         <div class="flex items-center justify-center gap-2 bg-white p-2 rounded border border-gray-200">
+                             <code id="naval-admin-id-display" class="font-mono font-bold text-lg text-gray-800">...</code>
+                             <button onclick="copyToClipboard(document.getElementById('naval-admin-id-display').textContent, this)" class="p-1.5 rounded hover:bg-gray-100 text-blue-600">
+                                 <i data-lucide="copy" class="w-4 h-4"></i>
+                             </button>
+                         </div>
+                    </div>
+
+                    <!-- Submission Form -->
+                    <div>
+                        <h3 class="font-semibold text-lg flex items-center gap-2 mb-4"><i data-lucide="send" class="w-6 h-6 text-[#007bff]"></i><span>Submit Transfer</span></h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="naval-transfer-id" class="block text-sm font-medium text-gray-600 mb-2">Transfer ID</label>
+                                <input id="naval-transfer-id" type="text" placeholder="Enter transfer ID" class="w-full p-3 rounded-lg input-field">
+                            </div>
+                            <div>
+                                <label for="naval-amount" class="block text-sm font-medium text-gray-600 mb-2">Amount</label>
+                                <input id="naval-amount" type="number" placeholder="Minimum 1000" class="w-full p-3 rounded-lg input-field">
+                                <p id="naval-min-amount-hint" class="text-xs text-red-500 mt-1"></p>
+                            </div>
+                            <button id="submit-naval-btn" class="w-full p-3 rounded-lg btn-gradient">Submit</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -488,6 +534,15 @@
                 </div>
 
                 <div class="space-y-3">
+                    <!-- EARN HISTORY BUTTON ADDED -->
+                    <button id="go-to-earn-history-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
+                        <span class="flex items-center gap-3">
+                            <i data-lucide="scroll-text" class="w-6 h-6 text-green-600"></i>
+                            <span>EARN HISTORY</span>
+                        </span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </button>
+
                     <button id="more-features-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
                         <span>⚡ More Features</span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
@@ -499,11 +554,23 @@
                         </span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
-                    <!-- Support Button Removed from Profile -->
                 </div>
 
                 <div class="text-center pt-6">
                      <p class="text-center text-gray-600 text-sm">Developed by <a href="#" class="font-semibold text-[#007bff] hover:underline">𝐁𝐃 𝐒𝐓𝐎𝐑𝐄</a></p>
+                </div>
+            </div>
+            
+            <!-- NEW EARN HISTORY PAGE -->
+            <div id="earn-history-page" class="p-4 space-y-6 sub-page">
+                <div class="relative flex items-center justify-center mb-4">
+                    <button onclick="navigateTo('profile-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
+                    </button>
+                    <h2 class="text-xl font-bold text-center text-gray-800">Earn History</h2>
+                </div>
+                <div id="earn-history-list" class="space-y-3">
+                    <!-- Loaded dynamically -->
                 </div>
             </div>
 
@@ -999,7 +1066,9 @@
                 'send-page': () => { setupDynamicAmountHandlers('send'); },
                 'replace-list-page': loadReplaceHistory,
                 'notification-page': loadNotificationsPage,
-                'support-page': loadSupportPage
+                'support-page': loadSupportPage,
+                'naval-coin-page': loadNavalCoinPage,
+                'earn-history-page': loadEarnHistory
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
@@ -1054,11 +1123,17 @@
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             
             document.getElementById('go-to-replace-list-btn').addEventListener('click', () => navigateTo('replace-list-page'));
+            
+            // Earn History Button
+            document.getElementById('go-to-earn-history-btn').addEventListener('click', () => navigateTo('earn-history-page'));
 
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
             document.getElementById('features-send-btn').addEventListener('click', () => navigateTo('send-page'));
             document.getElementById('submit-send-btn').addEventListener('click', handleSendRequest);
             document.getElementById('search-friend-btn').addEventListener('click', handleSearchFriend);
+            
+            // Naval Coin Submit
+            document.getElementById('submit-naval-btn').addEventListener('click', handleNavalCoinSubmit);
 
             document.getElementById('mail-details-ok-btn').addEventListener('click', () => { document.getElementById('mail-details-modal').classList.add('hidden'); });
             document.getElementById('close-insufficient-balance-modal').addEventListener('click', () => { document.getElementById('insufficient-balance-modal').classList.add('hidden'); });
@@ -1087,6 +1162,93 @@
             const supportLink = appConfig.supportLink || "https://t.me/EXPERTearn_team";
             const btn = document.getElementById('dynamic-support-btn');
             btn.onclick = () => window.Telegram.WebApp.openTelegramLink(supportLink);
+        }
+        
+        // New Naval Coin Logic
+        function loadNavalCoinPage() {
+            const rate = appConfig.navalCoinRate || "1K 💱 10৳";
+            const adminId = appConfig.navalCoinAdminId || "NC_ADMIN_DEFAULT";
+            const minAmount = appConfig.navalCoinMinAmount || 1000;
+            
+            document.getElementById('naval-rate-display').textContent = rate;
+            document.getElementById('naval-admin-id-display').textContent = adminId;
+            document.getElementById('naval-min-amount-hint').textContent = `Minimum amount: ${minAmount}`;
+            document.getElementById('naval-amount').setAttribute('min', minAmount);
+        }
+        
+        async function handleNavalCoinSubmit() {
+            const transferId = document.getElementById('naval-transfer-id').value.trim();
+            const amount = parseInt(document.getElementById('naval-amount').value);
+            const minAmount = appConfig.navalCoinMinAmount || 1000;
+            
+            if(!transferId || !amount) return showAlert("Please fill all fields.");
+            if(amount < minAmount) return showAlert(`Minimum transfer amount is ${minAmount}.`);
+            
+            loader.style.display = 'flex';
+            
+            try {
+                await addDoc(collection(db, "earn_submissions"), {
+                    userId: userData.tgChatId,
+                    userName: userData.name,
+                    type: "NAVAL COIN",
+                    transferId: transferId,
+                    amount: amount,
+                    status: "pending",
+                    submittedAt: serverTimestamp()
+                });
+                showAlert("Submission successful! Please wait for admin approval.");
+                document.getElementById('naval-transfer-id').value = '';
+                document.getElementById('naval-amount').value = '';
+                navigateTo('earn-page');
+            } catch(e) {
+                showAlert("Failed to submit. Please try again.");
+                console.error(e);
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+        
+        // New Earn History Logic
+        async function loadEarnHistory() {
+            const listEl = document.getElementById('earn-history-list');
+            listEl.innerHTML = getLoadingHTML();
+            
+            try {
+                const q = query(collection(db, "earn_submissions"), where("userId", "==", userData.tgChatId), orderBy("submittedAt", "desc"));
+                const snapshot = await getDocs(q);
+                
+                if(snapshot.empty) {
+                    listEl.innerHTML = '<p class="text-center text-gray-500">No earn history found.</p>';
+                    return;
+                }
+                
+                listEl.innerHTML = snapshot.docs.map(doc => {
+                    const item = doc.data();
+                    const date = item.submittedAt ? item.submittedAt.toDate().toLocaleDateString() : 'N/A';
+                    const statusMap = {
+                        approved: { color: 'text-green-600', text: 'Approved' },
+                        rejected: { color: 'text-red-600', text: 'Rejected' },
+                        pending: { color: 'text-yellow-600', text: 'Pending' }
+                    };
+                    const status = statusMap[item.status] || statusMap.pending;
+                    
+                    return `<div class="card-bg p-4 rounded-lg space-y-2">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-bold text-gray-800">${item.type}</h4>
+                            <span class="font-bold ${status.color} text-sm uppercase">${status.text}</span>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <p><strong>Amount:</strong> ${item.amount}</p>
+                            <p><strong>TrxID:</strong> ${item.transferId}</p>
+                            <p><strong>Date:</strong> ${date}</p>
+                        </div>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch(e) {
+                console.error(e);
+                listEl.innerHTML = '<p class="text-center text-red-500">Failed to load history.</p>';
+            }
         }
 
         // Updated Notification Logic (Full Page)
