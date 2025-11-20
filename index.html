@@ -887,31 +887,55 @@
 
         window.onload = async () => {
             cycleReviewsOnLoader();
-            try {
-                window.Telegram.WebApp.ready();
-                window.Telegram.WebApp.expand();
-                currentUserTg = window.Telegram.WebApp.initDataUnsafe.user;
-                if (!currentUserTg) {
-                    showAlert("Telegram user data not found. Please open this app from Telegram.");
-                    loader.style.display = 'none';
-                    return;
-                }
-            } catch (e) {
-                console.error("Telegram WebApp script failed to initialize or user data not available.", e);
-                showAlert("Error initializing Telegram Mini App. Please try again from Telegram.");
-                loader.style.display = 'none';
-                return;
-            }
-            lucide.createIcons();
-            setupEventListeners();
-            setupBanner();
-
-            await initUserSession();
-
-            loader.style.opacity = '0';
+            
+            // FAILSAFE: Force remove loader after 10 seconds if something gets stuck
             setTimeout(() => {
-                loader.style.display = 'none';
-            }, 500);
+                if(loader.style.display !== 'none') {
+                    console.warn("Forcing loader removal due to timeout.");
+                    loader.style.display = 'none';
+                }
+            }, 10000);
+
+            try {
+                // Initialize Telegram WebApp
+                if (window.Telegram && window.Telegram.WebApp) {
+                    window.Telegram.WebApp.ready();
+                    window.Telegram.WebApp.expand();
+                    
+                    // Check if running inside Telegram
+                    if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+                        currentUserTg = window.Telegram.WebApp.initDataUnsafe.user;
+                    } else {
+                        console.warn("Telegram User Data not found. Running in browser mode for testing.");
+                        // Create a dummy user for browser testing so it doesn't hang
+                        currentUserTg = {
+                            id: "123456789",
+                            first_name: "Test",
+                            last_name: "User",
+                            username: "test_user",
+                            photo_url: null
+                        };
+                    }
+                } else {
+                    throw new Error("Telegram WebApp library not loaded.");
+                }
+                
+                lucide.createIcons();
+                setupEventListeners();
+                setupBanner();
+
+                await initUserSession();
+
+            } catch (e) {
+                console.error("Initialization Error:", e);
+                alert("App Error: " + e.message);
+            } finally {
+                // ALWAYS remove loader, even if there was an error
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }
         };
 
         function cycleReviewsOnLoader() {
@@ -924,88 +948,103 @@
             const reviewEl = document.getElementById('loader-reviews');
 
             setInterval(() => {
-                reviewEl.style.opacity = '0';
-                setTimeout(() => {
-                    reviewIndex = (reviewIndex + 1) % reviews.length;
-                    reviewEl.textContent = reviews[reviewIndex];
-                    reviewEl.style.opacity = '1';
-                }, 500);
+                if(reviewEl) {
+                    reviewEl.style.opacity = '0';
+                    setTimeout(() => {
+                        reviewIndex = (reviewIndex + 1) % reviews.length;
+                        reviewEl.textContent = reviews[reviewIndex];
+                        reviewEl.style.opacity = '1';
+                    }, 500);
+                }
             }, 4000);
         }
         
         async function initUserSession() {
             if (!currentUserTg) {
-                showAlert("Telegram user data is missing. Cannot proceed.");
+                console.error("No user data available for session init.");
                 return;
             }
-            const tgChatId = String(currentUserTg.id);
-            const userRef = doc(db, "users", tgChatId);
-            let userSnap = await getDoc(userRef);
+            
+            try {
+                const tgChatId = String(currentUserTg.id);
+                const userRef = doc(db, "users", tgChatId);
+                let userSnap = await getDoc(userRef);
 
-            if (userSnap.exists()) {
-                userData = userSnap.data();
-                
-                if (userData.isBlocked && userData.blockedUntil && userData.blockedUntil.toMillis() < Date.now()) {
-                    await updateDoc(userRef, {
-                        isBlocked: false,
-                        blockedUntil: null,
-                        name: `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim(),
-                        photo_url: currentUserTg.photo_url || null,
-                        lastSeen: serverTimestamp()
-                    });
-                    userSnap = await getDoc(userRef);
+                if (userSnap.exists()) {
                     userData = userSnap.data();
+                    
+                    if (userData.isBlocked && userData.blockedUntil && userData.blockedUntil.toMillis() < Date.now()) {
+                        await updateDoc(userRef, {
+                            isBlocked: false,
+                            blockedUntil: null,
+                            name: `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim(),
+                            photo_url: currentUserTg.photo_url || null,
+                            lastSeen: serverTimestamp()
+                        });
+                        userSnap = await getDoc(userRef);
+                        userData = userSnap.data();
+                    } else {
+                        await updateDoc(userRef, {
+                            name: `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim(),
+                            photo_url: currentUserTg.photo_url || null,
+                            lastSeen: serverTimestamp()
+                        });
+                         userData.photo_url = currentUserTg.photo_url || null;
+                         userData.name = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim();
+                    }
                 } else {
-                    await updateDoc(userRef, {
-                        name: `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim(),
+                    const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
+                    userData = {
+                        tgChatId: tgChatId,
+                        name: userName,
+                        username: currentUserTg.username || null,
                         photo_url: currentUserTg.photo_url || null,
+                        balance: 0,
+                        createdAt: serverTimestamp(),
+                        isBlocked: false,
+                        blockedUntil: null, 
+                        dailyRejections: { date: new Date().toISOString().slice(0, 10), count: 0 },
+                        lastSeenNotification: null,
+                        linkedUsers: [], 
+                        linkedBy: null, 
+                        teamSpending: {},
                         lastSeen: serverTimestamp()
-                    });
-                     userData.photo_url = currentUserTg.photo_url || null;
-                     userData.name = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim();
+                    };
+                    await setDoc(userRef, userData);
                 }
-            } else {
-                const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
-                userData = {
-                    tgChatId: tgChatId,
-                    name: userName,
-                    username: currentUserTg.username || null,
-                    photo_url: currentUserTg.photo_url || null,
-                    balance: 0,
-                    createdAt: serverTimestamp(),
-                    isBlocked: false,
-                    blockedUntil: null, 
-                    dailyRejections: { date: new Date().toISOString().slice(0, 10), count: 0 },
-                    lastSeenNotification: null,
-                    linkedUsers: [], 
-                    linkedBy: null, 
-                    teamSpending: {},
-                    lastSeen: serverTimestamp()
-                };
-                await setDoc(userRef, userData);
-            }
 
-            if (userData.isBlocked) {
-                const remainingTime = userData.blockedUntil ? Math.ceil((userData.blockedUntil.toMillis() - Date.now()) / 3600000) : '';
-                showAlert(`আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।${remainingTime ? ` এটি ${remainingTime} ঘন্টা পর খুলবে।` : ''}`);
-                return;
-            }
+                if (userData.isBlocked) {
+                    const remainingTime = userData.blockedUntil ? Math.ceil((userData.blockedUntil.toMillis() - Date.now()) / 3600000) : '';
+                    showAlert(`আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।${remainingTime ? ` এটি ${remainingTime} ঘন্টা পর খুলবে।` : ''}`);
+                    // Allow blocked users to see UI but maybe restrict actions later. Loader removed in finally block.
+                }
 
-            await fetchAppConfig();
-            if (tgChatId === ADMIN_UID) {
-                document.getElementById('admin-nav-link').classList.remove('hidden');
-            }
+                await fetchAppConfig();
+                if (tgChatId === ADMIN_UID) {
+                    const adminLink = document.getElementById('admin-nav-link');
+                    if(adminLink) adminLink.classList.remove('hidden');
+                }
 
-            updateUI();
-            listenForNotifications();
-            showMainPage('app-container');
-            navigateTo('home-page');
+                updateUI();
+                listenForNotifications();
+                showMainPage('app-container');
+                navigateTo('home-page');
+                
+            } catch(error) {
+                console.error("Error in initUserSession:", error);
+                // Fallback UI or alert handled by parent try/catch or simply let the app open in broken state rather than stuck loading
+            }
         }
 
         async function fetchAppConfig() {
-            const configRef = doc(db, "config", "main");
-            const configSnap = await getDoc(configRef);
-            appConfig = configSnap.exists() ? configSnap.data() : { mails: [] };
+            try {
+                const configRef = doc(db, "config", "main");
+                const configSnap = await getDoc(configRef);
+                appConfig = configSnap.exists() ? configSnap.data() : { mails: [] };
+            } catch(e) {
+                console.warn("Could not fetch config, using defaults.", e);
+                appConfig = { mails: [] };
+            }
         }
         
         function updateHeaderUI() {
@@ -1307,17 +1346,21 @@
         }
 
         function listenForNotifications() {
-            // Listen for Broadcasts OR User specific alerts (Assuming backend writes to 'notifications' collection)
-            const q = query(collection(db, "notifications"), 
-                where("recipientId", "in", [userData.tgChatId, "all"]),
-                where("createdAt", ">", Timestamp.now()) // Only new ones
-            );
-            
-            onSnapshot(q, (snapshot) => {
-                if (!snapshot.empty) {
-                    document.getElementById('notif-dot').style.display = 'block';
-                }
-            });
+            try {
+                // Listen for Broadcasts OR User specific alerts (Assuming backend writes to 'notifications' collection)
+                const q = query(collection(db, "notifications"), 
+                    where("recipientId", "in", [userData.tgChatId, "all"]),
+                    where("createdAt", ">", Timestamp.now()) // Only new ones
+                );
+                
+                onSnapshot(q, (snapshot) => {
+                    if (!snapshot.empty) {
+                        document.getElementById('notif-dot').style.display = 'block';
+                    }
+                });
+            } catch (e) {
+                console.warn("Notification listener failed:", e);
+            }
         }
 
         function loadProfilePage() {
