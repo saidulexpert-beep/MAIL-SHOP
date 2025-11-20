@@ -145,7 +145,7 @@
             background-color: #ef4444;
             border-radius: 50%;
             border: 2px solid #007bff;
-            display: none; /* Show via JS if needed */
+            display: none; 
         }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -214,7 +214,7 @@
     
     <div id="app-container" class="min-h-screen flex-col main-page">
         
-        <!-- NEW HEADER IMPLEMENTATION -->
+        <!-- HEADER IMPLEMENTATION -->
         <header class="header-native">
             <!-- 1. Profile (Left) -->
             <div id="header-profile-area" class="relative cursor-pointer" onclick="navigateTo('profile-page')">
@@ -244,7 +244,7 @@
             </div>
 
             <!-- 5. Menu (Support) -->
-            <button id="header-menu-btn" class="header-btn" title="Support">
+            <button id="header-menu-btn" class="header-btn" title="Support Menu">
                 <i data-lucide="layout-grid" class="w-5 h-5 text-white"></i>
             </button>
 
@@ -259,9 +259,9 @@
                 <div class="p-4">
                     <div class="banner-wrapper">
                         <div class="banner-inner" id="slides">
-                            <div class="slide active"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/zBp8rCX9/Yellow-Orange-Modern-Marketing-Courses-You-Tube-Thumbnail-20250910-185659-0000.png" alt="Slide 1" loading="lazy"></a></div>
-                            <div class="slide"><a href="https.t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/W1syFD8p/Grey-Blue-Illustration-Refer-a-Friend-Instagram-Post-1080-x-720-px-20250917-223749-0000.png" alt="Slide 2" loading="lazy"></a></div>
-                            <div class="slide"><a href="https://t.me/EXPERTearn_team" target="_blank"><img src="https://i.postimg.cc/52HsFwvV/Black-and-Orange-Money-You-Tube-Thumbnail-20250917-224706-0000.png" alt="Slide 3" loading="lazy"></a></div>
+                            <div class="slide active"><a href="#" onclick="return false;"><img src="https://i.postimg.cc/zBp8rCX9/Yellow-Orange-Modern-Marketing-Courses-You-Tube-Thumbnail-20250910-185659-0000.png" alt="Slide 1" loading="lazy"></a></div>
+                            <div class="slide"><a href="#" onclick="return false;"><img src="https://i.postimg.cc/W1syFD8p/Grey-Blue-Illustration-Refer-a-Friend-Instagram-Post-1080-x-720-px-20250917-223749-0000.png" alt="Slide 2" loading="lazy"></a></div>
+                            <div class="slide"><a href="#" onclick="return false;"><img src="https://i.postimg.cc/52HsFwvV/Black-and-Orange-Money-You-Tube-Thumbnail-20250917-224706-0000.png" alt="Slide 3" loading="lazy"></a></div>
                         </div>
                         <div class="dots" id="dots"></div>
                     </div>
@@ -278,6 +278,51 @@
                 </div>
             </div>
             
+            <!-- Full Screen Notification Page -->
+            <div id="notification-page" class="p-4 space-y-6 sub-page">
+                 <div class="relative flex items-center justify-center mb-4">
+                    <button onclick="navigateTo('home-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
+                    </button>
+                    <h2 class="text-xl font-bold text-center text-gray-800">Notifications</h2>
+                </div>
+                <div id="notification-full-list" class="space-y-3">
+                    <!-- Notifications loaded here -->
+                </div>
+            </div>
+
+            <!-- Full Screen Support Page -->
+            <div id="support-page" class="p-4 space-y-6 sub-page">
+                <div class="relative flex items-center justify-center mb-4">
+                    <button onclick="navigateTo('home-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
+                    </button>
+                    <h2 class="text-xl font-bold text-center text-gray-800">Support Team</h2>
+                </div>
+                
+                <div class="card-bg p-6 rounded-xl text-center space-y-4">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto">
+                        <i data-lucide="headphones" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800">Help & Support</h3>
+                    <p class="text-gray-600 text-sm">
+                        যে কোনো সমস্যা বা জিজ্ঞাসার জন্য আমাদের সাপোর্ট টিমের সাথে যোগাযোগ করুন। আমরা দ্রুত সমাধানের চেষ্টা করবো।
+                    </p>
+                    <button id="dynamic-support-btn" class="w-full p-3 rounded-lg btn-gradient flex items-center justify-center gap-2">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i>
+                        <span>Contact Support</span>
+                    </button>
+                </div>
+
+                <div class="card-bg p-5 rounded-xl space-y-3">
+                     <h3 class="font-semibold text-gray-800 border-b pb-2">FAQ</h3>
+                     <div class="text-sm text-gray-600 space-y-2">
+                         <p><strong>Q: ডিপোজিট কতক্ষণে এড হয়?</strong><br>A: সাধারণত ৫-১০ মিনিটের মধ্যে।</p>
+                         <p><strong>Q: উইথড্র চার্জ কত?</strong><br>A: কোনো চার্জ নেই, সম্পূর্ণ ফ্রি।</p>
+                     </div>
+                </div>
+            </div>
+
             <div id="pay-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-2xl font-bold text-center text-accent-gradient">Deposit Center</h2>
 
@@ -326,7 +371,6 @@
                 <div class="mt-6"><h3 class="text-lg font-semibold mb-3">Payment History</h3><div id="payment-history-list" class="space-y-3"></div></div>
             </div>
 
-            <!-- NEW WITHDRAW PAGE -->
             <div id="withdraw-page" class="p-4 space-y-6 sub-page">
                 <div class="relative flex items-center justify-center mb-4">
                     <button onclick="navigateTo('home-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
@@ -367,7 +411,7 @@
                 </div>
             </div>
 
-            <!-- UPDATED EARN PAGE -->
+            <!-- UPDATED EARN PAGE WITH MANUAL EARN -->
             <div id="earn-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-2xl font-bold text-center text-accent-gradient">Start Earning</h2>
                 
@@ -398,13 +442,25 @@
                     </div>
                     <button class="btn-gradient px-6 py-2.5 rounded-lg text-sm shadow-md sell-btn">SELL</button>
                 </div>
+
+                <!-- NEW MANUAL EARN Section -->
+                <div class="card-bg p-5 rounded-xl flex justify-between items-center shadow-sm">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 shadow-inner">
+                             <i data-lucide="hand-coins" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-gray-800">MANUAL EARN</h3>
+                            <p class="text-xs text-gray-500">Work & Earn</p>
+                        </div>
+                    </div>
+                    <button class="btn-gradient px-6 py-2.5 rounded-lg text-sm shadow-md sell-btn">START</button>
+                </div>
             </div>
 
-            <!-- UPDATED BUY PAGE (Only OTP Mails/Default View) -->
             <div id="mail-page" class="sub-page">
                 <div class="p-4 space-y-6">
                     <h2 class="text-xl font-bold text-gray-800">Available Products</h2>
-                    <!-- Single container for OTP Mails/Stock -->
                     <div id="mail-list-container" class="space-y-4 min-h-[200px]"></div>
                     
                     <div class="mt-8">
@@ -443,17 +499,11 @@
                         </span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
-                    <button id="go-to-support-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
-                        <span class="flex items-center gap-3">
-                            <i data-lucide="headphones" class="w-6 h-6 text-gray-600"></i>
-                            <span>Support Team</span>
-                        </span>
-                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
-                    </button>
+                    <!-- Support Button Removed from Profile -->
                 </div>
 
                 <div class="text-center pt-6">
-                     <p class="text-center text-gray-600 text-sm">Developed by <a href="https://t.me/bd_Storebot/Botshop" target="_blank" class="font-semibold text-[#007bff] hover:underline">𝐁𝐃 𝐒𝐓𝐎𝐑𝐄</a></p>
+                     <p class="text-center text-gray-600 text-sm">Developed by <a href="#" class="font-semibold text-[#007bff] hover:underline">𝐁𝐃 𝐒𝐓𝐎𝐑𝐄</a></p>
                 </div>
             </div>
 
@@ -585,7 +635,7 @@
         </nav>
     </div>
 
-    <!-- NEW SELL COMING SOON MODAL -->
+    <!-- SELL COMING SOON MODAL -->
     <div id="sell-coming-soon-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="card-bg rounded-2xl p-6 w-full max-w-sm text-center space-y-4 relative">
             <button onclick="document.getElementById('sell-coming-soon-modal').classList.add('hidden')" class="modal-close-btn">
@@ -596,13 +646,13 @@
             </div>
             <h3 class="text-2xl font-bold text-gray-800">Coming Soon!</h3>
             <p class="text-gray-600">
-                এই ফিচারটি বর্তমানে কাজ চলছে। খুব শীঘ্রই আপনি এখান থেকে সরাসরি সেল করতে পারবেন।
+                এই ফিচারটি বর্তমানে কাজ চলছে। খুব শীঘ্রই এটি চালু করা হবে।
             </p>
             <button onclick="document.getElementById('sell-coming-soon-modal').classList.add('hidden')" class="w-full p-3 rounded-lg btn-gradient mt-2">Close</button>
         </div>
     </div>
 
-    <!-- UPDATED HOW TO EARN MODAL -->
+    <!-- HOW TO EARN MODAL -->
     <div id="how-to-earn-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 relative">
             <button id="how-to-earn-close-btn" class="modal-close-btn">
@@ -635,19 +685,6 @@
         <div class="bg-white rounded-lg p-6 w-full max-w-sm text-center border border-gray-200 text-gray-800">
             <p id="alert-message" class="mb-5 whitespace-pre-wrap text-gray-700"></p>
             <button id="alert-ok-btn" class="btn-gradient px-8 py-2 rounded-lg">OK</button>
-        </div>
-    </div>
-
-    <div id="notification-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
-        <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 max-h-[80vh] flex flex-col">
-             <button onclick="document.getElementById('notification-modal').classList.add('hidden')" class="modal-close-btn">
-                <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
-            <h3 class="text-xl font-bold text-center text-accent-gradient mb-2">Notifications</h3>
-            <div id="notification-list" class="space-y-3 overflow-y-auto flex-grow">
-                <!-- Notifications loaded here -->
-            </div>
-            <button id="notification-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-2">Close</button>
         </div>
     </div>
 
@@ -960,7 +997,9 @@
                 'features-page': loadFeaturesPage,
                 'link-team-page': loadLinkedFriends,
                 'send-page': () => { setupDynamicAmountHandlers('send'); },
-                'replace-list-page': loadReplaceHistory
+                'replace-list-page': loadReplaceHistory,
+                'notification-page': loadNotificationsPage,
+                'support-page': loadSupportPage
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
@@ -972,8 +1011,10 @@
             document.getElementById('header-profile-area').addEventListener('click', () => navigateTo('profile-page'));
             document.getElementById('header-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('header-balance-area').addEventListener('click', () => navigateTo('withdraw-page'));
-            document.getElementById('header-notif-btn').addEventListener('click', openNotifications);
-            document.getElementById('header-menu-btn').addEventListener('click', () => window.Telegram.WebApp.openTelegramLink("https://t.me/EXPERTearn_team"));
+            // Changed to navigate to page
+            document.getElementById('header-notif-btn').addEventListener('click', () => navigateTo('notification-page'));
+            // Changed to navigate to support page
+            document.getElementById('header-menu-btn').addEventListener('click', () => navigateTo('support-page'));
             document.getElementById('header-help-btn').addEventListener('click', () => document.getElementById('how-to-earn-modal').classList.remove('hidden'));
             
             document.querySelectorAll('.nav-link-native[data-page]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
@@ -996,7 +1037,7 @@
                 });
             });
 
-            document.getElementById('notification-ok-btn').addEventListener('click', hideNotifications);
+            // document.getElementById('notification-ok-btn').addEventListener('click', hideNotifications); // Old modal logic removed
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
             document.getElementById('submit-withdraw-btn').addEventListener('click', handleWithdrawRequest);
 
@@ -1008,9 +1049,7 @@
             
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
             
-            document.getElementById('go-to-support-btn').addEventListener('click', () => {
-                 window.Telegram.WebApp.openTelegramLink("https://t.me/EXPERTearn_team");
-            });
+            // Removed the "go-to-support-btn" listener from profile as button is deleted
             
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             
@@ -1037,17 +1076,23 @@
                     navigateTo('mail-page');
                 }
             });
-            document.getElementById('close-purchase-success-modal').addEventListener('click', () => document.getElementById('purchase-success-modal').classList.add('hidden'));
+            document.getElementById('close-purchase-success-modal').addEventListener('click', () => document.getElementById('purchase-success-modal').classList.add('hidden'););
 
-            // Removed login/otp mail listeners as they are deleted
             document.getElementById('report-issue-form').addEventListener('submit', handleReportSubmit);
         }
+        
+        // New Support Page Logic
+        function loadSupportPage() {
+            // Link from firebase config or fallback
+            const supportLink = appConfig.supportLink || "https://t.me/EXPERTearn_team";
+            const btn = document.getElementById('dynamic-support-btn');
+            btn.onclick = () => window.Telegram.WebApp.openTelegramLink(supportLink);
+        }
 
-        // Updated Notification Logic
-        async function openNotifications() {
-            const listEl = document.getElementById('notification-list');
+        // Updated Notification Logic (Full Page)
+        async function loadNotificationsPage() {
+            const listEl = document.getElementById('notification-full-list');
             listEl.innerHTML = getLoadingHTML();
-            document.getElementById('notification-modal').classList.remove('hidden');
             
             try {
                 // Fetch Broadcasts and User Specific Notifications
@@ -1059,7 +1104,7 @@
 
                 const snapshot = await getDocs(notifQuery);
                 if (snapshot.empty) {
-                    listEl.innerHTML = '<p class="text-center text-gray-500 mt-4">কোনো নোটিফিকেশন নেই।</p>';
+                    listEl.innerHTML = '<div class="flex flex-col items-center justify-center pt-10"><i data-lucide="bell-off" class="w-12 h-12 text-gray-300 mb-2"></i><p class="text-center text-gray-500">কোনো নোটিফিকেশন নেই।</p></div>';
                 } else {
                     listEl.innerHTML = snapshot.docs.map(doc => {
                         const n = doc.data();
@@ -1072,19 +1117,21 @@
                         else if(n.title.includes("Rejected") || n.title.includes("Failed")) { icon = 'x-circle'; color = 'red'; }
                         else if(n.title.includes("Broadcast")) { icon = 'megaphone'; color = 'orange'; }
 
-                        return `<div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                        return `<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
                             <div class="flex items-start gap-3">
-                                <i data-lucide="${icon}" class="w-5 h-5 text-${color}-500 mt-1 flex-shrink-0"></i>
+                                <div class="bg-${color}-100 p-2 rounded-full">
+                                    <i data-lucide="${icon}" class="w-5 h-5 text-${color}-600"></i>
+                                </div>
                                 <div>
                                     <h4 class="font-bold text-gray-800 text-sm">${n.title}</h4>
-                                    <p class="text-xs text-gray-600 mt-1">${n.message}</p>
-                                    <p class="text-[10px] text-gray-400 mt-2">${time}</p>
+                                    <p class="text-sm text-gray-600 mt-1">${n.message}</p>
+                                    <p class="text-[10px] text-gray-400 mt-2 text-right">${time}</p>
                                 </div>
                             </div>
                         </div>`;
                     }).join('');
-                    lucide.createIcons();
                 }
+                lucide.createIcons();
                 
                 // Update last seen
                 const userRef = doc(db, "users", userData.tgChatId);
@@ -1109,10 +1156,6 @@
                     document.getElementById('notif-dot').style.display = 'block';
                 }
             });
-        }
-        
-        async function hideNotifications() {
-            document.getElementById('notification-modal').classList.add('hidden');
         }
 
         function loadProfilePage() {
