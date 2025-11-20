@@ -1,4 +1,3 @@
-আপনার নির্দেশিকাটি আমি ভালোভাবে বুঝেছি। আমি কোডটি আপডেট করেছি যাতে নিচের বিষয়গুলো নিশ্চিত করা হয়েছে:
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -289,51 +288,40 @@
                 <h2 class="text-2xl font-bold text-center text-accent-gradient">Start Earning</h2>
                 
                 <!-- Naval Coin Section -->
-                <div class="card-bg p-5 rounded-xl flex justify-between items-center shadow-sm cursor-pointer hover:bg-gray-50 transition-colors" onclick="handleEarnItemClick('Naval Coin')">
+                <div class="card-bg p-5 rounded-xl flex justify-between items-center shadow-sm">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shadow-inner">
                              <i data-lucide="coins" class="w-6 h-6"></i>
                         </div>
                         <div>
                             <h3 class="font-bold text-lg text-gray-800">NAVAL COIN</h3>
-                            <p class="text-sm text-gray-600 font-medium">Price: ৳<span id="naval-price-display">Loading...</span></p>
+                            <p class="text-xs text-gray-500">Sell & Earn</p>
                         </div>
                     </div>
-                    <button class="btn-gradient px-6 py-2.5 rounded-lg text-sm shadow-md sell-btn" onclick="event.stopPropagation(); showSellModal()">SELL</button>
+                    <button class="btn-gradient px-6 py-2.5 rounded-lg text-sm shadow-md sell-btn">SELL</button>
                 </div>
 
                 <!-- Instagram Section -->
-                <div class="card-bg p-5 rounded-xl flex justify-between items-center shadow-sm cursor-pointer hover:bg-gray-50 transition-colors" onclick="handleEarnItemClick('Instagram')">
+                <div class="card-bg p-5 rounded-xl flex justify-between items-center shadow-sm">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 shadow-inner">
                              <i data-lucide="instagram" class="w-6 h-6"></i>
                         </div>
                         <div>
                             <h3 class="font-bold text-lg text-gray-800">INSTAGRAM</h3>
-                             <p class="text-sm text-gray-600 font-medium">Price: ৳<span id="insta-price-display">Loading...</span></p>
+                            <p class="text-xs text-gray-500">Sell & Earn</p>
                         </div>
                     </div>
-                    <button class="btn-gradient px-6 py-2.5 rounded-lg text-sm shadow-md sell-btn" onclick="event.stopPropagation(); showSellModal()">SELL</button>
+                    <button class="btn-gradient px-6 py-2.5 rounded-lg text-sm shadow-md sell-btn">SELL</button>
                 </div>
-                
-                <p class="text-center text-xs text-gray-400 mt-4">Click on the item to contact Support Team</p>
             </div>
 
-            <!-- UPDATED BUY PAGE (OTP Default, Login Hidden but preserved) -->
+            <!-- UPDATED BUY PAGE (Only OTP Mails/Default View) -->
             <div id="mail-page" class="sub-page">
                 <div class="p-4 space-y-6">
-                    <!-- View Switcher (Hidden for now per user request, but kept in code structure) -->
-                    <div class="view-switcher hidden">
-                        <button id="login-mail-btn">LOGIN MAIL</button>
-                        <button id="otp-mail-btn" class="active">OTP MAIL</button>
-                    </div>
-
-                    <div id="mail-views-container" class="views-container">
-                        <!-- Login Mail Container (Hidden) -->
-                        <div id="login-mail-container" class="view space-y-4" style="display: none;"></div>
-                        <!-- OTP Mail Container (Default Visible) -->
-                        <div id="otp-mail-container" class="view space-y-4 w-full relative top-0 left-0 block"></div>
-                    </div>
+                    <h2 class="text-xl font-bold text-gray-800">Available Products</h2>
+                    <!-- Single container for OTP Mails/Stock -->
+                    <div id="mail-list-container" class="space-y-4 min-h-[200px]"></div>
                     
                     <div class="mt-8">
                         <div class="flex justify-between items-center mb-3">
@@ -873,7 +861,7 @@
             const pageLoadFunctions = {
                 'home-page': () => {},
                 'pay-page': loadPaymentHistory,
-                'earn-page': loadEarnPageInfo, 
+                'earn-page': () => {}, 
                 'mail-page': loadMailStore,
                 'admin-page': () => { populateAdminMailTypes(); loadReplaceRequests(); },
                 'profile-page': loadProfilePage,
@@ -901,6 +889,14 @@
                 document.getElementById('how-to-earn-modal').classList.add('hidden');
             });
             
+            // SELL Buttons
+            document.querySelectorAll('.sell-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.getElementById('sell-coming-soon-modal').classList.remove('hidden');
+                    lucide.createIcons();
+                });
+            });
+
             document.getElementById('notification-ok-btn').addEventListener('click', hideNotifications);
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
@@ -942,44 +938,8 @@
             });
             document.getElementById('close-purchase-success-modal').addEventListener('click', () => document.getElementById('purchase-success-modal').classList.add('hidden'));
 
-            document.getElementById('login-mail-btn').addEventListener('click', () => switchMailView('login'));
-            document.getElementById('otp-mail-btn').addEventListener('click', () => switchMailView('otp'));
-            
+            // Removed login/otp mail listeners as they are deleted
             document.getElementById('report-issue-form').addEventListener('submit', handleReportSubmit);
-        }
-
-        function adjustMailViewContainerHeight() {
-            setTimeout(() => {
-                const container = document.getElementById('mail-views-container');
-                const loginView = document.getElementById('login-mail-container');
-                const otpView = document.getElementById('otp-mail-container');
-                
-                // Forcing OTP view height calculation since Login is hidden by default
-                if (container && otpView) {
-                    container.style.height = `${otpView.scrollHeight}px`;
-                }
-            }, 50); 
-        }
-        
-        function switchMailView(view) {
-             // Function retained for structure, but currently UI elements to trigger this are hidden
-            const loginBtn = document.getElementById('login-mail-btn');
-            const otpBtn = document.getElementById('otp-mail-btn');
-            const loginContainer = document.getElementById('login-mail-container');
-            const otpContainer = document.getElementById('otp-mail-container');
-
-            if (view === 'login') {
-                loginBtn.classList.add('active');
-                otpBtn.classList.remove('active');
-                loginContainer.style.display = 'block';
-                otpContainer.style.display = 'none';
-            } else {
-                loginBtn.classList.remove('active');
-                otpBtn.classList.add('active');
-                loginContainer.style.display = 'none';
-                otpContainer.style.display = 'block';
-            }
-            adjustMailViewContainerHeight();
         }
 
         function listenForNotifications() {
@@ -1064,26 +1024,6 @@
                 }).join('');
                 lucide.createIcons();
             } catch (error) { historyList.innerHTML = '<p class="text-red-600 text-center">হিস্টি লোড করা যায়নি।</p>'; }
-        }
-        
-        // Function for Earn Page
-        window.loadEarnPageInfo = function() {
-            // Load prices from config or show default
-            const navalPrice = appConfig.naval_price || "High";
-            const instaPrice = appConfig.insta_price || "High";
-            document.getElementById('naval-price-display').textContent = navalPrice;
-            document.getElementById('insta-price-display').textContent = instaPrice;
-        }
-
-        window.showSellModal = function() {
-             document.getElementById('sell-coming-soon-modal').classList.remove('hidden');
-             lucide.createIcons();
-        }
-
-        window.handleEarnItemClick = function(type) {
-            // Open support link from firebase config or default
-            const link = appConfig.support_link || "https://t.me/EXPERTearn_team";
-            window.Telegram.WebApp.openTelegramLink(link);
         }
 
         async function getStockCount(collectionName) {
@@ -1243,10 +1183,6 @@
                 }
                 lucide.createIcons();
                 
-                if (historyListElId === 'mail-purchase-history') {
-                    adjustMailViewContainerHeight();
-                }
-
             } catch (error) {
                 console.error("Error loading purchase history:", error);
                 historyListEl.innerHTML = '<p class="text-center text-red-600">হিস্টি লোড করা যায়নি।</p>';
@@ -1254,15 +1190,8 @@
         }
 
         async function loadMailStore() {
-            // Defaulting to OTP view, but preserving structure
-            const otpMailContainer = document.getElementById('otp-mail-container');
-            const loginMailContainer = document.getElementById('login-mail-container');
-            
-            otpMailContainer.innerHTML = getLoadingHTML();
-            
-            // Hide Login Container, Show OTP
-            loginMailContainer.style.display = 'none';
-            otpMailContainer.style.display = 'block';
+            const mailListContainer = document.getElementById('mail-list-container');
+            mailListContainer.innerHTML = getLoadingHTML();
             
             try {
                 const userSnap = await getDoc(doc(db, "users", userData.tgChatId));
@@ -1275,15 +1204,14 @@
                 }
 
                 const allMails = appConfig.mails || [];
+                // Modified: Only fetch OTP category as per user instruction
                 const otpMails = allMails.filter(m => m.category === 'otp');
 
-                // Render OTP Mails
-                await renderMailList(otpMails, otpMailContainer, effectiveBalance, 'mail');
-                
+                await renderMailList(otpMails, mailListContainer, effectiveBalance, 'mail');
                 await loadPurchaseHistory('mail-purchase-history', 'mail', 'mail');
 
             } catch(e) {
-                 otpMailContainer.innerHTML = '<p class="text-center text-red-600">মেইল লোড করা যায়নি।</p>';
+                 mailListContainer.innerHTML = '<p class="text-center text-red-600">পণ্য লোড করা যায়নি।</p>';
                  console.error(e);
             }
         }
