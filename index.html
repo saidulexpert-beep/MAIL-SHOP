@@ -147,7 +147,23 @@
             display: none;
         }
 
+        /* Full Screen Page Style for Menu & Notifications */
+        .full-screen-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f8f8f8;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease-out;
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
 
         .banner-wrapper { position: relative; width: 100%; padding-top: 56.25%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
         .banner-inner { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1); }
@@ -197,6 +213,18 @@
         .modal-close-btn:hover {
             background-color: #d1d5db;
         }
+        
+        .full-screen-header {
+            padding: 16px;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -237,7 +265,7 @@
                 <div id="notif-dot" class="notif-badge"></div>
             </div>
 
-            <button id="header-menu-btn" class="header-btn" title="Support">
+            <button id="header-menu-btn" class="header-btn" title="Menu">
                 <i data-lucide="layout-grid" class="w-5 h-5 text-white"></i>
             </button>
 
@@ -431,13 +459,12 @@
                         </span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
-                    <button id="go-to-support-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
-                        <span class="flex items-center gap-3">
-                            <i data-lucide="headphones" class="w-6 h-6 text-gray-600"></i>
-                            <span>Support Team</span>
-                        </span>
-                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
-                    </button>
+                </div>
+                
+                <!-- Earn History Section -->
+                <div class="mt-6">
+                     <h3 class="text-lg font-semibold mb-3">Earn History (Insta/Naval)</h3>
+                     <div id="earn-history-list" class="space-y-3"></div>
                 </div>
 
                 <div class="text-center pt-6">
@@ -578,6 +605,38 @@
         </nav>
     </div>
 
+    <!-- FULL SCREEN MENU PAGE -->
+    <div id="menu-page" class="full-screen-page hidden">
+        <div class="full-screen-header">
+            <h2 class="text-xl font-bold text-gray-800">Menu</h2>
+            <button onclick="document.getElementById('menu-page').classList.add('hidden')" class="p-2 rounded-full hover:bg-gray-200">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <div class="p-4 space-y-4 flex flex-col items-center justify-center flex-grow">
+             <h3 class="text-lg font-semibold text-gray-700 mb-4">Support Team</h3>
+             <div id="support-links-container" class="w-full space-y-3 max-w-xs">
+                 <!-- Links loaded dynamically -->
+                 <p class="text-center text-gray-500">Loading support links...</p>
+             </div>
+             <p class="text-xs text-gray-400 mt-8">Developed by BD STORE</p>
+        </div>
+    </div>
+
+    <!-- FULL SCREEN NOTIFICATION PAGE -->
+    <div id="notification-page" class="full-screen-page hidden">
+         <div class="full-screen-header">
+            <h2 class="text-xl font-bold text-gray-800">Notifications</h2>
+            <button onclick="closeNotifications()" class="p-2 rounded-full hover:bg-gray-200">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <div id="notification-list" class="p-4 space-y-3 overflow-y-auto flex-grow">
+            <!-- Notifications loaded here -->
+        </div>
+    </div>
+
+
     <!-- INSTAGRAM SELL MODAL -->
     <div id="instagram-sell-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 relative">
@@ -653,19 +712,6 @@
         <div class="bg-white rounded-lg p-6 w-full max-w-sm text-center border border-gray-200 text-gray-800">
             <p id="alert-message" class="mb-5 whitespace-pre-wrap text-gray-700"></p>
             <button id="alert-ok-btn" class="btn-gradient px-8 py-2 rounded-lg">OK</button>
-        </div>
-    </div>
-
-    <div id="notification-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
-        <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4 max-h-[80vh] flex flex-col">
-             <button onclick="document.getElementById('notification-modal').classList.add('hidden')" class="modal-close-btn">
-                <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
-            <h3 class="text-xl font-bold text-center text-accent-gradient mb-2">Notifications</h3>
-            <div id="notification-list" class="space-y-3 overflow-y-auto flex-grow">
-                <!-- Notifications loaded here -->
-            </div>
-            <button id="notification-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-2">Close</button>
         </div>
     </div>
 
@@ -919,7 +965,7 @@
         async function fetchAppConfig() {
             const configRef = doc(db, "config", "main");
             const configSnap = await getDoc(configRef);
-            appConfig = configSnap.exists() ? configSnap.data() : { mails: [] };
+            appConfig = configSnap.exists() ? configSnap.data() : { mails: [], support: {} };
         }
         
         function updateHeaderUI() {
@@ -974,7 +1020,7 @@
                 'earn-page': () => {}, 
                 'mail-page': loadMailStore,
                 'admin-page': () => { populateAdminMailTypes(); loadReplaceRequests(); loadEarnRequests(); },
-                'profile-page': loadProfilePage,
+                'profile-page': () => { loadProfilePage(); loadEarnHistory(); },
                 'features-page': loadFeaturesPage,
                 'link-team-page': loadLinkedFriends,
                 'send-page': () => { setupDynamicAmountHandlers('send'); },
@@ -990,14 +1036,14 @@
             document.getElementById('header-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('header-balance-area').addEventListener('click', () => navigateTo('withdraw-page'));
             document.getElementById('header-notif-btn').addEventListener('click', openNotifications);
-            document.getElementById('header-menu-btn').addEventListener('click', () => window.Telegram.WebApp.openTelegramLink("https://t.me/EXPERTearn_team"));
+            
+            // Open Menu Full Page
+            document.getElementById('header-menu-btn').addEventListener('click', openMenuPage);
+
             document.getElementById('header-help-btn').addEventListener('click', () => document.getElementById('how-to-earn-modal').classList.remove('hidden'));
             
             document.querySelectorAll('.nav-link-native[data-page]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
             
-            document.getElementById('how-to-earn-btn')?.addEventListener('click', () => {
-                document.getElementById('how-to-earn-modal').classList.remove('hidden');
-            });
             document.getElementById('how-to-earn-close-btn').addEventListener('click', () => {
                 document.getElementById('how-to-earn-modal').classList.add('hidden');
             });
@@ -1005,7 +1051,6 @@
                 document.getElementById('how-to-earn-modal').classList.add('hidden');
             });
 
-            document.getElementById('notification-ok-btn').addEventListener('click', hideNotifications);
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
             document.getElementById('submit-withdraw-btn').addEventListener('click', handleWithdrawRequest);
 
@@ -1016,10 +1061,6 @@
             document.getElementById('copy-history-btn').addEventListener('click', () => handleCopyHistory('mail-purchase-history'));
             
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
-            
-            document.getElementById('go-to-support-btn').addEventListener('click', () => {
-                 window.Telegram.WebApp.openTelegramLink("https://t.me/EXPERTearn_team");
-            });
             
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             
@@ -1046,15 +1087,36 @@
                     navigateTo('mail-page');
                 }
             });
-            document.getElementById('close-purchase-success-modal').addEventListener('click', () => document.getElementById('purchase-success-modal').classList.add('hidden'));
+            document.getElementById('close-purchase-success-modal').addEventListener('click', () => document.getElementById('purchase-success-modal').classList.add('hidden'););
 
             document.getElementById('report-issue-form').addEventListener('submit', handleReportSubmit);
+        }
+
+        function openMenuPage() {
+            const supportContainer = document.getElementById('support-links-container');
+            supportContainer.innerHTML = '';
+            
+            const telegramLink = appConfig.support?.telegram || "https://t.me/EXPERTearn_team";
+            const whatsappLink = appConfig.support?.whatsapp || "https://wa.me/";
+            
+            supportContainer.innerHTML = `
+                <button onclick="window.Telegram.WebApp.openTelegramLink('${telegramLink}')" class="w-full card-bg p-4 rounded-xl flex items-center gap-3 hover:bg-blue-50 transition">
+                    <i data-lucide="send" class="w-6 h-6 text-blue-500"></i>
+                    <span class="font-bold text-gray-700">Telegram Support</span>
+                </button>
+                <button onclick="window.Telegram.WebApp.openLink('${whatsappLink}')" class="w-full card-bg p-4 rounded-xl flex items-center gap-3 hover:bg-green-50 transition">
+                    <i data-lucide="message-circle" class="w-6 h-6 text-green-500"></i>
+                    <span class="font-bold text-gray-700">WhatsApp Support</span>
+                </button>
+            `;
+            lucide.createIcons();
+            document.getElementById('menu-page').classList.remove('hidden');
         }
 
         async function openNotifications() {
             const listEl = document.getElementById('notification-list');
             listEl.innerHTML = getLoadingHTML();
-            document.getElementById('notification-modal').classList.remove('hidden');
+            document.getElementById('notification-page').classList.remove('hidden');
             
             try {
                 const notifQuery = query(collection(db, "notifications"), 
@@ -1077,7 +1139,7 @@
                         else if(n.title.includes("Rejected") || n.title.includes("Failed")) { icon = 'x-circle'; color = 'red'; }
                         else if(n.title.includes("Broadcast")) { icon = 'megaphone'; color = 'orange'; }
 
-                        return `<div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                        return `<div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                             <div class="flex items-start gap-3">
                                 <i data-lucide="${icon}" class="w-5 h-5 text-${color}-500 mt-1 flex-shrink-0"></i>
                                 <div>
@@ -1101,6 +1163,10 @@
             }
         }
 
+        window.closeNotifications = function() {
+             document.getElementById('notification-page').classList.add('hidden');
+        }
+
         function listenForNotifications() {
             const q = query(collection(db, "notifications"), 
                 where("recipientId", "in", [userData.tgChatId, "all"]),
@@ -1112,10 +1178,6 @@
                     document.getElementById('notif-dot').style.display = 'block';
                 }
             });
-        }
-        
-        async function hideNotifications() {
-            document.getElementById('notification-modal').classList.add('hidden');
         }
 
         function loadProfilePage() {
@@ -1137,6 +1199,42 @@
             }
         }
 
+        async function loadEarnHistory() {
+            const listEl = document.getElementById('earn-history-list');
+            listEl.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(db, "earn_requests"), where("userId", "==", userData.tgChatId), orderBy("timestamp", "desc"));
+                const snapshot = await getDocs(q);
+                if (snapshot.empty) return listEl.innerHTML = '<p class="text-gray-500 text-center text-sm">No earn history found.</p>';
+                
+                listEl.innerHTML = snapshot.docs.map(doc => {
+                    const item = doc.data();
+                    const date = item.timestamp ? item.timestamp.toDate().toLocaleDateString() : '';
+                    let statusColor = 'text-yellow-600 bg-yellow-100';
+                    if(item.status === 'approved') statusColor = 'text-green-600 bg-green-100';
+                    if(item.status === 'rejected') statusColor = 'text-red-600 bg-red-100';
+                    
+                    let details = '';
+                    if(item.type === 'instagram') details = `Insta: ${item.data.username}`;
+                    else details = `Coins: ${item.data.amount}`;
+
+                    return `<div class="card-bg p-3 rounded-lg flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-gray-800 capitalize text-sm">${item.type.replace('_', ' ')}</p>
+                            <p class="text-xs text-gray-500">${details}</p>
+                            <p class="text-xs text-gray-400 mt-1">${date}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-blue-600 text-sm">৳${item.estimatedValue.toFixed(2)}</p>
+                            <span class="text-xs px-2 py-1 rounded-full font-bold ${statusColor} capitalize inline-block mt-1">${item.status}</span>
+                        </div>
+                    </div>`;
+                }).join('');
+            } catch(e) {
+                listEl.innerHTML = '<p class="text-red-500 text-center text-sm">Failed to load history.</p>';
+            }
+        }
+
         async function handleDepositRequest() {
             const method = document.getElementById('deposit-method').value;
             const amount = parseInt(document.getElementById('deposit-amount').value);
@@ -1148,12 +1246,14 @@
             loader.style.display = 'flex';
 
             try {
-                const depositQuery = query(collection(db, "deposits"), where("transactionId", "==", transactionId), where("status", "in", ["pending", "approved"]));
+                // Check uniqueness globally for TrxID
+                const depositQuery = query(collection(db, "deposits"), where("transactionId", "==", transactionId));
                 const querySnapshot = await getDocs(depositQuery);
                 if (!querySnapshot.empty) {
                     loader.style.display = 'none';
-                    return showAlert("এই Transaction ID দিয়ে ইতিমধ্যে একটি ডিপোজিট অনুরোধ জমা দেওয়া হয়েছে।");
+                    return showAlert("এই Transaction ID টি ইতিমধ্যে ব্যবহার করা হয়েছে। একটি ID মাত্র একবার ব্যবহার করা যাবে।");
                 }
+                
                 await addDoc(collection(db, "deposits"), {
                     userId: userData.tgChatId, userName: userData.name, method: method, amount: amount,
                     senderNumber: senderNumber, transactionId: transactionId, status: "pending", requestedAt: serverTimestamp()
@@ -2115,6 +2215,14 @@
             
             loader.style.display = 'flex';
             try {
+                // Check Uniqueness for Instagram Username
+                const checkQ = query(collection(db, "earn_requests"), where("type", "==", "instagram"), where("data.username", "==", username));
+                const checkSnap = await getDocs(checkQ);
+                if(!checkSnap.empty) {
+                    loader.style.display = 'none';
+                    return showAlert("এই Instagram Username টি ইতিমধ্যে সাবমিট করা হয়েছে। একবার ব্যবহার করা যাবে।");
+                }
+
                 const rate = appConfig.instagramRate || 0;
                 await addDoc(collection(db, "earn_requests"), {
                     userId: userData.tgChatId,
@@ -2144,6 +2252,14 @@
             
             loader.style.display = 'flex';
             try {
+                // Check Uniqueness for Naval Send ID
+                const checkQ = query(collection(db, "earn_requests"), where("type", "==", "naval_coin"), where("data.senderId", "==", senderId));
+                const checkSnap = await getDocs(checkQ);
+                if(!checkSnap.empty) {
+                    loader.style.display = 'none';
+                    return showAlert("এই Naval Send ID টি ইতিমধ্যে সাবমিট করা হয়েছে। একবার ব্যবহার করা যাবে।");
+                }
+
                 // Rate: 1000 coin = 10 taka => (Amount / 1000) * 10
                 const ratePer1k = appConfig.navalCoinRate || 10; // Default 10 if not set
                 const estimatedValue = (amount / 1000) * ratePer1k;
