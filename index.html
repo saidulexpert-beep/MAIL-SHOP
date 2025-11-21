@@ -459,17 +459,31 @@
                         </span>
                         <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
                     </button>
-                </div>
-                
-                <!-- Earn History Section -->
-                <div class="mt-6">
-                     <h3 class="text-lg font-semibold mb-3">Earn History (Insta/Naval)</h3>
-                     <div id="earn-history-list" class="space-y-3"></div>
+                    
+                    <!-- NEW EARN HISTORY BUTTON -->
+                    <button id="go-to-earn-history-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
+                        <span class="flex items-center gap-3">
+                            <i data-lucide="scroll-text" class="w-6 h-6 text-gray-600"></i>
+                            <span>EARN HISTORY</span>
+                        </span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </button>
                 </div>
 
                 <div class="text-center pt-6">
                      <p class="text-center text-gray-600 text-sm">Developed by <a href="https://t.me/bd_Storebot/Botshop" target="_blank" class="font-semibold text-[#007bff] hover:underline">𝐁𝐃 𝐒𝐓𝐎𝐑𝐄</a></p>
                 </div>
+            </div>
+
+            <!-- NEW EARN HISTORY SUB-PAGE -->
+            <div id="earn-history-page" class="p-4 space-y-6 sub-page">
+                <div class="relative flex items-center justify-center mb-4">
+                    <button onclick="navigateTo('profile-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
+                    </button>
+                    <h2 class="text-xl font-bold text-center text-gray-800">Earn History</h2>
+                </div>
+                <div id="earn-history-list" class="space-y-3"></div>
             </div>
 
             <div id="features-page" class="p-4 space-y-8 sub-page">
@@ -820,13 +834,13 @@
     <script type="module">
         const ADMIN_UID = "6954647230";
         const firebaseConfig = {
-            apiKey: "AIzaSyCoCy08FL_sHHdA0f2cJg0BaF-iYAhFuk0",
-            authDomain: "mail-store-4692b.firebaseapp.com",
-            databaseURL: "https://mail-store-4692b-default-rtdb.firebaseio.com",
-            projectId: "mail-store-4692b",
-            storageBucket: "mail-store-4692b.firebasestorage.app",
-            messagingSenderId: "264936867411",
-            appId: "1:264936867411:web:5933919e5bafae617968a6"
+            apiKey: "AIzaSyD856qtFfeP-_NJKCzwhfzFMo7ghUuXdLU",
+            authDomain: "instagramfarmer-58008.firebaseapp.com",
+            databaseURL: "https://instagramfarmer-58008-default-rtdb.firebaseio.com",
+            projectId: "instagramfarmer-58008",
+            storageBucket: "instagramfarmer-58008.firebasestorage.app",
+            messagingSenderId: "1030789650144",
+            appId: "1:1030789650144:web:5add8042fdd69397c92285"
         };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
@@ -1020,11 +1034,12 @@
                 'earn-page': () => {}, 
                 'mail-page': loadMailStore,
                 'admin-page': () => { populateAdminMailTypes(); loadReplaceRequests(); loadEarnRequests(); },
-                'profile-page': () => { loadProfilePage(); loadEarnHistory(); },
+                'profile-page': () => { loadProfilePage(); },
                 'features-page': loadFeaturesPage,
                 'link-team-page': loadLinkedFriends,
                 'send-page': () => { setupDynamicAmountHandlers('send'); },
-                'replace-list-page': loadReplaceHistory
+                'replace-list-page': loadReplaceHistory,
+                'earn-history-page': loadEarnHistory
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
@@ -1065,6 +1080,8 @@
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             
             document.getElementById('go-to-replace-list-btn').addEventListener('click', () => navigateTo('replace-list-page'));
+            document.getElementById('go-to-earn-history-btn').addEventListener('click', () => navigateTo('earn-history-page'));
+
 
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
             document.getElementById('features-send-btn').addEventListener('click', () => navigateTo('send-page'));
